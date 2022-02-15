@@ -106,6 +106,10 @@ public String getLogo() {
 	private boolean selectedRow;
 	private List<OccurenceData2> occurrences;
 
+	private String dataTeste;
+	private String sinistro;
+
+
 
 	public boolean isEnableBtn() {
 		return enableBtn;
@@ -396,7 +400,7 @@ public String getLogo() {
 	}
 public void teste() {
 		System.out.println("Estamos aqui");
-		System.out.println(getDataTeste());
+		System.out.println(getData());
 	}
 
 	@PostConstruct

@@ -40,6 +40,7 @@
 		SUM(IF(classe = `8` OR classe = `6N`, 1, 0)); SUM(IF(classe = `10` OR classe = `7N`, 1, 0 ));
 		SUM(IF(classe = `11` OR classe = `8N`, 1, 0)); SUM(IF(classe = `E9` OR classe = `9N` OR (classe=`UC` AND axlNumber = 9), 1, 0));
 		SUM(IF(classe = `10N` OR (classe=`UC` AND axlNumber &gt;= 10), 1, 0)); SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_dataDesc_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv.lane')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 		

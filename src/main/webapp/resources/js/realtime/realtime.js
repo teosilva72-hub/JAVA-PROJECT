@@ -464,6 +464,13 @@ function posEquip(equip) {
 		let spd2 = Number(equip.find('#spd2').text())
 		let lanePosition = equip.attr('service')
 		let fluxoId = equip.find('[id^=fluxo]') 
+		let sentido1 = equip.attr('sentido1')
+		let sentido2 = equip.attr('sentido2')
+		
+		var validation = document.forms.validation;
+
+   		  for (messages of validation)
+			window[messages.name] = messages.value
 		
 		// -------------------------------------------------------------
 	
@@ -522,20 +529,28 @@ function posEquip(equip) {
 				fluxo1.css({
 					animation: 'myMove 150s linear infinite', 'animation-direction': "reverse"
 				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir1_red.png')
+				
+				fluxo1.attr('title', sentido1+' / '+congested);
 			}
 			else if (spd1 > 30 && spd1 < 61) {
 				fluxo1.css({
 					animation: 'myMove 60s linear infinite', 'animation-direction': "reverse"
 				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir1_orange.png')
+				
+				fluxo1.attr('title', sentido1+' / '+moderate);
 			}
 			else if (spd1 > 60) {
 				fluxo1.css({
 					animation: 'myMove 20s linear infinite', 'animation-direction': "reverse"
 				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir1_green.png')
+				
+				fluxo1.attr('title', sentido1+' / '+free);
 			}
 		}
 		else {
+			
 			fluxo1.attr('src', '/resources/images/realTimeInterface/serviceLevel_dir1_gray.png')
+			fluxo1.attr('title', sentido1+' / '+none);
 		}
 
 		//VELOCIDADE SENTIDO 2
@@ -544,20 +559,28 @@ function posEquip(equip) {
 				fluxo2.css({
 					animation: 'myMove 150s linear infinite'
 				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir2_red.png')
+				
+				fluxo2.attr('title', sentido2+' / '+congested);
 			}
 			else if (spd2 > 30 && spd2 < 61) {
 				fluxo2.css({
 					animation: 'myMove 60s linear infinite'
 				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir2_orange.png')
+				
+				fluxo2.attr('title', sentido2+' / '+moderate);
 			}
 			else if (spd2 > 60) {
 				fluxo2.css({
 					animation: 'myMove 20s linear infinite'
 				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir2_green.png')
+				
+				fluxo2.attr('title', sentido2+' / '+free);
 			}
 		}
 		else {
+			
 			fluxo2.attr('src', '/resources/images/realTimeInterface/serviceLevel_dir2_gray.png')
+			fluxo2.attr('title', sentido2+' / '+none);
 		}
 	}
 	

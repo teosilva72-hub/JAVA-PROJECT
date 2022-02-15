@@ -42,7 +42,7 @@
 			
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('DateTime')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
@@ -54,9 +54,9 @@
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('DateTime', reportsLabels.reports_select_date, true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('EquipmentID', reportsLabels.reports_select_equipments, 'tblEquipment.EquipmentID|EquipmentName', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('TrafficClassID', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	
 
     </f:metadata>
 	

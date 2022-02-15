@@ -272,12 +272,6 @@ public class SatSpeedMultiReportController {
 		localeSat = new LocaleUtil();
 		localeSat.getResourceBundle(LocaleUtil.MESSAGES_SAT);
 
-		//ViewLabels	
-		directionLabel1 = localeDir.getStringKey("directions_select_label1");
-		directionLabel2 = localeDir.getStringKey("directions_select_label2");
-		directionValue1 = localeDir.getStringKey("directions_select_value1");
-		directionValue2 = localeDir.getStringKey("directions_select_value2");
-
 		/* EQUIPMENTS SELECTION */	
 		satReport = new SatReports();	
 		equipments = new ArrayList<SelectItem>();		

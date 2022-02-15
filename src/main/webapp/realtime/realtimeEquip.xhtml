@@ -263,7 +263,8 @@
                         
                     <c:when test="#{item.table_id eq 'sat'}">                                       
                             
-                    <div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark" posX="#{item.linearPosX}" posY="#{item.linearPosY}" item-width="#{item.linearWidth}" service="#{item.posicao_nivel_servico}" status-period="#{satMapsView.satListValues.get(loop.index).statusInterval}" >
+                    <div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark" posX="#{item.linearPosX}" posY="#{item.linearPosY}" item-width="#{item.linearWidth}" service="#{item.posicao_nivel_servico}" 
+                    status-period="#{satMapsView.satListValues.get(loop.index).statusInterval}" sentido1="#{item.sentido1}" sentido2="#{item.sentido2}">
                     <div id="sat#{item.equip_id}" class="table-sat card border-dark">
                         <div id="satName#{item.equip_id}" class="satName card-header p-0 border-dark">									
                             <div id="satTab#{item.equip_id}" class="text-center">
@@ -291,23 +292,26 @@
                                 <i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
                                 <span id="spd2">#{satMapsView.satListValues.get(loop.index).velocidadeS2}</span><span class="km"> km/h</span>
                             </div>
+                             <div class="col-12 padding-sat border-top border-dark on-mouse-hover" data-toggle="tooltip" data-placement="bottom" title="#{realtimeLabels.realtime_sat_last_package_title}">    
+                                <i class="fas fa-cube " style="margin-top: 2px;"></i>                    
+                                <span class="mb-0 d-inline-block" style="font-size: 10px;">#{satMapsView.satListValues.get(loop.index).lastPackage}</span>
+                             </div> 
                              <div class="col-12 padding-sat border-top border-dark on-mouse-hover" data-toggle="tooltip" data-placement="bottom" title="#{realtimeLabels.realtime_sat_last_register_title}">    
                                 <i class="fas fa-clock " style="margin-top: 2px;"></i>                   
-                                <span class="mb-0 d-inline-block" style="font-size: 10px;">#{satMapsView.satListValues.get(loop.index).dataTime}</span>
-                            
+                                <span class="mb-0 d-inline-block" style="font-size: 10px;">#{satMapsView.satListValues.get(loop.index).lastRegister}</span>                            
                             </div> 
                         </div>
 
                     </div>
                     <div id="fluxo#{item.equip_id}" class="fluxo">
-                        <img id="img1FluxoTab#{item.equip_id}" class="on-mouse-hover fluxo-1-margin" data-toggle="tooltip" data-placement="top" title="#{item.sentido1}" />								
+                        <img id="img1FluxoTab#{item.equip_id}" class="on-mouse-hover fluxo-1-margin" data-toggle="tooltip" data-placement="top" title="" />								
                 
-                        <img id="img2FluxoTab#{item.equip_id}" class="on-mouse-hover fluxo-2-margin" data-toggle="tooltip" data-placement="top" title="#{item.sentido2}" />
+                        <img id="img2FluxoTab#{item.equip_id}" class="on-mouse-hover fluxo-2-margin" data-toggle="tooltip" data-placement="top" title="" />
                     </div>
                                 
                     <!-- HTML to write -->
                                                     
-                </div>
+                	</div>
                 
                       <div id="pop#{item.table_id}#{item.equip_id}" style="display: none;">
                             <div class="popover-header">#{infoLabels.info_label_header}</div>
@@ -519,6 +523,21 @@
 
         </ui:fragment>
         
-    </c:forEach>					
-
+    </c:forEach>	
+    
+     <!-- ============================================================================================================================= -->
+	  
+	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION  -->
+		 		 		   	 	
+		 <input type="hidden" name="none" value="#{satLabels.$label_service_level_none}" /> <!-- NONE FLOW -->
+		 <input type="hidden" name="congested" value="#{satLabels.$label_service_level_congested}" /> <!-- LOW FLOW -->
+		 <input type="hidden" name="moderate" value="#{satLabels.$label_service_level_moderate}" /> <!-- MEDIUM FLOW -->
+		 <input type="hidden" name="free" value="#{satLabels.$label_service_level_free}" /> <!-- FREE FLOW -->
+		  
+		 </form> <!-- FORM VALIDATION END -->
+		 
+	  <!-- ============================================================================================================================= -->
+					
 </ui:composition>

@@ -45,8 +45,9 @@ public class ReportDAO {
 
     public void getReport(String query, String forMS, String id, String[] division) throws Exception {
        
+        int count = 0;
     	String newQuery = query;
-    	String newQueryMS = forMS.replace("$period", "MSperiod");
+    	String newQueryMS = forMS != null ? forMS.replace("$period", "MSperiod") : null;
     	List<String[]> lines = new ArrayList<>();
     	List<String> field = new ArrayList<>();
     	List<String[]> allOptions = new ArrayList<>();
@@ -65,44 +66,49 @@ public class ReportDAO {
                 newQueryMS = forMS.replace("@division", search.substring(2));
         }
 
-        try {
-            conn.start(1);
-    
-            conn.prepare(newQuery);
-            if (newQueryMS != null)
-                conn.prepare_ms(newQueryMS);
-            MapResult result = conn.executeQuery();
-    
-            if (!custom)
-                this.columnName.clear();
-    
-            if (result.hasNext()) {
-                for (RowResult rs : result) {
-                   
-                    String[] keys = rs.getKeys();
-                    int columnsNumber = keys.length;
-                    String[] row = new String[columnsNumber];
-                    
-                    for (int idx = 1; idx <= columnsNumber; idx++) {
-                        String name = keys[idx];
-                        if (!custom)
-                            this.columnName.add(name);
-    
-                        String value = translateValues(rs.getString(idx)); // TO DO SPECIFIC TRANSLATIONS IN DATA PRESENTATION
-                                            
-                        row[idx - 1] = value != null && value != "" ? value : "-";
-                        if (name.equals(id) && !field.contains(value))
-                            field.add(value);
+
+        do {
+            try {
+                count++;
+                if (!conn.start(count))
+                    break;
+        
+                conn.prepare(newQuery);
+                if (newQueryMS != null)
+                    conn.prepare_ms(newQueryMS);
+                MapResult result = conn.executeQuery();
+        
+                if (!custom)
+                    this.columnName.clear();
+        
+                if (result.hasNext()) {
+                    for (RowResult rs : result) {
+                       
+                        String[] keys = rs.getKeys();
+                        int columnsNumber = keys.length;
+                        String[] row = new String[columnsNumber];
+                        
+                        for (int idx = 1; idx <= columnsNumber; idx++) {
+                            String name = keys[idx - 1];
+                            if (!custom)
+                                this.columnName.add(name);
+        
+                            String value = translateValues(rs.getString(idx)); // TO DO SPECIFIC TRANSLATIONS IN DATA PRESENTATION
+                                                
+                            row[idx - 1] = value != null && value != "" ? value : "-";
+                            if (name.equals(id) && !field.contains(value))
+                                field.add(value);
+                        }
+        
+                        lines.add(row);
                     }
-    
-                    lines.add(row);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                conn.close();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            conn.close();
-        }
+        } while (lines.isEmpty());
 
         this.lines = lines;
         this.IDs = field;
@@ -139,7 +145,7 @@ public class ReportDAO {
         
                             String value = rs.getString(idx);
                             
-                            column[idx - 1] = value != null && value != "" ? value : "-";
+                            column[idx - 1] = value != null && value != "" ? value : "-"; // HERE
                         }
         
                         secondaryList.add(column);
@@ -300,8 +306,8 @@ public class ReportDAO {
 	// ------------------------------------------------------------------------------------
 	
 	  private String translateValues(String value) {
-		  					    	
-	    	switch (value) {
+		  				  					    	
+	    	switch (value == null ? "" : value) {
 	    	
 				case "N": return localeDirection.getStringKey("directions_north");
 				case "S": return localeDirection.getStringKey("directions_south");
@@ -324,9 +330,10 @@ public class ReportDAO {
 	    		case " < 1 minute": return localeReport.getStringKey("reports_value_less_than_1_minute");
 	    		case " > 1 minute and < 2 minutes": return localeReport.getStringKey("reports_value_between_1_and_2_minutes_option");
 	    		case " > 3 minutes": return localeReport.getStringKey("reports_value_greater_than_3_minutes_option");
-	    						    		    		
+	    			    						    		    		
 	    		default: return value;
 	    	}
+	    			  
 	    }
 	  
 	  // ------------------------------------------------------------------------------------

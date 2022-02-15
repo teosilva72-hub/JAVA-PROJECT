@@ -22,35 +22,36 @@
 	    <f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv s')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('VBVData')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('EquipmentID')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.global_equipment_column, satLabels.vehicle_length_0_5_m, 
 		satLabels.vehicle_length_5_10_m, satLabels.vehicle_length_10_15_m, satLabels.vehicle_length_15_20_m, satLabels.vehicle_length_20_m, satLabels.vehicle_length_0_5_m, 
 		satLabels.vehicle_length_5_10_m, satLabels.vehicle_length_10_15_m, satLabels.vehicle_length_15_20_m, satLabels.vehicle_length_20_m))}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; siteID; SUM((s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`N`, `L`)); 
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(DateTime, `%d/%m/%Y`) as sd; TIME($period)@sd; EquipmentID; SUM((s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`N`, `L`)); 
 		SUM((s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 2000) AND f.direction IN(`N`, `L`)); 
 		SUM((s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`S`, `O`)); SUM((s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`S`, `O`)); 
 		SUM((s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`S`, `O`)); SUM((s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`S`, `O`)); SUM((s.lenght &gt;= 2000) AND f.direction IN(`S`, `O`));')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(data, `dd/MM/yyyy`); CAST($period as TIME); STRING_AGG(siteID, `,`); SUM(CASE WHEN (s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END); SUM(CASE WHEN (s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END); 
-		SUM(CASE WHEN (s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END); SUM(CASE WHEN (s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END); SUM(CASE WHEN (s.lenght &gt;= 2000) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END); 
-		SUM(CASE WHEN (s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END); SUM(CASE WHEN (s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END); 
-		SUM(CASE WHEN (s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END); SUM(CASE WHEN (s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END); SUM(CASE WHEN (s.lenght &gt;= 2000) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END);')}" />
+		
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(DateTime, `dd/MM/yyyy`); CAST($period as TIME); STRING_AGG(EquipmentID, `,`) as equip; SUM(CASE WHEN (s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END) as s1; SUM(CASE WHEN (s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END) as s2; 
+		SUM(CASE WHEN (s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END) as s3; SUM(CASE WHEN (s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END) as s4; SUM(CASE WHEN (s.lenght &gt;= 2000) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END) as s5; 
+		SUM(CASE WHEN (s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END) as s6; SUM(CASE WHEN (s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END) as s7; 
+		SUM(CASE WHEN (s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END) as s8; SUM(CASE WHEN (s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END) as s9; SUM(CASE WHEN (s.lenght &gt;= 2000) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END) as s10;')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('DateTime')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions f ON f.equip_id = siteID AND f.lane = s.lane')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions f ON f.equip_id = EquipmentID AND f.lane = LaneOrder')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('DateTime', reportsLabels.reports_select_date, true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('EquipmentID', reportsLabels.reports_select_equipments, 'tblEquipment.EquipmentID|EquipmentName', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('TrafficClassID', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	
 
     </f:metadata>
 	

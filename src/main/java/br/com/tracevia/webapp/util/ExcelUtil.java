@@ -4,8 +4,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
+
+import javax.faces.context.FacesContext;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -865,8 +869,11 @@ public class ExcelUtil {
 			int dx1, int dy1, int dx2, int dy2, int resize) {
 		
 		try {
-
-			InputStream my_banner_image = new FileInputStream(logo);
+			
+			String current = FacesContext.getCurrentInstance().getExternalContext().getRealPath("");
+			Path path = Paths.get(current, "resources", "images", "excel", logo);
+	
+			InputStream my_banner_image = new FileInputStream(path.toString());
 
 			byte[] bytes = IOUtils.toByteArray(my_banner_image);	
 
@@ -2409,14 +2416,14 @@ public class ExcelUtil {
 		
 		public void fileBodySimple(XSSFSheet sheet, XSSFRow row, List<String> columnName, List<String[]> values, int startCol, int endCol, int startRow) {
 
-			int rowLenght = startRow + values.size() ;
+			int rowLenght = startRow + values.size();
 						  			
 			  for (int col = startCol; col < columnName.size(); col++) {
 				  
 				  for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < values.size(); rowIndex++, lin++) {
 			 		
-					row = sheet.getRow((short) rowIndex);	
-									
+					row = sheet.getRow((short) rowIndex);
+					
 					try {
 																																				
 					if(values.get(lin)[col].matches(NUMBER_REGEX))
@@ -2448,7 +2455,7 @@ public class ExcelUtil {
 				    index = lin + (day * periodRange);
 			 		
 					row = sheet.getRow((short) rowIndex);	
-									
+
 					try {
 																																				
 					 if(values.get(index)[col].matches(NUMBER_REGEX))
