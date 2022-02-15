@@ -145,6 +145,10 @@ public class ReportBean {
 	public ReportDAO getReport() {
 		return report;
 	}
+		
+	public boolean getLimitColumn() {
+		return limitColumn;
+	}
 
 	// Set
 
