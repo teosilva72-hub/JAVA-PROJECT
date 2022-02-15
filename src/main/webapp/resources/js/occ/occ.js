@@ -1162,3 +1162,7 @@ var upload2 = document.getElementById("myFile2");
 	}
     e.preventDefault();
 });
+funcion ajax(){
+	@execute
+}
+});
