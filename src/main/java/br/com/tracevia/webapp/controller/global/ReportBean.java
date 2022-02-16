@@ -61,7 +61,7 @@ public class ReportBean {
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
 	public boolean 	isSat = false, haveTotal, multiSheet = true, equipSheetName = false, directionsOnSheet = false, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false,
-			groupId = false;
+			groupId = false,  limitColumn = false;
 	
 	public String totalType = "standard";
 	public String 	module = "default";
@@ -144,6 +144,10 @@ public class ReportBean {
 		
 	public ReportDAO getReport() {
 		return report;
+	}
+		
+	public boolean getLimitColumn() {
+		return limitColumn;
 	}
 
 	// Set
@@ -336,6 +340,10 @@ public class ReportBean {
 	
 	public void setPeriod(int time, String step, String name) {
 		this.period.add(new String[]{String.valueOf(time), step, name});
+	}
+	
+	public void setLimit() {
+		this.limitColumn = true;
 	}
 	
 	public List<String[]> getPeriod() {
@@ -882,7 +890,7 @@ public class ReportBean {
 					queryMS = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), queryMS, groupMS);
 			}
 			
-			//System.out.println(query);
+			System.out.println(query);
 			  
 		    // Table Fields
 			report.getReport(query, queryMS, idTable, isDivision() ? division : null);

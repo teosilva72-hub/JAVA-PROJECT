@@ -1,10 +1,6 @@
 
 package br.com.tracevia.webapp.dao.dms;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -13,15 +9,13 @@ import java.util.ResourceBundle;
 
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.dms.Messages;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.util.ConnectionFactory;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 
 public class MessagesDAO {
 
-	private Connection conn;
-	protected ConnectionFactory connection = new ConnectionFactory();
-	private PreparedStatement ps;
-	private ResultSet rs;
+	SQL_Tracevia conn = new SQL_Tracevia();
 
 	// LanguageMB lang;
 	Locale locale;
@@ -30,23 +24,24 @@ public class MessagesDAO {
 	public List<Messages> mensagensDisponiveis(String driver) throws Exception {
 
 		List<Messages> lista = new ArrayList<Messages>();
+		MapResult result;
 
 		try {
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
 			switch (driver) {
 			case "driver1":
-				ps = conn.prepareStatement("SELECT id_message, type, name, "
+				conn.prepare("SELECT id_message, type, name, "
 						+ "page1_image, page1_1, page1_2, page1_3, timer1, "
 						+ "page2_image, page2_1, page2_2, page2_3, timer2, "
 						+ "page3_image, page3_1, page3_2, page3_3, timer3, "
 						+ "page4_image, page4_1, page4_2, page4_3, timer4, "
 						+ "page5_image, page5_1, page5_2, page5_3, timer5 from dms_messages_available WHERE avaliable <> 0 "
 						+ "AND driver = 1 ORDER BY id_message ASC");
-				rs = ps.executeQuery();
+				result = conn.executeQuery();
 
-				if (rs.isBeforeFirst()) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 						Messages mensagens = new Messages();
 						mensagens.setId_message(rs.getInt("id_message"));
 						mensagens.setTipo(rs.getString("type"));
@@ -70,15 +65,15 @@ public class MessagesDAO {
 				break;
 
 			case "driver2":
-				ps = conn.prepareStatement("SELECT id_message, type, name, "
+				conn.prepare("SELECT id_message, type, name, "
 						+ "page1_image, page1_1, page1_2, timer1, page2_image, page2_1, page2_2, timer2, "
 						+ "page3_image, page3_1, page3_2, timer3, page4_image, page4_1, page4_2, timer4, "
 						+ "page5_image, page5_1, page5_2, timer5 from dms_messages_available WHERE avaliable <> 0 "
 						+ "AND driver = 2 ORDER BY id_message ASC");
-				rs = ps.executeQuery();
+				result = conn.executeQuery();
 
-				if (rs.isBeforeFirst()) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 						Messages mensagens = new Messages();
 						mensagens.setId_message(rs.getInt("id_message"));
 						mensagens.setTipo(rs.getString("type"));
@@ -103,17 +98,17 @@ public class MessagesDAO {
 				break;
 
 			case "driver3":
-				ps = conn.prepareStatement("SELECT id_message, type, name, "
+				conn.prepare("SELECT id_message, type, name, "
 						+ "page1_image, page1_image2, page1_1, page1_2, page1_3, timer1, "
 						+ "page2_image, page2_image2, page2_1, page2_2, page2_3, timer2, "
 						+ "page3_image, page3_image2, page3_1, page3_2, page3_3, timer3, "
 						+ "page4_image, page4_image2, page4_1, page4_2, page4_3, timer4, "
 						+ "page5_image, page5_image2, page5_1, page5_2, page5_3, timer5 from dms_messages_available WHERE avaliable <> 0 "
 						+ "AND driver = 3 ORDER BY id_message ASC");
-				rs = ps.executeQuery();
+				result = conn.executeQuery();
 
-				if (rs.isBeforeFirst()) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 						Messages mensagens = new Messages();
 						mensagens.setId_message(rs.getInt("id_message"));
 						mensagens.setTipo(rs.getString("type"));
@@ -143,12 +138,10 @@ public class MessagesDAO {
 				break;
 			}
 
-		} catch (
-
-		SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 
 		for (Messages messages : lista) {
@@ -176,7 +169,7 @@ public class MessagesDAO {
 		String dt_creation = dt.currentStringDate(DateTimeApplication.DATE_TIME_FORMAT_STANDARD_DATABASE);
 
 		try {
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
 			String sql = "INSERT INTO dms_messages_available "
 					+ "(id_message, creation_date, creation_username, update_date, update_username, type, name, driver, "
@@ -188,42 +181,42 @@ public class MessagesDAO {
 					+ "VALUES ( null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true );";
 
-			ps = conn.prepareStatement(sql);
+			conn.prepare(sql);
 
-			ps.setString(1, dt_creation);
-			ps.setString(2, user);
-			ps.setString(3, dt_creation);
-			ps.setString(4, user);
-			ps.setString(5, msg.get("type"));
-			ps.setString(6, msg.get("name"));
-			ps.setInt(7, Integer.parseInt(msg.get("type_page")));
+			conn.setString(1, dt_creation);
+			conn.setString(2, user);
+			conn.setString(3, dt_creation);
+			conn.setString(4, user);
+			conn.setString(5, msg.get("type"));
+			conn.setString(6, msg.get("name"));
+			conn.setInt(7, Integer.parseInt(msg.get("type_page")));
 			for (int i = 0; i < 5; i++) {
 				if (i < ListaPages.size()) {
-					ps.setInt(8 + i * 6, Integer.parseInt(ListaPages.get(i).get("image_id")));
-					ps.setInt(9 + i * 6, Integer.parseInt(ListaPages.get(i).get("image_id2")));
-					ps.setString(10 + i * 6, ListaPages.get(i).get("line1"));
-					ps.setString(11 + i * 6, ListaPages.get(i).get("line2"));
-					ps.setString(12 + i * 6, ListaPages.get(i).get("line3"));
-					ps.setFloat(13 + i * 6, Float.parseFloat(ListaPages.get(i).get("timer")));
+					conn.setInt(8 + i * 6, Integer.parseInt(ListaPages.get(i).get("image_id")));
+					conn.setInt(9 + i * 6, Integer.parseInt(ListaPages.get(i).get("image_id2")));
+					conn.setString(10 + i * 6, ListaPages.get(i).get("line1"));
+					conn.setString(11 + i * 6, ListaPages.get(i).get("line2"));
+					conn.setString(12 + i * 6, ListaPages.get(i).get("line3"));
+					conn.setFloat(13 + i * 6, Float.parseFloat(ListaPages.get(i).get("timer")));
 				} else {
-					ps.setInt(8 + i * 6, 0);
-					ps.setInt(9 + i * 6, 0);
-					ps.setString(10 + i * 6, "");
-					ps.setString(11 + i * 6, "");
-					ps.setString(12 + i * 6, "");
-					ps.setInt(13 + i * 6, 0);
+					conn.setInt(8 + i * 6, 0);
+					conn.setInt(9 + i * 6, 0);
+					conn.setString(10 + i * 6, "");
+					conn.setString(11 + i * 6, "");
+					conn.setString(12 + i * 6, "");
+					conn.setInt(13 + i * 6, 0);
 				}
 			}
 
-			ps.executeUpdate();
+			conn.executeUpdate();
 
 			success = true;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			success = false;
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps);
+			conn.close();
 		}
 
 		return success;
@@ -251,7 +244,7 @@ public class MessagesDAO {
 		String dt_creation = dt.currentStringDate(DateTimeApplication.DATE_TIME_FORMAT_STANDARD_DATABASE);
 
 		try {
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
 			String sql = "UPDATE dms_messages_available SET update_date = ?, update_username = ?, type = ?, name = ?, "
 					+ "page1_image = ?, page1_image2 = ?, page1_1 = ?, page1_2 = ?, page1_3 = ?, timer1 = ?, "
@@ -260,43 +253,43 @@ public class MessagesDAO {
 					+ "page4_image = ?, page4_image2 = ?, page4_1 = ?, page4_2 = ?, page4_3 = ?, timer4 = ?, "
 					+ "page5_image = ?, page5_image2 = ?, page5_1 = ?, page5_2 = ?, page5_3 = ?, timer5 = ? WHERE (id_message = ? AND driver = ?);";
 
-			ps = conn.prepareStatement(sql);
+			conn.prepare(sql);
 
-			ps.setString(1, dt_creation);
-			ps.setString(2, user);
-			ps.setString(3, msg.get("type"));
-			ps.setString(4, msg.get("name"));
+			conn.setString(1, dt_creation);
+			conn.setString(2, user);
+			conn.setString(3, msg.get("type"));
+			conn.setString(4, msg.get("name"));
 			for (int i = 0; i < 5; i++) {
 				if (i < ListaPages.size()) {
-					ps.setInt(5 + i * 6, Integer.parseInt(ListaPages.get(i).get("image_id")));
-					ps.setInt(6 + i * 6, Integer.parseInt(ListaPages.get(i).get("image_id2")));
-					ps.setString(7 + i * 6, ListaPages.get(i).get("line1"));
-					ps.setString(8 + i * 6, ListaPages.get(i).get("line2"));
-					ps.setString(9 + i * 6, ListaPages.get(i).get("line3"));
-					ps.setFloat(10 + i * 6, Float.parseFloat(ListaPages.get(i).get("timer")));
+					conn.setInt(5 + i * 6, Integer.parseInt(ListaPages.get(i).get("image_id")));
+					conn.setInt(6 + i * 6, Integer.parseInt(ListaPages.get(i).get("image_id2")));
+					conn.setString(7 + i * 6, ListaPages.get(i).get("line1"));
+					conn.setString(8 + i * 6, ListaPages.get(i).get("line2"));
+					conn.setString(9 + i * 6, ListaPages.get(i).get("line3"));
+					conn.setFloat(10 + i * 6, Float.parseFloat(ListaPages.get(i).get("timer")));
 				} else {
-					ps.setInt(5 + i * 6, 0);
-					ps.setInt(6 + i * 6, 0);
-					ps.setString(7 + i * 6, "");
-					ps.setString(8 + i * 6, "");
-					ps.setString(9 + i * 6, "");
-					ps.setInt(10 + i * 6, 0);
+					conn.setInt(5 + i * 6, 0);
+					conn.setInt(6 + i * 6, 0);
+					conn.setString(7 + i * 6, "");
+					conn.setString(8 + i * 6, "");
+					conn.setString(9 + i * 6, "");
+					conn.setInt(10 + i * 6, 0);
 				}
 			}
-			ps.setInt(35, id);
-			ps.setInt(36, Integer.parseInt(msg.get("type_page")));
+			conn.setInt(35, id);
+			conn.setInt(36, Integer.parseInt(msg.get("type_page")));
 
-			ps.executeUpdate();
+			conn.executeUpdate();
 			
 			dms_dao.reloadActivateMessageWith(id);
 
 			success = true;
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 
 			success = false;
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps);
+			conn.close();
 		}
 
 		return success;
@@ -308,24 +301,24 @@ public class MessagesDAO {
 			DateTimeApplication dt = new DateTimeApplication();
 			String dt_creation = dt.currentStringDate(DateTimeApplication.DATE_TIME_FORMAT_STANDARD_DATABASE);
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(
+			conn.prepare(
 					"UPDATE dms_messages_available SET update_date = ?, update_username = ?, avaliable = 0 WHERE (id_message = ?);");
-			ps.setString(1, dt_creation);
-			ps.setString(2, user);
-			ps.setInt(3, msgID);
+			conn.setString(1, dt_creation);
+			conn.setString(2, user);
+			conn.setInt(3, msgID);
 
-			ps.executeUpdate();
+			conn.executeUpdate();
 
 			success = true;
 		} catch (
 
-		SQLException e) {
+		Exception e) {
 			e.printStackTrace();
 			success = false;
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps);
+			conn.close();
 		}
 
 		return success;
@@ -334,24 +327,25 @@ public class MessagesDAO {
 	public Messages mensagensDisponivelById(int driver, int id) throws Exception {
 
 		Messages mensagem = new Messages();
+		MapResult result;
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
 			switch (driver) {
 			case 1:
-				ps = conn.prepareStatement("SELECT id_message, type, name, "
+				conn.prepare("SELECT id_message, type, name, "
 						+ "page1_image, page1_1, page1_2, page1_3, timer1, "
 						+ "page2_image, page2_1, page2_2, page2_3, timer2, "
 						+ "page3_image, page3_1, page3_2, page3_3, timer3, "
 						+ "page4_image, page4_1, page4_2, page4_3, timer4, "
 						+ "page5_image, page5_1, page5_2, page5_3, timer5 from dms_messages_available WHERE avaliable <> 0 "
 						+ "AND driver = 1 AND id_message = " + id + " ORDER BY id_message ASC");
-				rs = ps.executeQuery();
+				result = conn.executeQuery();
 
-				if (rs.isBeforeFirst()) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 						mensagem.setId_message(rs.getInt("id_message"));
 						mensagem.setTipo(rs.getString("type"));
 						mensagem.setNome(rs.getString("name"));
@@ -372,15 +366,15 @@ public class MessagesDAO {
 				break;
 
 			case 2:
-				ps = conn.prepareStatement("SELECT id_message, type, name, "
+				conn.prepare("SELECT id_message, type, name, "
 						+ "page1_image, page1_1, page1_2, timer1, page2_image, page2_1, page2_2, timer2, "
 						+ "page3_image, page3_1, page3_2, timer3, page4_image, page4_1, page4_2, timer4, "
 						+ "page5_image, page5_1, page5_2, timer5 from dms_messages_available WHERE avaliable <> 0 "
 						+ "AND driver = 2 AND id_message = " + id + " ORDER BY id_message ASC");
-				rs = ps.executeQuery();
+				result = conn.executeQuery();
 
-				if (rs.isBeforeFirst()) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 						mensagem.setId_message(rs.getInt("id_message"));
 						mensagem.setTipo(rs.getString("type"));
 						mensagem.setNome(rs.getString("name"));
@@ -402,17 +396,17 @@ public class MessagesDAO {
 				break;
 
 			case 3:
-				ps = conn.prepareStatement("SELECT id_message, type, name, "
+				conn.prepare("SELECT id_message, type, name, "
 						+ "page1_image, page1_image2, page1_1, page1_2, page1_3, timer1, "
 						+ "page2_image, page2_image2, page2_1, page2_2, page2_3, timer2, "
 						+ "page3_image, page3_image2, page3_1, page3_2, page3_3, timer3, "
 						+ "page4_image, page4_image2, page4_1, page4_2, page4_3, timer4, "
 						+ "page5_image, page5_image2, page5_1, page5_2, page5_3, timer5 from dms_messages_available WHERE avaliable <> 0 "
 						+ "AND driver = 3 AND id_message = " + id + " ORDER BY id_message ASC");
-				rs = ps.executeQuery();
+				result = conn.executeQuery();
 
-				if (rs.isBeforeFirst()) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 						mensagem.setId_message(rs.getInt("id_message"));
 						mensagem.setTipo(rs.getString("type"));
 						mensagem.setNome(rs.getString("name"));
@@ -441,10 +435,10 @@ public class MessagesDAO {
 				break;
 			}
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 
 		mensagem.setDriver(driver);

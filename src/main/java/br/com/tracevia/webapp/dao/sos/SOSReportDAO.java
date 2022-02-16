@@ -1,22 +1,18 @@
 package br.com.tracevia.webapp.dao.sos;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.model.sos.SOSReports;
-import br.com.tracevia.webapp.util.ConnectionFactory;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 public class SOSReportDAO {
 	
-	private Connection conn;	
-	private PreparedStatement ps;
-	private ResultSet rs;
+	SQL_Tracevia conn = new SQL_Tracevia();
 	
 	LocaleUtil label;
 		
@@ -28,14 +24,14 @@ public class SOSReportDAO {
 		try {
 
 			//GET CONNECTION			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 															
-			ps = conn.prepareStatement(query);
-			rs = ps.executeQuery();			
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();			
 					
 			//RESULT IN RESULTSET	
-			  if (rs.isBeforeFirst()) {
-				  while (rs.next()) { //Linhas
+			  if (result.hasNext()) {
+				  for (RowResult rs : result) { //Linhas
 
 					SOSReports sos = new SOSReports();
 					
@@ -54,7 +50,9 @@ public class SOSReportDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps);}
+		}finally {
+			conn.close();
+		}
 
 		
 		return lista;
@@ -73,14 +71,14 @@ public class SOSReportDAO {
 		try {
 
 			//GET CONNECTION			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 															
-			ps = conn.prepareStatement(query);
-			rs = ps.executeQuery();			
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();			
 					
 			 // RESULT IN RESULTSET	
-			  if (rs.isBeforeFirst()) {
-				  while (rs.next()) { // Linhas
+			  if (result.hasNext()) {
+				  for (RowResult rs : result) { // Linhas
 
 					SOSReports sos = new SOSReports();
 					
@@ -108,7 +106,9 @@ public class SOSReportDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps);}
+		}finally {
+			conn.close();
+		}
 
 		
 		return lista;

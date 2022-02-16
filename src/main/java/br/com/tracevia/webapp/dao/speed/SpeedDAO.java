@@ -1,8 +1,5 @@
 package br.com.tracevia.webapp.dao.speed;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +8,10 @@ import br.com.tracevia.webapp.model.speed.Speed;
 import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
 import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class SpeedDAO {
 
-	private Connection conn;
-	private PreparedStatement ps;
-	private ResultSet rs;
+	SQL_Tracevia conn = new SQL_Tracevia();
 
 	public List<Speed> Status() throws Exception {
 
@@ -28,14 +21,14 @@ public class SpeedDAO {
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(select);
+			conn.prepare(select);
 
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 
 					Speed speed = new Speed();
 
@@ -51,7 +44,7 @@ public class SpeedDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 
 		return list;
@@ -90,6 +83,8 @@ public class SpeedDAO {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			conn.close();
 		}
 
 		return list;

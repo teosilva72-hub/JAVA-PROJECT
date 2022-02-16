@@ -23,10 +23,8 @@
 /* error label class */
 .error-label {
 	border: 1px solid transparent;
-	font-size: 12px;
-    margin-top: 50px;
-    margin-left: 33px;
-    position: absolute;
+	font-size: 12px;   
+    margin-left: 33px;   
 }
 
 /* invalid class style */

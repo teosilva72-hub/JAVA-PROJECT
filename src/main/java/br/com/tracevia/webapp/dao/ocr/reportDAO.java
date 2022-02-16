@@ -1,19 +1,18 @@
 package br.com.tracevia.webapp.dao.ocr;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.tracevia.webapp.methods.TranslationMethods;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.model.ocr.OCR;
-import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class reportDAO {
-	private Connection conn;
-	private PreparedStatement ps;
-	private ResultSet rs;
+	
+	SQL_Tracevia conn = new SQL_Tracevia();
+	
 	OCR data = new OCR();
 	
 	public ArrayList<OCR> searchTable(String start, String end, String classe) throws Exception {
@@ -32,15 +31,15 @@ public class reportDAO {
 		
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+			conn.start(1);
 			
-			ps = conn.prepareStatement(search);
-			rs = ps.executeQuery();
+			conn.prepare(search);
+			MapResult result = conn.executeQuery();
 					
 			//System.out.println(search);
 			
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 										
 					OCR data = new OCR();	
 					
@@ -76,12 +75,12 @@ public class reportDAO {
 		
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();			
-			ps = conn.prepareStatement(search);
-			rs = ps.executeQuery();
+			conn.start(1);			
+			conn.prepare(search);
+			MapResult result = conn.executeQuery();
 			
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 					
 					OCR data = new OCR();	
 					
@@ -117,12 +116,12 @@ public class reportDAO {
 		 TranslationMethods tr = new TranslationMethods();
 		
 		try {
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(search);
-			rs = ps.executeQuery();
+			conn.start(1);
+			conn.prepare(search);
+			MapResult result = conn.executeQuery();
 			
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 					data.setId(rs.getString(1));
 					data.setCam(rs.getString(2));
 					data.setDataHour(rs.getString(3));

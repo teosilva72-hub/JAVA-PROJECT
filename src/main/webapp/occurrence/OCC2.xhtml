@@ -4,12 +4,12 @@
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://jcp.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
-	<!-- MAIN TEMPLATE STRUCTURE END -->
 
 	<ui:define name="loading"></ui:define>
 
@@ -221,7 +221,7 @@
 					</div>	
 						</div>
 					<div class="form-group col-6 text-center row">
-						<label for="nome" class=" col-form-label fonttext">#{occLabels.$label_occ_reports_km_start}</label>
+						<label for="nome" class=" col-form-label fonttext">#{}</label>
 							<div class="col-9 ml-auto">
 								 <input type="text" id="kminicio" class="inputDesign form-control " />
 							</div>

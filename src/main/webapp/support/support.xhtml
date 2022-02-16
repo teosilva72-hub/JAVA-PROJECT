@@ -11,114 +11,115 @@
 	template="/template/dashboard-rov-layout.xhtml">
 	<!-- MAIN TEMPLATE STRUCTURE END -->
 
-	<ui:define name="head">
-		<!-- HEAD TEMPLATE COMPONENT -->
-
-		<h:outputStylesheet name="form-style.css" library="css/forms" />
-		<h:outputStylesheet library="css/validation" name="validation-style.css" />
-
-	</ui:define>
-
 	<!---->
 
+	<ui:define name="head">
+	
+		<!-- HEAD TEMPLATE COMPONENT -->
+
+		<h:outputStylesheet name="form-style.css" library="css/forms"/>
+		<h:outputStylesheet library="css/validation" name="validation-style.css"/>
+ 			<h:outputStylesheet library="css/forms" name="form-style.css" />
+
+		 
+		 <!-- FONTAWESOME JS IMPORT --> 
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
+		<h:outputScript library="js/validation-forms/support" name="support-validation.js" />
+		
+	</ui:define>
+	
+	 
+	<!---->
+	
 	<ui:define name="main-content">
 		<!-- MAIN CONTENT TEMPLATE COMPONENT -->
-	<div class="ml-auto mr-auto mb-0 col-md-6 ">
-		<h:form id="form">
+	<div class="ml-auto mr-auto mb-0 col-md-6">
+		<h:form id="submit">
+	   
+       <div id="success" class="alert alert-success d-none" role="alert"></div> <!-- SUCCESS ALERT -->
+       <div id="error" class="alert alert-danger d-none" role="alert"></div> <!-- ERROR ALERT -->  
+		
+	
 				<!-- Alert evento -->
 			<h5 class="row justify-content-center text-dark">#{supportLabels.$label_support_title}</h5>
 
-				<div class="col-12 input-field mt-3">
-					<label for="name" class="display-revert"></label> 
-					<input type="text" class="form-control text-center " id="name"
-					name="name" placeholder="#{supportLabels.$label_support_place_holder_name}"/>
-					</div>
+			<div class="form-group mt-3">
+					<div class="input-field">
+					 <input type="text" class="form-control text-center" id="email" name="email" placeholder='#{supportLabels.$label_support_place_holder_email}'/>
+					  </div>
+			</div>
 				<div class="error-label">
-					<label for="name" class="error display-revert" id="name-error">error</label>
+					<label for="email" class="error d-none" id="email-error">error</label>
 				</div>
-						
-				<div class="col-12 input-field  mt-3  ">
-					<label for="email"  class="display-revert"></label> 
-					<input type="email" class="form-control text-center " id="email"
-					placeholder='#{supportLabels.$label_support_place_holder_email}'/>
-				</div>
-				<div class="error-label">
-						<label for="email" class="error" id="email-error">error</label>
-					</div>
-					
-				  <div class="col-12 mt-3 ">
-					<div class="select-field">
-						<label for="concessionaria"  class="display-revert"></label> 
-						<select class="form-control text-center display reverse" id="concessionaria1">
-							<option>#{supportLabels.$label_support_place_holder_road_concessionaire}</option>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-								</select>
-						</div>		
-					 </div>		
-					<div class="error-label">
-						<label for="concessionaria" class="error" id="concessionaria-error">erro</label>
-					</div>
-				
+							
 				<!---->
-				
-				 <div class="col-12 mt-3 ">
-					 <div class="select-field  ">
-						<label for="categoria"  class="display-revert"></label>
-						 <select class="form-control text-center" id="categoria">
-							<option>#{supportLabels.$label_support_place_holder_category}</option>
-							<option>1</option>
-							<option>2</option>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
+								
+				 <div class="form-group">
+					 <div class="select-field">						
+						 <select class="form-control text-center" id="category" name="category">
+							<option value="">#{supportLabels.$label_support_place_holder_category}</option>
+							<option value="System" >#{supportLabels.$label_support_category_system}</option>
+							<option value="Interface">#{supportLabels.$label_support_category_Interface}</option>
+							<option value="Database">#{supportLabels.$label_support_category_Database} </option>
+							<option value="Others">#{supportLabels.$label_support_category_Others}</option>
+							
 							</select>
 			    		</div>
 			    	</div>
 				<div class="error-label">
-					<label for="categoria" class="error" id="categoria-error">error</label>
+					<label for="category" class="error d-none" id="category-error">error</label>
 				</div>
 			
-				 
+					 <div class="form-group">
+				 <div class="input-field">				
+				<input type="text" class="form-control text-center" id="others" name="others" placeholder='#{supportLabels.$label_support_category_Others}'/>
+				</div>	</div>
+					<div class="error-label">
+					<label for="others" class="error d-none" id="others-error">error</label>
+				</div>
+									
 				 <!---->
-			 
-				<div class=" col-12 input-field mt-3 ">
-					<label for="assunto"  class="display-revert"></label> 
-						<input type="text" class="form-control text-center" id="assunto" placeholder='#{supportLabels.$label_support_place_holder_theme}'/>
+			 	 <div class="form-group">
+				<div class=" input-field">
+					  <span for="nome" class="valid-icon-hidden" /> <!-- SPAN ICON 'VALIDATION'  -->
+						<input type="text" class="form-control text-center" id="subject" name="subject" placeholder='#{supportLabels.$label_support_place_holder_theme}'/>
+				</div>
 				</div>
 				<div class="error-label">
-					<label for="assunto" class="error" id="assunto-error">error</label>
+					<label for="subject" class="error d-none" id="subject-error">error</label>
 				</div>
-					
-				<div class=" col-12 input-field mt-3" >
-					<label for="mensagem" class="display-revert"></label>
-					<textarea class="form-control text-center" id="mensagem" rows="3" placeholder='#{supportLabels.$label_support_place_holder_message}'/>
+				
+					 <div class="form-group">
+				<div class=" input-field" >
+				<textarea class="form-control text-center" id="message"   name="message" rows="3" placeholder='#{supportLabels.$label_support_place_holder_message}'/>
+				</div>
 				</div>
 				<div class="error-label">
-					<label for="mensagem" class="error" id="mensagem-error">error</label>
+					<label for="message" class="error d-none" id="message-error">error</label>
 				</div>
 		
-				<div class="row d-flex justify-content-center mt-3 ">
+				<div class="row d-flex justify-content-center ">
 				
-					<h:commandButton value='#{reportsLabels.reports_form_btn_send}'
+					<h:commandButton value='#{reportsLabels.reports_form_btn_send}' action="#{supportController.save}"
 						id="btn-send" class="btn btn-dark form-draw-button submit-btn" />
-					<h:commandButton value='#{reportsLabels.reports_form_btn_reset}'
-						immediate="true" id="btn-reset" class="btn btn-dark form-draw-button ml-2 reset-btn ">
-					<f:ajax render="@form" resetValues="true" />
-						<!-- RESET -->
-					</h:commandButton>
-
+											
+					<h:commandButton type="reset" value="LIMPAR" class="btn btn-primary reset-btn ml-2" /> <!-- LIMPAR FORM -->			
+				
 				</div>
-
-
+				
 			</h:form>
 			<!-- MAIN CONTENT TEMPLATE COMPONENT END -->
 
-
 		</div>
+		
+			<!-- EXTERNAL SCRIPT ELEMENTS -->
 
+			<form name="validation">
+			
+				<!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+
+				
+			</form>
+			 	   
 	</ui:define>
 </ui:composition>

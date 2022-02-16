@@ -1,19 +1,15 @@
 package br.com.tracevia.webapp.dao.meteo;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.model.meteo.MeteoPanel;
-import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class MeteoDAO {
 	
-	private Connection conn;			
-	private PreparedStatement ps;
-	private ResultSet rs;
+	SQL_Tracevia conn = new SQL_Tracevia();
 				
 	public MeteoPanel MeteoPanel(String station_id, String type) throws Exception {
 		
@@ -29,17 +25,17 @@ public class MeteoDAO {
 				
 		    try {
 			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 			
-			ps = conn.prepareStatement(select);			
-			ps.setString(1, station_id);		
+			conn.prepare(select);			
+			conn.setString(1, station_id);		
 						
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
 			if(type.equals("mto")) {
 						
-				if (rs.isBeforeFirst()) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 											
 						panel.setAtmosphericPressure(rs.getDouble(1));
 						panel.setRelativeHumidity(rs.getInt(2));
@@ -59,8 +55,8 @@ public class MeteoDAO {
 				
 			} else {
 				
-				if (rs.isBeforeFirst()) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 											
 						panel.setAtmosphericPressure(rs.getDouble(1));
 						panel.setRelativeHumidity(rs.getInt(2));
@@ -79,7 +75,9 @@ public class MeteoDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 				
 		return panel;

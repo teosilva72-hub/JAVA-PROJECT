@@ -27,6 +27,7 @@ import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sat.SatTableHeader;
+import br.com.tracevia.webapp.model.sat.laneFilter;
 
 /**
  * Classe com modelos de planilhas EXCEL
@@ -86,7 +87,7 @@ public class ExcelTemplate {
 	// centerAlignStandardStyle - estilo padrÃ£o para centralizar	
 
 	CellStyle titleStyle, standardStyle, tableHeadStyle, leftAlignStandardStyle, rightAlignBoldStyle, dateTitleStyle,   
-	dateTimeStyle, centerBoldStyle, centerAlignStandardStyle, subHeaderClassStyle;   
+	dateTimeStyle, centerBoldStyle, centerAlignStandardStyle, subHeaderClassStyle, centerStyle;   
 
 	// COUNT FLOW STYLES 
 
@@ -147,7 +148,9 @@ public class ExcelTemplate {
 	    rightAlignBoldStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.RIGHT, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
 	    // ESTILO NEGRITO CENTRALIZADO (SEM BORDAS)  
 	    subHeaderClassStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
-	    
+	    //JUST CENTER STYLE	    
+	    centerStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
+	    		
 	    // COUNT FLOW STYLES
 
 	    // ESTILO HEADER
@@ -592,9 +595,7 @@ public class ExcelTemplate {
 			utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 9, 2);
 			
 			// -------------------------------------------------------------------------------------------------------
-			
-			System.out.println("DIR: "+isDirectionsOnSheet);
-			
+									
 			if(!isDirectionsOnSheet) {
 							
 			// SENTIDO LABEL
@@ -618,48 +619,54 @@ public class ExcelTemplate {
 		// ----------------------------------------------------------------------------------------------------------------
 				
 	}
-		
-	// ----------------------------------------------------------------------------------------------------------------
-	// TOTAL
-	// ----------------------------------------------------------------------------------------------------------------
-	// ----------------------------------------------------------------------------------------------------------------
-			
-	public Integer createTotalRow(XSSFSheet sheet, XSSFRow row, CellStyle tableHeader, int rowTotal, int columnsLength, List<String[]> lines) {
-				       		
-		        // CREATE ROW TOTAL
-				utilSheet.createRow(sheet, row, rowTotal);		 
 
-				utilSheet.createCells(sheet, row, 0, columnsLength, rowTotal, rowTotal);   // CREATE CELLS			
-				utilSheet.setCellValue(sheet, row, rowTotal, 0, localeExcel.getStringKey("excel_sheet_table_total")); // SET FIRST CELL VALUE
-								
-				int startColumn = 0;
-				int total = rowTotal + 1; // SOMA -SE + 1 NESSE CASO (REGRA DO MERGE) 
+		// ----------------------------------------------------------------------------------------------------------------
+		// TOTAL
+		// ----------------------------------------------------------------------------------------------------------------
+		// ----------------------------------------------------------------------------------------------------------------
 				
-				String startColumnLetter = "A";
-				String endColumnLetter = "";
+		public Integer createTotalRow(XSSFSheet sheet, XSSFRow row, CellStyle tableHeader, int rowTotal, int columnsLength, List<String[]> lines, boolean isDirectionsOnSheet) {
+					       		
+			        // CREATE ROW TOTAL
+					utilSheet.createRow(sheet, row, rowTotal);		 
 
-				// ----------------------------------------------------------------------------------------------------------------
-
-				 // VERFICA SE AS # PRIMEIRAS COLUNAS SÃO STRINGS	
-				
-					for(int c = 0; c < 3; c++) {
-						 
-						if(!lines.get(0)[c].matches(NUMBER_DECIMAL)) {
-							startColumn++;
-						    endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER					 
-						}					
-					}
-				 	    	
-					// MERGE START CELLS ON INIT TOTAL
-					utilSheet.mergeCells(sheet, startColumnLetter+""+(total)+":"+endColumnLetter+""+(total));			
-					utilSheet.setCellsStyle(sheet, row, tableHeader, 0, startColumn-1, rowTotal, rowTotal); // SET FIRST CELL STYLE	
-				
-				// ----------------------------------------------------------------------------------------------------------------		
+					utilSheet.createCells(sheet, row, 0, columnsLength, rowTotal, rowTotal);   // CREATE CELLS			
+					utilSheet.setCellValue(sheet, row, rowTotal, 0, localeExcel.getStringKey("excel_sheet_table_total")); // SET FIRST CELL VALUE
+									
+					int startColumn = 0;
+					int total = rowTotal + 1; // SOMA -SE + 1 NESSE CASO (REGRA DO MERGE) 
 					
-					return startColumn;
-				
-	          }
-	
+					String startColumnLetter = "A";
+					String endColumnLetter = "";
+
+					// ----------------------------------------------------------------------------------------------------------------
+
+					 // VERFICA SE AS # PRIMEIRAS COLUNAS SÃO STRINGS	
+										
+						for(int c = 0; c < 3; c++) {
+							 
+							if(!lines.get(0)[c].matches(NUMBER_DECIMAL)) {
+								startColumn++;																
+							    endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER					 
+							}							
+						}
+						
+						if(isDirectionsOnSheet) { // CASO ENTRE NESSA CONDICAO
+							startColumn++;
+						 	endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER			 	    	
+						}
+						
+						// MERGE START CELLS ON INIT TOTAL
+						utilSheet.mergeCells(sheet, startColumnLetter+""+(total)+":"+endColumnLetter+""+(total));			
+						utilSheet.setCellsStyle(sheet, row, tableHeader, 0, startColumn-1, rowTotal, rowTotal); // SET FIRST CELL STYLE	
+					
+					// ----------------------------------------------------------------------------------------------------------------		
+						
+						return startColumn;
+					
+		          }
+		
+		// ----------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * MÃ©todo para criar colunas com total para SOMA
@@ -766,6 +773,8 @@ public class ExcelTemplate {
 		
 		TranslationMethods tm = new TranslationMethods();
 		DateTimeApplication dta = new DateTimeApplication();
+		List<laneFilter> lanesLista = new ArrayList<laneFilter>();
+		EquipmentsDAO dao = new EquipmentsDAO();
 		
 		int selectOp = 0;
 		
@@ -819,7 +828,7 @@ public class ExcelTemplate {
 				dates[0] = startDate;
 				dates[1] = endDate;
 				
-				EquipmentsDAO dao = new EquipmentsDAO();
+				//EquipmentsDAO dao = new EquipmentsDAO();
 				
 				sheetNames = dao.equipmentsName(module, equips);				
 				selectOp = equips.size();
@@ -900,23 +909,40 @@ public class ExcelTemplate {
 		
 	      	// -----------------------------------------------------
      	}
-								
-		utilSheet.createRow(sheet, row, tableStartRow);
+										
+		utilSheet.createRow(sheet, row, tableStartRow);						
 		utilSheet.createCells(sheet, row, startCol, endCol, tableStartRow, tableStartRow);
 		utilSheet.setHeaderCellsValue(sheet, row, tableStartRow, columns);
-		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startCol, endCol, tableStartRow, tableStartRow);
-													
+		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startCol, endCol, tableStartRow, tableStartRow);									
+				
 		// CRIAR LINHAS PARA APRESENTADO DOS DADOS
 		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
-								 		
-		utilSheet.fileBodySimple(sheet, row, columns, lines, startCol, endCol, dataStartRow);
+		
+		if(isDirectionsOnSheet) { 
+			
+			lanesLista = dao.listarFaixas();
+			
+			int dirCol = endCol + 1;			
+			utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
+					
+			String laneValue = getLane(lanesLista.get(0).getDirection());
+			
+			utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
+												
+			utilSheet.fileBodySimpleDirection(sheet, row, columns, lines, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, true);
+									
+			utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
+			
+		}
+											 		
+		else utilSheet.fileBodySimple(sheet, row, columns, lines, startCol, endCol, dataStartRow);
 		
 		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 		
 		if(isTotal) {
 			
-			int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines);
+			int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines, isDirectionsOnSheet);
 						
 			switch (totalType) {
 										
@@ -938,7 +964,9 @@ public class ExcelTemplate {
 				// CREATE ROW
 				utilSheet.createRow(sheet, row, dataEndRow);
 				
-				if(module.equals("sat")) {
+				if(module.equals("sat")) { 
+					
+					if(!isDirectionsOnSheet) {
 				
 				// SENTIDO LABEL
 				utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 2);
@@ -949,6 +977,8 @@ public class ExcelTemplate {
 				utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 1);
 				utilSheet.setCellValue(sheet, row, dataEndRow, columns.size() - 1, tm.direction(p.left));
 				utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, dataEndRow, columns.size() - 1);
+				
+					}
 				
 				}
 				
@@ -1029,14 +1059,43 @@ public class ExcelTemplate {
 						
 				// if(isEquipNameSheet)
 			    // utilSheet.fileBodyMulti(sheet, row, columns, p.right, startCol, endCol, dataStartRow, op, interval);
-					
-				 utilSheet.fileBodySimple(sheet, row, columns, p.right, startCol, endCol, dataStartRow);
 				
-				 utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
+				if(isDirectionsOnSheet) { 
+					
+					int dirCol = endCol + 1;			
+					utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
+					
+					// -----------------------------------------------------
+					
+					String laneValue = "";
+							
+					if(p.left.equals("N"))
+						laneValue = "N";
+					
+					else if(p.left.equals("S"))
+						laneValue = "S";
+						
+					else if(p.left.equals("L"))
+						laneValue = "L";
+						
+					else if(p.left.equals("O"))
+						laneValue = "O";
+					
+					// -----------------------------------------------------
+																
+					utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
+								
+					utilSheet.fileBodySimpleDirection(sheet, row, columns, p.right, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, false);
+						
+					utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
+					
+				} else utilSheet.fileBodySimple(sheet, row, columns, p.right, startCol, endCol, dataStartRow);
+								
+				 	utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 				
 				if(isTotal) {
 					
-					int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines);
+					int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines, isDirectionsOnSheet);
 					
 					switch (totalType) {
 															
@@ -1092,7 +1151,7 @@ public class ExcelTemplate {
 					dates[0] = startDate;
 					dates[1] = endDate;
 					
-					EquipmentsDAO dao = new EquipmentsDAO();
+					//EquipmentsDAO dao = new EquipmentsDAO();
 					
 					sheetNames = dao.equipmentsName(module, equips);				
 					selectOption = equips.size();
@@ -1195,15 +1254,32 @@ public class ExcelTemplate {
 													
 		// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
 		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
-		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
-										 		
-		// utilSheet.fileBodyMulti(sheet, row, columns, lines, startCol, endCol, dataStartRow, op, interval);
-		
-		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
+		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);									 		
+							
+			if(isDirectionsOnSheet) {																
+				
+				lanesLista = dao.listarFaixas();
+				
+				int dirCol = endCol + 1;			
+				utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
+						
+				String laneValue = getLane(lanesLista.get(0).getDirection());
+				
+				utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
+				
+				// -----------------------------------------------------
+										
+				utilSheet.fileBodyMultiDirection(sheet, row, columns, lines, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, true, op, interval);
+												
+				utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
+				
+			} else  utilSheet.fileBodyMulti(sheet, row, columns, lines, startCol, endCol, dataStartRow, op, interval); 
+				
+				utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 		
 		if(isTotal) {
 			
-			int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines);
+			int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines, isDirectionsOnSheet);
 			
             switch (totalType) {
 						
@@ -1227,17 +1303,21 @@ public class ExcelTemplate {
 			utilSheet.createRow(sheet, row, dataEndRow);
 			
 			if(module.equals("sat")) {
+				
+				if(!isDirectionsOnSheet) {
+					
+					// SENTIDO LABEL
+					utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 2);
+					utilSheet.setCellValue(sheet, row, dataEndRow, columns.size() - 2, localeExcel.getStringKey("excel_sheet_header_direction"));
+					utilSheet.setCellStyle(sheet, row, centerBoldStyle, dataEndRow, columns.size() - 2);
+		
+					// SENTIDO
+					utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 1);
+					utilSheet.setCellValue(sheet, row, dataEndRow, columns.size() - 1, tm.direction(p.left));
+					utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, dataEndRow, columns.size() - 1);
 			
-			// SENTIDO LABEL
-			utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 2);
-			utilSheet.setCellValue(sheet, row, dataEndRow, columns.size() - 2, localeExcel.getStringKey("excel_sheet_header_direction"));
-			utilSheet.setCellStyle(sheet, row, centerBoldStyle, dataEndRow, columns.size() - 2);
-
-			// SENTIDO
-			utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 1);
-			utilSheet.setCellValue(sheet, row, dataEndRow, columns.size() - 1, tm.direction(p.left));
-			utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, dataEndRow, columns.size() - 1);
-			
+				}
+				
 			}
 			
 			// TABLE HEADER
@@ -1314,14 +1394,43 @@ public class ExcelTemplate {
 				// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
 				utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 				utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
+				
+				if(isDirectionsOnSheet) { 
+					
+					int dirCol = endCol + 1;			
+					utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
+					
+					// -----------------------------------------------------
+					
+					String laneValue = "";
+							
+					if(p.left.equals("N"))
+						laneValue = "N";
+					
+					else if(p.left.equals("S"))
+						laneValue = "S";
 						
-			    utilSheet.fileBodyMulti(sheet, row, columns, p.right, startCol, endCol, dataStartRow, op, interval);
+					else if(p.left.equals("L"))
+						laneValue = "L";
+						
+					else if(p.left.equals("O"))
+						laneValue = "O";
+					
+					// -----------------------------------------------------
+																
+					utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
+								
+					utilSheet.fileBodyMultiDirection(sheet, row, columns, p.right, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, false, op, interval);
+										
+					utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
+					
+				} else utilSheet.fileBodyMulti(sheet, row, columns, p.right, startCol, endCol, dataStartRow, op, interval);
 				
 				utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 				
 				if(isTotal) {
 					
-					int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines);
+					int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines, isDirectionsOnSheet);
 					
 					switch (totalType) {
 											
@@ -1538,7 +1647,7 @@ public class ExcelTemplate {
 	
 	 // ----------------------------------------------------------------------------------------------------------------
 	
-	public List<SAT> defaultSATInfo(){
+	 public List<SAT> defaultSATInfo(){
 		
 		List<SAT> lista = new ArrayList<SAT>();
 		
@@ -1559,4 +1668,22 @@ public class ExcelTemplate {
 	
 	 // ----------------------------------------------------------------------------------------------------------------
 
+	public String getLane(String direction) {
+		
+		String dir = "";
+					
+			switch(direction) {
+			
+				case "N": dir="N / S"; break;
+				case "S": dir="S / N"; break;
+				case "L": dir="L / O"; break;
+				case "O": dir="O / L"; break;
+			
+			}; 
+							
+		return dir;
+	}
+	
+	// ----------------------------------------------------------------------------------------------------------------
+	
 }

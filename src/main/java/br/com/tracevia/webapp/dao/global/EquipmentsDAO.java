@@ -18,6 +18,7 @@ import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 import br.com.tracevia.webapp.model.meteo.Meteo;
 import br.com.tracevia.webapp.model.sat.SAT;
+import br.com.tracevia.webapp.model.sat.laneFilter;
 import br.com.tracevia.webapp.model.sos.SOS;
 
 public class EquipmentsDAO {
@@ -2508,7 +2509,7 @@ public class EquipmentsDAO {
 	 * @return Equipments - Objeto com informações do tipo Equipments
 	 */
 
-	public String[] numberLanesAndFisrtDirection(String equip_id) {
+	public String[] laneDirection(String equip_id) {
 
 		String sql = "SELECT number_lanes, dir_lane1 FROM sat_equipment WHERE equip_id = ? AND visible = 1";
 
@@ -2548,5 +2549,60 @@ public class EquipmentsDAO {
 	}
 
 	// --------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para obter dados das faixas dos SATs
+	 * 
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0	
+	 * @return lista com objetos do tipo laneFilter
+	 */
 
+	public List<laneFilter> listarFaixas() {
+
+		String sql = "SELECT equip_id, lane, direction FROM filter_directions";
+
+		List<laneFilter> lista = new ArrayList<laneFilter>();
+
+		try {
+			
+			conn.start(1);
+
+			conn.prepare(sql);
+	
+			MapResult result = conn.executeQuery();
+
+			// System.out.println(sql);
+
+			if (result != null) {
+				for (RowResult rs : result) {
+					
+					laneFilter lane = new laneFilter();
+					
+					lane.setEquipId(rs.getInt("equip_id"));
+					lane.setLane(rs.getInt("lane"));
+					lane.setDirection(rs.getString("direction"));
+					
+					lista.add(lane);					
+				}
+			}
+
+		} catch (Exception sqle) {
+
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));
+
+			SystemLog.logErrorSQL(errorFolder.concat("error_sat_dir1"), EquipmentsDAO.class.getCanonicalName(),
+					sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
+
+		} finally {
+			conn.close();
+		}
+
+		return lista;
+	}
+
+	// --------------------------------------------------------------------------------------------------------------
+	
 }

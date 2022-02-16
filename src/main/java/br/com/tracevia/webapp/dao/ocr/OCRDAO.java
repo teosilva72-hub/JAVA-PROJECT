@@ -1,22 +1,17 @@
 package br.com.tracevia.webapp.dao.ocr;
 
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.model.ocr.OCR;
-import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class OCRDAO{
 	
-	private Connection conn;
-	private PreparedStatement ps;
-	private ResultSet rs;
+	SQL_Tracevia conn = new SQL_Tracevia();
 	
 	private String ftpFolder, noImageFolder;
 	
@@ -38,14 +33,14 @@ public class OCRDAO{
 		
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+			conn.start(1);
 			
-			ps = conn.prepareStatement(search);
+			conn.prepare(search);
 			
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {									
+			if (result.hasNext()) {
+				for (RowResult rs : result) {									
 				
 					OCR data = new OCR();
 					
@@ -77,11 +72,11 @@ public class OCRDAO{
 		String query = "SELECT * FROM ocr_data WHERE site_name ='"+cam+"'ORDER BY id_ocr_data desc limit 1";
 			
 		try {
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(query);
-			rs = ps.executeQuery();
-			if(rs != null) {
-				while(rs.next()) {
+			conn.start(1);
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
+			if(result.hasNext()) {
+				for (RowResult rs : result) {
 					
 					search.setId(rs.getString(1));
 					search.setCam(rs.getString(2));
@@ -97,7 +92,7 @@ public class OCRDAO{
 			sqlbuscar.printStackTrace();
 
 		}finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 		
 		//passando os valores dos atributos para a vari�vel occ
@@ -113,12 +108,12 @@ public class OCRDAO{
 				
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(query);
-			rs = ps.executeQuery();
+			conn.start(1);
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
 			
-			if(rs != null) {
-				while(rs.next()) {
+			if(result.hasNext()) {
+				for (RowResult rs : result) {
 					
 					search.setId(rs.getString(1));
 					search.setCam(rs.getString(2));
@@ -136,7 +131,7 @@ public class OCRDAO{
 			sqlbuscar.printStackTrace();
 
 		}finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 		//passando os valores dos atributos para a vari�vel occ
 		return search;
@@ -203,14 +198,14 @@ public class OCRDAO{
 		
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(query);
-			ps.setString(1, cam);
+			conn.start(1);
+			conn.prepare(query);
+			conn.setString(1, cam);
 			
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
-			if(rs != null) {
-				while(rs.next()) {
+			if(result.hasNext()) {
+				for (RowResult rs : result) {
 					
 					ocr.setId(rs.getString(1));
 					ocr.setCam(rs.getString(2));
@@ -226,7 +221,7 @@ public class OCRDAO{
 			sqlbuscar.printStackTrace();
 
 		}finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 		//passando os valores dos atributos para a vari�vel occ
 		return ocr;
@@ -243,14 +238,14 @@ public class OCRDAO{
 									
 	  try {
 			
-		   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		   conn.start(1);
 			
-			ps = conn.prepareStatement(select);			
+			conn.prepare(select);			
 									
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 					
 					OCR ocr = new OCR();
 
@@ -264,7 +259,7 @@ public class OCRDAO{
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {conn.close();}
  				
 		return list;
 		
