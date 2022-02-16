@@ -34,12 +34,12 @@ const coordToPixel = (x, y, deg, name) => {
 	let distance = {
 		longitude: pos.e1 - pos.s1,
 		latitude: pos.e2 - pos.s2,
-		x: d.width(),
+		x: map.width(),
 		y: pos.pe - pos.ps,
 		hypotenuse: () => Math.sqrt(Math.pow(distance.longitude, 2) + Math.pow(distance.latitude, 2)),
 		radius: () => Math.atan(distance.latitude / distance.longitude),
 		radiusOpposite: () => Math.atan(distance.longitude / distance.latitude),
-		pixel: () => Math.sqrt(Math.pow(d.width(), 2) + Math.pow(distance.y, 2)),
+		pixel: () => Math.sqrt(Math.pow(map.width(), 2) + Math.pow(distance.y, 2)),
 		radiusPixel: () => Math.atan(distance.y / distance.x),
 	}
 	let diff = {
