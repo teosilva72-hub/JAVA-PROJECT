@@ -1065,6 +1065,16 @@ public class ReportBean {
 				}
 
 				if (dateReport.after(calendar.getTime()) && fill > 0) {
+					step = calendar.getTime();
+
+					String f = formatter.format(step);
+					if (sep) {
+						String[] split = f.split(" ");
+						model[col[0]] = split[0];
+						model[col[1]] = split[1];
+					} else
+						model[col[0]] = f;
+						
 					for (; fill < amnt; fill++)
 						newList.add(model.clone());
 					calendar.add(interval, Integer.parseInt(period[0]));
