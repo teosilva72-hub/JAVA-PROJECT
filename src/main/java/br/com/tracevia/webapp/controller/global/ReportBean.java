@@ -673,6 +673,7 @@ public class ReportBean {
 		String queryMS = null;
 		
 		List<String> equipIDs = new ArrayList<String>();
+		List<String> directions = new ArrayList<String>();
 		
 		if (!searchParametersMS.isEmpty())
 			queryMS = "SELECT ";
@@ -803,14 +804,12 @@ public class ReportBean {
 					if (filterArray != null) {						
 						for (String f : filterArray) { // HERE
 							
-						//	System.out.println(search.left[0]);
-							
-							if(search.left[0].equals("siteID"))
-								equipFilter = search.left[0];
-							
-							if(search.left[1].equals("Equipamento"))							
-							    equipIDs.add(f);
-														
+							if(search.left[0].equals("q.direction") || search.left[0].equals("direction"))	
+								directions.add(f);
+						
+							if(search.left[0].equals("siteID"))														
+								equipIDs.add(f);
+																												
 							if (f.contains(",")) {
 								String[] splitF = f.split(",");
 
@@ -936,8 +935,9 @@ public class ReportBean {
 			// -------------------------------------------------------------------------------------	
 				      		     						
 			 if(!special)										
-		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, classSubHeader);
-			
+		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, classSubHeader);
+				
+			 
 			 else generateSpecialFile(model, specialName);
 		     
 		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
@@ -1108,16 +1108,17 @@ public class ReportBean {
 					
 				}
 			
-				newList.add(lines);
-				if (dateReport.after(step) || dateReport.equals(step)) {
-					if (fill == 0 || fill == amnt)
-						fill = 1;
-					else
-						for (; fill < amnt; fill++)
-							newList.add(model.clone());
+				fill++;
+				if (fill >= amnt) {
 					calendar.add(interval, Integer.parseInt(period[0]));
-				} else
-					fill++;
+					fill = 0;
+				} else if (!dateReport.equals(step)) {
+					calendar.add(interval, Integer.parseInt(period[0]));
+					for (; fill < amnt; fill++)
+						newList.add(model.clone());
+				}
+
+				newList.add(lines);
 
 				if (temp.indexOf(lines) == temp.size() - 1 && fill != 0 && fill != amnt)
 					for (; fill < amnt; fill++)

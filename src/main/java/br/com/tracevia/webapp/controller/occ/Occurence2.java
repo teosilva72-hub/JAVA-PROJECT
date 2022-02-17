@@ -415,7 +415,7 @@ public void teste() {
 			data = new  OccurenceData2();
 		
 			
-			occurrences = dao.listarOcorrencias();
+			//occurrences = dao.listarOcorrencias();
 	 
 
 			//initialize btns
@@ -483,7 +483,7 @@ public void teste() {
 
 
 			//list occurences
-			occurrences = dao.listarOcorrencias(); // List occurrences    
+			//occurrences = dao.listarOcorrencias(); // List occurrences    
 			sucess = dao.updateFilePath(localPath, occNumber); // Update path on Data Base
 
 		}
@@ -531,7 +531,7 @@ public void teste() {
 
 
 			//listar ocorrencia
-			occurrences = dao.listarOcorrencias();
+			//occurrences = dao.listarOcorrencias();
 
 			//listar arquivos sem direito a modificação
 			//TableFile();
@@ -581,7 +581,7 @@ public void teste() {
 		dao.editTable(updateTable, nameUser, accessLevel, data.getSinistro());
 
 		//atualizar a ocorrencia depois que o metodo for chamado
-		occurrences = dao.listarOcorrencias();
+		//occurrences = dao.listarOcorrencias();
 		//chamando função javascript
 		RequestContext.getCurrentInstance().execute("eventValidator()");
 

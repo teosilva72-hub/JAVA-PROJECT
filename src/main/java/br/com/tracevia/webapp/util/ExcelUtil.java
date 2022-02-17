@@ -2444,7 +2444,7 @@ public class ExcelUtil {
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------
 			
-		public void fileBodySimpleDirection(XSSFSheet sheet, XSSFRow row, List<String> columnName, List<String[]> values, List<String> equips, List<laneFilter> lanes, int startCol, int endCol, int dirCol, int startRow, boolean all) {
+		public void fileBodySimpleDirection(XSSFSheet sheet, XSSFRow row, List<String> columnName, String left, List<String[]> values, String[] directions, List<String> equips, List<laneFilter> lanes, int startCol, int endCol, int dirCol, int startRow, boolean all) {
 
 			int rowLenght = startRow + values.size();
 			
@@ -2465,6 +2465,10 @@ public class ExcelUtil {
 					     	row.getCell(col).setCellValue(Double.parseDouble(values.get(lin)[col]));
 							
 					else row.getCell(col).setCellValue(values.get(lin)[col].toString());	
+					
+					 // -------------------------------------------------------------------------------------------
+					
+					  // COLUMNS DIRECTIONS
 																		
 				      if(col == columnName.size() - 1) {
 				    					    	  
@@ -2474,15 +2478,17 @@ public class ExcelUtil {
 											    
 						if(Integer.parseInt(values.get(lin)[2]) == lanes.get(l).getEquipId()) {
 							
-							 if(lanes.get(l).getLane() == 1)
-							    direction =  getLane(lanes.get(l).getDirection(), lanes.get(l).getLane()) == "" ? " --- " : getLane(lanes.get(l).getDirection(), lanes.get(l).getLane());
-							 
-							    	if(all)
-							    		row.getCell(dirCol).setCellValue(direction);	
+							
+							if(all) {
+								if(lanes.get(l).getLane() == 1)
+									direction =  getLane(lanes.get(l).getDirection(), directions);
+									row.getCell(dirCol).setCellValue(direction);	
+								}						 							    		
+						    
+							 		else row.getCell(dirCol).setCellValue(left);		
 							    
-							    	else row.getCell(dirCol).setCellValue(lanes.get(l).getDirection());	
-						}
-				    }
+						      }
+				        }
 				    
 				    } else {
 				    	
@@ -2490,28 +2496,26 @@ public class ExcelUtil {
 																							    
 								if(Integer.parseInt(equips.get(0)) == lanes.get(l).getEquipId()) {
 									
-									 if(lanes.get(l).getLane() == 1)
-									    direction =  getLane(lanes.get(l).getDirection(), lanes.get(l).getLane()) == "" ? " --- " : getLane(lanes.get(l).getDirection(), lanes.get(l).getLane());
-									 
-								
-									 if(all)
+									if(all) {
+										if(lanes.get(l).getLane() == 1)
+											direction =  getLane(lanes.get(l).getDirection(), directions);
 											row.getCell(dirCol).setCellValue(direction);	
-										    
-										    else row.getCell(dirCol).setCellValue(lanes.get(l).getDirection());																				
-								}			    	
-				    	  	}				    	  
-						}
-				    	  
-				      }
+										}						 							    		
+								    
+									 		else row.getCell(dirCol).setCellValue(left);		
+										    																												
+								    }			    	
+				    	  	     }				    	  
+						     }				    	  
+				         }
 					
 					}catch(NullPointerException ex) {}		
-
 				 }				  
 			  }     	   
 		  }
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------
-		
+			
 		 public void fileBodyMulti(XSSFSheet sheet, XSSFRow row, List<String> columnName, List<String[]> values, int startCol, int endCol, int startRow, int day, int periodRange) {
 
 			int rowLenght = startRow + values.size() ;
@@ -2541,9 +2545,9 @@ public class ExcelUtil {
 			}     	   
 		}
 		
-	// -----------------------------------------------------------------------------------------------------------------------------------------------
+	  // -----------------------------------------------------------------------------------------------------------------------------------------------
 	
-		 public void fileBodyMultiDirection(XSSFSheet sheet, XSSFRow row, List<String> columnName, List<String[]> values, List<String> equips, List<laneFilter> lanes, int startCol, int endCol, int dirCol, int startRow, boolean all, int day, int periodRange) {
+		 public void fileBodyMultiDirection(XSSFSheet sheet, XSSFRow row, List<String> columnName, String left, List<String[]> values, String[] directions, List<String> equips, List<laneFilter> lanes, int startCol, int endCol, int dirCol, int startRow, boolean all, int day, int periodRange) {
 
 				int rowLenght = startRow + values.size() ;
 				int index = 0;
@@ -2566,7 +2570,11 @@ public class ExcelUtil {
 						 else if(values.get(index)[col].matches(DOUBLE_REGEX))
 						    row.getCell(col).setCellValue(Double.parseDouble(values.get(index)[col]));
 								
-						 else row.getCell(col).setCellValue(values.get(index)[col].toString());	
+						 else row.getCell(col).setCellValue(values.get(index)[col].toString());
+						 
+						 // -------------------------------------------------------------------------------------------
+						 
+						// COLUMNS DIRECTIONS
 						 
 					      if(col == columnName.size() - 1) {
 					    	  
@@ -2574,70 +2582,90 @@ public class ExcelUtil {
 						    	  
 						    	  for(int l = 0; l < lanes.size(); l++) {
 													    
-								if(Integer.parseInt(values.get(lin)[2]) == lanes.get(l).getEquipId()) {
-									
-									 if(lanes.get(l).getLane() == 1)
-									    direction =  getLane(lanes.get(l).getDirection(), lanes.get(l).getLane()) == "" ? " --- " : getLane(lanes.get(l).getDirection(), lanes.get(l).getLane());
-									 
-									    	if(all)
-									    		row.getCell(dirCol).setCellValue(direction);	
+										if(Integer.parseInt(values.get(lin)[2]) == lanes.get(l).getEquipId()) {
+											
+											if(all) {
+												if(lanes.get(l).getLane() == 1)
+													direction =  getLane(lanes.get(l).getDirection(), directions);
+													row.getCell(dirCol).setCellValue(direction);	
+												}						 							    		
+										    
+											 		else row.getCell(dirCol).setCellValue(left);	
 									    
-									    	else row.getCell(dirCol).setCellValue(lanes.get(l).getDirection());	
-								}
-						    }
+										}
+						    	  }
 						    
 						    } else {
 						    	
-						    	  for(int l = 0; l < lanes.size(); l++) {
-																									    
-										if(Integer.parseInt(equips.get(0)) == lanes.get(l).getEquipId()) {
-											
-											 if(lanes.get(l).getLane() == 1)
-											    direction =  getLane(lanes.get(l).getDirection(), lanes.get(l).getLane()) == "" ? " --- " : getLane(lanes.get(l).getDirection(), lanes.get(l).getLane());
-											 
+							    	  for(int l = 0; l < lanes.size(); l++) {
+																										    
+											if(Integer.parseInt(equips.get(0)) == lanes.get(l).getEquipId()) {
+												
+												if(all) {
+													if(lanes.get(l).getLane() == 1)
+														 direction =  getLane(lanes.get(l).getDirection(), directions);
+														 row.getCell(dirCol).setCellValue(direction);	
+													}						 							    		
+											    
+												 		else row.getCell(dirCol).setCellValue(left);	
+													    												 																			
+										   }			    	
+						    	  	   }				    	  
+								   }						    	  
+						       }
+					      
+					      // -------------------------------------------------------------------------------------------
 										
-											 if(all)
-													row.getCell(dirCol).setCellValue(direction);	
-												    
-												    else row.getCell(dirCol).setCellValue(lanes.get(l).getDirection());																				
-										}			    	
-						    	  	}				    	  
-								}
-						    	  
-						      }
-										
-						}catch(NullPointerException ex) {}		
-
+						} catch(NullPointerException ex) {}
 					}		       
 				}     	   
 			}
 			
 		// -----------------------------------------------------------------------------------------------------------------------------------------------
-		
-			public String getLane(String direction, int lane) {
+		 					
+			public String getLane(String direction, String[] dirs) {
+														
+				for(int i = 0; i < dirs.length; i++) {
+															
+					   if(dirs[i] != null) {						 
+							
+							if(direction.equals("N")) {
+								 
+								  if(dirs[i].equals("S"))									
+									  direction += " / S";											
+									
+								}
+							
+							if(direction.equals("S")) {
+								 
+								  if(dirs[i].equals("N"))									
+									  direction += " / N";											
+									
+								}	
+							
+							if(direction.equals("L")) {
+								 
+								  if(dirs[i].equals("O"))									
+									  direction += " / O";											
+									
+								}	
+							
+							if(direction.equals("O")) {
+								 
+								  if(dirs[i].equals("L"))									
+									  direction += " / L";											
+									
+								}		
+							}
+						}
 				
-				String dir = "";
+			
+					// ---------------------																																	
 				
-				switch(lane) {
-				
-				case 1:
-					
-					switch(direction) {
-					
-						case "N": dir="N / S"; break;
-						case "S": dir="S / N"; break;
-						case "L": dir="L / O"; break;
-						case "O": dir="O / L"; break;
-					
-					}; break;
-					
+											
+						return direction;
 				}
-				
-				return dir;
-			}
 			
-	// ----------------------------------------------------------------------------------------------------------------
-			
-		 
-		 
+		// ----------------------------------------------------------------------------------------------------------------			
+		
 	}

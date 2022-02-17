@@ -231,7 +231,7 @@ public class ExcelTemplate {
 		utilSheet.createImage(workbook, sheet, pathLogo, 0, 2, 0, 4, 1, 1, 1, 1, 1); // CRIAR IMAGEM
 		utilSheet.setCellsStyle(sheet, row, standardStyle, 0, 1, 0, 3); // ESTILO CAMPOS IMAGEM
 		
-		// DEFINIR O TÃ�TULO	DO HEADER					
+		// DEFINIR O TÍTULO	DO HEADER					
 		utilSheet.setCellValue(sheet, row, 0, 2, fileTitle);
 		utilSheet. setCellsStyle(sheet, row, titleStyle, 2, columnsIndex, 0, 3); // ESTILO TITULO
 		
@@ -250,6 +250,7 @@ public class ExcelTemplate {
 		utilSheet.mergeBetweenColumns(sheet, 0, 1, 1, 4); // IMAGE
 		utilSheet.mergeBetweenColumns(sheet, 2, columnsIndex, 1, 4); // TITLE
 		utilSheet.mergeBetweenColumns(sheet, columnStartDate, columnEndDate, 1, 4); // DATE AND TIME
+		
 		//
 		// ----------------------------------------------------------------------------------------------------------------	    
 		// SUBHEADER 
@@ -351,8 +352,8 @@ public class ExcelTemplate {
 
 		// ----------------------------------------------------------------------------------------------------------------
 
-		// CASO O NÃšMERO DE LINHAS FOR MAIOR QUE 1 
-		// ENTRA NESSA CONDIÃ‡ÃƒO
+		// CASO O NÚMERO DE LINHAS FOR MAIOR QUE 1 
+		// ENTRA NESSA CONDIÇÃO
 		// UTILIZADA ESPECIFICAMENTE PARA O SAT
 		if(module.equals("sat")) {
 
@@ -765,7 +766,7 @@ public class ExcelTemplate {
 	// TEMPLATE MODEL
 	// ----------------------------------------------------------------------------------------------------------------
 	
-	public void generateExcelFile(List<String> columns, List<String[]> lines, List<Pair<String, List<String[]>>> secondRows, String module, List<String> equips, 
+	public void generateExcelFile(List<String> columns, List<String[]> lines, List<Pair<String, List<String[]>>> secondRows, String module, List<String> directions, List<String> equips, 
 			String startDate, String endDate, String[] period, String sheetName, String fileTitle, String totalType, boolean isSat, boolean isTotal, boolean isMultiSheet, boolean isEquipNameSheet, boolean isDirectionsOnSheet, String classSubHeader) {
 		
 		sheet = null;	
@@ -877,7 +878,7 @@ public class ExcelTemplate {
 				utilSheet.setCellValue(sheet, row, subHeaderRow, 6, localeExcel.getStringKey("excel_sheet_heavy_vehicles_column"));
 				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 6, endCol-1, subHeaderRow, subHeaderRow);
 				
-				utilSheet.mergeCells(sheet, "C13:F13");	
+				utilSheet.mergeCells(sheet, "C13:F13");
 				utilSheet.mergeCells(sheet, "G13:O13");
 				
 		  }
@@ -901,36 +902,38 @@ public class ExcelTemplate {
 				utilSheet.setCellValue(sheet, row, subHeaderRow, 15, localeExcel.getStringKey("excel_sheet_bus_column"));
 				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 15, endCol-1, subHeaderRow, subHeaderRow);
 								
-				utilSheet.mergeCells(sheet, "C13:F13");	
-				utilSheet.mergeCells(sheet, "G13:O13");	
-				utilSheet.mergeCells(sheet, "P13:T13");	
+				utilSheet.mergeCells(sheet, "C13:F13");
+				utilSheet.mergeCells(sheet, "G13:O13");
+				utilSheet.mergeCells(sheet, "P13:T13");
 				
 			}
 		
 	      	// -----------------------------------------------------
-     	}
-										
-		utilSheet.createRow(sheet, row, tableStartRow);						
+     	}			
+					
+		utilSheet.createRow(sheet, row, tableStartRow);			
 		utilSheet.createCells(sheet, row, startCol, endCol, tableStartRow, tableStartRow);
 		utilSheet.setHeaderCellsValue(sheet, row, tableStartRow, columns);
 		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startCol, endCol, tableStartRow, tableStartRow);									
-				
-		// CRIAR LINHAS PARA APRESENTADO DOS DADOS
+		
+		// CRIAR LINHAS PARA APRESENTACAO DOS DADOS
 		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
-		
-		if(isDirectionsOnSheet) { 
+						
+		if(isDirectionsOnSheet) {
 			
 			lanesLista = dao.listarFaixas();
 			
-			int dirCol = endCol + 1;			
+			int dirCol = endCol + 1;
 			utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
-					
-			String laneValue = getLane(lanesLista.get(0).getDirection());
+			
+			String[] dirs = getFiltersDirection(directions);
+			
+			String laneValue = getLane(lanesLista.get(0).getDirection(), dirs);
 			
 			utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
-												
-			utilSheet.fileBodySimpleDirection(sheet, row, columns, lines, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, true);
+									
+			//utilSheet.fileBodySimpleDirection(sheet, row, columns, null, lines, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, true);
 									
 			utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
 			
@@ -1084,8 +1087,10 @@ public class ExcelTemplate {
 					// -----------------------------------------------------
 																
 					utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
+					
+					String[] dirs = null;
 								
-					utilSheet.fileBodySimpleDirection(sheet, row, columns, p.right, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, false);
+					utilSheet.fileBodySimpleDirection(sheet, row, columns, p.left,  p.right, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, false);
 						
 					utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
 					
@@ -1263,13 +1268,16 @@ public class ExcelTemplate {
 				int dirCol = endCol + 1;			
 				utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
 						
-				String laneValue = getLane(lanesLista.get(0).getDirection());
+				String[] dirs = getFiltersDirection(directions);
+				
+				String laneValue = getLane(lanesLista.get(0).getDirection(), dirs);
 				
 				utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
 				
 				// -----------------------------------------------------
+				
 										
-				utilSheet.fileBodyMultiDirection(sheet, row, columns, lines, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, true, op, interval);
+				utilSheet.fileBodyMultiDirection(sheet, row, columns, null, lines, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, true, op, interval);
 												
 				utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
 				
@@ -1291,8 +1299,7 @@ public class ExcelTemplate {
 		}		   		
 		
 		// ---------------------------------------------------------------------------------------------------
-				
-		
+						
 	if(secondRows != null) {
 		
 		for(Pair<String, List<String[]>> p : secondRows) {
@@ -1419,8 +1426,10 @@ public class ExcelTemplate {
 					// -----------------------------------------------------
 																
 					utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
+					
+					String[] dirs = null;
 								
-					utilSheet.fileBodyMultiDirection(sheet, row, columns, p.right, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, false, op, interval);
+					utilSheet.fileBodyMultiDirection(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, false, op, interval);
 										
 					utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
 					
@@ -1667,23 +1676,78 @@ public class ExcelTemplate {
 	}
 	
 	 // ----------------------------------------------------------------------------------------------------------------
-
-	public String getLane(String direction) {
 		
-		String dir = "";
-					
-			switch(direction) {
+		
+		public String getLane(String direction, String[] dirs) {
+													
+			for(int i = 0; i < dirs.length; i++) {
+														
+				   if(dirs[i] != null) {						 
+						
+						if(direction.equals("N")) {
+							 
+							  if(dirs[i].equals("S"))									
+								  direction += " / S";											
+								
+							}
+						
+						if(direction.equals("S")) {
+							 
+							  if(dirs[i].equals("N"))									
+								  direction += " / N";											
+								
+							}	
+						
+						if(direction.equals("L")) {
+							 
+							  if(dirs[i].equals("O"))									
+								  direction += " / O";											
+								
+							}	
+						
+						if(direction.equals("O")) {
+							 
+							  if(dirs[i].equals("L"))									
+								  direction += " / L";											
+								
+							}		
+						}
+					}
 			
-				case "N": dir="N / S"; break;
-				case "S": dir="S / N"; break;
-				case "L": dir="L / O"; break;
-				case "O": dir="O / L"; break;
+		
+				// ---------------------																																	
 			
-			}; 
-							
+										
+					return direction;
+			}
+				
+	// ----------------------------------------------------------------------------------------------------------------	
+	
+	public String[] getFiltersDirection(List<String> dirs) {
+		
+		String[] dir = new String[4];
+	
+		for(int i = 0; i < dirs.size(); i++) {
+			  
+			  if(dirs.get(i).equals("N"))
+				  dir[i] = "N";
+		
+			  else if(dirs.get(i).equals("S"))
+				  dir[i] = "S";
+			  
+			  else if(dirs.get(i).equals("L"))
+				  dir[i] = "L";
+				  
+			  else if(dirs.get(i).equals("O"))
+				  dir[i] = "O";
+		
+	    	}
+				
 		return dir;
+		
 	}
 	
 	// ----------------------------------------------------------------------------------------------------------------
+	
 	
 }

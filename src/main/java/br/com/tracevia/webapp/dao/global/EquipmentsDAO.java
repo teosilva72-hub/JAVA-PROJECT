@@ -2593,7 +2593,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 
-			SystemLog.logErrorSQL(errorFolder.concat("error_sat_dir1"), EquipmentsDAO.class.getCanonicalName(),
+			SystemLog.logErrorSQL(errorFolder.concat("error_filter_dir"), EquipmentsDAO.class.getCanonicalName(),
 					sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 
 		} finally {
