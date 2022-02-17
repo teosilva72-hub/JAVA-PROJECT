@@ -931,13 +931,13 @@ public class ReportBean {
 			
 			// -------------------------------------------------------------------------------------	
 				      		     						
-			 if(!special)										
+			/* if(!special)										
 		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, classSubHeader);
 				
 			 
 			 else generateSpecialFile(model, specialName);
 		     
-		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
+		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 	*/	        
 		    
 		    // ------------------------------------------------------------
 		    			
@@ -1044,6 +1044,7 @@ public class ReportBean {
 				} else
 					break;
 
+			List<String> tempEquips = new ArrayList<>(equips);
 			for (String[] lines : temp) { // HERE
 				String d;
 	
@@ -1062,7 +1063,6 @@ public class ReportBean {
 				}
 
 				if (dateReport.after(calendar.getTime()) && fill > 0) {
-					calendar.add(interval, Integer.parseInt(period[0]));
 					step = calendar.getTime();
 
 					String f = formatter.format(step);
@@ -1073,8 +1073,14 @@ public class ReportBean {
 					} else
 						model[col[0]] = f;
 
-					for (; fill < amnt; fill++)
+					for (; fill < amnt; fill++) {
+						model[sep ? 2 : 1] = tempEquips.remove(0);
 						newList.add(model.clone());
+					}
+
+					calendar.add(interval, Integer.parseInt(period[0]));
+					tempEquips = new ArrayList<>(equips);
+					fill = 0;
 				}
 				
 				step = calendar.getTime();
@@ -1086,14 +1092,14 @@ public class ReportBean {
 					model[col[1]] = split[1];
 				} else
 					model[col[0]] = f;
-											
+
 				while (step.before(dateReport) && step.before(date[1])) {
 					f = formatter.format(step);
 					if (sep) {
 						String[] split = f.split(" ");	
 						
 						model[col[0]] = split[0];
-						model[col[1]] = split[1];	
+						model[col[1]] = split[1];
 						
 						//if(!lastdate.equals(model[col[0]]))
 						//	idx++;
@@ -1101,34 +1107,40 @@ public class ReportBean {
 						//if(isEquipSheeName)
 							//model[2] = eqp[idx];
 						
-					} else
-						
-					//	if(!lastdate.equals(model[col[0]]))
-					//		idx++;
+					} else						
+						//	if(!lastdate.equals(model[col[0]]))
+						//		idx++;
 						
 						model[col[0]] = f;
 		
 					for (int i = 0; i < amnt; i++) {
+						model[sep ? 2 : 1] = tempEquips.get(i);
 						newList.add(model.clone());
 					}
 
 					calendar.add(interval, Integer.parseInt(period[0]));
 					step = calendar.getTime();
 					
-					lastdate = model[col[0]];
+					//lastdate = model[col[0]];
 				}
 
 				newList.add(lines);
+				tempEquips.remove(lines[sep ? 2 : 1]);
 				fill++;
 
 				if (fill >= amnt) {
 					calendar.add(interval, Integer.parseInt(period[0]));
+					tempEquips = new ArrayList<>(equips);
 					fill = 0;
 				}
 
-				if (temp.indexOf(lines) == temp.size() - 1 && fill != 0 && fill != amnt)
-					for (; fill < amnt; fill++)
-							newList.add(model.clone());
+				if (temp.indexOf(lines) == temp.size() - 1 && fill != 0 && fill != amnt) {
+					for (; fill < amnt; fill++) {
+						model[sep ? 2 : 1] = tempEquips.remove(0);						
+						newList.add(model.clone());
+					}
+					calendar.add(interval, Integer.parseInt(period[0]));					
+				}
 			}
 						 	
 			step = calendar.getTime();
@@ -1151,6 +1163,7 @@ public class ReportBean {
 					model[col[0]] = f;
 					
 				for (int i = 0; i < amnt; i++) {
+					model[sep ? 2 : 1] = equips.get(i);
 					newList.add(model.clone());
 				}
 	
