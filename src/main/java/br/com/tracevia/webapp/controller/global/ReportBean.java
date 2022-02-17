@@ -1073,8 +1073,12 @@ public class ReportBean {
 					model[col[1]] = split[1];
 				} else
 					model[col[0]] = f;
-				
-				int idx = 0;
+
+					
+				if (dateReport.after(step) && fill > 0) {
+					for (; fill < amnt; fill++)
+						newList.add(model.clone());
+				}
 											
 				while (step.before(dateReport) && step.before(date[1])) {
 					f = formatter.format(step);
@@ -1105,20 +1109,15 @@ public class ReportBean {
 					step = calendar.getTime();
 					
 					lastdate = model[col[0]];
-					
-				}
-			
-				fill++;
-				if (fill >= amnt) {
-					calendar.add(interval, Integer.parseInt(period[0]));
-					fill = 0;
-				} else if (!dateReport.equals(step)) {
-					calendar.add(interval, Integer.parseInt(period[0]));
-					for (; fill < amnt; fill++)
-						newList.add(model.clone());
 				}
 
 				newList.add(lines);
+				fill++;
+
+				if (fill >= amnt) {
+					calendar.add(interval, Integer.parseInt(period[0]));
+					fill = 0;
+				}
 
 				if (temp.indexOf(lines) == temp.size() - 1 && fill != 0 && fill != amnt)
 					for (; fill < amnt; fill++)
@@ -1126,8 +1125,6 @@ public class ReportBean {
 			}
 						 	
 			step = calendar.getTime();
-			
-			int idx = 0;
 	
 			while (step.before(date[1])) {
 				String f = formatter.format(step);				
