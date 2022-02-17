@@ -1178,6 +1178,8 @@ public class ReportBean {
 			} else {
 				if (!moreInterval.isEmpty()) {
 					HashMap<String, List<String[]>> map = new HashMap<>();
+					for (String e : equips)
+						map.put(e, new ArrayList<>());
 
 					for (String[] n : newList)
 						map.get(n[sep ? 2 : 1]).add(n);
