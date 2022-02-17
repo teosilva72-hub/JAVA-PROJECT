@@ -865,10 +865,7 @@ public class ReportBean {
 			}
 
 			if (setPeriod && hasPeriod()) {
-								
-				if(equipSheetName)
-					group +=", "+equipFilter;
-					
+						
 				//System.out.println(group);
 				
 				query += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", group, extraGroup, orderDate != null ? orderDate + ", " : "", order);
