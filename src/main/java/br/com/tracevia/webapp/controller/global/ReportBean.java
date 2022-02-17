@@ -1175,8 +1175,21 @@ public class ReportBean {
 	
 			if (count > 0) {
 				secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
-			} else
-				report.lines = newList;
+			} else {
+				if (!moreInterval.isEmpty()) {
+					HashMap<String, List<String[]>> map = new HashMap<>();
+
+					for (String[] n : newList)
+						map.get(n[sep ? 2 : 1]).add(n);
+
+					List<String[]> list = new ArrayList<>();
+					for (int i = 0; i < map.size(); i++)
+						list.addAll(map.get(equips.get(i)));
+					
+					report.lines = list;
+				} else
+					report.lines = newList;
+			}
 
 			count++;
 		} while (report.secondaryLines != null);
@@ -1184,7 +1197,7 @@ public class ReportBean {
 		if (count > 0)
 			report.secondaryLines = secondaryLines;
 								
-	   //   dta.fillEquipName(listEquips, model, equips, 2, temp.size(), Integer.parseInt(period[0]));
+	   // dta.fillEquipName(listEquips, model, equips, 2, temp.size(), Integer.parseInt(period[0]));
 		
 		return hasLine;
 		
