@@ -573,7 +573,7 @@
 			<ui:fragment rendered="#{loginAccount.load.en_dai}">
 				<!-- Notification DAI -->
 				<h:form prependId="false" id="sendDate">
-					<h:inputHidden name="filterDate" id="filterDate" />
+					<h:inputHidden name="filterDate" id="filterDate" value="#{''.format('%s %s', daiBean.traffic.date, daiBean.traffic.hour)}" />
 					<h:commandButton style="display: none;" id="filterDateButton">
 						<f:ajax execute="@this" render=":modalPopUp"
 							listener="#{daiBean.getSpecificFile()}" />
@@ -582,7 +582,7 @@
 				<div class="modal fade" id="DAIpopup" data-keyboard="false"
 					tabindex="-1" aria-hidden="true">
 					<h:form prependId="false" id="modalPopUp">
-            <h:inputHidden name="EquipIdDai" id="EquipIdDai" value="#{daiBean.traffic.equipId}" />
+            		<h:inputHidden name="EquipIdDai" id="EquipIdDai" value="#{daiBean.traffic.equipId}" />
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">

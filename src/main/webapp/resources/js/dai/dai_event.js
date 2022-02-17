@@ -119,7 +119,10 @@ const initDAI = async debug => {
 		consumeDAI(debug);
 		
 		DAIpopup.delegate('#daiToReport', 'click', () => {
-			location.href = location.origin + `/occurrence/occurrences.xhtml?from=dai&id=${DAIpopup.find('#EquipIdDai').val()}`;
+			let date = send_date.find("#filterDate").val().replaceAll(/[\/\.\s]/g, '');
+			let id = DAIpopup.find('#EquipIdDai').val();
+			
+			location.href = location.origin + `/occurrence/occurrences.xhtml?from=dai&id=${id}&date=${date}`;
 		})
 		
 	});

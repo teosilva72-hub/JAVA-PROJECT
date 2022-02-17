@@ -1108,16 +1108,17 @@ public class ReportBean {
 					
 				}
 			
-				newList.add(lines);
-				if (dateReport.after(step) || dateReport.equals(step)) {
-					if (fill == 0 || fill == amnt)
-						fill = 1;
-					else
-						for (; fill < amnt; fill++)
-							newList.add(model.clone());
+				fill++;
+				if (fill >= amnt) {
 					calendar.add(interval, Integer.parseInt(period[0]));
-				} else
-					fill++;
+					fill = 0;
+				} else if (!dateReport.equals(step)) {
+					calendar.add(interval, Integer.parseInt(period[0]));
+					for (; fill < amnt; fill++)
+						newList.add(model.clone());
+				}
+
+				newList.add(lines);
 
 				if (temp.indexOf(lines) == temp.size() - 1 && fill != 0 && fill != amnt)
 					for (; fill < amnt; fill++)
