@@ -985,9 +985,7 @@ public class ReportBean {
 		boolean sep = column.contains("@");
 		boolean hasLine = !report.lines.isEmpty();
 		int[] col = new int[2];
-		
-		String lastdate = "";
-							
+									
 		Arrays.fill(model, "0"); // HERE
 									
 		Arrays.fill(model, "0");
@@ -1100,17 +1098,9 @@ public class ReportBean {
 						
 						model[col[0]] = split[0];
 						model[col[1]] = split[1];
-						
-						//if(!lastdate.equals(model[col[0]]))
-						//	idx++;
-						
-						//if(isEquipSheeName)
-							//model[2] = eqp[idx];
-						
+											
 					} else						
-						//	if(!lastdate.equals(model[col[0]]))
-						//		idx++;
-						
+											
 						model[col[0]] = f;
 		
 					for (int i = 0; i < amnt; i++) {
@@ -1120,8 +1110,7 @@ public class ReportBean {
 
 					calendar.add(interval, Integer.parseInt(period[0]));
 					step = calendar.getTime();
-					
-					//lastdate = model[col[0]];
+										
 				}
 
 				newList.add(lines);
@@ -1150,13 +1139,7 @@ public class ReportBean {
 				if (sep) {
 					String[] split = f.split(" ");
 					model[col[0]] = split[0];
-					model[col[1]] = split[1];
-					
-					//if(!lastdate.equals(model[col[0]]))
-					//	idx++;
-					
-				//	if(isEquipSheeName)
-					//	model[2] = eqp[idx];
+					model[col[1]] = split[1];				
 					
 				} else
 									
@@ -1170,7 +1153,6 @@ public class ReportBean {
 				calendar.add(interval, Integer.parseInt(period[0]));
 				step = calendar.getTime();
 				
-				lastdate = model[col[0]];
 			}
 	
 			if (count > 0) {
@@ -1198,8 +1180,6 @@ public class ReportBean {
 
 		if (count > 0)
 			report.secondaryLines = secondaryLines;
-								
-	   // dta.fillEquipName(listEquips, model, equips, 2, temp.size(), Integer.parseInt(period[0]));
 		
 		return hasLine;
 		
