@@ -1063,6 +1063,12 @@ public class ReportBean {
 				} catch (ParseException e ) {
 					continue;
 				}
+
+				if (dateReport.after(calendar.getTime()) && fill > 0) {
+					for (; fill < amnt; fill++)
+						newList.add(model.clone());
+					calendar.add(interval, Integer.parseInt(period[0]));
+				}
 				
 				step = calendar.getTime();
 
@@ -1073,12 +1079,6 @@ public class ReportBean {
 					model[col[1]] = split[1];
 				} else
 					model[col[0]] = f;
-
-					
-				if (dateReport.after(step) && fill > 0) {
-					for (; fill < amnt; fill++)
-						newList.add(model.clone());
-				}
 											
 				while (step.before(dateReport) && step.before(date[1])) {
 					f = formatter.format(step);
