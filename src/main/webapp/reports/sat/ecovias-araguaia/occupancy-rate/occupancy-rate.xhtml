@@ -17,29 +17,34 @@
 		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.ecovias_araguaia_occupancy_rate_file_name)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.ecovias_araguaia_occupancy_rate_title)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECOVIAS ARAGUAIA')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.defineDirectionsOnSheet(true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiEquipTab(true)}" />	
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
-	
+	    <f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('siteID')}" />
+	   	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.traffic_density))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.global_equipment_id_column, satLabels.occupancy_lane ,satLabels.occupancy_rate))}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; ROUND(20 * ((4 * 80) / 60) / 1000, 2)')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(data, `dd/MM/yyyy`); CAST($period as TIME); ROUND(20 * ((4 * 80) / 60) / 1000, 2)')}" />
+		<!-- <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; ROUND(20 * ((4 * 80) / 60) / 1000, 2)')}" /> -->
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; siteID; TIME($period)@sd; ROUND(20 * ((4 * 80) / 60) / 1000, 2)')}" />
+		
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON q.equip_id = tb_vbv.siteID AND q.lane = tb_vbv.lane')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('DateTime')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_1_day)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 				
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('DateTime', reportsLabels.reports_select_date, true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('EquipmentID', reportsLabels.reports_select_equipments, 'tblEquipment.EquipmentID|EquipmentName', false, true)}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('lane', reportsLabels.reports_select_lanes, 'filter_lane.id_lane|name', false, true)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('q.direction', reportsLabels.reports_select_directions, 'filter_directions.direction', true, true)}" />
+	   	<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', true, true, true)}" />
 		
     </f:metadata>
 	
@@ -99,7 +104,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="#{satLabels.eco101_traffic_density_title}" /> <!-- NAME LABEL -->
+	       <h:outputText value="#{satLabels.ecovias_araguaia_occupancy_rate_title}" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 

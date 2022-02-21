@@ -61,10 +61,10 @@ public class ReportBean {
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
 	public boolean 	isSat = false, haveTotal, multiSheet = true, equipSheetName = false, directionsOnSheet = false, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false,
-			groupId = false,  limitColumn = false;
+			groupId = false,  limitColumn = false, hasDivision = false;
 	
 	public String totalType = "standard";
-	public String 	module = "default";
+	public String module = "default";
 	
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -666,9 +666,8 @@ public class ReportBean {
 								
 		model = new ExcelTemplate(); // HERE
 		
-		String dateStart = "", dateEnd = "", equipFilter = "";
-		
-				
+		String dateStart = "", dateEnd = "";
+						
 		String query = "SELECT ";
 		String queryMS = null;
 		
@@ -798,15 +797,15 @@ public class ReportBean {
 					String[] filterArray = mapArray.get(String.format("%s-filter", search.left[1]).replaceAll(" ", ""));
 					String newFilter = "";
 
-					if (moreInterval.containsKey(search.left[1]))
-						moreInterval.put(search.left[1], filterArray.length);
+					if (equipSheetName && moreInterval.containsKey(search.left[1]))
+							moreInterval.put(search.left[1], filterArray.length);
 					
 					if (filterArray != null) {						
 						for (String f : filterArray) { // HERE
 							
 							if(search.left[0].equals("q.direction") || search.left[0].equals("direction"))	
 								directions.add(f);
-						
+																			
 							if(search.left[0].equals("siteID"))														
 								equipIDs.add(f);
 																												
@@ -834,6 +833,9 @@ public class ReportBean {
 						filter = String.format("%s'%s'", caseSensitive ? "BINARY " : "", f);
 					if (search.left[0].equals(idTable))
 						idSearch.add(f);
+					
+					if(search.left[0].equals("siteID"))														
+						equipIDs.add(f);
 				}
 
 				if (count == 0 && !filter.isEmpty()) {
@@ -891,9 +893,9 @@ public class ReportBean {
 		    // Table Fields
 			report.getReport(query, queryMS, idTable, isDivision() ? division : null);
 		    boolean hasValue = true;
-
+		  		   
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
-				hasValue = this.setIntervalDate(dateProcess, columnDate, period, "sat", equipSheetName, equipIDs);
+				hasValue = this.setIntervalDate(dateProcess, columnDate, period, module, equipSheetName, equipIDs);
 		          										
 			// -------------------------------------------------------------------------------------
 					
@@ -908,9 +910,9 @@ public class ReportBean {
 					 return;
 				}				
 			}
-					
-		     	if (report.IDs.isEmpty())
-		     		report.IDs.addAll(idSearch);
+								
+		     	//if (report.IDs.isEmpty())
+		     	//	report.IDs.addAll(idSearch);
 		
 			// -------------------------------------------------------------------------------------
 		
@@ -930,14 +932,16 @@ public class ReportBean {
 			SessionUtil.executeScript("drawTable()");
 			
 			// -------------------------------------------------------------------------------------	
+			
+			if(division != null)
+				hasDivision = true;
 				      		     						
-			/* if(!special)										
-		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, classSubHeader);
-				
-			 
+			 if(!special)										
+		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
+							 
 			 else generateSpecialFile(model, specialName);
 		     
-		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 	*/	        
+		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model);  
 		    
 		    // ------------------------------------------------------------
 		    			
@@ -1022,16 +1026,7 @@ public class ReportBean {
 		}
 
 		temp = report.lines;
-		
-		String[] eqp = null;
-		
-		if(isEquipSheeName) {
-		
-			EquipmentsDAO dao = new EquipmentsDAO();
-			eqp = dao.equipmentsName(modulo, equips);
-		
-		}
-				
+					
 		do {
 			if (count > 0)
 				if (report.secondaryLines.size() >= count) {
@@ -1071,9 +1066,12 @@ public class ReportBean {
 					} else
 						model[col[0]] = f;
 
+					if(isEquipSheeName) {
 					for (; fill < amnt; fill++) {
 						model[sep ? 2 : 1] = tempEquips.remove(0);
 						newList.add(model.clone());
+					}
+					
 					}
 
 					calendar.add(interval, Integer.parseInt(period[0]));
@@ -1144,10 +1142,13 @@ public class ReportBean {
 				} else
 									
 					model[col[0]] = f;
-					
-				for (int i = 0; i < amnt; i++) {
-					model[sep ? 2 : 1] = equips.get(i);
-					newList.add(model.clone());
+				
+				
+				if(isEquipSheeName)	{
+					for (int i = 0; i < amnt; i++) {
+						model[sep ? 2 : 1] = equips.get(i);
+						newList.add(model.clone());
+					}
 				}
 	
 				calendar.add(interval, Integer.parseInt(period[0]));
@@ -1158,7 +1159,8 @@ public class ReportBean {
 			if (count > 0) {
 				secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
 			} else {
-				if (!moreInterval.isEmpty()) {
+				
+				if (isEquipSheeName && !moreInterval.isEmpty()) {
 					HashMap<String, List<String[]>> map = new HashMap<>();
 					for (String e : equips)
 						map.put(e, new ArrayList<>());

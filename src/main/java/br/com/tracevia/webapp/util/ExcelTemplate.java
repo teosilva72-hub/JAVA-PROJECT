@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.util;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -626,7 +627,7 @@ public class ExcelTemplate {
 		// ----------------------------------------------------------------------------------------------------------------
 		// ----------------------------------------------------------------------------------------------------------------
 				
-		public Integer createTotalRow(XSSFSheet sheet, XSSFRow row, CellStyle tableHeader, int rowTotal, int columnsLength, List<String[]> lines, boolean isDirectionsOnSheet) {
+		public Integer createTotalRow(XSSFSheet sheet, XSSFRow row, CellStyle tableHeader, int rowTotal, int columnsLength, List<String[]> lines, boolean isEquipNameSheet) {
 					       		
 			        // CREATE ROW TOTAL
 					utilSheet.createRow(sheet, row, rowTotal);		 
@@ -652,7 +653,7 @@ public class ExcelTemplate {
 							}							
 						}
 						
-						if(isDirectionsOnSheet) { // CASO ENTRE NESSA CONDICAO
+						if(isEquipNameSheet) { // CASO ENTRE NESSA CONDICAO
 							startColumn++;
 						 	endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER			 	    	
 						}
@@ -733,7 +734,7 @@ public class ExcelTemplate {
 	 * @param row - objeto de representaÃ§Ã£o de alto nÃ­vel de uma linha de uma planilha
 	 * @param standard - estilo padrÃ£o para colunas atribuidas a fÃ³rmula
 	 * @param tableHeader - estilo apenas para a string "TOTAL"
-	 * @param rowTotal - Ãºltima linha a ser apresentado o total	
+	 * @param rowTotal - Última linha a ser apresentado o total	
 	 * @param multi - define se o template do total Ã© de mÃºltiplos equipamentos ou nÃ£o
 	 * @param columnsLength - nÃºmero de colunas  
 	 * @param rowIni - linha inicial		
@@ -767,7 +768,7 @@ public class ExcelTemplate {
 	// ----------------------------------------------------------------------------------------------------------------
 	
 	public void generateExcelFile(List<String> columns, List<String[]> lines, List<Pair<String, List<String[]>>> secondRows, String module, List<String> directions, List<String> equips, 
-			String startDate, String endDate, String[] period, String sheetName, String fileTitle, String totalType, boolean isSat, boolean isTotal, boolean isMultiSheet, boolean isEquipNameSheet, boolean isDirectionsOnSheet, String classSubHeader) {
+			String startDate, String endDate, String[] period, String sheetName, String fileTitle, String totalType, boolean isSat, boolean isTotal, boolean isMultiSheet, boolean isEquipNameSheet, boolean isDirectionsOnSheet, boolean division, String classSubHeader) {
 		
 		sheet = null;	
 		row = null;
@@ -778,7 +779,7 @@ public class ExcelTemplate {
 		EquipmentsDAO dao = new EquipmentsDAO();
 		
 		int selectOp = 0;
-		
+		int daysCount = 0;
 		int subHeaderRow = 0;
 		int startLightCol = 0;
 		int startHeavyCol = 0;
@@ -810,7 +811,8 @@ public class ExcelTemplate {
 		
 		// --------------------------------------------------------------------------------------
 				
-		if(!isMultiSheet || (isMultiSheet && period[1].toUpperCase().equals("DAY") || period[1].toUpperCase().equals("MONTH") || period[1].toUpperCase().equals("YEAR"))) {
+		if(!isMultiSheet || (isMultiSheet && period[1].toUpperCase().equals("DAY") || period[1].toUpperCase().equals("MONTH") || period[1].toUpperCase().equals("YEAR"))
+				|| (isEquipNameSheet && period[1].toUpperCase().equals("DAY") || period[1].toUpperCase().equals("MONTH") || period[1].toUpperCase().equals("YEAR"))) {
 			
 			String[] dates = new String[2];
 			String[] sheetNames = null;
@@ -820,17 +822,20 @@ public class ExcelTemplate {
 											
 			if(isEquipNameSheet) {
 			    
-				//int daysCount = (int) dta.diferencaDias(startDate, endDate) + 1; // DIFERENÇA DIAS
-				//int interval = dta.defineInterval(period) * daysCount; // INTERVALO EM RELAÇÃO AOS PERIODO SELECIONADO
-			    
+				try {
+					
+					daysCount = (int) dta.diferencaDias(startDate, endDate) + 1;
+				
+				} catch (ParseException e) {				
+					e.printStackTrace();
+				} 
+										    
 				dates = new String[2];
 				sheetNames = new String[equips.size()];
 				
 				dates[0] = startDate;
 				dates[1] = endDate;
-				
-				//EquipmentsDAO dao = new EquipmentsDAO();
-				
+								
 				sheetNames = dao.equipmentsName(module, equips);				
 				selectOp = equips.size();
 							
@@ -844,15 +849,56 @@ public class ExcelTemplate {
 			
 			// -----------------------------------------------------
 			
-			if(isTotal)
+			if(isEquipNameSheet) {
+								
+				if(isTotal)
+					dataEndRow = dataStartRow + daysCount;
+				
+				else dataEndRow = dataStartRow + (daysCount - 1);
+				
+				
+			} else {
+			
+				if(isTotal)
 				dataEndRow = dataStartRow + lines.size();
 			
-			else dataEndRow = dataStartRow + lines.size() - 1;
+				else dataEndRow = dataStartRow + lines.size() - 1;
+			
+			}
 			
 			// -----------------------------------------------------
 									
 		  for(int op = 0; op < selectOp; op++) {
+			  					  
+			  if(isEquipNameSheet && division) {
+
+				if(module.equals("sat")) {
+											
+					if(!classSubHeader.equals("light-heavy") && !classSubHeader.equals("light-heavy-bus")) {
+						    
+							tableStartRow = 12;
+						    dataStartRow = 13;
+						    
+						} else {
+							
+							 subHeaderRow = 12;
+							 tableStartRow = 13;
+							 dataStartRow = 14;				 
+						}							   			   		
+					
+				    }else { tableStartRow = 11; dataStartRow = 12; }
+					
+					// --------------------------------------------------
+					
+					if(isTotal)
+						dataEndRow = dataStartRow + daysCount;
+					
+					else dataEndRow = dataStartRow + (daysCount - 1);									
 		    	
+			  }
+			  
+			  // --------------------------------------------------------------------------------------------			  
+			  
 		    	// SheetName
 				sheet = workbook.createSheet(sheetNames[op]); // CREATE SHEET NAMES
 			
@@ -920,8 +966,32 @@ public class ExcelTemplate {
 		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
 						
-		if(isDirectionsOnSheet) {
+		if(isEquipNameSheet && isDirectionsOnSheet || isEquipNameSheet) {
 			
+			String[] dirs = null;	
+			int dirCol = 0;
+			
+			if(isDirectionsOnSheet) {
+			
+				lanesLista = dao.listarFaixas();
+			
+				dirCol = endCol + 1;
+				utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
+				
+				dirs = getFiltersDirection(directions);
+				
+				String laneValue = getLane(lanesLista.get(0).getDirection(), dirs);
+				
+				utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);	
+				
+				utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
+				
+			}
+				
+			utilSheet.fileBodySimpleDirs(sheet, row, columns, null, lines, dirs, equips, lanesLista, op, daysCount, startCol, endCol, dirCol, dataStartRow, dataEndRow, true, isDirectionsOnSheet);						
+												
+		} else if(!isEquipNameSheet && isDirectionsOnSheet) {
+						
 			lanesLista = dao.listarFaixas();
 			
 			int dirCol = endCol + 1;
@@ -931,21 +1001,19 @@ public class ExcelTemplate {
 			
 			String laneValue = getLane(lanesLista.get(0).getDirection(), dirs);
 			
-			utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
-									
-			//utilSheet.fileBodySimpleDirection(sheet, row, columns, null, lines, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, true);
+			utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);									
+				
+			utilSheet.fileBodySimpleDirection(sheet, row, columns, null, lines, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, true);			
 									
 			utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
-			
-		}
-											 		
-		else utilSheet.fileBodySimple(sheet, row, columns, lines, startCol, endCol, dataStartRow);
+						
+		}else utilSheet.fileBodySimple(sheet, row, columns, lines, startCol, endCol, dataStartRow);
 		
 		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 		
 		if(isTotal) {
 			
-			int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines, isDirectionsOnSheet);
+			int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines, isEquipNameSheet);
 						
 			switch (totalType) {
 										
@@ -961,7 +1029,9 @@ public class ExcelTemplate {
 		if(secondRows != null) {
 			
 			for(Pair<String, List<String[]>> p : secondRows) {
-							
+				
+				System.out.println("LEFT: "+p.left);
+																	
 				dataEndRow = dataEndRow + 3;
 				
 				// CREATE ROW
@@ -971,15 +1041,15 @@ public class ExcelTemplate {
 					
 					if(!isDirectionsOnSheet) {
 				
-				// SENTIDO LABEL
-				utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 2);
-				utilSheet.setCellValue(sheet, row, dataEndRow, columns.size() - 2, localeExcel.getStringKey("excel_sheet_header_direction"));
-				utilSheet.setCellStyle(sheet, row, centerBoldStyle, dataEndRow, columns.size() - 2);
-
-				// SENTIDO
-				utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 1);
-				utilSheet.setCellValue(sheet, row, dataEndRow, columns.size() - 1, tm.direction(p.left));
-				utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, dataEndRow, columns.size() - 1);
+						// SENTIDO LABEL
+						utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 2);
+						utilSheet.setCellValue(sheet, row, dataEndRow, columns.size() - 2, localeExcel.getStringKey("excel_sheet_header_direction"));
+						utilSheet.setCellStyle(sheet, row, centerBoldStyle, dataEndRow, columns.size() - 2);
+		
+						// SENTIDO
+						utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 1);
+						utilSheet.setCellValue(sheet, row, dataEndRow, columns.size() - 1, tm.direction(p.left));
+						utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, dataEndRow, columns.size() - 1);
 				
 					}
 				
@@ -992,17 +1062,29 @@ public class ExcelTemplate {
 			
 				}else  tableStartRow = dataEndRow + 2;	
 										
-				   dataStartRow = tableStartRow + 1;				   		
-				
-				// -----------------------------------------------------
-				
-				if(isTotal)
-				  dataEndRow = dataStartRow + p.right.size(); 
-				
-				else dataEndRow = dataStartRow + p.right.size() - 1;
-				
-				// -----------------------------------------------------
-								
+				   dataStartRow = tableStartRow + 1;	
+				   
+					// -----------------------------------------------------
+					
+					if(isEquipNameSheet) {
+										
+						if(isTotal)
+							dataEndRow = dataStartRow + daysCount;
+						
+						else dataEndRow = dataStartRow + (daysCount - 1);
+						
+						
+					} else {
+					
+						if(isTotal)
+							dataEndRow = dataStartRow + p.right.size(); 
+							
+						else dataEndRow = dataStartRow + p.right.size() - 1;
+					
+					}
+					
+					// -----------------------------------------------------				
+															
 				if(module.equals("sat")) {
 													
 					if(classSubHeader.equals("light-heavy")) {	
@@ -1059,10 +1141,7 @@ public class ExcelTemplate {
 				// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
 				utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 				utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
-						
-				// if(isEquipNameSheet)
-			    // utilSheet.fileBodyMulti(sheet, row, columns, p.right, startCol, endCol, dataStartRow, op, interval);
-				
+							
 				if(isDirectionsOnSheet) { 
 					
 					int dirCol = endCol + 1;			
@@ -1089,9 +1168,9 @@ public class ExcelTemplate {
 					utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
 					
 					String[] dirs = null;
-								
-					utilSheet.fileBodySimpleDirection(sheet, row, columns, p.left,  p.right, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, false);
-						
+													
+					//utilSheet.fileBodySimpleDirs2(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, op, daysCount, startCol, endCol, dirCol, dataStartRow, dataEndRow, true, isDirectionsOnSheet);	
+												
 					utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
 					
 				} else utilSheet.fileBodySimple(sheet, row, columns, p.right, startCol, endCol, dataStartRow);
@@ -1100,7 +1179,7 @@ public class ExcelTemplate {
 				
 				if(isTotal) {
 					
-					int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines, isDirectionsOnSheet);
+					int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines, isEquipNameSheet);
 					
 					switch (totalType) {
 															
@@ -1116,18 +1195,18 @@ public class ExcelTemplate {
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------
 						
-		// TABLE COLUMNS AUTO SIZE 
+		// TABLE COLUMNS AUTO SIZE
 		utilSheet.columnsWidthAuto(sheet, columns.size());
-		
+				
 		}
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------
 		
-	} else if(isMultiSheet && (period[1].toUpperCase().equals("MINUTE") || period[1].toUpperCase().equals("HOUR"))){		
+	} else if(isMultiSheet && (period[1].toUpperCase().equals("MINUTE") || period[1].toUpperCase().equals("HOUR")) 
+				|| isEquipNameSheet && (period[1].toUpperCase().equals("MINUTE") || period[1].toUpperCase().equals("HOUR"))){		
 		
 		DateTimeApplication dt = new DateTimeApplication();
-		
-		int daysCount = 0;
+				
 		int interval = 0;		
 		int selectOption = 0;
 				
@@ -1182,7 +1261,30 @@ public class ExcelTemplate {
 					
 		// SHEETNAME BY DATE SELECTION										
 				
-	    for(int op = 0; op < selectOption; op++) {
+	    for(int op = 0; op < selectOption; op++) {	    	
+	 					  
+				  if(isEquipNameSheet && division) {
+
+					if(module.equals("sat")) {
+												
+						if(!classSubHeader.equals("light-heavy") && !classSubHeader.equals("light-heavy-bus")) {
+							    
+								tableStartRow = 12;
+							    dataStartRow = 13;
+							    
+							} else {
+								
+								 subHeaderRow = 12;
+								 tableStartRow = 13;
+								 dataStartRow = 14;				 
+							}							   			   		
+						
+					    }else { tableStartRow = 11; dataStartRow = 12; }
+						
+						// --------------------------------------------------																	
+			    	
+				  }
+				  
 	    	
 	    	// SheetName
 			sheet = workbook.createSheet(sheetNames[op]); // CREATE SHEET NAMES
@@ -1196,11 +1298,12 @@ public class ExcelTemplate {
 						dates, period, equips, op, isMultiSheet, isDirectionsOnSheet);
 										  	
 		// -----------------------------------------------------
-		
-		if(isTotal)
-			dataEndRow = dataStartRow + interval;
-		
-		else dataEndRow = dataStartRow + interval - 1;
+								
+				if(isTotal)
+					dataEndRow = dataStartRow + interval;
+				
+				else dataEndRow = dataStartRow + interval - 1;				
+					
 		
 		// -----------------------------------------------------
 		
@@ -1259,9 +1362,33 @@ public class ExcelTemplate {
 													
 		// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
 		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
-		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);									 		
+		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);	
 							
-			if(isDirectionsOnSheet) {																
+			if(isEquipNameSheet && isDirectionsOnSheet || isEquipNameSheet) {	
+				
+				String[] dirs = null;	
+				int dirCol = 0;
+				
+				if(isDirectionsOnSheet) {
+				
+					lanesLista = dao.listarFaixas();
+					
+					dirCol = endCol + 1;			
+					utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
+							
+					dirs = getFiltersDirection(directions);
+					
+					String laneValue = getLane(lanesLista.get(0).getDirection(), dirs);
+					
+					utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
+					
+					utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
+					
+				}										
+								
+				utilSheet.fileBodyMultiDirs(sheet, row, columns, null, lines, dirs, equips, lanesLista, op, daysCount, interval, startCol, endCol, dirCol, dataStartRow, dataEndRow, true, isDirectionsOnSheet);
+				
+			} else if(!isEquipNameSheet && isDirectionsOnSheet) {
 				
 				lanesLista = dao.listarFaixas();
 				
@@ -1274,20 +1401,19 @@ public class ExcelTemplate {
 				
 				utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
 				
-				// -----------------------------------------------------
+				// -----------------------------------------------------	
 				
-										
-				utilSheet.fileBodyMultiDirection(sheet, row, columns, null, lines, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, true, op, interval);
-												
-				utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
+				utilSheet.fileBodyMultiDirection(sheet, row, columns, null, lines, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, true, op, interval);	
 				
-			} else  utilSheet.fileBodyMulti(sheet, row, columns, lines, startCol, endCol, dataStartRow, op, interval); 
+				utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE							
+				
+			} else utilSheet.fileBodyMulti(sheet, row, columns, lines, startCol, endCol, dataStartRow, op, interval); 
 				
 				utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 		
 		if(isTotal) {
 			
-			int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines, isDirectionsOnSheet);
+			int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines, isEquipNameSheet);
 			
             switch (totalType) {
 						
@@ -1337,13 +1463,26 @@ public class ExcelTemplate {
 			   dataStartRow = tableStartRow + 1;	
 			
 			// -----------------------------------------------------
+								
+			if(isEquipNameSheet) {
+								
+				if(isTotal)
+					dataEndRow = dataStartRow + interval;
+				
+				else dataEndRow = dataStartRow + interval - 1;		
+				
+				
+			} else {
 			
-			if(isTotal)
-			  dataEndRow = dataStartRow + p.right.size(); 
+				if(isTotal)
+					dataEndRow = dataStartRow + p.right.size(); 
+					
+				else dataEndRow = dataStartRow + p.right.size() - 1;
 			
-			else dataEndRow = dataStartRow + p.right.size() - 1;
+			}
 			
-			// -----------------------------------------------------
+			// -----------------------------------------------------				
+													
 							
 			if(module.equals("sat")) {
 												
@@ -1429,7 +1568,7 @@ public class ExcelTemplate {
 					
 					String[] dirs = null;
 								
-					utilSheet.fileBodyMultiDirection(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, false, op, interval);
+					// utilSheet.fileBodyMultiDirection(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, false, op, interval);
 										
 					utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
 					
@@ -1439,7 +1578,7 @@ public class ExcelTemplate {
 				
 				if(isTotal) {
 					
-					int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines, isDirectionsOnSheet);
+					int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines, isEquipNameSheet);
 					
 					switch (totalType) {
 											
