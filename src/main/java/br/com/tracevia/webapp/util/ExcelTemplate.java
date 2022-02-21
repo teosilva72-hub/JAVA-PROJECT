@@ -970,17 +970,19 @@ public class ExcelTemplate {
 			
 			String[] dirs = null;	
 			int dirCol = 0;
+			String lane = "";
 			
 			if(isDirectionsOnSheet) {
 			
 				lanesLista = dao.listarFaixas();
+				lane = dao.firstLane(equips.get(op));
 			
 				dirCol = endCol + 1;
 				utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
 				
 				dirs = getFiltersDirection(directions);
 				
-				String laneValue = getLane(lanesLista.get(0).getDirection(), dirs);
+				String laneValue = getLane(lane, dirs);
 				
 				utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);	
 				
@@ -1029,9 +1031,7 @@ public class ExcelTemplate {
 		if(secondRows != null) {
 			
 			for(Pair<String, List<String[]>> p : secondRows) {
-				
-				System.out.println("LEFT: "+p.left);
-																	
+																									
 				dataEndRow = dataEndRow + 3;
 				
 				// CREATE ROW
@@ -1141,9 +1141,46 @@ public class ExcelTemplate {
 				// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
 				utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 				utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
-							
+				
+				if(isEquipNameSheet && isDirectionsOnSheet || isEquipNameSheet){
+					
+					String[] dirs = null;	
+					int dirCol = 0;
+											
 				if(isDirectionsOnSheet) { 
 					
+					dirCol = endCol + 1;			
+					utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
+					
+					// -----------------------------------------------------
+					
+					String laneValue = "";
+							
+					if(p.left.equals("N"))
+						laneValue = "N";
+					
+					else if(p.left.equals("S"))
+						laneValue = "S";
+						
+					else if(p.left.equals("L"))
+						laneValue = "L";
+						
+					else if(p.left.equals("O"))
+						laneValue = "O";				
+																
+					utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
+					
+					utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
+					
+				}
+				
+				System.out.println("DAY = > "+p.left+" QUANT: "+p.right.size());
+				
+					utilSheet.fileBodySimpleDirs(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, op, daysCount, startCol, endCol, dirCol, dataStartRow, dataEndRow, false, isDirectionsOnSheet);													
+															
+				} else if(!isEquipNameSheet && isDirectionsOnSheet) {
+					
+					String[] dirs = null;	
 					int dirCol = endCol + 1;			
 					utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
 					
@@ -1161,18 +1198,17 @@ public class ExcelTemplate {
 						laneValue = "L";
 						
 					else if(p.left.equals("O"))
-						laneValue = "O";
+						laneValue = "O";		
 					
 					// -----------------------------------------------------
 																
 					utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
 					
-					String[] dirs = null;
-													
-					//utilSheet.fileBodySimpleDirs2(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, op, daysCount, startCol, endCol, dirCol, dataStartRow, dataEndRow, true, isDirectionsOnSheet);	
-												
+					utilSheet.fileBodySimpleDirection(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, false);			
+											
 					utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
 					
+				
 				} else utilSheet.fileBodySimple(sheet, row, columns, p.right, startCol, endCol, dataStartRow);
 								
 				 	utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
@@ -1541,8 +1577,48 @@ public class ExcelTemplate {
 				utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 				utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
 				
-				if(isDirectionsOnSheet) { 
+				if(isEquipNameSheet && isDirectionsOnSheet || isEquipNameSheet){
 					
+						String[] dirs = null;	
+						int dirCol = 0;
+					
+					if(isDirectionsOnSheet) { 
+						
+						dirCol = endCol + 1;			
+						utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
+						
+						// -----------------------------------------------------
+						
+						String laneValue = "";
+								
+						if(p.left.equals("N"))
+							laneValue = "N";
+						
+						else if(p.left.equals("S"))
+							laneValue = "S";
+							
+						else if(p.left.equals("L"))
+							laneValue = "L";
+							
+						else if(p.left.equals("O"))
+							laneValue = "O";
+						
+						// -----------------------------------------------------
+																	
+						utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
+						
+						utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
+						
+					}
+					
+					System.out.println("TIME: "+p.right.size());
+					
+					//utilSheet.fileBodyMultiDirs(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, op, daysCount, interval, startCol, endCol, dirCol, dataStartRow, dataEndRow, false, isDirectionsOnSheet);						
+					
+				}else if(!isEquipNameSheet && isDirectionsOnSheet) {
+					
+					String[] dirs = null;
+								
 					int dirCol = endCol + 1;			
 					utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
 					
@@ -1563,14 +1639,12 @@ public class ExcelTemplate {
 						laneValue = "O";
 					
 					// -----------------------------------------------------
-																
+					
 					utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
 					
-					String[] dirs = null;
-								
-					// utilSheet.fileBodyMultiDirection(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, false, op, interval);
-										
-					utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
+					utilSheet.fileBodyMultiDirection(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, false, op, interval);	
+					
+					utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE		
 					
 				} else utilSheet.fileBodyMulti(sheet, row, columns, p.right, startCol, endCol, dataStartRow, op, interval);
 				
@@ -1817,47 +1891,45 @@ public class ExcelTemplate {
 	 // ----------------------------------------------------------------------------------------------------------------
 		
 		
-		public String getLane(String direction, String[] dirs) {
-													
-			for(int i = 0; i < dirs.length; i++) {
-														
-				   if(dirs[i] != null) {						 
-						
-						if(direction.equals("N")) {
-							 
-							  if(dirs[i].equals("S"))									
-								  direction += " / S";											
-								
+		public String getLane(String lane, String[] dirs) {
+																					
+				for(int i = 0; i < dirs.length; i++) {
+															
+					   if(dirs[i] != null) {						 
+							
+							if(lane.equals("N")) {
+								 
+								  if(dirs[i].equals("S"))									
+									  lane += " / S";											
+									
+								}
+							
+							if(lane.equals("S")) {
+								 
+								  if(dirs[i].equals("N"))									
+									  lane += " / N";											
+									
+								}	
+							
+							if(lane.equals("L")) {
+								 
+								  if(dirs[i].equals("O"))									
+									  lane += " / O";											
+									
+								}	
+							
+							if(lane.equals("O")) {
+								 
+								  if(dirs[i].equals("L"))									
+									  lane += " / L";											
+									
+								}		
 							}
-						
-						if(direction.equals("S")) {
-							 
-							  if(dirs[i].equals("N"))									
-								  direction += " / N";											
-								
-							}	
-						
-						if(direction.equals("L")) {
-							 
-							  if(dirs[i].equals("O"))									
-								  direction += " / O";											
-								
-							}	
-						
-						if(direction.equals("O")) {
-							 
-							  if(dirs[i].equals("L"))									
-								  direction += " / L";											
-								
-							}		
-						}
-					}
-			
-		
-				// ---------------------																																	
-			
-										
-					return direction;
+						}		
+					
+				// ---------------------																														
+													
+					return lane;
 			}
 				
 	// ----------------------------------------------------------------------------------------------------------------	

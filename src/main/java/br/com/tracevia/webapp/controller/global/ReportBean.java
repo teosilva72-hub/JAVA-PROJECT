@@ -797,7 +797,7 @@ public class ReportBean {
 					String[] filterArray = mapArray.get(String.format("%s-filter", search.left[1]).replaceAll(" ", ""));
 					String newFilter = "";
 
-					if (equipSheetName && moreInterval.containsKey(search.left[1]))
+					if (moreInterval.containsKey(search.left[1]))
 							moreInterval.put(search.left[1], filterArray.length);
 					
 					if (filterArray != null) {						
@@ -806,7 +806,7 @@ public class ReportBean {
 							if(search.left[0].equals("q.direction") || search.left[0].equals("direction"))	
 								directions.add(f);
 																			
-							if(search.left[0].equals("siteID"))														
+							if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO"))														
 								equipIDs.add(f);
 																												
 							if (f.contains(",")) {
@@ -893,9 +893,9 @@ public class ReportBean {
 		    // Table Fields
 			report.getReport(query, queryMS, idTable, isDivision() ? division : null);
 		    boolean hasValue = true;
-		  		   
+		   		  		   
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
-				hasValue = this.setIntervalDate(dateProcess, columnDate, period, module, equipSheetName, equipIDs);
+				hasValue = this.setIntervalDate(dateProcess, columnDate, period, module, equipIDs);
 		          										
 			// -------------------------------------------------------------------------------------
 					
@@ -910,7 +910,7 @@ public class ReportBean {
 					 return;
 				}				
 			}
-								
+										
 		     	//if (report.IDs.isEmpty())
 		     	//	report.IDs.addAll(idSearch);
 		
@@ -978,7 +978,7 @@ public class ReportBean {
 		
 	}	   
 
-	public boolean setIntervalDate(Date[] date, String column, String[] period, String modulo, boolean isEquipSheeName, List<String> equips) throws ParseException {
+	public boolean setIntervalDate(Date[] date, String column, String[] period, String modulo, List<String> equips) throws ParseException {
 			
 		Calendar calendar = Calendar.getInstance();
 		List<Pair<String, List<String[]>>> secondaryLines = new ArrayList<>();
@@ -993,7 +993,7 @@ public class ReportBean {
 		Arrays.fill(model, "0"); // HERE
 									
 		Arrays.fill(model, "0");
-		int amnt = moreInterval.values().stream().reduce(1, (x, y) -> x * y);
+		int amnt = moreInterval.isEmpty() ? 0 : moreInterval.values().stream().reduce(1, (x, y) -> x * y);
 		int count = 0;
 		int fill = 0;
 		List<String[]> temp;
@@ -1065,15 +1065,12 @@ public class ReportBean {
 						model[col[1]] = split[1];
 					} else
 						model[col[0]] = f;
-
-					if(isEquipSheeName) {
+				
 					for (; fill < amnt; fill++) {
 						model[sep ? 2 : 1] = tempEquips.remove(0);
 						newList.add(model.clone());
 					}
 					
-					}
-
 					calendar.add(interval, Integer.parseInt(period[0]));
 					tempEquips = new ArrayList<>(equips);
 					fill = 0;
@@ -1100,6 +1097,9 @@ public class ReportBean {
 					} else						
 											
 						model[col[0]] = f;
+					
+					if (amnt == 0)
+						newList.add(model.clone());
 		
 					for (int i = 0; i < amnt; i++) {
 						model[sep ? 2 : 1] = tempEquips.get(i);
@@ -1143,24 +1143,38 @@ public class ReportBean {
 									
 					model[col[0]] = f;
 				
-				
-				if(isEquipSheeName)	{
+					if (amnt == 0)
+						newList.add(model.clone());
+
 					for (int i = 0; i < amnt; i++) {
 						model[sep ? 2 : 1] = equips.get(i);
 						newList.add(model.clone());
 					}
-				}
-	
+			
 				calendar.add(interval, Integer.parseInt(period[0]));
 				step = calendar.getTime();
 				
 			}
 	
 			if (count > 0) {
-				secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
+				if (!moreInterval.isEmpty()) {
+					HashMap<String, List<String[]>> map = new HashMap<>();
+					for (String e : equips)
+						map.put(e, new ArrayList<>());
+
+					for (String[] n : newList)
+						map.get(n[sep ? 2 : 1]).add(n);
+
+					List<String[]> list = new ArrayList<>();
+					for (int i = 0; i < map.size(); i++)
+						list.addAll(map.get(equips.get(i)));
+					
+					secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, list));
+				} else
+					secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
 			} else {
 				
-				if (isEquipSheeName && !moreInterval.isEmpty()) {
+				if (!moreInterval.isEmpty()) {
 					HashMap<String, List<String[]>> map = new HashMap<>();
 					for (String e : equips)
 						map.put(e, new ArrayList<>());
