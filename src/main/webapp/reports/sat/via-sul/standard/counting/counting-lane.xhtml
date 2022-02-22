@@ -26,7 +26,7 @@
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />	   	 
 	    
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv_ccr')}"/>
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}"/>
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
 		<f:viewAction onPostback="true" escape="false" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.counting_lane_l1, satLabels.counting_lane_l2,
 		satLabels.counting_lane_l3, satLabels.counting_lane_l4, satLabels.counting_lane_l5, satLabels.counting_lane_l6, satLabels.counting_lane_l7, satLabels.counting_lane_l8, satLabels.global_total_vehicles_column))}" />

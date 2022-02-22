@@ -2591,9 +2591,9 @@ public class ExcelUtil {
 				  for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < days; rowIndex++, lin++) {
 					  										  					 			 		
 					row = sheet.getRow((short) rowIndex);
-										
-					index = lin + (days * equipIndex);
 															
+					index = lin + (days * equipIndex);
+																				
 					try {
 																																										
 						if(values.get(index)[col].matches(NUMBER_REGEX))
@@ -2666,11 +2666,7 @@ public class ExcelUtil {
 				row = sheet.getRow((short) rowIndex);
 										
 				index = lin + (days * equipIndex);
-				
-				System.out.println();
-								
-				System.out.println("LEFT: "+left+"  DATA: "+values.get(index)[col]);
-				
+							
 				try {
 																																									
 				if(values.get(index)[col].matches(NUMBER_REGEX))
