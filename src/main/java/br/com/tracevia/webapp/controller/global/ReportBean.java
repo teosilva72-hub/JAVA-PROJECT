@@ -61,10 +61,10 @@ public class ReportBean {
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
 	public boolean 	isSat = false, haveTotal, multiSheet = true, equipSheetName = false, directionsOnSheet = false, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false,
-			groupId = false,  limitColumn = false;
+			groupId = false,  limitColumn = false, hasDivision = false;
 	
 	public String totalType = "standard";
-	public String 	module = "default";
+	public String module = "default";
 	
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -666,9 +666,8 @@ public class ReportBean {
 								
 		model = new ExcelTemplate(); // HERE
 		
-		String dateStart = "", dateEnd = "", equipFilter = "";
-		
-				
+		String dateStart = "", dateEnd = "";
+						
 		String query = "SELECT ";
 		String queryMS = null;
 		
@@ -799,15 +798,15 @@ public class ReportBean {
 					String newFilter = "";
 
 					if (moreInterval.containsKey(search.left[1]))
-						moreInterval.put(search.left[1], filterArray.length);
+							moreInterval.put(search.left[1], filterArray.length);
 					
 					if (filterArray != null) {						
 						for (String f : filterArray) { // HERE
 							
 							if(search.left[0].equals("q.direction") || search.left[0].equals("direction"))	
 								directions.add(f);
-						
-							if(search.left[0].equals("siteID"))														
+																			
+							if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO"))														
 								equipIDs.add(f);
 																												
 							if (f.contains(",")) {
@@ -834,6 +833,9 @@ public class ReportBean {
 						filter = String.format("%s'%s'", caseSensitive ? "BINARY " : "", f);
 					if (search.left[0].equals(idTable))
 						idSearch.add(f);
+					
+					if(search.left[0].equals("siteID"))														
+						equipIDs.add(f);
 				}
 
 				if (count == 0 && !filter.isEmpty()) {
@@ -891,9 +893,9 @@ public class ReportBean {
 		    // Table Fields
 			report.getReport(query, queryMS, idTable, isDivision() ? division : null);
 		    boolean hasValue = true;
-
+		   		  		   
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
-				hasValue = this.setIntervalDate(dateProcess, columnDate, period, "sat", equipSheetName, equipIDs);
+				hasValue = this.setIntervalDate(dateProcess, columnDate, period, module, equipIDs);
 		          										
 			// -------------------------------------------------------------------------------------
 					
@@ -908,9 +910,9 @@ public class ReportBean {
 					 return;
 				}				
 			}
-					
-		     	if (report.IDs.isEmpty())
-		     		report.IDs.addAll(idSearch);
+										
+		     	//if (report.IDs.isEmpty())
+		     	//	report.IDs.addAll(idSearch);
 		
 			// -------------------------------------------------------------------------------------
 		
@@ -930,14 +932,16 @@ public class ReportBean {
 			SessionUtil.executeScript("drawTable()");
 			
 			// -------------------------------------------------------------------------------------	
+			
+			if(division != null)
+				hasDivision = true;
 				      		     						
-			/* if(!special)										
-		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, classSubHeader);
-				
-			 
+			 if(!special)										
+		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
+							 
 			 else generateSpecialFile(model, specialName);
 		     
-		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 	*/	        
+		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model);  
 		    
 		    // ------------------------------------------------------------
 		    			
@@ -974,7 +978,7 @@ public class ReportBean {
 		
 	}	   
 
-	public boolean setIntervalDate(Date[] date, String column, String[] period, String modulo, boolean isEquipSheeName, List<String> equips) throws ParseException {
+	public boolean setIntervalDate(Date[] date, String column, String[] period, String modulo, List<String> equips) throws ParseException {
 			
 		Calendar calendar = Calendar.getInstance();
 		List<Pair<String, List<String[]>>> secondaryLines = new ArrayList<>();
@@ -985,13 +989,11 @@ public class ReportBean {
 		boolean sep = column.contains("@");
 		boolean hasLine = !report.lines.isEmpty();
 		int[] col = new int[2];
-		
-		String lastdate = "";
-							
+									
 		Arrays.fill(model, "0"); // HERE
 									
 		Arrays.fill(model, "0");
-		int amnt = moreInterval.values().stream().reduce(1, (x, y) -> x * y);
+		int amnt = moreInterval.isEmpty() ? 0 : moreInterval.values().stream().reduce(1, (x, y) -> x * y);
 		int count = 0;
 		int fill = 0;
 		List<String[]> temp;
@@ -1024,16 +1026,7 @@ public class ReportBean {
 		}
 
 		temp = report.lines;
-		
-		String[] eqp = null;
-		
-		if(isEquipSheeName) {
-		
-			EquipmentsDAO dao = new EquipmentsDAO();
-			eqp = dao.equipmentsName(modulo, equips);
-		
-		}
-				
+					
 		do {
 			if (count > 0)
 				if (report.secondaryLines.size() >= count) {
@@ -1072,12 +1065,12 @@ public class ReportBean {
 						model[col[1]] = split[1];
 					} else
 						model[col[0]] = f;
-
+				
 					for (; fill < amnt; fill++) {
 						model[sep ? 2 : 1] = tempEquips.remove(0);
 						newList.add(model.clone());
 					}
-
+					
 					calendar.add(interval, Integer.parseInt(period[0]));
 					tempEquips = new ArrayList<>(equips);
 					fill = 0;
@@ -1100,18 +1093,13 @@ public class ReportBean {
 						
 						model[col[0]] = split[0];
 						model[col[1]] = split[1];
-						
-						//if(!lastdate.equals(model[col[0]]))
-						//	idx++;
-						
-						//if(isEquipSheeName)
-							//model[2] = eqp[idx];
-						
+											
 					} else						
-						//	if(!lastdate.equals(model[col[0]]))
-						//		idx++;
-						
+											
 						model[col[0]] = f;
+					
+					if (amnt == 0)
+						newList.add(model.clone());
 		
 					for (int i = 0; i < amnt; i++) {
 						model[sep ? 2 : 1] = tempEquips.get(i);
@@ -1120,8 +1108,7 @@ public class ReportBean {
 
 					calendar.add(interval, Integer.parseInt(period[0]));
 					step = calendar.getTime();
-					
-					//lastdate = model[col[0]];
+										
 				}
 
 				newList.add(lines);
@@ -1150,32 +1137,43 @@ public class ReportBean {
 				if (sep) {
 					String[] split = f.split(" ");
 					model[col[0]] = split[0];
-					model[col[1]] = split[1];
-					
-					//if(!lastdate.equals(model[col[0]]))
-					//	idx++;
-					
-				//	if(isEquipSheeName)
-					//	model[2] = eqp[idx];
+					model[col[1]] = split[1];				
 					
 				} else
 									
 					model[col[0]] = f;
-					
-				for (int i = 0; i < amnt; i++) {
-					model[sep ? 2 : 1] = equips.get(i);
-					newList.add(model.clone());
-				}
-	
+				
+					if (amnt == 0)
+						newList.add(model.clone());
+
+					for (int i = 0; i < amnt; i++) {
+						model[sep ? 2 : 1] = equips.get(i);
+						newList.add(model.clone());
+					}
+			
 				calendar.add(interval, Integer.parseInt(period[0]));
 				step = calendar.getTime();
 				
-				lastdate = model[col[0]];
 			}
 	
 			if (count > 0) {
-				secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
+				if (!moreInterval.isEmpty()) {
+					HashMap<String, List<String[]>> map = new HashMap<>();
+					for (String e : equips)
+						map.put(e, new ArrayList<>());
+
+					for (String[] n : newList)
+						map.get(n[sep ? 2 : 1]).add(n);
+
+					List<String[]> list = new ArrayList<>();
+					for (int i = 0; i < map.size(); i++)
+						list.addAll(map.get(equips.get(i)));
+					
+					secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, list));
+				} else
+					secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
 			} else {
+				
 				if (!moreInterval.isEmpty()) {
 					HashMap<String, List<String[]>> map = new HashMap<>();
 					for (String e : equips)
@@ -1198,8 +1196,6 @@ public class ReportBean {
 
 		if (count > 0)
 			report.secondaryLines = secondaryLines;
-								
-	   // dta.fillEquipName(listEquips, model, equips, 2, temp.size(), Integer.parseInt(period[0]));
 		
 		return hasLine;
 		
