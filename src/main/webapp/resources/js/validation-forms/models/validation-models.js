@@ -3,6 +3,7 @@
 
 
 const maxDays = 60; // Max days to search in reports
+let timeoutRequest = 0
 
 /* ******************************************************************************************************** */
 
@@ -134,9 +135,13 @@ let onEventFunction = data => {
 
 		case "complete":
 			loading.removeClass('active')
+			timeoutRequest = setTimeout(() => {
+				alertToast('Houve um problema com a conexão, Tente novamente.')
+			}, 1500);
 			break;
 
 		case "success":
+			clearTimeout(timeoutRequest)
 			$('[id$=cancelDownload]').click()
 			break;
 			

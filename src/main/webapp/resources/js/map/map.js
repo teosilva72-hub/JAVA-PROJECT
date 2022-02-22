@@ -1253,15 +1253,15 @@ $("#darkmode").change(function() {
 	if($(this).prop("checked")) {
 		$('body, html, #content').css('background-color', '#0B0D19')
 		 
-	      val.attr('light', val.attr('src'))
-          frame1.attr('light', val.attr('src'))
-          frame2.attr('light', val.attr('src'))
-          frame3.attr('light', val.attr('src'))
+			val.attr('light', val.attr('src'))
+			frame1.attr('light', val.attr('src'))
+			frame2.attr('light', val.attr('src'))
+			frame3.attr('light', val.attr('src'))
 
-		  val.attr('src', val.attr('dark'))	
-          frame1.attr('src', frame1.attr('dark'))
-          frame2.attr('src', frame2.attr('dark'))
-          frame3.attr('src', frame3.attr('dark'))      
+			val.attr('src', val.attr('dark'))	
+			frame1.attr('src', frame1.attr('dark'))
+			frame2.attr('src', frame2.attr('dark'))
+			frame3.attr('src', frame3.attr('dark'))      
 		 
 		$('.equipLine > polyline').css({
 			stroke: 'white',
