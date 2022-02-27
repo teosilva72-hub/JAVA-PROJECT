@@ -70,7 +70,7 @@
 					<label for="category" class="error d-none" id="category-error">error</label>
 				</div>
 			
-					 <div class="form-group">
+				<div class="form-group">
 				 <div class="input-field">				
 				<input type="text" class="form-control text-center" id="others" name="others" placeholder='#{supportLabels.$label_support_category_Others}'/>
 				</div>	</div>
@@ -118,8 +118,14 @@
 			
 				<!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
 
+				<input type="hidden" name="emailMsg"	value="#{requiredMessages.required_user_interface_select_equipments}" /> <!-- EQUIPMENT REQUIRED MESSAGE -->				
+				<input type="hidden" name="categoriaMsg" value="#{requiredMessages.required_user_interface_equip_id}" /> <!-- EQUIPMENT ID REQUIRED MESSAGE -->
+				<input type="hidden" name="assuntoMsg" value="#{validatorMessages.validator_number_message}" />	<!-- EQUIPMENT ID IS NUMBER VALIDATION MESSAGE -->
+				<input type="hidden" name="messageMsg" value="#{validatorMessages.validator_global_maxlength}" /> <!-- EQUIPMENT NAME LENGHT VALIDATION MESSAGE -->
 				
-			</form>
+			</form>		
+			
+			<!---->
 			 	   
 	</ui:define>
 </ui:composition>

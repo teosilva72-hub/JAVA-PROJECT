@@ -66,7 +66,6 @@ public class ReportDAO {
                 newQueryMS = forMS.replace("@division", search.substring(2));
         }
 
-
         do {
             try {
                 count++;
@@ -207,8 +206,7 @@ public class ReportDAO {
                             fieldsTemp.get(i).add(value);
                         else
                             break;
-                    }
-    
+                    }    
                 }
             }
         } catch (Exception e) {

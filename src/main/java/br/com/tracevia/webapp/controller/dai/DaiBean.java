@@ -2,7 +2,6 @@ package br.com.tracevia.webapp.controller.dai;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,7 +20,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -41,10 +39,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.global.LoadStartupModules;
-import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.util.LocaleUtil;
-import br.com.tracevia.webapp.controller.global.LoginAccountBean;
 
 @ManagedBean(name="daiBean")
 @ViewScoped
@@ -99,7 +94,7 @@ public class DaiBean {
 	}
 
 	public static class Traffic {
-		int id;
+		int id, equipId;
 		String 	incident,
 				date,
 				channel,
@@ -133,6 +128,7 @@ public class DaiBean {
 			for (Equipments dai : listDai)
 				if (dai.getNome().equals(name)) {
 					km = dai.getKm();
+					equipId = dai.getEquip_id();
 					
 					break;
 				}
@@ -151,6 +147,10 @@ public class DaiBean {
 		
 		public int getId() {
 			return id;
+		}
+		
+		public int getEquipId() {
+			return equipId;
 		}
 		
 		public String getKm() {
@@ -348,7 +348,6 @@ public class DaiBean {
 			localeDai = new LocaleUtil();	
 			localeDai.getResourceBundle(LocaleUtil.LABELS_DAI);
 			RequestContext.getCurrentInstance().execute("getTr()");
-			String RESULT = "/teste/teste.pdf";
 			Document document = new Document();
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			ExternalContext externalContext = facesContext.getExternalContext();

@@ -608,6 +608,12 @@ public class OccurrencesBean2 {
 
 			//Preencher Lista
 			occurrences = dao.listarOcorrencias();
+			OccurencesDao2 dao = new OccurencesDao2();
+			data = new  OccurenceData2();
+		
+			
+			//occurrences = dao.listarOcorrencias();
+	 
 
 			//initialize btns
 			edit = true;
@@ -666,7 +672,7 @@ public class OccurrencesBean2 {
 			total = 0;
 
 			//list occurences
-			occurrences = dao.listarOcorrencias(); // List occurrences    
+			//occurrences = dao.listarOcorrencias(); // List occurrences    
 			sucess = dao.updateFilePath(localPath, occNumber); // Update path on Data Base
 
 		}
@@ -713,7 +719,7 @@ public class OccurrencesBean2 {
 
 
 			//listar ocorrencia
-			occurrences = dao.listarOcorrencias();
+			//occurrences = dao.listarOcorrencias();
 
 			//listar arquivos sem direito a modificação
 			//TableFile();
@@ -761,7 +767,7 @@ public class OccurrencesBean2 {
 		dao.editTable(updateTable, nameUser, accessLevel, data.getData_number());
 
 		//atualizar a ocorrencia depois que o metodo for chamado
-		occurrences = dao.listarOcorrencias();
+		//occurrences = dao.listarOcorrencias();
 		//chamando função javascript
 		RequestContext.getCurrentInstance().execute("eventValidator()");
 

@@ -58,9 +58,6 @@ public class SpeedDAO {
 		String select = "SELECT equip_id, name, km FROM speed_equipment WHERE visible != 0 ";
 
 		try {
-
-			SQL_Tracevia conn = new SQL_Tracevia();
-
 			conn.start(1);
 
 			conn.prepare(select);

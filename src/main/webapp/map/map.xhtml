@@ -238,9 +238,9 @@
 		<!-- HABILITAR EQUIPAMENTOS DISPONIVEIS -->
 
 		<!-- DropDown Equip Size Menu -->
-		<div class="dropleft">
+		<div class="dropleft mr-3 flex-row-reverse d-flex">
 
-			<button class="btn btn-dark dropdown-toggle" type="button"
+			<!-- <button class="btn btn-dark dropdown-toggle ml-2" type="button"
 				id="dropdwnsizebtn" data-toggle="dropdown" aria-haspopup="true"
 				aria-expanded="false">#{mapLabels.$label_map_size_equip_button}</button>
 
@@ -315,7 +315,9 @@
 						data-target="#sizeeqps" data-backdrop="false" id="dropwim"
 						from="wim">#{mapLabels.$label_map_size_select_wim}</button>
 				</ui:fragment>
-			</div>
+			</div> -->
+
+			<button class="btn btn-dark d-none ml-auto" title="#{mapLabels.$label_map_vehicles}" type="button" id="CarSelect">#{mapLabels.$label_map_vehicles_view}</button>
 		</div>
 
 		<!--  ******************************************************************************************************* -->
@@ -402,57 +404,58 @@
 		<!-- OVERFLOW -->
 		<section class="overflow" scroll-zoom=".5" max-scale="10"
 			id="content"> <!-- START SECTION -->
-		<div id="zoomtext" scale="1" class="section">
+			<div id="zoomtext" scale="1" class="section">
 
-			<!-- MAP FRONT IMAGE -->
+				<!-- MAP FRONT IMAGE -->
 
-			<ui:param name="Coord" value="#{ loginAccount.coord }" />
+				<ui:param name="Coord" value="#{ loginAccount.coord }" />
 
-			<h:graphicImage class="grab-map" width="100%" id="mapTuxpan"
-				value="#{loginAccount.mapUI}" p:dark="#{loginAccount.darkMapUI}" />
-			<div class="drawLines grab-map" gps_start="#{''.format('%f;%f;%f', Coord[0][0], Coord[0][1], Coord[0][2])}" gps_end="#{''.format('%f;%f;%f', Coord[1][0], Coord[1][1], Coord[1][2])}"></div>
-		</div>
-
-		<!-- Label -->
-		<div id="labelPos">
-			<label id="posX"></label> <label id="posY"></label>
-		</div>
-
-		<!-- Drag Items --> <!-- CAUSE -->
-
-		<div class="draggable" id="equipAll"></div>
-		<div class="zoomRoad" id="zoomRoad">
-			<ui:param name="Naranjos" value="#{ loginAccount.coordMap('naranjos') }" />
-			<ui:param name="RightLosgil" value="#{ loginAccount.coordMap('right-losgil') }" />
-
-			<div name="naranjos-zoomPoint" for="naranjos"></div>
-			<div name="naranjos" style="display: none" gps_start="#{''.format('%f;%f;%f', Naranjos[0][0], Naranjos[0][1], Naranjos[0][2])}" gps_end="#{''.format('%f;%f;%f', Naranjos[1][0], Naranjos[1][1], Naranjos[1][2])}">
-				<div class="background-zoomPoint"></div>
-				<img src="/resources/images/map/tuxpan/naranjos.webp" />
+				<h:graphicImage class="grab-map" width="100%" id="mapTuxpan"
+					value="#{loginAccount.mapUI}" p:dark="#{loginAccount.darkMapUI}" />
+				<div class="drawLines grab-map" gps_start="#{''.format('%f;%f;%f', Coord[0][0], Coord[0][1], Coord[0][2])}" gps_end="#{''.format('%f;%f;%f', Coord[1][0], Coord[1][1], Coord[1][2])}"></div>
 			</div>
 
-			<div name="right-losgil-zoomPoint" for="right-losgil"></div>
-			<div name="right-losgil" style="display: none" gps_start="#{''.format('%f;%f;%f', RightLosgil[0][0], RightLosgil[0][1], RightLosgil[0][2])}" gps_end="#{''.format('%f;%f;%f', RightLosgil[1][0], RightLosgil[1][1], RightLosgil[1][2])}">
-				<div class="background-zoomPoint"></div>
-				<img src="/resources/images/map/tuxpan/right-losgil.webp" />
-			</div>
-		</div>
-
-		<!-- Plaque -->
-		
-		<ui:fragment rendered="#{loginAccount.plaque ne ''}">
-
-			<div>
-				<c:forEach items="#{roadView.plaque}" var="plaque">
-					<div class="plaque" longitude="#{plaque.longitude}"
-						latitude="#{plaque.latitude}" posY="#{plaque.mapY}">
-						<img width="75"
-							src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
-					</div>
-				</c:forEach>
+			<!-- Label -->
+			<div id="labelPos">
+				<label id="posX"></label> <label id="posY"></label>
 			</div>
 
-		</ui:fragment> </section>
+			<!-- Drag Items --> <!-- CAUSE -->
+
+			<div class="draggable" id="equipAll"></div>
+			<div class="zoomRoad" id="zoomRoad">
+				<ui:param name="Naranjos" value="#{ loginAccount.coordMap('naranjos') }" />
+				<ui:param name="RightLosgil" value="#{ loginAccount.coordMap('right-losgil') }" />
+
+				<div name="naranjos-zoomPoint" for="naranjos"></div>
+				<div name="naranjos" style="display: none" gps_start="#{''.format('%f;%f;%f', Naranjos[0][0], Naranjos[0][1], Naranjos[0][2])}" gps_end="#{''.format('%f;%f;%f', Naranjos[1][0], Naranjos[1][1], Naranjos[1][2])}">
+					<div class="background-zoomPoint"></div>
+					<img src="/resources/images/map/tuxpan/naranjos.webp" />
+				</div>
+
+				<div name="right-losgil-zoomPoint" for="right-losgil"></div>
+				<div name="right-losgil" style="display: none" gps_start="#{''.format('%f;%f;%f', RightLosgil[0][0], RightLosgil[0][1], RightLosgil[0][2])}" gps_end="#{''.format('%f;%f;%f', RightLosgil[1][0], RightLosgil[1][1], RightLosgil[1][2])}">
+					<div class="background-zoomPoint"></div>
+					<img src="/resources/images/map/tuxpan/right-losgil.webp" />
+				</div>
+			</div>
+
+			<!-- Plaque -->
+			
+			<ui:fragment rendered="#{loginAccount.plaque ne ''}">
+
+				<div>
+					<c:forEach items="#{roadView.plaque}" var="plaque">
+						<div class="plaque" longitude="#{plaque.longitude}"
+							latitude="#{plaque.latitude}" posY="#{plaque.mapY}">
+							<img width="75"
+								src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
+						</div>
+					</c:forEach>
+				</div>
+
+			</ui:fragment>
+		</section>
 
 		<div class="context-menu">
 			<c:if test="#{ CFTV }">
@@ -569,31 +572,33 @@
 		</form>
 		
 		<!---->
-
+		
 		<c:if test="#{ SuperAdmin }">
 
 			<!-- Mudança -->
 
-			<!-- ********************************************************************************************************************* -->
+				<!-- ********************************************************************************************************************* -->
+										
+			<!-- EXTERNAL SCRIPT ELEMENTS -->	 	
 
-			<!-- EXTERNAL SCRIPT ELEMENTS -->
+		    <form name="validation">
 
-			<form name="validation">
-			
-				<!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+                <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
 
-				<input type="hidden" name="emailMsg,"	value="#{requiredMessages.required_user_interface_select_equipments}" /> <!-- EQUIPMENT REQUIRED MESSAGE -->				
-				<input type="hidden" name="categoriaMsg" value="#{requiredMessages.required_user_interface_equip_id}" /> <!-- EQUIPMENT ID REQUIRED MESSAGE -->
-				<input type="hidden" name="assuntoMsg" value="#{validatorMessages.validator_number_message}" />	<!-- EQUIPMENT ID IS NUMBER VALIDATION MESSAGE -->
-				<input type="hidden" name="messageMsg" value="#{validatorMessages.validator_global_maxlength}" /> <!-- EQUIPMENT NAME LENGHT VALIDATION MESSAGE -->
-				
-			</form>
-			
-			emailMsg, categoriaMsg, assuntoMsg, messageMsg
-			
-			<!---->
+                <input type="hidden" name="requiredEquipmentsMsg"    value="#{requiredMessages.required_user_interface_select_equipments}" /> <!-- EQUIPMENT REQUIRED MESSAGE -->
+                <input type="hidden" name="requiredEquipIdMsg" value="#{requiredMessages.required_user_interface_equip_id}" /> <!-- EQUIPMENT ID REQUIRED MESSAGE -->
+                <input type="hidden" name="validatorNumberMsg" value="#{validatorMessages.validator_number_message}" />    <!-- EQUIPMENT ID IS NUMBER VALIDATION MESSAGE -->
+                <input type="hidden" name="validatorMaxLenght" value="#{validatorMessages.validator_global_maxlength}" /> <!-- EQUIPMENT NAME LENGHT VALIDATION MESSAGE -->
+                <input type="hidden" name="requiredEquipmentNameMsg" value="#{requiredMessages.required_user_interface_equip_name}" /> <!-- EQUIPMENT NAME REQUIRED MESSAGE -->
+                <input type="hidden" name="requiredCitiesMsg" value="#{requiredMessages.required_user_interface_cities}" />    <!-- CITIES REQUIRED MESSAGE -->
+                <input type="hidden" name="requiredRoadsMsg" value="#{requiredMessages.required_user_interface_roads}" /> <!-- ROADS REQUIRED MESSAGE -->
+                <input type="hidden" name="requiredKmMsg" value="#{requiredMessages.required_user_interface_km}" />    <!-- KM REQUIRED MESSAGE -->
 
-		</c:if>
+            </form>
+            
+            <!---->
+            
+       </c:if>
 		
 		<!---->
 	

@@ -41,9 +41,7 @@ $( opt =>{
 	let option = $('#category')
 	
 	document.getElementById('others').style.display = 'none';
-	
-
-	
+		
 	option.on('click', f=>{
 	
 	if(option.val() == 'Others'){

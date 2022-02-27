@@ -61,10 +61,10 @@ public class ReportBean {
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
 	public boolean 	isSat = false, haveTotal, multiSheet = true, equipSheetName = false, directionsOnSheet = false, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false,
-			groupId = false,  limitColumn = false;
-	
+			groupId = false,  limitColumn = false, hasDivision = false, additionalTitleName = false;
+		
 	public String totalType = "standard";
-	public String 	module = "default";
+	public String module = "default";
 	
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -77,6 +77,7 @@ public class ReportBean {
 	private String useIndex;
 	private String orderDate;
 	private String[] division;
+	private String laneName = "";
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
@@ -435,6 +436,10 @@ public class ReportBean {
 		this.equipSheetName = equipSheetName;
 	}
 	
+	public void additionalTitleName(boolean additionalTitleName) {
+		this.additionalTitleName = additionalTitleName;
+	}
+	
 	public void groupByID(boolean groupId) {
 		this.groupId = groupId;
 	}
@@ -517,7 +522,15 @@ public class ReportBean {
 	public List<String> getRight(Pair<String[], List<String>> pair) {
 		return pair.right;
 	}
-					
+	
+	public String getLaneName() {
+		return laneName;
+	}
+	
+	public void setLaneName(String laneName) {
+		this.laneName = laneName;
+	}
+						
 	// ----------------------------------------------------------------------------------------------------------------
 		
 		// CLASS PATH
@@ -540,6 +553,7 @@ public class ReportBean {
 		
 		// CONSTRUTOR 
 		
+
 	@PostConstruct
 	public void initialize() {
 		
@@ -666,13 +680,13 @@ public class ReportBean {
 								
 		model = new ExcelTemplate(); // HERE
 		
-		String dateStart = "", dateEnd = "", equipFilter = "";
-		
-				
+		String dateStart = "", dateEnd = "";
+						
 		String query = "SELECT ";
 		String queryMS = null;
 		
 		List<String> equipIDs = new ArrayList<String>();
+		List<String> directions = new ArrayList<String>();
 		
 		if (!searchParametersMS.isEmpty())
 			queryMS = "SELECT ";
@@ -798,19 +812,20 @@ public class ReportBean {
 					String newFilter = "";
 
 					if (moreInterval.containsKey(search.left[1]))
-						moreInterval.put(search.left[1], filterArray.length);
+							moreInterval.put(search.left[1], filterArray.length);
 					
 					if (filterArray != null) {						
 						for (String f : filterArray) { // HERE
 							
-						//	System.out.println(search.left[0]);
+							if(search.left[0].equals("q.direction") || search.left[0].equals("direction"))	
+								directions.add(f);
+																			
+							if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO"))														
+								equipIDs.add(f);
 							
-							if(search.left[0].equals("siteID"))
-								equipFilter = search.left[0];
-							
-							if(search.left[1].equals("Equipamento"))							
-							    equipIDs.add(f);
-														
+							if(search.left[0].equals("NOME_FAIXA"))
+								laneName = " : "+ getLaneName(f);
+																												
 							if (f.contains(",")) {
 								String[] splitF = f.split(",");
 
@@ -834,7 +849,13 @@ public class ReportBean {
 					if (!f.isEmpty())
 						filter = String.format("%s'%s'", caseSensitive ? "BINARY " : "", f);
 					if (search.left[0].equals(idTable))
-						idSearch.add(f);
+						 idSearch.add(f);
+					
+					if(search.left[0].equals("siteID"))														
+						 equipIDs.add(f);
+					
+					if(search.left[0].equals("NOME_FAIXA"))
+						laneName = " : "+getLaneName(f);
 				}
 
 				if (count == 0 && !filter.isEmpty()) {
@@ -866,14 +887,12 @@ public class ReportBean {
 			}
 
 			if (setPeriod && hasPeriod()) {
-								
-				if(equipSheetName)
-					group +=", "+equipFilter;
-					
+						
 				//System.out.println(group);
 				
 				query += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", group, extraGroup, orderDate != null ? orderDate + ", " : "", order);
 				//System.out.println("QUERY5: "+query);
+				
 				if (queryMS != null)
 					queryMS += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", groupMS, extraGroup, orderDate != null ? orderDate + ", " : "", orderMS);
 			} else if (orderDate != null) {
@@ -895,10 +914,10 @@ public class ReportBean {
 		    // Table Fields
 			report.getReport(query, queryMS, idTable, isDivision() ? division : null);
 		    boolean hasValue = true;
-
+		   		  		   
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
-				hasValue = this.setIntervalDate(dateProcess, columnDate, period, "sat", equipSheetName, equipIDs);
-		          										
+				hasValue = this.setIntervalDate(dateProcess, columnDate, period, module, equipIDs);	    						
+				
 			// -------------------------------------------------------------------------------------
 					
 			// CASO NÃO EXISTA VALOR			
@@ -912,9 +931,9 @@ public class ReportBean {
 					 return;
 				}				
 			}
-					
-		     	if (report.IDs.isEmpty())
-		     		report.IDs.addAll(idSearch);
+										
+		     	//if (report.IDs.isEmpty())
+		     	//	report.IDs.addAll(idSearch);
 		
 			// -------------------------------------------------------------------------------------
 		
@@ -933,14 +952,24 @@ public class ReportBean {
 						  
 			SessionUtil.executeScript("drawTable()");
 			
-			// -------------------------------------------------------------------------------------	
+			// -------------------------------------------------------------------------------------
+			
+			// WHILE ONLY FOR LANE NAME
+			
+			if(additionalTitleName)
+				fileTitle += laneName;
+			
+			// -------------------------------------------------------------------------------------
+			
+			if(division != null)
+				hasDivision = true;
 				      		     						
 			 if(!special)										
-		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, classSubHeader);
-			
+		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
+							 
 			 else generateSpecialFile(model, specialName);
 		     
-		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
+		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model);  
 		    
 		    // ------------------------------------------------------------
 		    			
@@ -977,7 +1006,7 @@ public class ReportBean {
 		
 	}	   
 
-	public boolean setIntervalDate(Date[] date, String column, String[] period, String modulo, boolean isEquipSheeName, List<String> equips) throws ParseException {
+	public boolean setIntervalDate(Date[] date, String column, String[] period, String modulo, List<String> equips) throws ParseException {
 			
 		Calendar calendar = Calendar.getInstance();
 		List<Pair<String, List<String[]>>> secondaryLines = new ArrayList<>();
@@ -988,13 +1017,11 @@ public class ReportBean {
 		boolean sep = column.contains("@");
 		boolean hasLine = !report.lines.isEmpty();
 		int[] col = new int[2];
-		
-		String lastdate = "";
-							
+									
 		Arrays.fill(model, "0"); // HERE
 									
 		Arrays.fill(model, "0");
-		int amnt = moreInterval.values().stream().reduce(1, (x, y) -> x * y);
+		int amnt = moreInterval.isEmpty() ? 0 : moreInterval.values().stream().reduce(1, (x, y) -> x * y);
 		int count = 0;
 		int fill = 0;
 		List<String[]> temp;
@@ -1027,16 +1054,7 @@ public class ReportBean {
 		}
 
 		temp = report.lines;
-		
-		String[] eqp = null;
-		
-		if(isEquipSheeName) {
-		
-			EquipmentsDAO dao = new EquipmentsDAO();
-			eqp = dao.equipmentsName(modulo, equips);
-		
-		}
-				
+					
 		do {
 			if (count > 0)
 				if (report.secondaryLines.size() >= count) {
@@ -1047,6 +1065,7 @@ public class ReportBean {
 				} else
 					break;
 
+			List<String> tempEquips = new ArrayList<>(equips);
 			for (String[] lines : temp) { // HERE
 				String d;
 	
@@ -1063,6 +1082,27 @@ public class ReportBean {
 				} catch (ParseException e ) {
 					continue;
 				}
+
+				if (dateReport.after(calendar.getTime()) && fill > 0) {
+					step = calendar.getTime();
+
+					String f = formatter.format(step);
+					if (sep) {
+						String[] split = f.split(" ");
+						model[col[0]] = split[0];
+						model[col[1]] = split[1];
+					} else
+						model[col[0]] = f;
+				
+					for (; fill < amnt; fill++) {
+						model[sep ? 2 : 1] = tempEquips.remove(0);
+						newList.add(model.clone());
+					}
+					
+					calendar.add(interval, Integer.parseInt(period[0]));
+					tempEquips = new ArrayList<>(equips);
+					fill = 0;
+				}
 				
 				step = calendar.getTime();
 
@@ -1073,100 +1113,118 @@ public class ReportBean {
 					model[col[1]] = split[1];
 				} else
 					model[col[0]] = f;
-				
-				int idx = 0;
-											
+
 				while (step.before(dateReport) && step.before(date[1])) {
 					f = formatter.format(step);
 					if (sep) {
 						String[] split = f.split(" ");	
 						
 						model[col[0]] = split[0];
-						model[col[1]] = split[1];	
-						
-						//if(!lastdate.equals(model[col[0]]))
-						//	idx++;
-						
-						//if(isEquipSheeName)
-							//model[2] = eqp[idx];
-						
-					} else
-						
-					//	if(!lastdate.equals(model[col[0]]))
-					//		idx++;
-						
+						model[col[1]] = split[1];
+											
+					} else						
+											
 						model[col[0]] = f;
+					
+					if (amnt == 0)
+						newList.add(model.clone());
 		
 					for (int i = 0; i < amnt; i++) {
+						model[sep ? 2 : 1] = tempEquips.get(i);
 						newList.add(model.clone());
 					}
 
 					calendar.add(interval, Integer.parseInt(period[0]));
 					step = calendar.getTime();
-					
-					lastdate = model[col[0]];
-					
+										
 				}
-			
-				newList.add(lines);
-				if (dateReport.after(step) || dateReport.equals(step)) {
-					if (fill == 0 || fill == amnt)
-						fill = 1;
-					else
-						for (; fill < amnt; fill++)
-							newList.add(model.clone());
-					calendar.add(interval, Integer.parseInt(period[0]));
-				} else
-					fill++;
 
-				if (temp.indexOf(lines) == temp.size() - 1 && fill != 0 && fill != amnt)
-					for (; fill < amnt; fill++)
-							newList.add(model.clone());
+				newList.add(lines);
+				tempEquips.remove(lines[sep ? 2 : 1]);
+				fill++;
+
+				if (fill >= amnt) {
+					calendar.add(interval, Integer.parseInt(period[0]));
+					tempEquips = new ArrayList<>(equips);
+					fill = 0;
+				}
+
+				if (temp.indexOf(lines) == temp.size() - 1 && fill != 0 && fill != amnt) {
+					for (; fill < amnt; fill++) {
+						model[sep ? 2 : 1] = tempEquips.remove(0);						
+						newList.add(model.clone());
+					}
+					fill = 0;
+					calendar.add(interval, Integer.parseInt(period[0]));					
+				}
 			}
 						 	
 			step = calendar.getTime();
-			
-			int idx = 0;
 	
 			while (step.before(date[1])) {
 				String f = formatter.format(step);				
 				if (sep) {
 					String[] split = f.split(" ");
 					model[col[0]] = split[0];
-					model[col[1]] = split[1];
-					
-					//if(!lastdate.equals(model[col[0]]))
-					//	idx++;
-					
-				//	if(isEquipSheeName)
-					//	model[2] = eqp[idx];
+					model[col[1]] = split[1];				
 					
 				} else
 									
 					model[col[0]] = f;
-					
-				for (int i = 0; i < amnt; i++) {
-					newList.add(model.clone());
-				}
-	
+				
+					if (amnt == 0)
+						newList.add(model.clone());
+
+					for (int i = 0; i < amnt; i++) {
+						model[sep ? 2 : 1] = equips.get(i);
+						newList.add(model.clone());
+					}
+			
 				calendar.add(interval, Integer.parseInt(period[0]));
 				step = calendar.getTime();
 				
-				lastdate = model[col[0]];
 			}
 	
 			if (count > 0) {
-				secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
-			} else
-				report.lines = newList;
+				if (!moreInterval.isEmpty()) {
+					HashMap<String, List<String[]>> map = new HashMap<>();
+					for (String e : equips)
+						map.put(e, new ArrayList<>());
+
+					for (String[] n : newList)
+						map.get(n[sep ? 2 : 1]).add(n);
+
+					List<String[]> list = new ArrayList<>();
+					for (int i = 0; i < map.size(); i++)
+						list.addAll(map.get(equips.get(i)));
+					
+					secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, list));
+				} else
+					secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
+			} else {
+				
+				if (!moreInterval.isEmpty()) {
+					HashMap<String, List<String[]>> map = new HashMap<>();
+					for (String e : equips)
+						map.put(e, new ArrayList<>());
+
+					for (String[] n : newList)
+						map.get(n[sep ? 2 : 1]).add(n);
+
+					List<String[]> list = new ArrayList<>();
+					for (int i = 0; i < map.size(); i++)
+						list.addAll(map.get(equips.get(i)));
+					
+					report.lines = list;
+				} else
+					report.lines = newList;
+			}
 
 			count++;
 		} while (report.secondaryLines != null);
 
 		if (count > 0)
 			report.secondaryLines = secondaryLines;
-								
-	   //   dta.fillEquipName(listEquips, model, equips, 2, temp.size(), Integer.parseInt(period[0]));
 		
 		return hasLine;
 		
@@ -1383,6 +1441,29 @@ public class ReportBean {
 	   
 	// --------------------------------------------------------------------------------------------	
 	   
+	   public String getLaneName(String name) {
+		   
+		   String lane = "";
+		   
+		   switch(name) {
+		   		
+		   case "1" : lane = locale.getStringKey("reports_lane1_name"); break;
+		   case "2" : lane = locale.getStringKey("reports_lane2_name"); break;
+		   case "3" : lane = locale.getStringKey("reports_lane3_name"); break;
+		   case "4" : lane = locale.getStringKey("reports_lane4_name"); break;
+		   case "5" : lane = locale.getStringKey("reports_lane5_name"); break;
+		   case "6" : lane = locale.getStringKey("reports_lane6_name"); break;
+		   case "7" : lane = locale.getStringKey("reports_lane7_name"); break;
+		   case "8" : lane = locale.getStringKey("reports_lane8_name"); break;
+		   		
+		   
+		   }	
+		   
+		   return lane;
+		   
+	   }
+	   
+	// --------------------------------------------------------------------------------------------	  
 	   
 		
 }
