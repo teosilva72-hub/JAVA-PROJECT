@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.model.SelectItem;
 
@@ -12,7 +13,7 @@ import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.occ.OccurenceData2;
-import br.com.tracevia.webapp.model.occ.OccurrencesData;
+import br.com.tracevia.webapp.model.occ.OccurrencesData2;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class OccurencesDao2{
@@ -391,7 +392,7 @@ public class OccurencesDao2{
 
 		return occ;
 	}
-	public ArrayList<OccurrencesData> listarOcorrencias() throws Exception {
+	public List<OccurenceData2> listarOcorrencias() throws Exception {
 
 		String query = "SELECT d.occ_number, dt.value_, " +
 				"CONCAT(start_date, '-', d.start_hour, ':', d.start_minute, d.typeHour1) 'datetime', " +
@@ -400,7 +401,7 @@ public class OccurencesDao2{
 				"INNER JOIN occ_details dt1 ON d.cause = dt1.detail_id " +
 				"INNER JOIN occ_details dt2 ON d.state_occurrence = dt2.detail_id";	
 
-		ArrayList<OccurrencesData> listarOcc = new ArrayList<OccurrencesData>();
+		List<OccurenceData2> listarOcc = new ArrayList<OccurenceData2>();
 		//System.out.println(query);
 		try {
 			TranslationMethods occTranslation = new TranslationMethods();
@@ -410,11 +411,9 @@ public class OccurencesDao2{
 
 			if(rs != null) {
 				while(rs.next()) {
-					OccurrencesData occ = new OccurrencesData();
+					OccurenceData2 occ = new OccurenceData2();
 					occ.setData_number(String.valueOf(rs.getInt(1)));		
-					occ.setType(occTranslation.listOcc(rs.getString(2)));
-					occ.setDate_time(rs.getString(3));
-					occ.setCause(occTranslation.listOcc(rs.getString(4)));
+			
 					occ.setState_occurrences(occTranslation.listOcc(rs.getString(5)));
 
 					listarOcc.add(occ);

@@ -1,5 +1,4 @@
 package br.com.tracevia.webapp.controller.occ;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -46,70 +45,179 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.dao.occ.OccurencesDao2;
-import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
+import br.com.tracevia.webapp.dao.occ.OccurrencesDAO2;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
-import br.com.tracevia.webapp.model.occ.OccurenceData2;
-import br.com.tracevia.webapp.model.occ.OccurrencesData;
+
+import br.com.tracevia.webapp.model.occ.OccurrencesData2;
 import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
-
-
-@ManagedBean(name="Occurence2")
+@ManagedBean(name="occurrencesBean2")
 @ViewScoped
-public class Occurence2 {
+public class OccurrencesBean2 {
 
-private OccurenceData2  data;
-private OccurenceData2 getPdf;
-private OccurrencesDetails details;
-private UserAccountBean userId;
+	private OccurrencesData2 data;
+	private OccurrencesData2 getPdf;
+	private UserAccountBean userId;
+	private OccurrencesDetails details;
 
-OccurencesDao2 dao;
-LocaleUtil occLabel, occMessages;
+	OccurencesDao2 dao;
+	LocaleUtil occLabel, occMessages;
 
-private boolean save, edit, new_, reset, fields, enableBtn,
-table, alterar, pdf;
-private String logo, userPdf;
+	
 
+	private boolean save, edit, new_, reset, fields, enableBtn,
+	table, alterar, pdf;
+	private String logo, userPdf;
 
-public String getUserPdf() {
-	return userPdf;
-}
-public void setUserPdf(String userPdf) {
-	this.userPdf = userPdf;
-}
-public String getLogo() {
-	try {
-
-		Path path = Paths.get(logo);
-		byte[] file = Files.readAllBytes(path);
-		return Base64.getEncoder().encodeToString(file);
-	} catch (IOException e) {
-		return "";
+	
+	public String getUserPdf() {
+		return userPdf;
 	}
-}
+	public void setUserPdf(String userPdf) {
+		this.userPdf = userPdf;
+	}
+	public String getLogo() {
+		try {
+
+			Path path = Paths.get(logo);
+			byte[] file = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(file);
+		} catch (IOException e) {
+			return "";
+		}
+	}
 
 	private String action, title_modal, message_modal, idUpdate;
 
-	private String mainPath, localPath, occNumber,path, way, downloadPath, pathDownload, pathSQL, monthPdf,
-	 dayPdf,  nameUser, userName; 
+	private String mainPath, localPath, occNumber, path, way, downloadPath, pathDownload, pathSQL, monthPdf,
+	minutePdf, secondPdf, dayPdf, hourPdf, numveiculo, marca, tipo_veic , modelo, cor, placa, telefone, nameUser, userName; 
 	private String getFile, fileDelete, fileUpdate, pathImage, absoluteImage, imagePath;
 	private String[] listarFile, listUpdate, tableFile, imagem, FileName;
 	private File arquivos[], directory, fileWay;
 	private int bytes, total, situation, idUpload;
-	private int value, content, nivelUser;
+	private int value, value1, value2, content, nivelUser;
 	private Part file = null;
 	private Part file2 = null;
 	private ImageIcon image;
 	private int rowkey;
 	private boolean selectedRow;
-	private List<OccurenceData2> occurrences;
+	private List<OccurrencesData2> occurrences;
 
-	private String dataTeste;
-	private String sinistro;
+	
+	
+	public String getNumveiculo() {
+		return numveiculo;
+	}
+	public void setNumveiculo(String numveiculo) {
+		this.numveiculo = numveiculo;
+	}
+	public String getMarca() {
+		return marca;
+	}
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+	public String getTipo_veic() {
+		return tipo_veic;
+	}
+	public void setTipo_veic(String tipo_veic) {
+		this.tipo_veic = tipo_veic;
+	}
+	public String getModelo() {
+		return modelo;
+	}
+	public void setModelo(String modelo) {
+		this.modelo = modelo;
+	}
+	public String getCor() {
+		return cor;
+	}
+	public void setCor(String cor) {
+		this.cor = cor;
+	}
+	public String getPlaca() {
+		return placa;
+	}
+	public void setPlaca(String placa) {
+		this.placa = placa;
+	}
+	public String getTelefone() {
+		return telefone;
+	}
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
 
+	private List<SelectItem> rodovias, estado_locais, sentidos, faixas, tipos, origens, estados, causa_provaveis, condicao_locais, 
+	condicao_de_trafegos, caracteristica_da_secoes, interferencia_da_faixas, sinalizacoes, estado_condutores, horas, minutos, actions,
+	actionState, trackInterrupted, damageType, damageUnity, involvedType, damage_gravity, typeHour1;
 
+	public List<SelectItem> getTypeHour1() {
+		return typeHour1;
+	}
+	public void setTypeHour1(List<SelectItem> typeHour1) {
+		this.typeHour1 = typeHour1;
+	}
+	public List<SelectItem> getEstado_locais() {
+		return estado_locais;
+	}
+	public List<SelectItem> getSentidos() {
+		return sentidos;
+	}
+	public List<SelectItem> getFaixas() {
+		return faixas;
+	}
+	public List<SelectItem> getTipos() {
+		return tipos;
+	}
+	public List<SelectItem> getOrigens() {
+		return origens;
+	}
+	public List<SelectItem> getEstados() {
+		return estados;
+	}
+	public List<SelectItem> getCausa_provaveis() {
+		return causa_provaveis;
+	}
+	public List<SelectItem> getCondicao_locais() {
+		return condicao_locais;
+	}
+	public List<SelectItem> getCondicao_de_trafegos() {
+		return condicao_de_trafegos;
+	}
+	public List<SelectItem> getCaracteristica_da_secoes() {
+		return caracteristica_da_secoes;
+	}
+	public List<SelectItem> getInterferencia_da_faixas() {
+		return interferencia_da_faixas;
+	}
+	public List<SelectItem> getSinalizacoes() {
+		return sinalizacoes;
+	}
+	public List<SelectItem> getEstado_condutores() {
+		return estado_condutores;
+	}
+
+	public List<SelectItem> getRodovias() {
+		return rodovias;
+	}
+	public List<SelectItem> getActions() {
+		return actions;
+	}
+	public List<SelectItem> getActionState() {
+		return actionState;
+	}
+	public List<SelectItem> getTrackInterrupted() {
+		return trackInterrupted;
+	}
+	public List<SelectItem> getDamageType() {
+		return damageType;
+	}
+	public List<SelectItem> getDamageUnity() {
+		return damageUnity;
+	}
 
 	public boolean isEnableBtn() {
 		return enableBtn;
@@ -232,10 +340,10 @@ public String getLogo() {
 	public void setGetFile(String getFile) {
 		this.getFile = getFile;
 	}
-	public OccurenceData2 getData() {
+	public OccurrencesData2 getData() {
 		return data;
 	}
-	public void setData(OccurenceData2 data) {
+	public void setData(OccurrencesData2 data) {
 		this.data = data;
 	}
 	public OccurrencesDetails getDetails() {
@@ -244,8 +352,14 @@ public String getLogo() {
 	public void setDetails(OccurrencesDetails details) {
 		this.details = details;
 	}
-	public List<OccurenceData2> getOccurrences() {
+	public List<OccurrencesData2> getOccurrences() {
 		return occurrences;
+	}
+	public List<SelectItem> getHoras() {
+		return horas;
+	}
+	public List<SelectItem> getMinutos() {
+		return minutos;
 	}
 
 	public String getAbsoluteImage() {
@@ -356,7 +470,15 @@ public String getLogo() {
 	}
 	public void setMessage_modal(String message_modal) {
 		this.message_modal = message_modal;
-
+	}
+	public List<SelectItem> getInvolvedType() {
+		return involvedType;
+	}
+	public void setInvolvedType(List<SelectItem> involvedType) {
+		this.involvedType = involvedType;
+	}
+	public List<SelectItem> getDamage_gravity() {
+		return damage_gravity;
 	}
 	public int getValue() {
 		return value;
@@ -398,25 +520,94 @@ public String getLogo() {
 	public void setListarFile(String[] listarFile) {
 		this.listarFile = listarFile;
 	}
-public void teste() {
-		System.out.println("Estamos aqui");
-		System.out.println(getData());
-	}
 
 	@PostConstruct
 	public void initialize() {	
-	
-		//input select options
-		occurrences = new ArrayList<OccurenceData2>();
 
+		//input select options
+		occurrences = new ArrayList<OccurrencesData2>();
+		rodovias = new ArrayList<SelectItem>();
+		estado_locais = new  ArrayList<SelectItem>();
+		sentidos = new  ArrayList<SelectItem>();
+		faixas = new  ArrayList<SelectItem>();
+		tipos = new  ArrayList<SelectItem>();
+		origens = new  ArrayList<SelectItem>();
+		estados = new  ArrayList<SelectItem>();
+		causa_provaveis = new  ArrayList<SelectItem>();
+		condicao_locais = new  ArrayList<SelectItem>();
+		condicao_de_trafegos = new  ArrayList<SelectItem>();
+		caracteristica_da_secoes = new  ArrayList<SelectItem>();
+		interferencia_da_faixas = new  ArrayList<SelectItem>();
+		sinalizacoes = new  ArrayList<SelectItem>();
+		estado_condutores = new  ArrayList<SelectItem>();
+		actions = new ArrayList<SelectItem>();
+		actionState = new ArrayList<SelectItem>();
+		trackInterrupted = new ArrayList<SelectItem>();
+		damageType = new ArrayList<SelectItem>();
+		damageUnity = new ArrayList<SelectItem>();
+		involvedType = new ArrayList<SelectItem>();
+		damage_gravity = new ArrayList<SelectItem>();
 		try {
 
-			OccurencesDao2 dao = new OccurencesDao2();
-			data = new  OccurenceData2();
-		
-			
+			OccurrencesDAO2 dao = new OccurrencesDAO2();
+			data = new OccurrencesData2();
+
+			rodovias = dao.dropDownFieldValues("rodovia");
+			estado_locais = dao.dropDownFieldValues("estado_local");
+			sentidos = dao.dropDownFieldValues("sentido");
+			faixas = dao.dropDownFieldValues("faixa");
+			tipos = dao.dropDownFieldValues("tipo");
+			origens = dao.dropDownFieldValues("origem");
+			estados = dao.dropDownFieldValues("estado");
+			causa_provaveis = dao.dropDownFieldValues("causa_provavel");
+			condicao_locais = dao.dropDownFieldValues("condicao_local");
+			condicao_de_trafegos = dao.dropDownFieldValues("condicao_de_trafego");
+			caracteristica_da_secoes = dao.dropDownFieldValues("caracteristica_da_secao");
+			interferencia_da_faixas = dao.dropDownFieldValues("interferencia_da_faixa");
+			sinalizacoes = dao.dropDownFieldValues("sinalizacao");
+			estado_condutores = dao.dropDownFieldValues("estado_condutor");
+			actions = dao.dropDownFieldValues("actions");
+			actionState = dao.dropDownFieldValues("actionState");
+			trackInterrupted = dao.dropDownFieldValues("trackinterrupted");
+			damageType = dao.dropDownFieldValues("damageType");
+			damageUnity = dao.dropDownFieldValues("damageUnity");
+			involvedType = dao.dropDownFieldValues("involvedType");
+			damage_gravity = dao.dropDownFieldValues("damageSeverity");
+
+			//AM/PM
+			typeHour1 = new ArrayList<SelectItem>();
+			typeHour1.add(new SelectItem("am", "am"));
+			typeHour1.add(new SelectItem("pm", "pm"));
+			//hours
+			horas = new  ArrayList<SelectItem>();
+
+			for(int h = 1; h < 13; h++) {				
+
+				horas.add(new SelectItem(String.valueOf(h), String.valueOf(h)));
+
+			}
+			//minutes
+			minutos = new  ArrayList<SelectItem>();
+
+			for(int m = 0; m < 60; m++){				
+				if (m < 10)
+					minutos.add(new SelectItem("0"+String.valueOf(m), "0"+String.valueOf(m)));
+				else 
+					minutos.add(new SelectItem(String.valueOf(m), String.valueOf(m)));
+
+			}
+
+			occLabel = new LocaleUtil();
+			occLabel.getResourceBundle(LocaleUtil.LABELS_OCC);
+
+			occMessages = new LocaleUtil();
+			occMessages.getResourceBundle(LocaleUtil.MESSAGES_OCC);
+
+			title_modal = occLabel.getStringKey("btn_salvar");
+			message_modal = occLabel.getStringKey("msg_salvar");
+
+			//Preencher Lista
 			occurrences = dao.listarOcorrencias();
-	 
 
 			//initialize btns
 			edit = true;
@@ -426,7 +617,8 @@ public void teste() {
 			fields = true;
 			table = true;
 			pdf = true;
-				//paths
+
+			//paths
 			mainPath = "C:\\Occurrences\\";			
 			downloadPath = "file:///C:/Occurrences/";
 			pathDownload = System.getenv("USERPROFILE") + "\\Downloads\\";
@@ -435,40 +627,32 @@ public void teste() {
 			ex.printStackTrace();
 		}
 	}	
-	
-	
-	
+
 	//taking the last id from the database and passing 1 more
 	public int pegarId() throws Exception{
 
-		OccurencesDao2 x = new OccurencesDao2();
-		value =  x.GetId();
+		OccurrencesDAO2 x = new OccurrencesDAO2();
+		value = x.GetId();
 		//String e = userId.getUser_id();
 		value += 1;
-		data = new OccurenceData2();
-		data.setOcc_number(String.valueOf(value));
+		data = new OccurrencesData2();
+		data.setData_number(String.valueOf(value));
 
 		return value;
 	}
- public void Teste() {
-	 
-	 System.out.println("testee");
-	 
-	 
-	 
- }
-	//cadastar occurrences
+
+	//register occurrences
 	public void cadastroOcorrencia() throws Exception {
 		boolean sucess = false;
 
-		System.out.println("teste");
-
-		OccurencesDao2 dao = new OccurencesDao2();
-		occNumber= dao.cadastroOcorrencia(data);
+		OccurrencesDAO2 dao = new OccurrencesDAO2();
+		occNumber = dao.cadastroOcorrencia(data);
+		//CREATE LOCAL PATH
 		localPath = localPath(occNumber);
 
 		//if id is non-null
-		//if(occ_number != null) {
+		if(occNumber != null) {
+
 			//btn
 			save = true;
 			alterar = true;
@@ -481,30 +665,28 @@ public void teste() {
 			listarFile = null;
 			total = 0;
 
-
 			//list occurences
 			occurrences = dao.listarOcorrencias(); // List occurrences    
 			sucess = dao.updateFilePath(localPath, occNumber); // Update path on Data Base
 
 		}
 
-	
-
-	
+	}
 
 	//update occurences
 	public void atualizarOcorrencia() throws Exception {
 
-		OccurencesDao2 dao = new OccurencesDao2();
+		OccurrencesDAO2 dao = new OccurrencesDAO2();
 
 		//ao atualizar a ocorrencia passamos um valor null para a variavel (nameUser),
 		//passos 0 para a variavel (accessLevel) e para a variavel (updateTable) passamos false
 		// ambos os valores serão armazenados no BD a fazer a requisição
 		String nameUser = ""; int accessLevel = 0; boolean updateTable = false; 
-		System.out.println(data.getData_number());
+		System.out.println(data.getData_number()+"DataNumber123");
+		System.out.println(data.getStart_hour()+" hora" );
 		idUpdate = data.getData_number();
 		//Passando dados definidos para o banco de dados
-		dao.editTable(updateTable, nameUser, accessLevel, data.getSinistro());
+		dao.editTable(updateTable, nameUser, accessLevel, data.getData_number());
 
 		//passando falso para acessar a condição IF
 		boolean status = false;
@@ -544,7 +726,7 @@ public void teste() {
 	//metodo anular ocorrencia, esse metodo é chamado quando estamos na sessão novo
 	public void resetOccurrencesData(){       
 
-		data = new OccurenceData2();
+		data = new OccurrencesData2();
 		RequestContext.getCurrentInstance().execute("cancelOcc()");
 		//btn
 		save = true;
@@ -561,14 +743,12 @@ public void teste() {
 		listUpdate = null;
 		total = 0;
 
-
-
 		//deletar pasta
 		deleteDirectory();
 	}
 	//metodo anular ocorrencia, esse metodo é chamado quando estamos na sessão editar
 	public void resetUpdate() throws Exception{
-		OccurencesDao2 dao = new OccurencesDao2();
+		OccurrencesDAO2 dao = new OccurrencesDAO2();
 
 		//ao anular a ocorrencia passamos os valores predeterminados para a seguintes variaveis:
 		//(nameUser = null, accessLevel = 0 e updateTable = False) ambos os valores são armazenados no BD.
@@ -578,24 +758,24 @@ public void teste() {
 		pdf = false;
 
 		//passando dados para o banco de dados
-		dao.editTable(updateTable, nameUser, accessLevel, data.getSinistro());
+		dao.editTable(updateTable, nameUser, accessLevel, data.getData_number());
 
 		//atualizar a ocorrencia depois que o metodo for chamado
 		occurrences = dao.listarOcorrencias();
 		//chamando função javascript
 		RequestContext.getCurrentInstance().execute("eventValidator()");
 
-		data = new OccurenceData2();
+		data = new OccurrencesData2();
 
 		//btn
-				save = true;
-				alterar = true;
-				reset = true;
-				new_ = false;
-				fields = true;
-				edit = true;
-				table = true;
-				pdf = true;
+		save = true;
+		alterar = true;
+		reset = true;
+		new_ = false;
+		fields = true;
+		edit = true;
+		table = true;
+		pdf = true;
 
 		//zerando os valores das variaves (listUpdate e total)
 		listUpdate = null;
@@ -614,7 +794,8 @@ public void teste() {
 		calendar.setTime(date);
 		calendar.add(calendar.MINUTE, -5);
 		Date b = calendar.getTime();
-
+			System.out.println(rowkey);
+		
 		try {
 
 			//chamando valores do usuário de outro controller
@@ -629,10 +810,10 @@ public void teste() {
 			RequestContext.getCurrentInstance().execute("displayPdf()");
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 
-			OccurrencesDAO dao = new OccurrencesDAO();
+			OccurrencesDAO2 dao = new OccurrencesDAO2();
 
 			//buscar dados por id
-			//dataa = dao.buscarOcorrenciaPorId(rowkey);
+			data = dao.buscarOcorrenciaPorId(rowkey);
 
 			//buscar dados pdf
 			//getPdf = dao.submitPdf(rowkey);
@@ -645,23 +826,23 @@ public void teste() {
 
 			//transformando em int
 			situation = Integer.parseInt(x);
-			System.out.println(data.getLastDateHour());
+			System.out.println(data.getType()+ "getRowValue");
 
-			Date parsedDate = dateFormat.parse(data.getLastDateHour());
-			timestamp = new java.sql.Timestamp(parsedDate.getTime());
-			timestamp2 = new java.sql.Timestamp(b.getTime());
-			System.out.println(timestamp +" <");
-			System.out.println(timestamp2 + "<<");
-			System.out.println((timestamp.after(timestamp2)+" antes"));
-			System.out.println((timestamp.before(timestamp2)+" depois"));
-			System.out.println(data.getEditTable()+" editTable");
+			//Date parsedDate = dateFormat.parse(data.getLastDateHour());
+			//timestamp = new java.sql.Timestamp(parsedDate.getTime());
+			//timestamp2 = new java.sql.Timestamp(b.getTime());
+//			System.out.println(timestamp +" <");
+//			System.out.println(timestamp2 + "<<");
+//			System.out.println((timestamp.after(timestamp2)+" antes"));
+//			System.out.println((timestamp.before(timestamp2)+" depois"));
+//			System.out.println(data.getEditTable()+" editTable");
 		}catch(Exception ex){
 
 			ex.printStackTrace();
 
 		}
 		//listando arquivos quando clica na linha da tabela
-		TableFile();
+		//TableFile();
 		pdf = false;
 		//Se a linha da table estiver selecionada:
 		if(selectedRow) {
@@ -672,13 +853,13 @@ public void teste() {
 
 				//btn
 				save = true;
-				alterar = true;
+				alterar = false;
 				reset = true;
 				new_ = false;
 				fields = true;
 				edit = true;
 				table = true;
-
+System.out.println("aqui1");
 				if(nivelUser == 1 || nivelUser == 6) {
 					//btn
 					save = true;
@@ -687,7 +868,7 @@ public void teste() {
 					new_ = false;
 					reset = true;
 					fields = true; 
-
+					System.out.println("aqui2");
 					//execute js
 					RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 					RequestContext.getCurrentInstance().execute("fileTotal()");
@@ -709,7 +890,7 @@ public void teste() {
 				new_ = false;
 				reset = true;
 				fields = true; 
-
+				System.out.println("aqui3");
 				//execute js
 				RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 				RequestContext.getCurrentInstance().execute("fileTotal()");
@@ -720,14 +901,14 @@ public void teste() {
 				//executando função javascript
 				RequestContext.getCurrentInstance().execute("msgUser()");
 
-				save = true;
-				alterar = true;
+				save = false;
+				alterar = false;
 				reset = true;
-				new_ = false;
+				new_ = true;
 				fields = true;
-				edit = true;
+				edit = false;
 				table = true;
-
+				System.out.println("aqui4");
 				//se o nome do usuario local, for igual o nome da pessoa que esta editando
 				//a ocorrencia acessa pode acessar a essa condição
 				if(userName.equals(data.getNameUser())){
@@ -739,7 +920,7 @@ public void teste() {
 					new_ = false;
 					reset = true;
 					fields = true; 
-
+					System.out.println("aqui5");
 					//execute js
 					RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 					RequestContext.getCurrentInstance().execute("fileTotal()");
@@ -755,7 +936,7 @@ public void teste() {
 					new_ = false;
 					reset = true;
 					fields = true; 
-
+					System.out.println("aqui5");
 					//execute js
 					RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 					RequestContext.getCurrentInstance().execute("fileTotal()");
@@ -768,13 +949,13 @@ public void teste() {
 		}else {
 
 			save = true;
-			alterar = true;
+			alterar =true;
 			reset = true;
-			new_ = false;
+			new_ = true;
 			fields = true;
-			edit = true;
+			edit = false;
 			table = true;
-
+			System.out.println("aqui6");
 			//executando as funções javascript
 			RequestContext.getCurrentInstance().execute("hiddenPdf()");
 			RequestContext.getCurrentInstance().execute("msgFinishedHidden()");
@@ -787,6 +968,7 @@ public void teste() {
 	}
 	//método novo
 	public void btnEnable() throws Exception {
+
 		//executando as funções javascript
 		RequestContext.getCurrentInstance().execute("inputs()");
 		RequestContext.getCurrentInstance().execute("disableEdit()");
@@ -804,10 +986,10 @@ public void teste() {
 			cadastroOcorrencia();
 
 			//transformando a variavel (value) em String
-			String sinistro = (String.valueOf(value));
+			String occNumber = (String.valueOf(value));
 
 			//CREATE LOCAL PATH
-			localPath = localPath(sinistro);
+			localPath = localPath(occNumber);
 			createFileFolder(mainPath, localPath);	
 			//executando javascript
 			RequestContext.getCurrentInstance().execute("inputs()");
@@ -817,7 +999,7 @@ public void teste() {
 			RequestContext.getCurrentInstance().execute("fileTotalHidden()");
 
 			//btn
-			edit = true;
+			edit = false;
 			save = false;
 			alterar = true;
 			reset = false;
@@ -831,8 +1013,8 @@ public void teste() {
 	//método editar ocorrencia
 	public void btnEdit() throws Exception {
 
-		OccurencesDao2 dao = new OccurencesDao2();
-
+		OccurrencesDAO2 dao = new OccurrencesDAO2();
+System.out.println("btnedit");
 		//pegando valores dos usuários de outro controller
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
@@ -842,12 +1024,12 @@ public void teste() {
 		int nivelUser = (int) facesContext.getExternalContext().getSessionMap().get("nivel");
 		boolean updateTable = true;
 		//passando valores das varaveis para o banco de dados
-		dao.editTable(updateTable, nameUser, nivelUser, data.getSinistro());			
+		dao.editTable(updateTable, nameUser, nivelUser, data.getData_number());			
 		enableBtn = true;
 		//btn
 		fields = false;
 		reset = false;
-		save = true;
+		save = false		;
 		edit = true;
 		alterar = false;
 		pdf = true;
@@ -863,7 +1045,7 @@ public void teste() {
 		RequestContext.getCurrentInstance().execute("atualizarTela()");
 
 		//listando arquivos
-		listingUpdate();
+	//	listingUpdate();
 
 	}
 	//CREATE DIRECTORY FOR FILES
@@ -881,11 +1063,11 @@ public void teste() {
 
 	//CREATE PATH FOR OCCURRENCE
 	//ACCORDING YEAR AND MONTH
-	public String localPath(String sinistro) {
+	public String localPath(String occ_number) {
 
 		DateTimeApplication dta = new DateTimeApplication();
 		LocalDate local = dta.localeDate();
-		path = local.getYear()+"//"+local.getMonthValue()+"//OCC_"+sinistro;
+		path = local.getYear()+"//"+local.getMonthValue()+"//OCC_"+occ_number;
 
 		return path;
 	}
@@ -984,8 +1166,8 @@ public void teste() {
 		int x = 0;
 
 		//listando os arquivos
-		arquivos = fileWay.listFiles();
-		listUpdate = new String[arquivos.length];
+		//arquivos = fileWay.listFiles();
+		//listUpdate = new String[arquivos.length];
 		//pegando o total de aruivos dentro do diretorio
 		total = arquivos.length;
 		//enquantos os arquivos forem diferentes do valor 0 executa
@@ -994,7 +1176,7 @@ public void teste() {
 			//pegando os nomes do arquivos na posição
 			listUpdate[x] = arquivos[x].getName();
 
-			System.out.println("Position: "+x+" < Arquivo na pasta > "+ listUpdate[x]);
+			System.out.println("Position: "+x+" < Arquivo na pasta > "+ listUpdate[x]+ "pdf");
 
 			x++;
 
@@ -1004,141 +1186,141 @@ public void teste() {
 		return listUpdate;
 	}
 	//método listar arquivos quando clicamos na tablea
-	public String[] TableFile() {
-		System.out.println(timestamp+" <a");
-		System.out.println(timestamp2+" <b");
-		//pegando o status da ocorrência		
-		String b = data.getState_occurrences();
-		//tranformando o valor do status da ocorrência  em inteiro
-		situation = Integer.parseInt(b);
-		pdf = false;
-		//se o status da occorencia for igual a 30 ou 31, acessamos esse função
-		if(situation == 31 || situation == 30) {
-			//btns
-			save = true;
-			alterar = true;
-			reset = true;
-			new_ = false;
-			fields = true;
-			edit = true;
-			table = true;
-
-			//executando javascript
-			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
-			RequestContext.getCurrentInstance().execute("msgFinished()");
-
-			//se o nivel de acesso dop usuário for igual a 1 ou igual a 6, acessamos a função
-			if(nivelUser == 1 || nivelUser == 6) {
-				//btn
-				save = true;
-				alterar = true;
-				edit = false;
-				new_ = false;
-				reset = true;
-				fields = true; 
-
-				//execute js
-				RequestContext.getCurrentInstance().execute("listUpdateFile2()");
-				RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
-				RequestContext.getCurrentInstance().execute("fileTotal()");
-			}
+//	public String[] TableFile() {
+//		System.out.println(timestamp+" <a");
+//		System.out.println(timestamp2+" <b");
+//		//pegando o status da ocorrência		
+//		String b = data.getState_occurrences();
+//		//tranformando o valor do status da ocorrência  em inteiro
+//		situation = Integer.parseInt(b);
+//		pdf = false;
+//		//se o status da occorencia for igual a 30 ou 31, acessamos esse função
+//		if(situation == 31 || situation == 30) {
+//			//btns
+//			save = true;
+//			alterar = true;
+//			reset = true;
+//			new_ = false;
+//			fields = true;
+//			edit = true;
+//			table = true;
+//
+//			//executando javascript
+//			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
+//			RequestContext.getCurrentInstance().execute("msgFinished()");
+//
+//			//se o nivel de acesso dop usuário for igual a 1 ou igual a 6, acessamos a função
+//			if(nivelUser == 1 || nivelUser == 6) {
+//				//btn
+//				save = true;
+//				alterar = true;
+//				edit = false;
+//				new_ = false;
+//				reset = true;
+//				fields = true; 
+//
+//				//execute js
+//				RequestContext.getCurrentInstance().execute("listUpdateFile2()");
+//				RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+//				RequestContext.getCurrentInstance().execute("fileTotal()")
+//			}
 			//senão se o valor do atributo editTable for igual 0 (false), acessos a condição
-		}else if(data.getEditTable() == false || timestamp.before(timestamp2)) {
-
-			//btn
-			save = true;
-			alterar = true;
-			edit = false;
-			new_ = false;
-			reset = true;
-			fields = true; 
-
-			//execute js
-			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
-			RequestContext.getCurrentInstance().execute("unLock()");
-			RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
-			RequestContext.getCurrentInstance().execute("fileTotal()");
-
-			//senão se for igual a true acesso bloqueado para realizar edição
-		}else if(data.getEditTable() == true && timestamp.after(timestamp2)) {
-
-			RequestContext.getCurrentInstance().execute("msgUser()");
-
-			save = true;
-			alterar = true;
-			reset = true;
-			new_ = false;
-			fields = true;
-			edit = true;
-			table = true;
-
-			//se o nome do usuário for igual o nome armazenado no atributo nameUser, acessamos a condição
-			if(userName.equals(data.getNameUser())){
-
-				//btn
-				save = true;
-				alterar = true;
-				edit = false;
-				new_ = false;
-				reset = true;
-				fields = true; 
-
-				//execute js
-				RequestContext.getCurrentInstance().execute("listUpdateFile2()");
-				RequestContext.getCurrentInstance().execute("unLock()");
-				RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
-				RequestContext.getCurrentInstance().execute("fileTotal()");
-
-				//senão se o nivel de acesso do usuário for igual a 1 ou igual a 6, acessamos a condição
-			}else if(nivelUser == 1 || nivelUser == 6) {
-				//btn
-				save = true;
-				alterar = true;
-				edit = false;
-				new_ = false;
-				reset = true;
-				fields = true; 
-
-				//execute js
-				RequestContext.getCurrentInstance().execute("listUpdateFile2()");
-				RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
-				RequestContext.getCurrentInstance().execute("fileTotal()");
-			}
-
-		}
-
-		//executando javascript
-		RequestContext.getCurrentInstance().execute("fileTotal1()");
-
-		//pega o id da tabela.
-		int id = getValue();
-
-		//criando caminho da seleção da pasta.
-		way = pathSQL;
-
-		//caminho criado
-		fileWay = new File(mainPath+way);
-		//System.out.println("Estamos aqui: > "+ fileWay);
-
-		int x = 0;
-
-		arquivos = fileWay.listFiles();
-
-		tableFile = new String[arquivos.length];
-		total = arquivos.length;
-		while (x != arquivos.length){
-
-			tableFile[x] = arquivos[x].getName();
-
-			System.out.println("Position: "+x+" < Arquivo na pasta > "+ tableFile[x]);
-
-			x++;
-
-		}
-		//passando valor final do método para a variavel tableFile
-		return tableFile;
-
-	}
+//		}else if(data.getEditTable() == false || timestamp.before(timestamp2)) {
+//
+//			//btn
+//			save = true;
+//			alterar = true;
+//			edit = false;
+//			new_ = false;
+//			reset = true;
+//			fields = true; 
+//
+//			//execute js
+//			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
+//			RequestContext.getCurrentInstance().execute("unLock()");
+//			RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+//			RequestContext.getCurrentInstance().execute("fileTotal()");
+//
+//			//senão se for igual a true acesso bloqueado para realizar edição
+//		}else if(data.getEditTable() == true && timestamp.after(timestamp2)) {
+//
+//			RequestContext.getCurrentInstance().execute("msgUser()");
+//
+//			save = true;
+//			alterar = true;
+//			reset = true;
+//			new_ = false;
+//			fields = true;
+//			edit = true;
+//			table = true;
+//
+//			//se o nome do usuário for igual o nome armazenado no atributo nameUser, acessamos a condição
+//			if(userName.equals(data.getNameUser())){
+//
+//				//btn
+//				save = true;
+//				alterar = true;
+//				edit = false;
+//				new_ = false;
+//				reset = true;
+//				fields = true; 
+//
+//				//execute js
+//				RequestContext.getCurrentInstance().execute("listUpdateFile2()");
+//				RequestContext.getCurrentInstance().execute("unLock()");
+//				RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+//				RequestContext.getCurrentInstance().execute("fileTotal()");
+//
+//				//senão se o nivel de acesso do usuário for igual a 1 ou igual a 6, acessamos a condição
+//			}else if(nivelUser == 1 || nivelUser == 6) {
+//				//btn
+//				save = true;
+//				alterar = true;
+//				edit = false;
+//				new_ = false;
+//				reset = true;
+//				fields = true; 
+//
+//				//execute js
+//				RequestContext.getCurrentInstance().execute("listUpdateFile2()");
+//				RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+//				RequestContext.getCurrentInstance().execute("fileTotal()");
+//			}
+//
+//		}
+//
+//		//executando javascript
+//		RequestContext.getCurrentInstance().execute("fileTotal1()");
+//
+//		//pega o id da tabela.
+//		int id = getValue();
+//
+//		//criando caminho da seleção da pasta.
+//		way = pathSQL;
+//
+//		//caminho criado
+//		fileWay = new File(mainPath+way);
+//		//System.out.println("Estamos aqui: > "+ fileWay);
+//
+//		int x = 0;
+//
+//		arquivos = fileWay.listFiles();
+//
+//		tableFile = new String[arquivos.length];
+//		total = arquivos.length;
+//		while (x != arquivos.length){
+//
+//			tableFile[x] = arquivos[x].getName();
+//
+//			System.out.println("Position: "+x+" < Arquivo na pasta > "+ tableFile[x]);
+//
+//			x++;
+//
+//		}
+//		//passando valor final do método para a variavel tableFile
+//		return tableFile;
+//
+//	}
 
 	//método listar arquivos
 	public String[] listFiles() throws Exception{
@@ -1154,7 +1336,7 @@ public void teste() {
 
 		//pega o total de arquivos no diretÃ³rio
 		total = arquivos.length;
-		System.out.println("Total Files: "+ total);
+		System.out.println("Total Files: "+ total );
 
 		listarFile = new String[arquivos.length];
 
@@ -1175,7 +1357,7 @@ public void teste() {
 
 	public String getImageUpload(String myImg) throws Exception{
 		//gerando o caminho onde se encontra a imagem
-		OccurrencesBean pegar= new OccurrencesBean();
+		OccurrencesBean2 pegar= new OccurrencesBean2();
 		int id = pegar.pegarId() - 1;
 		DateTimeApplication dddd = new DateTimeApplication();
 		LocalDate data = dddd.localeDate();
@@ -1327,14 +1509,14 @@ public void teste() {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(); //SOLUTION
 
-		OccurencesDao2 dao = new OccurencesDao2();
-		data = new OccurenceData2();
+		OccurrencesDAO2 dao = new OccurrencesDAO2();
+		data = new OccurrencesData2();
 		//pégando o id da ocorrência e atribuindo +1
 		int id = dao.GetId();
 		id += 1;
 		//criando variavel global
 
-		data.setSinistro(String.valueOf(id));
+		data.setData_number(String.valueOf(id));
 
 		//chamando mÃªs e ano, para passar para o caminho.
 		DateTimeApplication dddd = new DateTimeApplication();
@@ -1594,12 +1776,14 @@ public void teste() {
 			ct.addElement(p);
 			ct.go();
 			document.add(new Paragraph(evento+"\n"+"\n"));
-			document.add(new Paragraph(trad.occLabels("occ")+": "+data.getSinistro()+" "
-					+ trad.occLabels("Tipo")+(": ")+ trad.occurrencesTranslator(getPdf.getMotivo())+"         "
+			document.add(new Paragraph(trad.occLabels("occ")+": "+data.getData_number()+"        "
+					+ trad.occLabels("Tipo")+(": ")+ trad.occurrencesTranslator(getPdf.getType())+"         "
+					+ trad.occLabels("Origem")+(": ")+ trad.occurrencesTranslator(getPdf.getOrigin())+"          "
 					+ trad.occLabels("Situacao")+(": ")+ trad.occurrencesTranslator(getPdf.getState_occurrences())+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n "
 					));
+
 			//data e hora inicial
 			/*Rectangle dateHourStart = new Rectangle(577, 615, 10, 680); // you can resize rectangle 
 			dateHourStart.enableBorderSide(1);
@@ -1609,7 +1793,16 @@ public void teste() {
 			dateHourStart.setBorderColor(BaseColor.BLACK);
 			dateHourStart.setBorderWidth(1);
 			document.add(dateHourStart);*/
-		
+			document.add(new Paragraph(dateHour+"\n"+"\n"));
+			//data e hora inicial
+			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getStart_date()
+			+"             "+trad.occLabels("Inicial")+(": ")+data.getStart_hour()+":"+data.getStart_minute()+"  "+data.getTypeHour1()
+			+"             "+ trad.occLabels("Final")+": "+data.getEnd_date()+"             "+
+			trad.occLabels("Final")+": "+data.getEnd_hour()+":"+data.getEnd_minute()+" "+data.getTypeHour2()+"\n"
+			+"_____________________________________________________________________________"
+			+"\n\n"));
+
+
 			//causa prov�vel e descri��o principal e interna.
 			/*Rectangle causePr= new Rectangle(577, 310, 10, 610); // you can resize rectangle 
 			causePr.enableBorderSide(1);
@@ -1620,8 +1813,8 @@ public void teste() {
 			causePr.setBorderWidth(1);
 			document.add(causePr);*/
 			document.add(new Paragraph(causeProbable+"\n"+"\n"));
-			document.add(new Paragraph(trad.occLabels("Causa")+": "+trad.occurrencesTranslator(getPdf.getMotivo())+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("description")+": "+data.getObservacao()+"\n"
+			document.add(new Paragraph(trad.occLabels("Causa")+": "+trad.occurrencesTranslator(getPdf.getCause())+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("description")+": "+data.getCause_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 
@@ -1635,9 +1828,13 @@ public void teste() {
 			eventL.setBorderWidth(1);
 			document.add(eventL);*/
 			document.add(new Paragraph(eventoLocal+"\n"+"\n"));
-
-			document.add(new Paragraph(trad.occLabels("Sentido")+": "+getPdf.getDirecao()+"                         "
-		
+			document.add(new Paragraph("KM: "+data.getKilometer()+"            "
+					+ trad.occLabels("Rodovia")+": "+getPdf.getHighway()+"            "
+					+ trad.occLabels("Estado")+": "+data.getLocal_state()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Sentido")+": "+getPdf.getDirection()+"                         "
+					+ trad.occLabels("Faixa")+": "+getPdf.getLane()+"                 "
+					+ trad.occLabels("obs")+": "+data.getOthers()+"\n"
+					+"_____________________________________________________________________________"
 					+"\n\n"));
 			//Detalhes
 			/*	Rectangle details= new Rectangle(577, 255, 10, 355); // you can resize rectangle 
@@ -1649,7 +1846,12 @@ public void teste() {
 			details.setBorderWidth(1);
 			document.add(details);*/
 			document.add(new Paragraph(detalhes+"\n"+"\n"));
-		
+			document.add(new Paragraph(trad.occLabels("condition")+": "+ getPdf.getLocal_condition()+"  "
+					+ trad.occLabels("Condition track")+": "+ getPdf.getTraffic()+"   "
+					+ trad.occLabels("char")+": "+getPdf.getCharacteristic()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Interferencia Faixa")+": "+getPdf.getInterference()+"     "
+					+trad.occLabels("sinalizacao")+": "+getPdf.getSignaling()+"     "
+					+trad.occLabels("Situacao Condutor")+": "+ getPdf.getConductor_condition()));
 
 			//final da primeira p�gina
 
@@ -1673,7 +1875,11 @@ public void teste() {
 			descriptions.setBorderColor(BaseColor.BLACK);
 			descriptions.setBorderWidth(1);
 			document.add(descriptions);*/
-	
+			document.add(new Paragraph(description+"\n"+"\n"));
+			document.add(new Paragraph(trad.occLabels("Titulo Descricao")+": "+ data.getDescription_title()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("description")+": "+data.getDescription_text()+"\n"
+					+"_____________________________________________________________________________"
+					+"\n\n"));
 
 			//Envolvidos
 			/*Rectangle envolvido = new Rectangle(577, 670, 10, 810); // you can resize rectangle 
@@ -1685,8 +1891,8 @@ public void teste() {
 			envolvido.setBorderWidth(1);
 			document.add(envolvido);*/
 			document.add(new Paragraph(envolvidos+"\n"+"\n"));
-			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getNome()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("description")+": "+ data.getSaude()+"\n"
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getInvolved_type()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("description")+": "+ data.getInvolved_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 
@@ -1699,7 +1905,12 @@ public void teste() {
 			track1.setBorderColor(BaseColor.BLACK);
 			track1.setBorderWidth(1);
 			document.add(track1);*/
-
+			document.add(new Paragraph(track+"\n"+"\n"));
+			document.add(new Paragraph(trad.occLabels("Inicial")+": " + data.getTrackStartDate()+ "             "+trad.occLabels("Inicial")+": " + data.getTrackStartHour() + ":" + data.getTrackStartMinute()+"  "
+					+data.getTypeHour3()+ "             "+ trad.occLabels("Final")+": " + data.getTrackEndDate() + "             "+ trad.occLabels("Final")+": " + data.getTrackEndHour() + ":"+data.getTrackEndMinute()+"  "+data.getTypeHour4() + "\n\n"));
+			document.add(new Paragraph());
+			document.add(new Paragraph(trad.occLabels("Extensao(KM)")+": "+data.getTraffic_extension()+"            "
+					+trad.occLabels("Pista Interrompida")+": "+ getPdf.getTraffic_stopped()+"\n\n"));
 			document.newPage();//inicio da terceira p�gina
 
 			Rectangle rowPage2 = new Rectangle(577, 40, 10, 820); //linha da pagina 
@@ -1726,7 +1937,13 @@ public void teste() {
 			document.add(damage1);*/
 			document.add(new Paragraph(danos+"\n"+"\n"));
 			document.add(new Paragraph(""));
-
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getDamage_type_damage()+"     "
+					+trad.occLabels("Gravidade")+": "+ getPdf.getDamage_gravity()+"     "
+					+trad.occLabels("Unidade")+": "+getPdf.getDamageUnity()
+					+"     "+trad.occLabels("Quantidade")+": "+data.getDamage_amount()+ "\n\n"));
+			document.add(new Paragraph(trad.occLabels("description")+": "+data.getDemage_description()+"\n"
+					+"_____________________________________________________________________________"
+					+"\n\n"));
 			//a�tion
 			/*Rectangle action1 = new Rectangle(577, 225, 10, 415); // you can resize rectangle 
 			action1.enableBorderSide(1);
@@ -1738,129 +1955,17 @@ public void teste() {
 			document.add(action1);*/
 			document.add(new Paragraph(action+"\n"+"\n"));
 
-
-
-			//causa prov�vel e descri��o principal e interna.
-
-			document.add(new Paragraph(causeProbable+"\n"+"\n"));
-			document.add(new Paragraph(trad.occLabels("Causa")+": "+trad.occurrencesTranslator(getPdf.getMotivo())+"\n\n"));
-
-		
-	
-			document.add(new Paragraph(eventoLocal+"\n"+"\n"));
-			document.add(new Paragraph("KM: "+data.getKmregistro()+"    "
-					+ trad.occLabels("Rodovia")+": "+getPdf.getPedagio()+"\n\n"));
-			
-			document.add(new Paragraph(trad.occLabels("Sentido")+": "+getPdf.getDirecao()+"  "
-					+ trad.occLabels("obs")+": "+data.getObservacao()+"\n"
-					+"_____________________________________________________________________________"
-					+"\n\n"));
-			//Evento Local
-			/*Rectangle eventL= new Rectangle(577, 90, 10, 300); // you can resize rectangle 
-			eventL.enableBorderSide(1);
-			eventL.enableBorderSide(2);
-			eventL.enableBorderSide(4);
-			eventL.enableBorderSide(8);
-			eventL.setBorderColor(BaseColor.BLACK);
-			eventL.setBorderWidth(1);
-			document.add(eventL);*/
-		
-			/*	Rectangle details= new Rectangle(577, 255, 10, 355); // you can resize rectangle 
-			details.enableBorderSide(1);
-			details.enableBorderSide(2);
-			details.enableBorderSide(4);
-			details.enableBorderSide(8);
-			details.setBorderColor(BaseColor.BLACK);
-			details.setBorderWidth(1);
-			document.add(details);*/
-			document.add(new Paragraph(detalhes+"\n"+"\n"));
-
-
-			//final da primeira p�gina
-
-			document.newPage();//inicio da segunda p�gina
-			Rectangle rowPage11 = new Rectangle(577, 40, 10, 820); //linha da pagina 
-			rowPage11.setBorderColor(BaseColor.BLACK);
-			rowPage11.setBorderWidth(2);
-			rowPage11.setBorder(Rectangle.BOX);
-			document.add(rowPage11);
-			ColumnText ct11 = new ColumnText(writer.getDirectContent());
-			ct11.setSimpleColumn(700,0,200,30);
-			Paragraph p11 = new Paragraph();
-			p11.add("                              "+"Pag 2");//paragrafo Evento
-			ct11.addElement(p11);
-			ct11.go();
-			/*Rectangle descriptions= new Rectangle(577, 110, 10, 250); // you can resize rectangle 
-			descriptions.enableBorderSide(1);
-			descriptions.enableBorderSide(2);
-			descriptions.enableBorderSide(4);
-			descriptions.enableBorderSide(8);
-			descriptions.setBorderColor(BaseColor.BLACK);
-			descriptions.setBorderWidth(1);
-			document.add(descriptions);*/
-		
-
-			//Envolvidos
-			/*Rectangle envolvido = new Rectangle(577, 670, 10, 810); // you can resize rectangle 
-			envolvido.enableBorderSide(1);
-			envolvido.enableBorderSide(2);
-			envolvido.enableBorderSide(4);
-			envolvido.enableBorderSide(8);
-			envolvido.setBorderColor(BaseColor.BLACK);
-			envolvido.setBorderWidth(1);
-			document.add(envolvido);*/
-		
-
-			//Tr�nsito
-			/*Rectangle track1 = new Rectangle(577, 560, 10, 665); // you can resize rectangle 
-			track1.enableBorderSide(1);
-			track1.enableBorderSide(2);
-			track1.enableBorderSide(4);
-			track1.enableBorderSide(8);
-			track1.setBorderColor(BaseColor.BLACK);
-			track1.setBorderWidth(1);
-			document.add(track1);*/
-			document.add(new Paragraph(track+"\n"+"\n"));
-
-			document.add(new Paragraph());
-
-
-			Rectangle rowPage21 = new Rectangle(577, 40, 10, 820); //linha da pagina 
-			rowPage21.setBorderColor(BaseColor.BLACK);
-			rowPage21.setBorderWidth(2);
-			rowPage21.setBorder(Rectangle.BOX);
-			document.add(rowPage21);
-
-			ColumnText ct21 = new ColumnText(writer.getDirectContent());
-			ct21.setSimpleColumn(700,0,200,30);
-			Paragraph p21 = new Paragraph();
-			p21.add("                              "+"Pag 3");//paragrafo Evento
-			ct21.addElement(p21);
-			ct21.go();
-
-			//Danos
-			/*Rectangle damage1 = new Rectangle(577, 420, 10, 555); // you can resize rectangle 
-			damage1.enableBorderSide(1);
-			damage1.enableBorderSide(2);
-			damage1.enableBorderSide(4);
-			damage1.enableBorderSide(8);
-			damage1.setBorderColor(BaseColor.BLACK);
-			damage1.setBorderWidth(1);
-			document.add(damage1);*/
-			document.add(new Paragraph(danos+"\n"+"\n"));
-			document.add(new Paragraph(""));
-
-
-			/*Rectangle action1 = new Rectangle(577, 225, 10, 415); // you can resize rectangle 
-			action1.enableBorderSide(1);
-			action1.enableBorderSide(2);
-			action1.enableBorderSide(4);
-			action1.enableBorderSide(8);
-			action1.setBorderColor(BaseColor.BLACK);
-			action1.setBorderWidth(1);
-			document.add(action1);*/
-//darken date and time
-		
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getAction_type()+"             "
+					+trad.occLabels("Situacao")+": "+getPdf.getStatusAction()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getActionStartData()
+			+"     "+trad.occLabels("Inicial")+": "+data.getActionStartHour()
+			+":"+data.getActionStartMinute()+"  "+data.getTypeHour5()
+			+"             "+trad.occLabels("Final")+": "+data.getActionEndData()
+			+"             "+trad.occLabels("Final")+": "+data.getActionEndHour()
+			+":"+data.getActionEndMinute()+"  "+data.getTypeHour6()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("description")+": "+data.getAction_description()+"\n"
+					+"_____________________________________________________________________________\n"));
+			//darken date and time
 			int day1 = LocalDateTime.now().getDayOfMonth();
 			int year1 = LocalDateTime.now().getYear();
 			int month1 = LocalDateTime.now().getMonthValue();
@@ -1868,7 +1973,12 @@ public void teste() {
 			int minute1 = LocalDateTime.now().getMinute();
 			int second1 = LocalDateTime.now().getSecond();
 
-
+			//if the variable is less than ten, I access the condition and add a zero before the minute.
+			if(day1 < 10) {dayPdf = "0"+String.valueOf(day1);}else {dayPdf = String.valueOf(day1);}
+			if(hour1 < 10) {hourPdf = "0"+String.valueOf(hour1);}else {hourPdf = String.valueOf(hour1);}
+			if(month1 < 10) {monthPdf = "0"+String.valueOf(month1);}else {monthPdf = String.valueOf(month1);}
+			if(minute1 < 10) {minutePdf = "0"+String.valueOf(minute1);}else {minutePdf = String.valueOf(minute1);}
+			if(second1 < 10) {secondPdf = "0"+String.valueOf(second1);}else {secondPdf = String.valueOf(second1);}	
 
 			//System.out.println("testando aqui agora: "+ day+"/"+month+"/"+year);
 			userName = (String) facesContext.getExternalContext().getSessionMap().get("user");
@@ -1892,7 +2002,7 @@ public void teste() {
 		// DOWNLOAD
 
 		externalContext.setResponseContentType("application/pdf");
-		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+"OCC_"+data.getSinistro()+".pdf\"");
+		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+"OCC_"+data.getData_number()+".pdf\"");
 
 		externalContext.setResponseContentLength(baos.size());
 
@@ -2065,11 +2175,11 @@ public void teste() {
 		String second = String.valueOf(sec);
 		String date = dia+"/"+mes+"/"+ano+" "+hora+":"+minute+":"+second;
 
-		OccurencesDao2 occ = new OccurencesDao2();
-		String id = data.getSinistro();
+		OccurrencesDAO2 occ = new OccurrencesDAO2();
+		String id = data.getData_number();
 		String lastData = date;
 		String user = nameUser;
-		
+		occ.lastUser(id, lastData, user);
 
 		TimeUnit.MINUTES.sleep(1);
 		RequestContext request = RequestContext.getCurrentInstance();
@@ -2089,10 +2199,10 @@ public void teste() {
 
 		} catch (IOException e) {											
 			return "";
-		}}}
+		}
 
-
-
-
-
+	}	
+ 
+		
+}
 
