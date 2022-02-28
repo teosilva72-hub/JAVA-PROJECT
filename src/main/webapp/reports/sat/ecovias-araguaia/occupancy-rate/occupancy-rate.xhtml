@@ -23,13 +23,14 @@
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('NOME_ESTACAO')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.additionalTitleName(true)}" />	
 	   	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_dados15')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('NOME_ESTACAO')}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.global_equipment_id_column, satLabels.occupancy_lane ,satLabels.occupancy_rate))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.global_equipment_id_column, satLabels.occupancy_rate))}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(DATA_HORA, `%d/%m/%Y`) as sd; TIME($period)@sd; NOME_ESTACAO; NOME_FAIXA; SUM((VOLUME_TOTAL * TAXA_OCUPACAO) / VOLUME_TOTAL)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(DATA_HORA, `%d/%m/%Y`) as sd; TIME($period)@sd; NOME_ESTACAO; ROUND(SUM(TAXA_OCUPACAO * VOLUME_TOTAL) / SUM(VOLUME_TOTAL), 5)')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_estacao')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
@@ -43,6 +44,7 @@
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('DATA_HORA', reportsLabels.reports_select_date, true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('NOME_ESTACAO', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', true, true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('NOME_FAIXA', reportsLabels.reports_select_lanes, 'filter_lane.id_lane', false, true)}" />
 		
     </f:metadata>
 	
@@ -102,7 +104,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="#{satLabels.ecovias_araguaia_occupancy_rate_title}" /> <!-- NAME LABEL -->
+	       <h:outputText value="#{satLabels.ecovias_araguaia_occupancy_rate_title} #{reportBean.laneName}" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 

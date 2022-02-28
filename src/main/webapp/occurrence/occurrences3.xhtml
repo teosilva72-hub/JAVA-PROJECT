@@ -411,11 +411,11 @@
 
 		<div class="text-center">
 			<!-- Botão modal nova ocorrencia -->
-		
-				<h:commandButton id="modal1" class="btnConf2 text-center" disabled="#{occurrencesBean.btnEnable}" value="#{occLabels.btn_novo}">
+			<h:commandButton id="modal1" class="btnConf2 text-center" disabled="#{occurrencesBean.btnEnable}" value="#{occLabels.btn_novo}">
 				   <f:passThroughAttribute name="data-toggle" value="modalnovo" />
                     <f:ajax execute="@form" render="@none" />
                                             </h:commandButton>
+			
 
 		</div>
 
@@ -778,6 +778,7 @@
 												<h:inputText value=""
 													id="report" name="report" class="form-control inputDesign" disabled="#{occurrencesBean.fields}" />
 											</div>
+											
 
 											<div class="form-group col-md-5">
 												<em for="inputAddress">#{occLabels.$label_occ_reports_sinistro}</em>
@@ -855,99 +856,9 @@
 											</div>
 
 											<!-- SINALICAO -->
-											<div class="form-row">
-												<div class="form-group col-md-5">
-													<em for="inputAddress2">#{occLabels.$label_occ_vehicle_type}</em>
-													<h:selectOneMenu value="#{occurrencesBean.data2.tipo_veic}"
-														id="typeveic" name="typeveic"
-														class="form-control inputDesign"
-														disabled="#{occurrencesBean.fields}">
-														<f:selectItem itemLabel="select" itemValue="" />
-														<f:selectItems value="#{occurrencesBean.sinalizacoes}" />
-													</h:selectOneMenu>
-												</div>
-												<!-- SITUACAO CONDUTOR -->
-
-												<div class="form-group col-md-5">
-													<em for="inputCity">#{occLabels.$label_occ_vehicle_quantity}</em>
-													<h:selectOneMenu
-														value="#{occurrencesBean.data2.quantidade}" id="quantveic"
-														name="quantveic" class="form-control inputDesign"
-														disabled="#{occurrencesBean.fields}">
-														<f:selectItem itemLabel="select" itemValue="" />
-														<f:selectItems
-															value="#{occurrencesBean.estado_condutores}" />
-													</h:selectOneMenu>
-												</div>
-											</div>
+											
 											<!-- TITULO DA DESCRICAO -->
-											<div class="form-row">
-												<div class="form-group col-md-1">
-													<em for="inputAddress">#{occLabels.$label_occ_number}</em>
-													<h:selectOneMenu
-														value="#{occurrencesBean.data2.numveiculo}" name="num"
-														id="num" disabled="#{occurrencesBean.fields}"
-														class="form-control inputDesign">
-														<f:selectItem itemLabel="select" itemValue="" />
-														<!-- falta alterar parametro -->
-														<f:selectItems value="#{occurrencesBean.horas}" />
-													</h:selectOneMenu>
-													<span style="display: none;" class="errorInputs"
-														id="errorTrack2">#{occLabels.occ_error_input}</span>
-												</div>
-
-
-												<div class="form-group col-md-2">
-													<em for="inputAddress">#{occLabels.$label_occ_vehicle_brand}</em>
-													<h:inputText value="#{occurrencesBean.data2.marca}"
-														id="brand" name="brand" onclick="validatorJs();"
-														class="form-control inputDesign"
-														disabled="#{occurrencesBean.fields}" />
-												</div>
-												<!-- HORA INICIAL -->
-												<div class="form-group col-md-2">
-													<em for="inputEmail4">#{occLabels.$label_occ_type}</em>
-													<h:inputText value="#{occurrencesBean.data2.tipo_veic}"
-														id="type" name="type" onclick="validatorJs();"
-														class="form-control inputDesign"
-														disabled="#{occurrencesBean.fields}" />
-												</div>
-
-												<!-- MINUTO INICIAL -->
-
-												<div class="form-group col-md-2">
-													<em for="inputEmail4">#{occLabels.$label_occ_vehicle_model}</em>
-													<h:inputText value="#{occurrencesBean.data2.modelo}"
-														id="model" name="model" onclick="validatorJs();"
-														class="form-control inputDesign"
-														disabled="#{occurrencesBean.fields}" />
-
-												</div>
-												<div class="form-group col-md-2">
-													<em for="inputCity">#{occLabels.$label_occ_vehicle_color}</em>
-													<h:inputText value="#{occurrencesBean.data2.cor}"
-														id="color" name="color" onclick="validatorJs();"
-														class="form-control inputDesign"
-														disabled="#{occurrencesBean.fields}" />
-												</div>
-
-												<div class="form-group col-md-1">
-													<em for="inputAddress">#{occLabels.$label_occ_vehicle_plate}</em>
-													<h:inputText value="#{occurrencesBean.data2.placa}"
-														id="plate" name="plate" onclick="validatorJs();"
-														class="form-control inputDesign"
-														disabled="#{occurrencesBean.fields}" />
-												</div>
-
-												<div class="form-group col-md-1">
-													<em for="inputAddress2">#{occLabels.$label_occ_vehicle_telefone}</em>
-													<h:inputText value="#{occurrencesBean.data2.telefone}"
-														id="tel" name="tel" onclick="validatorJs();"
-														class="form-control inputDesign"
-														disabled="#{occurrencesBean.fields}" />
-
-												</div>
-											</div>
+											
 											<div class="form-row">
 												<div class="form-group col-md-1">
 													<em for="inputCity">#{occLabels.$label_occ_number}</em>

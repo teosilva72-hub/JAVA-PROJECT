@@ -61,8 +61,8 @@ public class ReportBean {
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
 	public boolean 	isSat = false, haveTotal, multiSheet = true, equipSheetName = false, directionsOnSheet = false, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false,
-			groupId = false,  limitColumn = false, hasDivision = false;
-	
+			groupId = false,  limitColumn = false, hasDivision = false, additionalTitleName = false;
+		
 	public String totalType = "standard";
 	public String module = "default";
 	
@@ -77,6 +77,7 @@ public class ReportBean {
 	private String useIndex;
 	private String orderDate;
 	private String[] division;
+	private String laneName = "";
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
@@ -435,6 +436,10 @@ public class ReportBean {
 		this.equipSheetName = equipSheetName;
 	}
 	
+	public void additionalTitleName(boolean additionalTitleName) {
+		this.additionalTitleName = additionalTitleName;
+	}
+	
 	public void groupByID(boolean groupId) {
 		this.groupId = groupId;
 	}
@@ -517,7 +522,15 @@ public class ReportBean {
 	public List<String> getRight(Pair<String[], List<String>> pair) {
 		return pair.right;
 	}
-					
+	
+	public String getLaneName() {
+		return laneName;
+	}
+	
+	public void setLaneName(String laneName) {
+		this.laneName = laneName;
+	}
+						
 	// ----------------------------------------------------------------------------------------------------------------
 		
 		// CLASS PATH
@@ -540,6 +553,7 @@ public class ReportBean {
 		
 		// CONSTRUTOR 
 		
+
 	@PostConstruct
 	public void initialize() {
 		
@@ -808,6 +822,9 @@ public class ReportBean {
 																			
 							if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO"))														
 								equipIDs.add(f);
+							
+							if(search.left[0].equals("NOME_FAIXA"))
+								laneName = " : "+ getLaneName(f);
 																												
 							if (f.contains(",")) {
 								String[] splitF = f.split(",");
@@ -832,10 +849,13 @@ public class ReportBean {
 					if (!f.isEmpty())
 						filter = String.format("%s'%s'", caseSensitive ? "BINARY " : "", f);
 					if (search.left[0].equals(idTable))
-						idSearch.add(f);
+						 idSearch.add(f);
 					
 					if(search.left[0].equals("siteID"))														
-						equipIDs.add(f);
+						 equipIDs.add(f);
+					
+					if(search.left[0].equals("NOME_FAIXA"))
+						laneName = " : "+getLaneName(f);
 				}
 
 				if (count == 0 && !filter.isEmpty()) {
@@ -872,6 +892,7 @@ public class ReportBean {
 				
 				query += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", group, extraGroup, orderDate != null ? orderDate + ", " : "", order);
 				//System.out.println("QUERY5: "+query);
+				
 				if (queryMS != null)
 					queryMS += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", groupMS, extraGroup, orderDate != null ? orderDate + ", " : "", orderMS);
 			} else if (orderDate != null) {
@@ -895,8 +916,8 @@ public class ReportBean {
 		    boolean hasValue = true;
 		   		  		   
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
-				hasValue = this.setIntervalDate(dateProcess, columnDate, period, module, equipIDs);
-		          										
+				hasValue = this.setIntervalDate(dateProcess, columnDate, period, module, equipIDs);	    						
+				
 			// -------------------------------------------------------------------------------------
 					
 			// CASO NÃO EXISTA VALOR			
@@ -931,7 +952,14 @@ public class ReportBean {
 						  
 			SessionUtil.executeScript("drawTable()");
 			
-			// -------------------------------------------------------------------------------------	
+			// -------------------------------------------------------------------------------------
+			
+			// WHILE ONLY FOR LANE NAME
+			
+			if(additionalTitleName)
+				fileTitle += laneName;
+			
+			// -------------------------------------------------------------------------------------
 			
 			if(division != null)
 				hasDivision = true;
@@ -1126,6 +1154,7 @@ public class ReportBean {
 						model[sep ? 2 : 1] = tempEquips.remove(0);						
 						newList.add(model.clone());
 					}
+					fill = 0;
 					calendar.add(interval, Integer.parseInt(period[0]));					
 				}
 			}
@@ -1412,6 +1441,29 @@ public class ReportBean {
 	   
 	// --------------------------------------------------------------------------------------------	
 	   
+	   public String getLaneName(String name) {
+		   
+		   String lane = "";
+		   
+		   switch(name) {
+		   		
+		   case "1" : lane = locale.getStringKey("reports_lane1_name"); break;
+		   case "2" : lane = locale.getStringKey("reports_lane2_name"); break;
+		   case "3" : lane = locale.getStringKey("reports_lane3_name"); break;
+		   case "4" : lane = locale.getStringKey("reports_lane4_name"); break;
+		   case "5" : lane = locale.getStringKey("reports_lane5_name"); break;
+		   case "6" : lane = locale.getStringKey("reports_lane6_name"); break;
+		   case "7" : lane = locale.getStringKey("reports_lane7_name"); break;
+		   case "8" : lane = locale.getStringKey("reports_lane8_name"); break;
+		   		
+		   
+		   }	
+		   
+		   return lane;
+		   
+	   }
+	   
+	// --------------------------------------------------------------------------------------------	  
 	   
 		
 }

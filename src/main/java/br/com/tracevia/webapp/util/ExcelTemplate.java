@@ -995,13 +995,14 @@ public class ExcelTemplate {
 		} else if(!isEquipNameSheet && isDirectionsOnSheet) {
 						
 			lanesLista = dao.listarFaixas();
+			String lane = dao.firstLane(equips.get(op));
 			
 			int dirCol = endCol + 1;
 			utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
 			
 			String[] dirs = getFiltersDirection(directions);
 			
-			String laneValue = getLane(lanesLista.get(0).getDirection(), dirs);
+			String laneValue = getLane(lane, dirs);
 			
 			utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);									
 				
@@ -1173,9 +1174,7 @@ public class ExcelTemplate {
 					utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
 					
 				}
-				
-				System.out.println("DAY = > "+p.left+" QUANT: "+p.right.size());
-				
+							
 					utilSheet.fileBodySimpleDirs(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, op, daysCount, startCol, endCol, dirCol, dataStartRow, dataEndRow, false, isDirectionsOnSheet);													
 															
 				} else if(!isEquipNameSheet && isDirectionsOnSheet) {
@@ -1404,17 +1403,19 @@ public class ExcelTemplate {
 				
 				String[] dirs = null;	
 				int dirCol = 0;
+				String lane = "";
 				
 				if(isDirectionsOnSheet) {
 				
 					lanesLista = dao.listarFaixas();
+					lane = dao.firstLane(equips.get(op));
 					
 					dirCol = endCol + 1;			
 					utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
 							
 					dirs = getFiltersDirection(directions);
 					
-					String laneValue = getLane(lanesLista.get(0).getDirection(), dirs);
+					String laneValue = getLane(lane, dirs);
 					
 					utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
 					
@@ -1427,13 +1428,14 @@ public class ExcelTemplate {
 			} else if(!isEquipNameSheet && isDirectionsOnSheet) {
 				
 				lanesLista = dao.listarFaixas();
+				String lane = dao.firstLane(equips.get(op));
 				
 				int dirCol = endCol + 1;			
 				utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
 						
 				String[] dirs = getFiltersDirection(directions);
 				
-				String laneValue = getLane(lanesLista.get(0).getDirection(), dirs);
+				String laneValue = getLane(lane, dirs);
 				
 				utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
 				
@@ -1610,10 +1612,8 @@ public class ExcelTemplate {
 						utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
 						
 					}
-					
-					System.out.println("TIME: "+p.right.size());
-					
-					//utilSheet.fileBodyMultiDirs(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, op, daysCount, interval, startCol, endCol, dirCol, dataStartRow, dataEndRow, false, isDirectionsOnSheet);						
+							
+					utilSheet.fileBodyMultiDirs(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, op, daysCount, interval, startCol, endCol, dirCol, dataStartRow, dataEndRow, false, isDirectionsOnSheet);						
 					
 				}else if(!isEquipNameSheet && isDirectionsOnSheet) {
 					
