@@ -6,30 +6,28 @@
     xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
     xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui">
     
+       
    <h:body>   
       	 	 
           <!-- CHART CONTENT: ESTRUTURA DE SUPORTE PARA O GRÁFICO -->
                   		    		
-		    <div class="chart-wrapper mt-5 invisible" > <!-- CHART DIV -->
+		    <div id="chart-area" class="invisible" > <!-- CHART DIV -->		
 		    
-		    <a class="text-decoration-none" id="close-link"> <!-- CLOSE CHART BUTTON -->
+		     <a class="text-decoration-none" id="close-link"> <!-- CLOSE CHART BUTTON -->
               <span id="btn-chart-close"><i class="fas fa-times"></i></span>
             </a><!-- -->
-          
-             <!-- DIV THAT WILL HOLD CHART -->
-             <div id="chart-div"></div> <!---->    
-                           
-             <!-- CHART DOWNLOAD BUTTON LINK -->              
-             <a class="text-decoration-none" id="download-link">             
-             <span id="btn-chart-download"> 
-             <i class="fas fa-download chart-icon"></i>  
-             </span>              
-            </a>  <!---->
-          
+                      		          
+		          <ul id="tabs" class="nav nav-tabs justify-content-center mt-5" role="tablist" >	          
+		          </ul>		          
+		          <div class="tab-content">	            
+		         </div>		             
+		          
            </div> <!---->
            
          <!---->
 			  
-   </h:body>        
+   </h:body> 
+   
+      <!---->       
                                 
 </html>
