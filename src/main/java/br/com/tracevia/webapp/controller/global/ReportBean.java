@@ -21,8 +21,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
-import org.primefaces.context.RequestContext;
-
 import com.google.gson.Gson;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
@@ -1320,9 +1318,7 @@ public class ReportBean {
 	    public void createChartData(boolean chartBool, String[] period, List<String> columns, List<String[]> lines, List<String> ids) {
 					
 	    TranslationMethods tm = new TranslationMethods();
-	    	
-		String vAxisTitle = tm.verticalAxisTranslate(vAxis);
-				
+	   				
 		LocalDateTime local =  LocalDateTime.now();
 		EquipmentsDAO dao = new EquipmentsDAO();
 						
@@ -1371,9 +1367,9 @@ public class ReportBean {
 	        //System.out.println(jsData);
 	        	   	       	        
 	        if(period[1].toUpperCase().equals("DAY"))
-	           SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"', '"+vAxisTitle+"', '"+ dateFormat +"', '"+imageName+"');");
+	           SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"', '"+vAxis+"', '"+ dateFormat +"', '"+imageName+"');");
 	        
-	        else SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"','"+vAxisTitle+"', '"+ datetimeFormat +"', '"+imageName+"');");
+	        else SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"','"+vAxis+"', '"+ datetimeFormat +"', '"+imageName+"');");
 	       		
 		}
      }	
@@ -1381,16 +1377,12 @@ public class ReportBean {
 	 // --------------------------------------------------------------------------------------------	
 	    		
 		public void createChartData(List<String> equips, String modulo, String startDate, String endDate, String[] period, List<String> columns, List<String[]> lines) {
-			  
-			 // boolean chartBool, String[] period, List<String> columns, List<String[]> lines, List<String> ids
-			  
+			  						  
 			// -------------------------------------------------------------------
 			  
 			  	TranslationMethods tm = new TranslationMethods();
 			  	DateTimeApplication dta = new DateTimeApplication();
-		    	
-				String vAxisTitle = tm.verticalAxisTranslate(vAxis);
-						
+		    							
 				LocalDateTime local =  LocalDateTime.now();
 				EquipmentsDAO dao = new EquipmentsDAO();
 								
@@ -1462,8 +1454,7 @@ public class ReportBean {
 	        		        } 
 	        			   
 	        			   linesAux.add(aux);	       
-	        			  
-		        		   
+	        			  		        		   
 		        		}	        	   
 	        	   }
 	         
@@ -1491,12 +1482,10 @@ public class ReportBean {
 						} catch (ParseException e) {							
 							e.printStackTrace();
 						} 
-				
-				System.out.println(vAxisTitle);
-				
+							
 				SessionUtil.executeScript(" $('#tabs').empty()");
 																	      	 
-				SessionUtil.executeScript("console.log('FOI-SE');createTabs('"+module+"','"+jsonArray+"', '"+jsColumn+"', '"+jsData+"', '"+periodRange+"', '"+title+"', '"+vAxisTitle+"', '"+dateFormat+"', '"+imageName+"')");
+				SessionUtil.executeScript("console.log('FOI-SE');createTabs('"+module+"','"+jsonArray+"', '"+jsColumn+"', '"+jsData+"', '"+periodRange+"', '"+title+"', '"+vAxis+"', '"+dateFormat+"', '"+imageName+"')");
 						  
 		  }	    	  
 		

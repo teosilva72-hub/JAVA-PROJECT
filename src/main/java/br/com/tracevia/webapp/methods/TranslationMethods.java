@@ -834,16 +834,8 @@ public class TranslationMethods {
 	    	
 	    	LocaleUtil locale = new LocaleUtil();
 	    	locale.getResourceBundle(LocaleUtil.LABELS_CHARTS);
-	    	
-	    	String vertical = "";
-	    	
-	    	switch(vAxis) {
-	    	
-	    	case "vehicle": vertical = locale.getStringKey("chart_h_axis_vehicles"); break;
-		    	
-	    	}
-	    	   	    		    	
-	    	return vertical;
+	    	    		    		    	   	    		    	
+	    	return locale.getStringKey(vAxis);
 	    	
 	    }
      
