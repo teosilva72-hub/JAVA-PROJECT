@@ -63,7 +63,7 @@ $(function() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/* Esconder Divs Tab1, Tab2 e Tab3 -->*/
 		var table;
-		function onload(){
+		/*function onload(){
 		
         	document.getElementById("tab2").style.display = "none";
 	    	document.getElementById("tab3").style.display = "none";
@@ -90,9 +90,9 @@ $(function() {
 		    document.getElementById("tab1").style.display = "block";
 
 			
-		}
+		}*/
 		//Quando clicar no botão aparecerá a div correspondente
-		function mostrarTab2(){
+		/*function mostrarTab2(){
 		    document.getElementById("tab3").style.display = "none";		
 		    document.getElementById("tab2").style.display = "block";
  			document.getElementById("tab1").style.display = "none";
@@ -122,7 +122,7 @@ $(function() {
 			
 			document.getElementById("btn3").style.background = "blue";	//btn3 form3
 			document.getElementById("btn3").style.border = "none";	//bt3 form3
-		}
+		}*/
   //////////////////////////////////////////////////////////////////////////
  ////////////////INÍCIO DAS TABELAS///////////////// INÍCIO DAS TABELAS////
 /////ESCONDER TABELAS/////////////////////////////////////////////////////
@@ -217,7 +217,7 @@ function bloquerTable(){
         }).get();
         	idMessage = tableData[0]; // td posição 0 da row (Primeira posição)
         	//Chamar Action do Botão Hidden
-        	document.getElementById('formId:hdnBtn').click(); 
+        	//document.getElementById('formId:hdnBtn').click(); 
 	        	//Passar o id para dialog
 	        	$('#selectedId').text(idMessage);
 			});
