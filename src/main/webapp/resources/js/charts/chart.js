@@ -144,7 +144,7 @@
     //DRAW CHART
      chart.draw(data, options); 
      
-  google.visualization.events.addListener(chart, 'ready', function() {
+     google.visualization.events.addListener(chart, 'ready', function() {
       
        var canvas;
        var domURL;

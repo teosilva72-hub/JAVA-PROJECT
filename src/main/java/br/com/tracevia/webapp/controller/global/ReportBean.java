@@ -21,6 +21,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
+import org.primefaces.context.RequestContext;
+
 import com.google.gson.Gson;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
@@ -61,7 +63,7 @@ public class ReportBean {
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
 	public boolean 	isSat = false, haveTotal, multiSheet = true, equipSheetName = false, directionsOnSheet = false, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false,
-			groupId = false,  limitColumn = false, hasDivision = false, additionalTitleName = false;
+			groupId = false,  limitColumn = false, hasDivision = false, additionalTitleName = false, multiChart = false;
 		
 	public String totalType = "standard";
 	public String module = "default";
@@ -387,6 +389,10 @@ public class ReportBean {
 	public void defineDirectionsOnSheet(boolean directionsOnSheet) {
 		this.directionsOnSheet = directionsOnSheet;
 	}
+	
+	public void defineMultiChart(boolean multiChart) {
+		this.multiChart = multiChart;
+	}
 		
 	public void defineModule(String module) {
 		this.module = module;
@@ -530,6 +536,14 @@ public class ReportBean {
 	public void setLaneName(String laneName) {
 		this.laneName = laneName;
 	}
+	
+	public boolean isMultiChart() {
+		return multiChart;
+	}
+
+	public void setMultiChart(boolean multiChart) {
+		this.multiChart = multiChart;
+	}	
 						
 	// ----------------------------------------------------------------------------------------------------------------
 		
@@ -552,8 +566,7 @@ public class ReportBean {
 		// --------------------------------------------------------------------------------------------		
 		
 		// CONSTRUTOR 
-		
-
+			
 	@PostConstruct
 	public void initialize() {
 		
@@ -944,7 +957,7 @@ public class ReportBean {
 				if(module.equals("sat")) {
 					
 					if(specialName.equals("counting-flow"))
-						satTab.satHeaderInformation(module, report.IDs);
+						satTab.satHeaderInformation(module, equipIDs);
 				}
 			 }
 			
@@ -980,13 +993,17 @@ public class ReportBean {
 					Pair<List<String>, List<String[]>> data = processChartData();
 	      	 
 		 	    	build.chartBool = false;
-	      		    createChartData(build.chartBool, period, data.left, data.right, report.IDs);
-	      	    } 
-			
+		 	    	
+		 	    	if(!multiChart)
+		 	    		createChartData(build.chartBool, period, data.left, data.right, equipIDs);
+		 	    	
+		 	    	else createChartData(equipIDs, module, dateStart, dateEnd, period, data.left, data.right);
+		 	    	      		    
+	      	    }		
 	        }
-			
-	   // -------------------------------------------------------------------------------------------------------------------------------------------------
-	
+	  
+	  // -------------------------------------------------------------------------------------------------------------------------------------------------
+	  			
 	   public void download() {
 		   
 		DateTimeApplication dta = new DateTimeApplication();
@@ -1334,7 +1351,7 @@ public class ReportBean {
 		 } else  title =  chartTitle+ " - " + period[2];
 		 
 		 // -------------------------------------------------------------------
-		
+			
 		if(!chartBool) {
 					 		  	   		
 	        // Create a new instance of Gson
@@ -1362,6 +1379,128 @@ public class ReportBean {
      }	
 		
 	 // --------------------------------------------------------------------------------------------	
+	    		
+		public void createChartData(List<String> equips, String modulo, String startDate, String endDate, String[] period, List<String> columns, List<String[]> lines) {
+			  
+			 // boolean chartBool, String[] period, List<String> columns, List<String[]> lines, List<String> ids
+			  
+			// -------------------------------------------------------------------
+			  
+			  	TranslationMethods tm = new TranslationMethods();
+			  	DateTimeApplication dta = new DateTimeApplication();
+		    	
+				String vAxisTitle = tm.verticalAxisTranslate(vAxis);
+						
+				LocalDateTime local =  LocalDateTime.now();
+				EquipmentsDAO dao = new EquipmentsDAO();
+								
+				DateTimeFormatter format = DateTimeFormatter.ofPattern("dd_MM_yyyy_HH_mm");  
+			    String formatDateTime = local.format(format);  			 	     			     			 
+									  			    	  				
+				String title =  chartTitle+ " - " + period[2]; 
+				
+				imageName += "_"+formatDateTime; // NAME OF FILE WITH TIME
+				 
+			// -------------------------------------------------------------------
+			  
+				 int periodRange = 0;
+				 
+			  	// Create a new instance of Gson
+		      	Gson gson = new Gson();			    
+		     	    	  
+		        String[] array = dao.equipmentsName(modulo, equips);
+	    	  
+	    	  	String jsonArray = gson.toJson(array);	
+	    	  	
+	    	  	List<String> columnsAux = new ArrayList<String>();
+	    	  	List<String[]> linesAux = new ArrayList<String[]>();
+	    	  	
+	    	  	for(String field : columns) {
+	    	  		if(!field.contains("EQUIP"))
+	    	  			columnsAux.add(field);
+	    	  			
+	    	  	}	    
+	    	  	
+	    	  	          	    	  	
+	        	   if(period[1].toUpperCase().equals("DAY")) {
+	        		   	        		   	        		   	        			        		   
+	        		   for(String[] field : lines) {	
+	        			   
+	        			   String[] aux = new String[field.length - 1];
+	        			 	       			      
+	        			   for (int i = 0, k = 0; i < field.length; i++) {	        				   	         		 
+	        		        
+	        		            // the removal element index
+	        				   if (i == 1) {
+	        		                continue;
+	        		            }
+	        				   
+	        				   aux[k++] = field[i];
+	        				
+	        		        } 
+	        			   
+	        			   linesAux.add(aux);	        			   
+	        			   
+	        		   }
+	        	   
+	        	   }else { 
+	        		   
+	        		   	        		   
+	        		   for(String[] field : lines) {
+	        			   	        			
+	        			   String[] aux = new String[field.length - 1];
+	 	       			      
+	        			   for (int i = 0, k = 0; i < field.length; i++) {	        				   	         		 
+	        		        
+	        		            // the removal element index
+	        				   if (i == 2) {
+	        		                continue;
+	        		            }
+	        				   
+	        				   aux[k++] = field[i];
+	        				
+	        		        } 
+	        			   
+	        			   linesAux.add(aux);	       
+	        			  
+		        		   
+		        		}	        	   
+	        	   }
+	         
+	    	  	
+	    	  			  
+	    	   // Converting multidimensional array into JSON	      
+		        String jsColumn = gson.toJson(columnsAux);	
+		        
+		        //String jsData = hAxisTitle;
+		        String jsData = "";
+		        
+		        jsData = gson.toJson(linesAux);	
+		     		       		     	     		        
+				System.out.println(jsColumn);
+				System.out.println(jsData);
+				
+				if(period[1].toUpperCase().equals("MINUTE") || period[1].toUpperCase().equals("HOUR"))
+					periodRange = dta.defineInterval(period);
+				
+				else
+						try {
+							
+							periodRange = (int) dta.diferencaDias(startDate, endDate) + 1;
+							
+						} catch (ParseException e) {							
+							e.printStackTrace();
+						} 
+				
+				System.out.println(vAxisTitle);
+				
+				SessionUtil.executeScript(" $('#tabs').empty()");
+																	      	 
+				SessionUtil.executeScript("console.log('FOI-SE');createTabs('"+module+"','"+jsonArray+"', '"+jsColumn+"', '"+jsData+"', '"+periodRange+"', '"+title+"', '"+vAxisTitle+"', '"+dateFormat+"', '"+imageName+"')");
+						  
+		  }	    	  
+		
+   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	    
 	   public Pair<List<String>, List<String[]>> processChartData() throws ParseException{
 		   
@@ -1393,7 +1532,13 @@ public class ReportBean {
 	    	column.add(0, "DATE");
 	    			    	
 	    for(String[] sa : report.lines) {
-	    	String date = "new Date(@aspas%s@aspas)";
+	    	String date = "";
+	    	
+	    	if(multiChart)
+	    		date = "%s";
+	    	
+	    	else date = "new Date(@aspas%s@aspas)";
+	    		
 	    	int c = 1;
 	    	String[] newArray = new String[sa.length - (sep ? 1 : 0)];
 	    	
@@ -1410,11 +1555,13 @@ public class ReportBean {
 	    	}
 	    	
 	    	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	    	SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    	SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
+	    	
 	    	Date d;
 	    	
 	    	if (sep)
 	    		d = formatter.parse(String.format("%s %s", sa[col[0]], sa[col[1]]));
+	    	
 	    	else
     			d = formatter.parse(sa[col[0]]);
 	    	date = String.format(date, formatter2.format(d));

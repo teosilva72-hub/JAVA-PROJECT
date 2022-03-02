@@ -96,6 +96,8 @@ const selectCars = () => {
 		y: 0
 	};
 
+	alertToast('haga clic en punto y arrastre el puntero para seleccionar')
+
 	const mouseDown = function(e) {
 		e.stopPropagation()
 		start.x = (e.pageX - offset.left);
