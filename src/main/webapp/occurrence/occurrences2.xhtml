@@ -346,16 +346,16 @@
 
 		<!-- Inicio do conteudo do site -->
 		<section class="conteudo"> <!--Inicio da animação  -->
-		<div id="preloader" style="display: none;">
-			<div class="inner">
+			<div id="preloader" style="display: none;">
+				<div class="inner">
 				<!-- HTML DA ANIMAÇÃO MUITO LOUCA DO SEU PRELOADER! -->
-				<div class="bolas">
+					<div class="bolas">
 					<div></div>
 					<div></div>
 					<div></div>
+					</div>
 				</div>
 			</div>
-		</div>
 		<!-- Final da animação -->
 		<div class="row">
 			<!-- Inicio do lado direito -->
@@ -372,78 +372,71 @@
 
 							<h:column>
 								<f:facet name="header">#{occLabels.occ_list_table_id}</f:facet>
-								<h:outputText value="#{data.data_number}" class="text-center"
-									style="font-size: 12px; " />
+									<h:outputText value="#{data.data_number}" class="text-center" style="font-size: 12px; " />
 							</h:column>
 
 							<h:column>
 								<f:facet name="header">#{occLabels.occ_list_table_type}</f:facet>
-								<h:outputText value="#{data.type}" style="font-size: 12px;" />
+									<h:outputText value="#{data.type}" style="font-size: 12px;" />
 							</h:column>
 
 							<h:column>
 								<f:facet name="header">#{occLabels.occ_list_table_source}</f:facet>
-								<h:outputText value="#{data.date_time}" style="font-size: 12px;" />
+									<h:outputText value="#{data.date_time}" style="font-size: 12px;" />
 							</h:column>
 
 							<h:column>
 								<f:facet name="header">#{occLabels.occ_list_table_cause}</f:facet>
-								<h:outputText value="#{data.cause}" style="font-size: 12px;" />
+									<h:outputText value="#{data.cause}" style="font-size: 12px;" />
 							</h:column>
 
 							<h:column>
 								<f:facet class="barraTable text-center" name="header">#{occLabels.occ_list_table_status}</f:facet>
-								<h:outputText value="#{data.state_occurrences}"
-									style="font-size: 12px;" />
+									<h:outputText value="#{data.state_occurrences}" style="font-size: 12px;" />
 							</h:column>
 
 
 							<h:column>
-
 								<f:facet name="header">AÇÕES</f:facet>
-								<h:form prependId="false" id="btn-edit-report">
-								<!-- Edit -->
-									<h:commandLink id="editocc"
-										action="#{occurrencesBean2.getRowValue}">
+									<h:form prependId="false" id="btn-edit-report">
+									<!-- Edit -->
+									<h:commandLink id="editocc" action="#{occurrencesBean2.getRowValue}">
 										<i class="fas fa-edit" style="color: gray;"></i>
-										<f:setPropertyActionListener value="#{data.data_number}"
-											target="#{occurrencesBean2.rowkey}" />
+										<f:setPropertyActionListener value="#{data.data_number}" target="#{occurrencesBean2.rowkey}" />
 										<f:passThroughAttribute name="data-toggle" value="modal" />
-										<f:passThroughAttribute name="data-target"
-											value="#Occorrencenew" />
-										<f:ajax execute="@form"
-											render=":form-cadastro :btn-edit-report" />
+										<f:passThroughAttribute name="data-target" value="#Occorrencenew" />
+										<f:ajax execute="@form" render=":form-cadastro :btn-edit-report" />
 									</h:commandLink>
 									<!-- PDF -->
-									<h:commandLink style="color: gray;">
+									<h:commandLink style="color: gray;" id="occpdf" action="#{occurrencesBean2.getRowValue}">
 										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-											fill="currentColor" class="bi bi-file-earmark-pdf"
+											fill="currentColor" class="bi bi-file-earmark-pdf-fill"
 											viewBox="0 0 16 16"> <path
-											d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
-										<path
-											d="M4.603 14.087a.81.81 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.68 7.68 0 0 1 1.482-.645 19.697 19.697 0 0 0 1.062-2.227 7.269 7.269 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.188-.012.396-.047.614-.084.51-.27 1.134-.52 1.794a10.954 10.954 0 0 0 .98 1.686 5.753 5.753 0 0 1 1.334.05c.364.066.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.856.856 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.712 5.712 0 0 1-.911-.95 11.651 11.651 0 0 0-1.997.406 11.307 11.307 0 0 1-1.02 1.51c-.292.35-.609.656-.927.787a.793.793 0 0 1-.58.029zm1.379-1.901c-.166.076-.32.156-.459.238-.328.194-.541.383-.647.547-.094.145-.096.25-.04.361.01.022.02.036.026.044a.266.266 0 0 0 .035-.012c.137-.056.355-.235.635-.572a8.18 8.18 0 0 0 .45-.606zm1.64-1.33a12.71 12.71 0 0 1 1.01-.193 11.744 11.744 0 0 1-.51-.858 20.801 20.801 0 0 1-.5 1.05zm2.446.45c.15.163.296.3.435.41.24.19.407.253.498.256a.107.107 0 0 0 .07-.015.307.307 0 0 0 .094-.125.436.436 0 0 0 .059-.2.095.095 0 0 0-.026-.063c-.052-.062-.2-.152-.518-.209a3.876 3.876 0 0 0-.612-.053zM8.078 7.8a6.7 6.7 0 0 0 .2-.828c.031-.188.043-.343.038-.465a.613.613 0 0 0-.032-.198.517.517 0 0 0-.145.04c-.087.035-.158.106-.196.283-.04.192-.03.469.046.822.024.111.054.227.09.346z" />
+											d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z" />
+											<path fill-rule="evenodd"
+											d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z" />
 										</svg>
+										<f:setPropertyActionListener value="#{data.data_number}"
+											target="#{occurrencesBean2.rowkey}" />
+										<f:ajax execute="@form" render=":btn-edit-report" />
 									</h:commandLink>
-								</h:form>
+									
+									</h:form>
 
 							</h:column>
 						</h:dataTable>
+					<h:form prependId="false" id="downloadpdf">
+							<h:commandButton pt:data-toggle="modal" style="display:none;"
+								id="pdfpdf" class="btn btn-dark form-draw-button"
+								action="#{occurrencesBean2.downloadPdf}" />
 
-
-
+						</h:form>
+						</div>
 					</div>
-					<!-- final da tabela oculta -->
-				</div>
-				<!-- Final da lista -->
 				<div class="text-center">
 					<!-- Botão modal nova ocorrencia -->
 					<button class="btnConf2 text-center mt-3" data-toggle="modal"
 						data-target="#Occorrencenew">Nova Ocorrencia</button>
-
-
-
-
-					<!-- Botão Novo -->
 				</div>
 
 				<!-- Modal -->
@@ -467,59 +460,10 @@
 								<div class="form-group col-md-12 text-center">
 									<div class="btn-group col-md-5  mb-3 menu" role="group"
 										aria-label="Basic example">
-
-
-
-										<!-- FILE FORM -->
+								<!-- FILE FORM -->
 										<h:form id="form-file" prependId="false">
+									<!-- MODAL DOWNLOAD -->
 
-											<!-- MODAL DOWNLOAD -->
-											<div class="modal fade" id="modalDownload" tabindex="-1"
-												aria-labelledby="downloadModalLabel" aria-hidden="true">
-												<div class="modal-dialog confirmation-modal">
-													<div class="modal-content">
-														<div class="modal-header">
-															<h5 class="modal-title modal-alert-title"
-																id="donwloadModalLabel">#{occLabels.occ_reports_modal_alert_download_title}</h5>
-														</div>
-														<div class="modal-body">
-															<div class="row">
-																<div class="col-md-12">
-																	<p class="modal-alert-msg">
-																		#{occLabels.occ_reports_modal_alert_download_file_pdf}
-																		<span class="extension">#{occLabels.occ_reports_modal_alert_extension_pdf}</span>
-																		?
-																	</p>
-																</div>
-																<div class="col-md-12">
-																	<span class="msfPdf">#{occLabels.msgPdf}</span>
-																	<h:inputText value="#{occurrencesBean2.userPdf}"
-																		id="userPdf" class="form-control inputDesign lll"
-																		pt:placeholder="#{occLabels.nome_operador}"></h:inputText>
-																	<br></br> <span id="msgErrorPdf" style="color: red;">#{occLabels.campo_obrigatorio}</span>
-																</div>
-															</div>
-
-														</div>
-														<div class="modal-footer">
-															<button type="button" id="clickPdf"
-																class="btn btn-dark form-draw-button"
-																onclick="pdfValidator()">#{occLabels.occ_reports_modal_alert_btn_yes}</button>
-															<h:commandButton pt:data-toggle="modal"
-																style="display:none;" pt:data-target="#modalDownload"
-																id="pdfpdf" class="btn btn-dark form-draw-button"
-																action="#{occurrencesBean2.downloadPdf}" />
-															<h:commandButton
-																value="#{occLabels.occ_reports_modal_alert_btn_no}"
-																class="btn btn-dark form-draw-button">
-																<f:passThroughAttribute name="data-dismiss"
-																	value="modal" />
-																<f:ajax execute="@form" render="@none" />
-															</h:commandButton>
-														</div>
-													</div>
-												</div>
-											</div>
 											<!-- MODAL DOWNLOAD END -->
 
 										</h:form>
@@ -986,8 +930,8 @@
 														<em for="inputAddress2">#{occLabels.$label_occ_reports_hour_start}</em>
 														<h:inputText class="form-control inputDesign"
 															disabled="#{occurrencesBean2.fields}"
-															value="#{occurrencesBean2.data.start_hour}" id="hrchega"
-															name="Start_hour" />
+															value="#{occurrencesBean2.data.start_hour}"
+															id="start_hour" name="Start_hour" />
 
 
 													</div>
@@ -1683,7 +1627,6 @@
 			tabelaReal(); //Função da tabela de seleção [Editar]
 			tableBloqueada(); //Função Tabela Oculta [Desabilita o editar]
 			selecaoTable(); //Função que pega o id da tabela e coloca nos inputs[]
-			onload(); //Oculta o formulario 2 e 3
 		</script>
 	</ui:define>
 </ui:composition>

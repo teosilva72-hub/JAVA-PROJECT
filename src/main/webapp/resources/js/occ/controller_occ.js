@@ -127,9 +127,16 @@ function pdfValidator(){
 	}else{
 		$('.lll').removeClass('error')
 		$('.lll').addClass('ok')
-		$('#modalDownload').modal('hide')
-		$('[id$=pdfpdf]').click();
+		//$('#modalDownload').modal('hide')
+		//$('[id$=pdfpdf]').click();
 		document.getElementById("msgErrorPdf").style.display = "none"
 		return true
 	}
-}
+}	
+$(pdf=>{
+	
+	$('[id$=occpdf]').click(e=>{
+		$('#pdfpdf').click()
+	})
+})
+
