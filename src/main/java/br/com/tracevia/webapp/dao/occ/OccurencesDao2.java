@@ -20,9 +20,10 @@ public class OccurencesDao2{
 	private Connection conn;
 	private PreparedStatement ps;
 	private ResultSet rs;
+	private 
 
 	//CREATE OCCURRENCE
-	public String cadastroOcorrencia (OccurenceData2 data ) throws Exception {
+	String cadastroOcorrencia(OccurrencesData2 data) throws Exception {
 
 		String occ_number = null;
 		
@@ -192,7 +193,7 @@ public class OccurencesDao2{
 		return status;
 	}
 	//m�todo atualizar ocorr�ncia 
-	public boolean atualizarOcorrencia(OccurenceData2 data) throws Exception {
+	public boolean atualizarOcorrencia(OccurrencesData2 data) throws Exception {
 		// System.out.println("DATA: "+data.getData_number()+"\nType: "+data.getAction_type());
 		boolean status = false;
 		//script dos atributos que ser�o atualizados as informa�oes do banco de dados
@@ -286,9 +287,9 @@ public class OccurencesDao2{
 	}
 	
 	//m�todo PDF
-	public OccurenceData2 submitPdf(int PdfGet) throws Exception {
+	public OccurrencesData2 submitPdf(int PdfGet) throws Exception {
 		TranslationMethods trad = new TranslationMethods();
-		OccurenceData2 occ = new OccurenceData2();
+		OccurrencesData2 occ = new OccurrencesData2();
 
 		//script onde pegamos os valores dos atributos
 		String pdf = "SELECT  dt.value_, dt1.value_, dt2.value_, dt3.value_, dt4.value_, dt5.value_, dt6.value_, dt7.value_, dt8.value_, dt9.value_, dt10.value_, " + 
@@ -392,7 +393,7 @@ public class OccurencesDao2{
 
 		return occ;
 	}
-	public List<OccurenceData2> listarOcorrencias() throws Exception {
+	public List<OccurrencesData2> listarOcorrencias() throws Exception {
 
 		String query = "SELECT d.occ_number, dt.value_, " +
 				"CONCAT(start_date, '-', d.start_hour, ':', d.start_minute, d.typeHour1) 'datetime', " +
@@ -401,7 +402,7 @@ public class OccurencesDao2{
 				"INNER JOIN occ_details dt1 ON d.cause = dt1.detail_id " +
 				"INNER JOIN occ_details dt2 ON d.state_occurrence = dt2.detail_id";	
 
-		List<OccurenceData2> listarOcc = new ArrayList<OccurenceData2>();
+		List<OccurrencesData2> listarOcc = new ArrayList<OccurrencesData2>();
 		//System.out.println(query);
 		try {
 			TranslationMethods occTranslation = new TranslationMethods();
@@ -411,7 +412,7 @@ public class OccurencesDao2{
 
 			if(rs != null) {
 				while(rs.next()) {
-					OccurenceData2 occ = new OccurenceData2();
+					OccurrencesData2 occ = new OccurrencesData2();
 					occ.setData_number(String.valueOf(rs.getInt(1)));		
 			
 					occ.setState_occurrences(occTranslation.listOcc(rs.getString(5)));
@@ -455,9 +456,9 @@ public class OccurencesDao2{
 	}
 
 	//m�todo buscar ocorr�ncia por id
-	public OccurenceData2 buscarOcorrenciaPorId(int id) throws Exception {
+	public OccurrencesData2 buscarOcorrenciaPorId(int id) throws Exception {
 
-		OccurenceData2 occ = new OccurenceData2();
+		OccurrencesData2 occ = new OccurrencesData2();
 		
 		//Script dos atributos que as infor��es ser�o requisitadas
 		String query = "SELECT occ_number, type, origin, state_occurrence, start_date, start_hour, start_minute, end_date, end_hour, " +

@@ -608,8 +608,8 @@ public class OccurrencesBean2 {
 
 			//Preencher Lista
 			occurrences = dao.listarOcorrencias();
-			OccurencesDao2 dao = new OccurencesDao2();
-			data = new  OccurenceData2();
+			OccurrencesDAO2 dao2 = new OccurrencesDAO2();
+			data = new  OccurrencesData2();
 		
 			
 			//occurrences = dao.listarOcorrencias();
