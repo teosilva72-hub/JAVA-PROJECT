@@ -34,9 +34,9 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('NOME_ESTACAO')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.global_equipment_id_column, satLabels.speed_50_km, satLabels.speed_50km_70km, satLabels.speed_70_km_90km, satLabels.speed_90_km_120km, satLabels.speed_120_150km, satLabels.speed_over_150km, satLabels.global_total_vehicles_column))}" />
 	
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(DATA_HORA, `%d/%m/%Y`) as sd; TIME($period)@sd; NOME_ESTACAO; ROUND(IF(VEL_MEDIA_TOTAL &lt; 50, SUM(VOLUME_TOTAL), 0), 0); ROUND(IF(VEL_MEDIA_TOTAL &gt;= 50 AND  VEL_MEDIA_TOTAL &lt; 70, SUM(VOLUME_TOTAL), 0), 0); 
-		ROUND(IF(VEL_MEDIA_TOTAL &gt;= 70 AND VEL_MEDIA_TOTAL &lt; 90, SUM(VOLUME_TOTAL), 0), 0); ROUND(IF(VEL_MEDIA_TOTAL &gt;= 90 AND VEL_MEDIA_TOTAL &lt; 120, SUM(VOLUME_TOTAL), 0), 0); ROUND(IF(VEL_MEDIA_TOTAL &gt;= 120 AND VEL_MEDIA_TOTAL &lt; 150, SUM(VOLUME_TOTAL), 0), 0);
-		ROUND(IF(VEL_MEDIA_TOTAL &gt;= 150, SUM(VOLUME_TOTAL), 0), 0); SUM(VOLUME_TOTAL);')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(DATA_HORA, `%d/%m/%Y`) as sd; TIME($period)@sd; NOME_ESTACAO; SUM(IF(VEL_MEDIA_TOTAL &lt; 50, VOLUME_TOTAL, 0)); SUM(IF(VEL_MEDIA_TOTAL &gt;= 50 AND VEL_MEDIA_TOTAL &lt; 70, VOLUME_TOTAL, 0)); 
+		SUM(IF(VEL_MEDIA_TOTAL &gt;= 70 AND VEL_MEDIA_TOTAL &lt; 90, VOLUME_TOTAL, 0)); SUM(IF(VEL_MEDIA_TOTAL &gt;= 90 AND VEL_MEDIA_TOTAL &lt; 120, VOLUME_TOTAL, 0)); SUM(IF(VEL_MEDIA_TOTAL &gt;= 120 AND VEL_MEDIA_TOTAL &lt; 150, VOLUME_TOTAL, 0));
+		SUM(IF(VEL_MEDIA_TOTAL &gt;= 150, VOLUME_TOTAL, 0)); SUM(VOLUME_TOTAL);')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON q.equip_id = tb_dados15.NOME_ESTACAO AND q.lane = tb_dados15.NOME_FAIXA')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_estacao')}" />

@@ -1396,7 +1396,7 @@ public class ReportBean {
 			// -------------------------------------------------------------------
 			  
 				 int periodRange = 0;
-				 
+								 
 			  	// Create a new instance of Gson
 		      	Gson gson = new Gson();			    
 		     	    	  
@@ -1411,11 +1411,8 @@ public class ReportBean {
 	    	  		if(!field.contains("EQUIP"))
 	    	  			columnsAux.add(field);
 	    	  			
-	    	  	}	    
-	    	  	
-	    	  	          	    	  	
-	        	   if(period[1].toUpperCase().equals("DAY")) {
-	        		   	        		   	        		   	        			        		   
+	    	  	}	    	    	  	    	  	    	  	
+	        	 	        		   	        		   	        		   	        			        		   
 	        		   for(String[] field : lines) {	
 	        			   
 	        			   String[] aux = new String[field.length - 1];
@@ -1433,59 +1430,39 @@ public class ReportBean {
 	        			   
 	        			   linesAux.add(aux);	        			   
 	        			   
-	        		   }
-	        	   
-	        	   }else { 
-	        		   
-	        		   	        		   
-	        		   for(String[] field : lines) {
-	        			   	        			
-	        			   String[] aux = new String[field.length - 1];
-	 	       			      
-	        			   for (int i = 0, k = 0; i < field.length; i++) {	        				   	         		 
-	        		        
-	        		            // the removal element index
-	        				   if (i == 2) {
-	        		                continue;
-	        		            }
-	        				   
-	        				   aux[k++] = field[i];
-	        				
-	        		        } 
-	        			   
-	        			   linesAux.add(aux);	       
-	        			  		        		   
-		        		}	        	   
-	        	   }
-	         
-	    	  	
+	        		   }	        	   
+	        	          	  	
 	    	  			  
 	    	   // Converting multidimensional array into JSON	      
 		        String jsColumn = gson.toJson(columnsAux);	
 		        
 		        //String jsData = hAxisTitle;
 		        String jsData = "";
+		        String dateFormat_ = "";
 		        
 		        jsData = gson.toJson(linesAux);	
-		     		       		     	     		        
-				System.out.println(jsColumn);
-				System.out.println(jsData);
-				
-				if(period[1].toUpperCase().equals("MINUTE") || period[1].toUpperCase().equals("HOUR"))
+		        
+		        System.out.println(jsData);
+		        		     								
+				if(period[1].toUpperCase().equals("MINUTE") || period[1].toUpperCase().equals("HOUR")) {
+					
 					periodRange = dta.defineInterval(period);
-				
-				else
-						try {
-							
+					dateFormat_ = datetimeFormat;
+					
+				} else { 
+								
+					try {							
 							periodRange = (int) dta.diferencaDias(startDate, endDate) + 1;
+							dateFormat_ = dateFormat;
 							
 						} catch (ParseException e) {							
 							e.printStackTrace();
 						} 
+				}
 							
 				SessionUtil.executeScript(" $('#tabs').empty()");
-																	      	 
-				SessionUtil.executeScript("console.log('FOI-SE');createTabs('"+module+"','"+jsonArray+"', '"+jsColumn+"', '"+jsData+"', '"+periodRange+"', '"+title+"', '"+vAxis+"', '"+dateFormat+"', '"+imageName+"')");
+																								      	 
+				SessionUtil.executeScript("createTabs('"+module+"','"+jsonArray+"', '"+jsColumn+"', '"+jsData+"', '"+periodRange+"', '"+title+"', '"+vAxis+"', '"+dateFormat_+"', '"+imageName+"')");
 						  
 		  }	    	  
 		
@@ -1523,9 +1500,9 @@ public class ReportBean {
 	    for(String[] sa : report.lines) {
 	    	String date = "";
 	    	
-	    	if(multiChart)
-	    		date = "%s";
-	    	
+	    	if(multiChart)	    		    			
+	    		 date = "%s";	    		
+	    		
 	    	else date = "new Date(@aspas%s@aspas)";
 	    		
 	    	int c = 1;
@@ -1542,21 +1519,22 @@ public class ReportBean {
 	    		newArray[c] = sa[i];
 	    		c++;
 	    	}
-	    	
+	    		    	
 	    	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	    	SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
-	    	
+	    	SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    		    	
 	    	Date d;
 	    	
-	    	if (sep)
-	    		d = formatter.parse(String.format("%s %s", sa[col[0]], sa[col[1]]));
+	    	if (sep) 
+	    		d = formatter.parse(String.format("%s %s", sa[col[0]], sa[col[1]]));	    
 	    	
-	    	else
-    			d = formatter.parse(sa[col[0]]);
-	    	date = String.format(date, formatter2.format(d));
+	    	else d = formatter.parse(sa[col[0]]);
+	    	
+	    	date = String.format(date, formatter2.format(d));	    
 	    	
 	    	newArray[0] = date;
 	    	array.add(newArray);
+
 	    }
 	    
 	    return new Pair<>(column, array);

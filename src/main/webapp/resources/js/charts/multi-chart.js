@@ -50,13 +50,13 @@ function drawTabContent(id, mod){
 	let cols = JSON.parse(columns)
 	let rows = JSON.parse(dataRow)	
 	md = mod;
-			
+				
 	for(let i = 0; i < rows.length; i++){
 			
 		let test = rows[i][0]
-		
+						
 		rows[i][0] = new Date(test)
-			
+							
 	    let obj = rows[i];	   
 
 		for(var prop = 1; prop < obj.length; prop++){		  
@@ -94,7 +94,7 @@ function drawTabContent(id, mod){
 // ------------------------------------------------------------------------------------------------
 
 function draw(div, mod, array, equipIndex, columns, rows, interval, title, vAxisTitle, dateFormat, imageName){
-  
+	  
  	let chart_div;
     let chart;
     let data; 

@@ -91,7 +91,7 @@ public class DataSatDAO {
 			
 			MapResult result = conn.executeQuery();
 			
-		 // System.out.println("ORIGIN: "+select);		 	
+		  System.out.println("ORIGIN: "+select);		 	
 			
 			if (result.hasNext()) {
 				for (RowResult rs : result) {
@@ -105,7 +105,7 @@ public class DataSatDAO {
 					sat.setVelocidadeS1(rs.getInt("VEL_MEDIA_TOTAL_S1"));
 					sat.setQuantidadeS2(rs.getInt("VOLUME_TOTAL_S2"));
 					sat.setVelocidadeS2(rs.getInt("VEL_MEDIA_TOTAL_S2"));
-																
+																										
 					list.add(sat);
 				}
 			 }			
@@ -209,7 +209,7 @@ public class DataSatDAO {
  					sat.setVelocidadeS1(rs.getInt("VEL_MEDIA_TOTAL_S1"));	
  					sat.setQuantidadeS2(rs.getInt("VOLUME_TOTAL_S2"));	
  					sat.setVelocidadeS2(rs.getInt("VEL_MEDIA_TOTAL_S2"));	
- 									
+ 					 									
  				}				
  			 }			
 
