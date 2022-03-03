@@ -46,15 +46,13 @@ html, body{
 	position: relative;
     width: 105%;
     margin-left: -3%;
-}
-
-@media(max-height: 778px){
-	.leftSide{
-	background: url('/resources/images/logo/tracevia/tracevia-logo.png') center no-repeat;
+	background: url('/resources/images/logo/tracevia/login/tracevia-app-logo.webp') center no-repeat;
 	background-size: cover;
 	height: 100%;
 }
-.structure{
+
+@media(max-height: 778px){
+	.structure{
 		margin-top: 5%;
 	}
 }
@@ -62,11 +60,6 @@ html, body{
 	.structure{
 		margin-top: 10%;
 	}
-	.leftSide{
-	background: url('/resources/images/logo/tracevia/tracevia-logo.png') center no-repeat;
-	background-size: cover;
-	height: 100%;
-}
 }
 .ui-language-portuguese-br:hover {
 	filter: drop-shadow(0px 0px 10px #00FF00);

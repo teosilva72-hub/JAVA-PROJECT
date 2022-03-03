@@ -184,10 +184,10 @@ function setTypeDai(incident, date, hour, sentido, km, channel, nome, equipID, i
                 setTimeout(() => {
                     if (getRodovias == '1')
                         $('#eventoRodovia').val(`${getRodovias}`), $('#eventoEstado1').val("Veracruz")
-                    else if(getRodovias == '2')
-						$('#eventoRodovia').val(`${getRodovias}`), $('#eventoEstado1').val("Veracruz")
-					else if(getRodivia == '3')
-						$('#eventoRodovia').val(`${getRodovias}`), $('#eventoEstado1').val("CDMX")
+                    else if (getRodovias == '2')
+                        $('#eventoRodovia').val(`${getRodovias}`), $('#eventoEstado1').val("Veracruz")
+                    else if (getRodivia == '3')
+                        $('#eventoRodovia').val(`${getRodovias}`), $('#eventoEstado1').val("CDMX")
                 }, 300)
             }
         }, 250)
@@ -251,9 +251,9 @@ function getImgDai(nome, img) {
             //animate: true,
             //helper: "ui-resizable-helper"
         })
-        setTimeout(()=>{
-			$('#copy-img-dai').click()
-		},2000)
+        setTimeout(() => {
+            $('#copy-img-dai').click()
+        }, 2000)
     }, 300)
 }
 //
@@ -341,7 +341,8 @@ $(ext => {
         }
     }
 })
-function saveImgDaiOcc(img_dai){
-	console.log(img_dai)
-	
+
+function saveImgDaiOcc(img_dai) {
+    console.log(img_dai)
+
 }

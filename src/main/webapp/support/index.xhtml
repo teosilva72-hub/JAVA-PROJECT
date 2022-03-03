@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	template="/template/dashboard-rov-layout.xhtml">
+	
+	<ui:define name="head">
+	
+		<!-- HEAD TEMPLATE COMPONENT -->
+
+		<h:outputStylesheet name="form-style.css" library="css/forms"/>
+		<h:outputStylesheet library="css/validation" name="validation-style.css"/>
+ 		<h:outputStylesheet name="dataTables.bootstrap4.css" library="static/libraries/dataTables/DataTables-1.11.4/css" /> 
+		<h:outputStylesheet library="css/occ" name="occurrences.css" />
+		<h:outputStylesheet library="css/global" name="global.css" />
+		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
+		<h:outputStylesheet library="css/commom" name="commons.css" />
+		<h:outputStylesheet library="css/forms" name="form-style.css" />
+		<h:outputStylesheet library="css/datatables/custom" name="table-style.css" />
+		 
+		 <!-- FONTAWESOME JS IMPORT --> 
+		<h:outputScript library="js/datatables" name="jquery.dataTables.min.js" />
+		<h:outputScript library="js/validation-forms/support" name="support-validation.js" />
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
+		<h:outputScript library="js/validation-forms/support" name="support-validation.js" />
+	
+				
+	</ui:define>
+	
+	
+	<ui:define name="main-content">
+	
+	<div class="ml-auto mr-auto mb-0 col-md-12">
+		<h:form id="submit">
+
+					<!-- Tabela listar -->
+					
+		<h5 class="row justify-content-center text-dark">#{supportLabels.$label_support_title}</h5>
+					
+				<div class="tabela-occ">
+					<div id="tabelaReal" >	
+						<h:dataTable id="support-table" var="data" disabled="true"
+						value="#{supportController.supports}"
+						styleClass="table table-sm custom-table table-striped table-dark table-hover"
+							cellspacing="0" width="100%" headerClass="custom-table-header"
+							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
+							
+							<h:column>
+								<f:facet name="header">ID</f:facet>
+								<h:outputText value="#{data.data_number}" />
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">UserName</f:facet>
+								<h:outputText value="#{data.username}" />
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">Concessionaria</f:facet>
+								<h:outputText value="#{data.road_concessionaire}" />
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">#{supportLabels.$label_support_place_holder_category}</f:facet>
+								<h:outputText value="#{data.category}" />
+							</h:column>
+					</h:dataTable>	
+						</div>	
+						
+						<button type="button" class="btnConf2" data-toggle="modal" data-target="#Occorrencenew">
+				Nova Ocorrencia
+			</button>
+						
+						</div>
+			</h:form>	
+					
+	</div>
+	
+		 	   
+	</ui:define>
+</ui:composition>

@@ -95,10 +95,14 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
 		
         public float getFloat(int integer) throws Exception {
         	RowSql row = cols[integer - 1];
-        	if (row.type == 1)
-        		return Float.parseFloat(new String(row.getBytes(), StandardCharsets.UTF_8));
-        	else
-        		return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 4)).getFloat();
+			switch (row.type) {
+        		case 0:
+        			return 0;
+        		case 1:
+					return Float.parseFloat(new String(row.getBytes(), StandardCharsets.UTF_8));
+	        	default:
+					return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 4)).getFloat();
+        	}
         }
         
         public double getDouble(String string) throws Exception {
@@ -107,10 +111,14 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
 
         public double getDouble(int integer) throws Exception {
         	RowSql row = cols[integer - 1];
-        	if (row.type == 1)
-        		return Double.parseDouble(new String(row.getBytes(), StandardCharsets.UTF_8));
-        	else
-        		return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 8)).getDouble();
+			switch (row.type) {
+        		case 0:
+        			return 0;
+        		case 1:
+					return Double.parseDouble(new String(row.getBytes(), StandardCharsets.UTF_8));
+	        	default:
+					return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 8)).getDouble();
+        	}
         }
         
         private boolean checkBoolean(byte[] bytes) {
@@ -128,11 +136,15 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
 		
         public boolean getBoolean(int integer) throws Exception {
         	RowSql row = cols[integer - 1];
-        	if (row.type == 1) {
-				String value = new String(row.getBytes(), StandardCharsets.UTF_8);
-        		return Boolean.parseBoolean(value) || "1".equals(value);
-			} else
-        		return checkBoolean(row.getBytes());
+			switch (row.type) {
+				case 0:
+					return false;
+				case 1:
+					String value = new String(row.getBytes(), StandardCharsets.UTF_8);
+					return Boolean.parseBoolean(value) || "1".equals(value);
+				default:
+					return checkBoolean(row.getBytes());
+			}
         }
         
         public byte[] getBytes(String string) throws Exception {

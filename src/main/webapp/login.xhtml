@@ -10,7 +10,7 @@
 	<h:head>
 
 		<meta http-equiv="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<link rel="icon" href="/resources/images/home/64360.png"></link>
+		<link rel="icon" href="/resources/icons/system/64360.png"></link>
 
 		<h:outputStylesheet name="bootstrap.min.css" library="bootstrap/css" />
 		<h:outputStylesheet name="fontawesome.min.css" library="font-awesome/css" />	
@@ -123,10 +123,11 @@
 											<h:inputText id="username" name="username" class="form-control form-login" p:type="text"											
 											p:placeholder="#{loginLabels.login_auth_input_username_placeholder}"
 											value="#{loginAccount.user.username}" p:autocomplete="off" /> <!---->		
-                                       </div> <!---->
+                                       
 									<div class="error-label"><!-- ERROR LABEL -->
 										<label for="username" class="error" id="username-error"></label>
 									</div><!---->
+									</div> <!---->
                                  </div><!---->			
 													
 								<!---->
@@ -137,11 +138,11 @@
 										<span for="password" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION -->
 										<h:inputSecret id="password" name="password" class="form-control form-login" p:type="password"				
 										p:placeholder="#{loginLabels.login_auth_input_password_placeholder}"
-										value="#{loginAccount.user.password}" p:autocomplete="off" /> <!---->		
-								   </div> <!---->
+										value="#{loginAccount.user.password}" p:autocomplete="off" /> <!---->								 
 								  <div class="error-label"><!-- ERROR LABEL -->
 									<label for="password" class="error" id="password-error"></label>
 								</div><!---->
+								</div> <!---->
 							  </div> <!---->
 
                               <!---->
@@ -176,7 +177,7 @@
 				<br/> <!-- SPACE -->
 				<div class="trademark"> <!-- TRADEMARK DIV -->
 					<div class="col-sm-12">
-						<h:outputLabel class="tracevia" p:value="©2021 Tracevia"
+						<h:outputLabel class="tracevia" p:value="©2022 Tracevia"
 							id="trademark" />
 					</div>
 				</div> <!---->

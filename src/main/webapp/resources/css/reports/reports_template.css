@@ -356,7 +356,7 @@ hr{
     cursor: pointer;
 }
 
-.chart-wrapper{
+.chart-wrapper, .chart-area{
 	border: 1px solid transparent;
 	height: 100%;
 	width: 100%;	
@@ -416,4 +416,59 @@ hr{
 .alert {
   z-index: 100;	
 }
+
+
+/* MULTICHART DEFINITION */
+
+#tabs{	
+ border-bottom: 1px solid transparent !important;
+ margin-top: 0.30%;
+}
+	
+.tab-content{  
+ position: absolute;
+ left: 50%;
+ transform: translate(-50%, 0%);
+}	
+
+
+.nav-tabs .nav-item .nav-link.active {
+ background-color: #0080FF;
+ color: #FFF;
+}
+
+.nav-tabs .nav-item .nav-link {
+ background-color: #F8F8FF;
+}
+
+#btn-chart-close-multi{
+   color: black;
+   font-size: 25px;
+   position: absolute;
+   margin-left: 0%;
+   margin-top: 0.5%;
+}
+
+.btn-chart-download-multi{
+   color: black;
+   font-size: 25px;
+   position: absolute;
+   margin-left: -4%;
+   margin-top: -2.25%;
+}
+
+#btn-chart-close-multi:hover, .btn-chart-download-multi:hover{
+  transform: scale(1.2);
+  cursor: pointer;
+	
+}
+
+#close-link-multi{
+  margin-left: 10%;
+  margin-top: 2%;
+  position: absolute;
+}
+
+/* MULTICHART DEFINITION */
+
 

@@ -1059,7 +1059,7 @@
                                 <div class="listarFiles" id="listFiles">
                                     <div class="col-md-12">
                                         <!-- Array arquivos na pasta -->
-                                        
+
                                         <c:forEach items="#{occurrencesBean.listarFile}" var="item" id="listandoFile" varStatus="loop">
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -1102,7 +1102,7 @@
                                             </div>
                                             <hr></hr>
                                         </c:forEach>
-                                        
+
                                     </div>
                                     <!-- List file update -->
                                     <div class="col-md-12">
@@ -1470,30 +1470,30 @@
             </div>
         </section>
         <h:form prependId="false" id="external-id">
-        	<h:inputHidden id="ext-get-id" value="#{occurrencesBean.externalId}"/>
-        	<h:inputHidden id="ext-get-type" value="#{occurrencesBean.externalType}"/>
-        	<h:inputHidden id="date-dai" value="#{occurrencesBean.dataDai}"></h:inputHidden>
-        	<h:commandButton id="btn-ext-id" style="display:none">
-        		<f:ajax execute="@form" render=":external-id" listener="#{occurrencesBean.externalID}"></f:ajax>
-        	</h:commandButton>
+            <h:inputHidden id="ext-get-id" value="#{occurrencesBean.externalId}" />
+            <h:inputHidden id="ext-get-type" value="#{occurrencesBean.externalType}" />
+            <h:inputHidden id="date-dai" value="#{occurrencesBean.dataDai}"></h:inputHidden>
+            <h:commandButton id="btn-ext-id" style="display:none">
+                <f:ajax execute="@form" render=":external-id" listener="#{occurrencesBean.externalID}"></f:ajax>
+            </h:commandButton>
         </h:form>
         <h:form prependId="false" id="get-direction">
-			<h:inputHidden id="id-equip" value="#{occurrencesBean.equip_id}" ></h:inputHidden>
-			<h:commandButton style="display:none" id="btn-direction">
-				<f:ajax execute="@form" render=":get-direction" listener="#{occurrencesBean.equipDirection}"/>
-			</h:commandButton>
-		</h:form>
-		<h:form prependId="false" id="get-rodovia">
-			<h:inputHidden id="id-equip-get-rod" value="#{occurrencesBean.id_get_rodov}"/>
-			<h:commandButton id="btn-get-rod" style="display:none;">
-			<f:ajax execute="@form" render=":get-rodovia" listener="#{occurrencesBean.getRodovia}"/>
-			</h:commandButton>
-		</h:form>
-		<h:form prependId="false" id="copyImgDai">
-			<h:commandButton style="display:none;" id="copy-img-dai">
-				<f:ajax execute="@form" render=":copyImgDai" listener="#{occurrencesBean.copyImgDai}"/>
-			</h:commandButton>
-		</h:form>
+            <h:inputHidden id="id-equip" value="#{occurrencesBean.equip_id}"></h:inputHidden>
+            <h:commandButton style="display:none" id="btn-direction">
+                <f:ajax execute="@form" render=":get-direction" listener="#{occurrencesBean.equipDirection}" />
+            </h:commandButton>
+        </h:form>
+        <h:form prependId="false" id="get-rodovia">
+            <h:inputHidden id="id-equip-get-rod" value="#{occurrencesBean.id_get_rodov}" />
+            <h:commandButton id="btn-get-rod" style="display:none;">
+                <f:ajax execute="@form" render=":get-rodovia" listener="#{occurrencesBean.getRodovia}" />
+            </h:commandButton>
+        </h:form>
+        <h:form prependId="false" id="copyImgDai">
+            <h:commandButton style="display:none;" id="copy-img-dai">
+                <f:ajax execute="@form" render=":copyImgDai" listener="#{occurrencesBean.copyImgDai}" />
+            </h:commandButton>
+        </h:form>
         <!-- Final do conteudo do site -->
         <!-- Script -->
         <h:outputScript name="occ.js" library="js/occ" />

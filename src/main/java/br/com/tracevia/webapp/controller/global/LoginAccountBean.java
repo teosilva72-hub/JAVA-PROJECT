@@ -252,7 +252,7 @@ public class LoginAccountBean {
 
 				else {
 					
-					//FIX					
+					// FIX					
 					login = new UserAccount();
 					login.setPermission_id(memoryAuth.getPermission_id());					
 				

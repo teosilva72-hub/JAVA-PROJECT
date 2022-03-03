@@ -98,7 +98,8 @@ public class SATBuildMap {
 							// COMPARA IDS ENTRE AS LISTAS
 							if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
-								satListObj.setDataTime(satListValuesAux.get(r).getDataTime());
+								satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
+								satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
 								satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 								satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
 								satListObj.setVelocidadeS1(satListValuesAux.get(r).getVelocidadeS1());
@@ -172,7 +173,8 @@ public class SATBuildMap {
 										SAT satListObj1 = new SAT();
 
 										satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
-										satListObj1.setDataTime(getDataTime(equips.getSatList().get(s).getEquip_id()));
+										satListObj1.setLastPackage(lastRegisters(equips.getSatList().get(s).getEquip_id())[0]);
+										satListObj1.setLastRegister(lastRegisters(equips.getSatList().get(s).getEquip_id())[1]);								
 										satListObj1.setQuantidadeS1(0);
 										satListObj1.setQuantidadeS2(0);
 										satListObj1.setVelocidadeS1(0);
@@ -205,7 +207,7 @@ public class SATBuildMap {
 						for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 							SAT satListObj = new SAT();
-							pass = true; // VERIFICA SE HÃ� DADOS NA COMPARATIVO ENTRE LISTAS
+							pass = true; // VERIFICA SE HÁ DADOS NA COMPARATIVO ENTRE LISTAS
 
 							// LISTA DE SATS COM DADOS DISPONIVEIS
 							for (int r = 0; r < satListValuesAux.size(); r++) {
@@ -213,7 +215,8 @@ public class SATBuildMap {
 								// COMPARA IDS ENTRE AS LISTAS
 								if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
-									satListObj.setDataTime(satListValuesAux.get(r).getDataTime());
+									satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
+									satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
 									satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 									satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
 									satListObj.setVelocidadeS1(satListValuesAux.get(r).getVelocidadeS1());
@@ -273,7 +276,8 @@ public class SATBuildMap {
 										SAT satListObj1 = new SAT();
 
 										satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
-										satListObj1.setDataTime(getDataTime(equips.getSatList().get(s).getEquip_id()));
+										satListObj1.setLastPackage(lastRegisters(equips.getSatList().get(s).getEquip_id())[0]);
+										satListObj1.setLastRegister(lastRegisters(equips.getSatList().get(s).getEquip_id())[1]);									
 										satListObj1.setQuantidadeS1(0);
 										satListObj1.setQuantidadeS2(0);
 										satListObj1.setVelocidadeS1(0);
@@ -312,7 +316,8 @@ public class SATBuildMap {
 									if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s)
 											.getEquip_id()) {
 
-										satListObj.setDataTime(satListValuesAux.get(r).getDataTime());
+										satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
+										satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
 										satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 										satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
 										satListObj.setVelocidadeS1(satListValuesAux.get(r).getVelocidadeS1());
@@ -356,7 +361,8 @@ public class SATBuildMap {
 										SAT satListObj1 = new SAT();
 
 										satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
-										satListObj1.setDataTime(getDataTime(equips.getSatList().get(s).getEquip_id()));
+										satListObj1.setLastPackage(lastRegisters(equips.getSatList().get(s).getEquip_id())[0]);
+										satListObj1.setLastRegister(lastRegisters(equips.getSatList().get(s).getEquip_id())[1]);										
 										satListObj1.setQuantidadeS1(0);
 										satListObj1.setQuantidadeS2(0);
 										satListObj1.setVelocidadeS1(0);
@@ -394,7 +400,8 @@ public class SATBuildMap {
 										if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s)
 												.getEquip_id()) {
 
-											satListObj.setDataTime(satListValuesAux.get(r).getDataTime());
+											satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
+											satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
 											satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 											satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
 											satListObj.setVelocidadeS1(satListValuesAux.get(r).getVelocidadeS1());
@@ -422,7 +429,8 @@ public class SATBuildMap {
 										SAT satListObj1 = new SAT();
 
 										satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
-										satListObj1.setDataTime(getDataTime(equips.getSatList().get(s).getEquip_id()));
+										satListObj1.setLastPackage(lastRegisters(equips.getSatList().get(s).getEquip_id())[0]);
+										satListObj1.setLastRegister(lastRegisters(equips.getSatList().get(s).getEquip_id())[1]);										
 										satListObj1.setQuantidadeS1(0);
 										satListObj1.setQuantidadeS2(0);
 										satListObj1.setVelocidadeS1(0);
@@ -471,8 +479,9 @@ public class SATBuildMap {
 
 			SAT sat = new SAT();
 
-			sat.setEquip_id(satList.get(i).getEquip_id());
-			sat.setDataTime(getDataTime(satList.get(i).getEquip_id()));
+			sat.setEquip_id(satList.get(i).getEquip_id());	
+			sat.setLastPackage(lastRegisters(satList.get(i).getEquip_id())[0]);		
+			sat.setLastRegister(lastRegisters(satList.get(i).getEquip_id())[1]);		
 			sat.setQuantidadeS1(0);
 			sat.setVelocidadeS1(0);
 			sat.setQuantidadeS2(0);
@@ -489,18 +498,23 @@ public class SATBuildMap {
 
 	// ----------------------------------------------------------------------------------------------------
 
-	public String getDataTime(int equipId) {
+	public String[] lastRegisters(int equipId) {
 
 		DataSatDAO dao = new DataSatDAO();
-		String result = "";
+		String[] result = new String[2];
 
 		try {
 
-			result = dao.dataTimeLastRegister(equipId);
-
-			if (result.equals(""))
-				result = "00:00";
-
+			result = dao.lastRegisters(equipId);
+			
+			// CHECK IF EXIST DATA
+			for (int i=0; i<result.length; i++) {
+				  if (result[i] == null) 
+					  result[i] = "00:00";				  
+			}
+			
+		 // ----------------------------------------------
+											
 		} catch (Exception e) {
 
 			e.printStackTrace();

@@ -1,6 +1,4 @@
 eclipse.preferences.version=1
-encoding//src/main/java/br/com/tracevia/webapp/controller/occ/OccurrencesBean.java=UTF-8
-encoding//src/main/java/br/com/tracevia/webapp/dao/global/EquipmentsDAO.java=UTF-8
-encoding//src/main/java/br/com/tracevia/webapp/dao/ocr/OCRDAO.java=UTF-8
+encoding//src/main/java/br/com/tracevia/webapp/controller/occ/OccurrencesBean2.java=UTF-8
 encoding//src/main/java/br/com/tracevia/webapp/util/ExcelTemplate.java=UTF-8
 encoding//src/main/java/br/com/tracevia/webapp/util/ExcelUtil.java=UTF-8

@@ -3,6 +3,7 @@
 
 
 const maxDays = 60; // Max days to search in reports
+let timeoutRequest = 0
 
 /* ******************************************************************************************************** */
 
@@ -134,9 +135,13 @@ let onEventFunction = data => {
 
 		case "complete":
 			loading.removeClass('active')
+			timeoutRequest = setTimeout(() => {
+				alertToast('Houve um problema com a conexão, Tente novamente.')
+			}, 1500);
 			break;
 
 		case "success":
+			clearTimeout(timeoutRequest)
 			$('[id$=cancelDownload]').click()
 			break;
 			
@@ -2254,6 +2259,116 @@ function validateChangePassword(formId, newPasswordId, equalsToMsg, passwordMinL
 			$(element.form).find("span[for=" + element.id + "]").html("<i class='fa fa-check success'></i>");
 		}
 	});
+}
+
+/* **************************************************************************************************** */
+
+/** Validate user form
+ *
+ * @author Wellington da Silva : 2021-05-07
+ * @summary Validation function used only for user register page
+ * @since version 1.0
+ * @version 1.1 
+ * @description validate user register form
+ * @copyright Tracevia S/A 2021 
+ * @param {string} formId  form id to be checked
+ * @param {string} usernameRequired username required message
+ * @param {string} usernameMinLenght username min length message
+ * @param {string} usernameMaxLenght username max length message
+ * @param {string} passwordRequired password required message
+ * @param {string} passwordMinLenght password min length message
+ * @param {string} passwordMaxLenght password max length message
+ * @returns {void}
+**/
+
+function validateSupportForm(formId, emailMsg, categoriaMsg, assuntoMsg, messageMsg){
+
+	$(formId).validate({
+		rules:{
+			email:{
+				required: true,
+				isEmail: true			
+				
+			},
+			category:{
+				required: true			
+				
+			},
+			subject:{
+				required: true					
+				
+			},
+			message:{
+				required: true
+					
+			}			
+		},
+		
+		messages: {		
+			 email: {
+				required: emailMsg			
+			},
+			 category: {
+				required: categoriaMsg
+				
+			},
+			 subject: {
+				required: assuntoMsg          
+			},
+			message: {
+				required: messageMsg								
+			}
+		  },												
+	
+		  errorClass: "error",
+		  validClass: "success",
+		  errorElement: "label",
+
+		  errorPlacement: function (error, element) {	//Place elements for place errors
+
+		  },
+		  success: function (label, element) {
+			  //If no have errors set check success status	
+			  //Show span validation icon
+			  $(element.form).find("span[for=" + element.id + "]").removeClass('valid-icon-hidden').addClass('valid-icon-visible');
+			  //FontAwesome Icon Check for success
+			  $(element.form).find("span[for=" + element.id + "]").html("<i class='fa fa-check success'></i>");
+		  },
+		  // highlight - add class error in case of errors
+		  highlight: function (element, errorClass, validClass) {
+			  $(element.form).find("label[for=" + element.id + "]").addClass(errorClass);
+			  $(element.form).find("label[for=" + element.id + "]").removeClass('d-none'); // Remove o estilo display none
+		
+		      $(element.form).find("input[id=" + element.id + "]").removeClass('valid').addClass('invalid');
+			  $(element.form).find("select[id=" + element.id + "]").removeClass('valid').addClass('invalid');
+			  $(element.form).find("textarea[id=" + element.id + "]").removeClass('valid').addClass('invalid');
+
+			  //Show span validation icon
+			  $(element.form).find("span[for=" + element.id + "]").removeClass('valid-icon-hidden').addClass('valid-icon-visible');
+			  //FontAwesome Icon Times for error
+			  $(element.form).find("span[for=" + element.id + "]").html("<i class='fa fa-times error'></i>");
+			  //Multiselect button configuration to set invalid
+			  if ($(element.form).find("select[id=" + element.id + "]").hasClass('invalid')) {
+				  $(element).next('.btn-group').find('button').removeClass('valid').addClass('invalid');
+			  }
+		  },
+		  // unhighlight - remove error class if error was solved
+		  unhighlight: function (element, errorClass, validClass) {
+			  $(element.form).find("label[for=" + element.id + "]").removeClass(errorClass);
+			 	$(element.form).find("label[for=" + element.id + "]").addClass('d-none'); // Adiciona o estilo display nones
+		
+		      $(element.form).find("input[id=" + element.id + "]").removeClass('invalid').addClass('valid');
+			  $(element.form).find("select[id=" + element.id + "]").removeClass('invalid').addClass('valid');
+			  $(element.form).find("textarea[id=" + element.id + "]").removeClass('invalid').addClass('valid');
+	
+			  //FontAwesome Icon Check for success
+			  $(element.form).find("span[for=" + element.id + "]").html("<i class='fa fa-check success'></i>");
+			  //Multiselect button configuration to set valid
+			  if ($(element.form).find("select[id=" + element.id + "]").hasClass('valid')) {
+				  $(element).next('.btn-group').find('button').removeClass('invalid').addClass('valid');
+			  }
+		  }	                       	                                                         
+    });
 }
 
 /* **************************************************************************************************** */

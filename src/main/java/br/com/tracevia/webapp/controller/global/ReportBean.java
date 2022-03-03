@@ -61,10 +61,10 @@ public class ReportBean {
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
 	public boolean 	isSat = false, haveTotal, multiSheet = true, equipSheetName = false, directionsOnSheet = false, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false,
-			groupId = false,  limitColumn = false;
-	
+			groupId = false,  limitColumn = false, hasDivision = false, additionalTitleName = false, multiChart = false;
+		
 	public String totalType = "standard";
-	public String 	module = "default";
+	public String module = "default";
 	
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -77,6 +77,7 @@ public class ReportBean {
 	private String useIndex;
 	private String orderDate;
 	private String[] division;
+	private String laneName = "";
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
@@ -283,7 +284,7 @@ public class ReportBean {
 		setFilterSearch(filterSearch, nameColumn, tableWithName, where, multiple, mandatory, false);
 	}
 
-	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, String where, boolean multiple, boolean mandatory, boolean setInterval) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, String where, boolean multiple, boolean mandatory, boolean setInterval) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sÃ³mente com os campos necessarios
 		String[] tableName = tableWithName.split("\\.");
 			
 		String extra1 = multiple ? "multiple" : "";
@@ -386,6 +387,10 @@ public class ReportBean {
 	public void defineDirectionsOnSheet(boolean directionsOnSheet) {
 		this.directionsOnSheet = directionsOnSheet;
 	}
+	
+	public void defineMultiChart(boolean multiChart) {
+		this.multiChart = multiChart;
+	}
 		
 	public void defineModule(String module) {
 		this.module = module;
@@ -433,6 +438,10 @@ public class ReportBean {
 	
 	public void defineMultiEquipTab(boolean equipSheetName) {
 		this.equipSheetName = equipSheetName;
+	}
+	
+	public void additionalTitleName(boolean additionalTitleName) {
+		this.additionalTitleName = additionalTitleName;
 	}
 	
 	public void groupByID(boolean groupId) {
@@ -517,7 +526,23 @@ public class ReportBean {
 	public List<String> getRight(Pair<String[], List<String>> pair) {
 		return pair.right;
 	}
-					
+	
+	public String getLaneName() {
+		return laneName;
+	}
+	
+	public void setLaneName(String laneName) {
+		this.laneName = laneName;
+	}
+	
+	public boolean isMultiChart() {
+		return multiChart;
+	}
+
+	public void setMultiChart(boolean multiChart) {
+		this.multiChart = multiChart;
+	}	
+						
 	// ----------------------------------------------------------------------------------------------------------------
 		
 		// CLASS PATH
@@ -539,7 +564,7 @@ public class ReportBean {
 		// --------------------------------------------------------------------------------------------		
 		
 		// CONSTRUTOR 
-		
+			
 	@PostConstruct
 	public void initialize() {
 		
@@ -666,13 +691,13 @@ public class ReportBean {
 								
 		model = new ExcelTemplate(); // HERE
 		
-		String dateStart = "", dateEnd = "", equipFilter = "";
-		
-				
+		String dateStart = "", dateEnd = "";
+						
 		String query = "SELECT ";
 		String queryMS = null;
 		
 		List<String> equipIDs = new ArrayList<String>();
+		List<String> directions = new ArrayList<String>();
 		
 		if (!searchParametersMS.isEmpty())
 			queryMS = "SELECT ";
@@ -798,19 +823,20 @@ public class ReportBean {
 					String newFilter = "";
 
 					if (moreInterval.containsKey(search.left[1]))
-						moreInterval.put(search.left[1], filterArray.length);
+							moreInterval.put(search.left[1], filterArray.length);
 					
 					if (filterArray != null) {						
 						for (String f : filterArray) { // HERE
 							
-						//	System.out.println(search.left[0]);
+							if(search.left[0].equals("q.direction") || search.left[0].equals("direction"))	
+								directions.add(f);
+																			
+							if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO"))														
+								equipIDs.add(f);
 							
-							if(search.left[0].equals("siteID"))
-								equipFilter = search.left[0];
-							
-							if(search.left[1].equals("Equipamento"))							
-							    equipIDs.add(f);
-														
+							if(search.left[0].equals("NOME_FAIXA"))
+								laneName = " : "+ getLaneName(f);
+																												
 							if (f.contains(",")) {
 								String[] splitF = f.split(",");
 
@@ -834,7 +860,13 @@ public class ReportBean {
 					if (!f.isEmpty())
 						filter = String.format("%s'%s'", caseSensitive ? "BINARY " : "", f);
 					if (search.left[0].equals(idTable))
-						idSearch.add(f);
+						 idSearch.add(f);
+					
+					if(search.left[0].equals("siteID"))														
+						 equipIDs.add(f);
+					
+					if(search.left[0].equals("NOME_FAIXA"))
+						laneName = " : "+getLaneName(f);
 				}
 
 				if (count == 0 && !filter.isEmpty()) {
@@ -866,14 +898,12 @@ public class ReportBean {
 			}
 
 			if (setPeriod && hasPeriod()) {
-								
-				if(equipSheetName)
-					group +=", "+equipFilter;
-					
+						
 				//System.out.println(group);
 				
 				query += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", group, extraGroup, orderDate != null ? orderDate + ", " : "", order);
 				//System.out.println("QUERY5: "+query);
+				
 				if (queryMS != null)
 					queryMS += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", groupMS, extraGroup, orderDate != null ? orderDate + ", " : "", orderMS);
 			} else if (orderDate != null) {
@@ -895,26 +925,26 @@ public class ReportBean {
 		    // Table Fields
 			report.getReport(query, queryMS, idTable, isDivision() ? division : null);
 		    boolean hasValue = true;
-
+		   		  		   
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
-				hasValue = this.setIntervalDate(dateProcess, columnDate, period, "sat", equipSheetName, equipIDs);
-		          										
+				hasValue = this.setIntervalDate(dateProcess, columnDate, period, module, equipIDs);	    						
+				
 			// -------------------------------------------------------------------------------------
 					
-			// CASO N�O EXISTA VALOR			
+			// CASO NÃO EXISTA VALOR			
 			if (report.lines.isEmpty() || !hasValue) {
 				SessionUtil.executeScript("alertOptions('#info', '"+locale.getStringKey("$message_reports_record_not_found")+"');");
 				
-				build.chartBool = true; // BOT�O DO GR�FICO	 
+				build.chartBool = true; // BOTÃO DO GRÃFICO	 
 							
 				if (report.lines.isEmpty()) {
 					 SessionUtil.executeScript("drawTable()");					
 					 return;
 				}				
 			}
-					
-		     	if (report.IDs.isEmpty())
-		     		report.IDs.addAll(idSearch);
+										
+		     	//if (report.IDs.isEmpty())
+		     	//	report.IDs.addAll(idSearch);
 		
 			// -------------------------------------------------------------------------------------
 		
@@ -925,7 +955,7 @@ public class ReportBean {
 				if(module.equals("sat")) {
 					
 					if(specialName.equals("counting-flow"))
-						satTab.satHeaderInformation(module, report.IDs);
+						satTab.satHeaderInformation(module, equipIDs);
 				}
 			 }
 			
@@ -933,14 +963,24 @@ public class ReportBean {
 						  
 			SessionUtil.executeScript("drawTable()");
 			
-			// -------------------------------------------------------------------------------------	
+			// -------------------------------------------------------------------------------------
+			
+			// WHILE ONLY FOR LANE NAME
+			
+			if(additionalTitleName)
+				fileTitle += laneName;
+			
+			// -------------------------------------------------------------------------------------
+			
+			if(division != null)
+				hasDivision = true;
 				      		     						
 			 if(!special)										
-		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, classSubHeader);
-			
+		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
+							 
 			 else generateSpecialFile(model, specialName);
 		     
-		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
+		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model);  
 		    
 		    // ------------------------------------------------------------
 		    			
@@ -951,13 +991,17 @@ public class ReportBean {
 					Pair<List<String>, List<String[]>> data = processChartData();
 	      	 
 		 	    	build.chartBool = false;
-	      		    createChartData(build.chartBool, period, data.left, data.right, report.IDs);
-	      	    } 
-			
+		 	    	
+		 	    	if(!multiChart)
+		 	    		createChartData(build.chartBool, period, data.left, data.right, equipIDs);
+		 	    	
+		 	    	else createChartData(equipIDs, module, dateStart, dateEnd, period, data.left, data.right);
+		 	    	      		    
+	      	    }		
 	        }
-			
-	   // -------------------------------------------------------------------------------------------------------------------------------------------------
-	
+	  
+	  // -------------------------------------------------------------------------------------------------------------------------------------------------
+	  			
 	   public void download() {
 		   
 		DateTimeApplication dta = new DateTimeApplication();
@@ -977,7 +1021,7 @@ public class ReportBean {
 		
 	}	   
 
-	public boolean setIntervalDate(Date[] date, String column, String[] period, String modulo, boolean isEquipSheeName, List<String> equips) throws ParseException {
+	public boolean setIntervalDate(Date[] date, String column, String[] period, String modulo, List<String> equips) throws ParseException {
 			
 		Calendar calendar = Calendar.getInstance();
 		List<Pair<String, List<String[]>>> secondaryLines = new ArrayList<>();
@@ -988,13 +1032,11 @@ public class ReportBean {
 		boolean sep = column.contains("@");
 		boolean hasLine = !report.lines.isEmpty();
 		int[] col = new int[2];
-		
-		String lastdate = "";
-							
+									
 		Arrays.fill(model, "0"); // HERE
 									
 		Arrays.fill(model, "0");
-		int amnt = moreInterval.values().stream().reduce(1, (x, y) -> x * y);
+		int amnt = moreInterval.isEmpty() ? 0 : moreInterval.values().stream().reduce(1, (x, y) -> x * y);
 		int count = 0;
 		int fill = 0;
 		List<String[]> temp;
@@ -1027,16 +1069,7 @@ public class ReportBean {
 		}
 
 		temp = report.lines;
-		
-		String[] eqp = null;
-		
-		if(isEquipSheeName) {
-		
-			EquipmentsDAO dao = new EquipmentsDAO();
-			eqp = dao.equipmentsName(modulo, equips);
-		
-		}
-				
+					
 		do {
 			if (count > 0)
 				if (report.secondaryLines.size() >= count) {
@@ -1047,6 +1080,7 @@ public class ReportBean {
 				} else
 					break;
 
+			List<String> tempEquips = new ArrayList<>(equips);
 			for (String[] lines : temp) { // HERE
 				String d;
 	
@@ -1063,6 +1097,27 @@ public class ReportBean {
 				} catch (ParseException e ) {
 					continue;
 				}
+
+				if (dateReport.after(calendar.getTime()) && fill > 0) {
+					step = calendar.getTime();
+
+					String f = formatter.format(step);
+					if (sep) {
+						String[] split = f.split(" ");
+						model[col[0]] = split[0];
+						model[col[1]] = split[1];
+					} else
+						model[col[0]] = f;
+				
+					for (; fill < amnt; fill++) {
+						model[sep ? 2 : 1] = tempEquips.remove(0);
+						newList.add(model.clone());
+					}
+					
+					calendar.add(interval, Integer.parseInt(period[0]));
+					tempEquips = new ArrayList<>(equips);
+					fill = 0;
+				}
 				
 				step = calendar.getTime();
 
@@ -1073,92 +1128,111 @@ public class ReportBean {
 					model[col[1]] = split[1];
 				} else
 					model[col[0]] = f;
-				
-				int idx = 0;
-											
 				while (step.before(dateReport) && step.before(date[1])) {
 					f = formatter.format(step);
 					if (sep) {
 						String[] split = f.split(" ");	
 						
 						model[col[0]] = split[0];
-						model[col[1]] = split[1];	
-						
-						//if(!lastdate.equals(model[col[0]]))
-						//	idx++;
-						
-						//if(isEquipSheeName)
-							//model[2] = eqp[idx];
-						
-					} else
-						
-					//	if(!lastdate.equals(model[col[0]]))
-					//		idx++;
-						
+						model[col[1]] = split[1];
+											
+					} else						
+											
 						model[col[0]] = f;
+					
+					if (amnt == 0)
+						newList.add(model.clone());
 		
 					for (int i = 0; i < amnt; i++) {
+						model[sep ? 2 : 1] = tempEquips.get(i);
 						newList.add(model.clone());
 					}
 
 					calendar.add(interval, Integer.parseInt(period[0]));
 					step = calendar.getTime();
-					
-					lastdate = model[col[0]];
-					
+										
 				}
-			
-				newList.add(lines);
-				if (dateReport.after(step) || dateReport.equals(step)) {
-					if (fill == 0 || fill == amnt)
-						fill = 1;
-					else
-						for (; fill < amnt; fill++)
-							newList.add(model.clone());
-					calendar.add(interval, Integer.parseInt(period[0]));
-				} else
-					fill++;
 
-				if (temp.indexOf(lines) == temp.size() - 1 && fill != 0 && fill != amnt)
-					for (; fill < amnt; fill++)
-							newList.add(model.clone());
+				newList.add(lines);
+				tempEquips.remove(lines[sep ? 2 : 1]);
+				fill++;
+
+				if (fill >= amnt) {
+					calendar.add(interval, Integer.parseInt(period[0]));
+					tempEquips = new ArrayList<>(equips);
+					fill = 0;
+				}
+
+				if (temp.indexOf(lines) == temp.size() - 1 && fill != 0 && fill != amnt) {
+					for (; fill < amnt; fill++) {
+						model[sep ? 2 : 1] = tempEquips.remove(0);						
+						newList.add(model.clone());
+					}
+					fill = 0;
+					calendar.add(interval, Integer.parseInt(period[0]));					
+				}
 			}
 						 	
 			step = calendar.getTime();
-			
-			int idx = 0;
 	
 			while (step.before(date[1])) {
 				String f = formatter.format(step);				
 				if (sep) {
 					String[] split = f.split(" ");
 					model[col[0]] = split[0];
-					model[col[1]] = split[1];
-					
-					//if(!lastdate.equals(model[col[0]]))
-					//	idx++;
-					
-				//	if(isEquipSheeName)
-					//	model[2] = eqp[idx];
+					model[col[1]] = split[1];				
 					
 				} else
 									
 					model[col[0]] = f;
-					
-				for (int i = 0; i < amnt; i++) {
-					newList.add(model.clone());
-				}
-	
+				
+					if (amnt == 0)
+						newList.add(model.clone());
+
+					for (int i = 0; i < amnt; i++) {
+						model[sep ? 2 : 1] = equips.get(i);
+						newList.add(model.clone());
+					}
+			
 				calendar.add(interval, Integer.parseInt(period[0]));
 				step = calendar.getTime();
 				
-				lastdate = model[col[0]];
 			}
 	
 			if (count > 0) {
-				secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
-			} else
-				report.lines = newList;
+				if (!moreInterval.isEmpty()) {
+					HashMap<String, List<String[]>> map = new HashMap<>();
+					for (String e : equips)
+						map.put(e, new ArrayList<>());
+
+					for (String[] n : newList)
+						map.get(n[sep ? 2 : 1]).add(n);
+
+					List<String[]> list = new ArrayList<>();
+					for (int i = 0; i < map.size(); i++)
+						list.addAll(map.get(equips.get(i)));
+					
+					secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, list));
+				} else
+					secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
+			} else {
+				
+				if (!moreInterval.isEmpty()) {
+					HashMap<String, List<String[]>> map = new HashMap<>();
+					for (String e : equips)
+						map.put(e, new ArrayList<>());
+
+					for (String[] n : newList)
+						map.get(n[sep ? 2 : 1]).add(n);
+
+					List<String[]> list = new ArrayList<>();
+					for (int i = 0; i < map.size(); i++)
+						list.addAll(map.get(equips.get(i)));
+					
+					report.lines = list;
+				} else
+					report.lines = newList;
+			}
 
 			count++;
 		} while (report.secondaryLines != null);
@@ -1245,9 +1319,7 @@ public class ReportBean {
 	    public void createChartData(boolean chartBool, String[] period, List<String> columns, List<String[]> lines, List<String> ids) {
 					
 	    TranslationMethods tm = new TranslationMethods();
-	    	
-		String vAxisTitle = tm.verticalAxisTranslate(vAxis);
-				
+	   				
 		LocalDateTime local =  LocalDateTime.now();
 		EquipmentsDAO dao = new EquipmentsDAO();
 						
@@ -1276,7 +1348,7 @@ public class ReportBean {
 		 } else  title =  chartTitle+ " - " + period[2];
 		 
 		 // -------------------------------------------------------------------
-		
+			
 		if(!chartBool) {
 					 		  	   		
 	        // Create a new instance of Gson
@@ -1296,14 +1368,129 @@ public class ReportBean {
 	        //System.out.println(jsData);
 	        	   	       	        
 	        if(period[1].toUpperCase().equals("DAY"))
-	           SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"', '"+vAxisTitle+"', '"+ dateFormat +"', '"+imageName+"');");
+	           SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"', '"+vAxis+"', '"+ dateFormat +"', '"+imageName+"');");
 	        
-	        else SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"','"+vAxisTitle+"', '"+ datetimeFormat +"', '"+imageName+"');");
+	        else SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"','"+vAxis+"', '"+ datetimeFormat +"', '"+imageName+"');");
 	       		
 		}
      }	
 		
 	 // --------------------------------------------------------------------------------------------	
+	    		
+		public void createChartData(List<String> equips, String modulo, String startDate, String endDate, String[] period, List<String> columns, List<String[]> lines) {
+			  						  
+			// -------------------------------------------------------------------
+			  
+			  	TranslationMethods tm = new TranslationMethods();
+			  	DateTimeApplication dta = new DateTimeApplication();
+		    							
+				LocalDateTime local =  LocalDateTime.now();
+				EquipmentsDAO dao = new EquipmentsDAO();
+								
+				DateTimeFormatter format = DateTimeFormatter.ofPattern("dd_MM_yyyy_HH_mm");  
+			    String formatDateTime = local.format(format);  			 	     			     			 
+									  			    	  				
+				String title =  chartTitle+ " - " + period[2]; 
+				
+				imageName += "_"+formatDateTime; // NAME OF FILE WITH TIME
+				 
+			// -------------------------------------------------------------------
+			  
+				 int periodRange = 0;
+				 
+			  	// Create a new instance of Gson
+		      	Gson gson = new Gson();			    
+		     	    	  
+		        String[] array = dao.equipmentsName(modulo, equips);
+	    	  
+	    	  	String jsonArray = gson.toJson(array);	
+	    	  	
+	    	  	List<String> columnsAux = new ArrayList<String>();
+	    	  	List<String[]> linesAux = new ArrayList<String[]>();
+	    	  	
+	    	  	for(String field : columns) {
+	    	  		if(!field.contains("EQUIP"))
+	    	  			columnsAux.add(field);
+	    	  			
+	    	  	}	    
+	    	  	
+	    	  	          	    	  	
+	        	   if(period[1].toUpperCase().equals("DAY")) {
+	        		   	        		   	        		   	        			        		   
+	        		   for(String[] field : lines) {	
+	        			   
+	        			   String[] aux = new String[field.length - 1];
+	        			 	       			      
+	        			   for (int i = 0, k = 0; i < field.length; i++) {	        				   	         		 
+	        		        
+	        		            // the removal element index
+	        				   if (i == 1) {
+	        		                continue;
+	        		            }
+	        				   
+	        				   aux[k++] = field[i];
+	        				
+	        		        } 
+	        			   
+	        			   linesAux.add(aux);	        			   
+	        			   
+	        		   }
+	        	   
+	        	   }else { 
+	        		   
+	        		   	        		   
+	        		   for(String[] field : lines) {
+	        			   	        			
+	        			   String[] aux = new String[field.length - 1];
+	 	       			      
+	        			   for (int i = 0, k = 0; i < field.length; i++) {	        				   	         		 
+	        		        
+	        		            // the removal element index
+	        				   if (i == 2) {
+	        		                continue;
+	        		            }
+	        				   
+	        				   aux[k++] = field[i];
+	        				
+	        		        } 
+	        			   
+	        			   linesAux.add(aux);	       
+	        			  		        		   
+		        		}	        	   
+	        	   }
+	         
+	    	  	
+	    	  			  
+	    	   // Converting multidimensional array into JSON	      
+		        String jsColumn = gson.toJson(columnsAux);	
+		        
+		        //String jsData = hAxisTitle;
+		        String jsData = "";
+		        
+		        jsData = gson.toJson(linesAux);	
+		     		       		     	     		        
+				System.out.println(jsColumn);
+				System.out.println(jsData);
+				
+				if(period[1].toUpperCase().equals("MINUTE") || period[1].toUpperCase().equals("HOUR"))
+					periodRange = dta.defineInterval(period);
+				
+				else
+						try {
+							
+							periodRange = (int) dta.diferencaDias(startDate, endDate) + 1;
+							
+						} catch (ParseException e) {							
+							e.printStackTrace();
+						} 
+							
+				SessionUtil.executeScript(" $('#tabs').empty()");
+																	      	 
+				SessionUtil.executeScript("console.log('FOI-SE');createTabs('"+module+"','"+jsonArray+"', '"+jsColumn+"', '"+jsData+"', '"+periodRange+"', '"+title+"', '"+vAxis+"', '"+dateFormat+"', '"+imageName+"')");
+						  
+		  }	    	  
+		
+   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	    
 	   public Pair<List<String>, List<String[]>> processChartData() throws ParseException{
 		   
@@ -1335,7 +1522,13 @@ public class ReportBean {
 	    	column.add(0, "DATE");
 	    			    	
 	    for(String[] sa : report.lines) {
-	    	String date = "new Date(@aspas%s@aspas)";
+	    	String date = "";
+	    	
+	    	if(multiChart)
+	    		date = "%s";
+	    	
+	    	else date = "new Date(@aspas%s@aspas)";
+	    		
 	    	int c = 1;
 	    	String[] newArray = new String[sa.length - (sep ? 1 : 0)];
 	    	
@@ -1352,11 +1545,13 @@ public class ReportBean {
 	    	}
 	    	
 	    	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	    	SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    	SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
+	    	
 	    	Date d;
 	    	
 	    	if (sep)
 	    		d = formatter.parse(String.format("%s %s", sa[col[0]], sa[col[1]]));
+	    	
 	    	else
     			d = formatter.parse(sa[col[0]]);
 	    	date = String.format(date, formatter2.format(d));
@@ -1383,6 +1578,29 @@ public class ReportBean {
 	   
 	// --------------------------------------------------------------------------------------------	
 	   
+	   public String getLaneName(String name) {
+		   
+		   String lane = "";
+		   
+		   switch(name) {
+		   		
+		   case "1" : lane = locale.getStringKey("reports_lane1_name"); break;
+		   case "2" : lane = locale.getStringKey("reports_lane2_name"); break;
+		   case "3" : lane = locale.getStringKey("reports_lane3_name"); break;
+		   case "4" : lane = locale.getStringKey("reports_lane4_name"); break;
+		   case "5" : lane = locale.getStringKey("reports_lane5_name"); break;
+		   case "6" : lane = locale.getStringKey("reports_lane6_name"); break;
+		   case "7" : lane = locale.getStringKey("reports_lane7_name"); break;
+		   case "8" : lane = locale.getStringKey("reports_lane8_name"); break;
+		   		
+		   
+		   }	
+		   
+		   return lane;
+		   
+	   }
+	   
+	// --------------------------------------------------------------------------------------------	  
 	   
 		
 }

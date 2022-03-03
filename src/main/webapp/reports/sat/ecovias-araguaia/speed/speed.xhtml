@@ -16,38 +16,45 @@
 
 		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.ecovias_araguaia_speed_file_name)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.ecovias_araguaia_speed_title)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECOVIAS ARAGUAIA')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECOVIAS ARAGUAIA')}" />		
+	    <f:viewAction onPostback="true" action="#{reportBean.defineDirectionsOnSheet(true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiEquipTab(true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />	
-		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.ecovias_araguaia_speed_file_name)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet(false)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.ecovias_araguaia_speed_title)}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('NOME_ESTACAO')}" />	    
+	    <f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.via_paulista_class_file_name)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.via_paulista_class_title)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />
+		
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.speed_50_km, satLabels.speed_50km_70km, satLabels.speed_70_km_90km, satLabels.speed_90_km_120km, satLabels.speed_120_150km, satLabels.speed_over_150km, satLabels.global_total_vehicles_column))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_dados15')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('NOME_ESTACAO')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.global_equipment_id_column, satLabels.speed_50_km, satLabels.speed_50km_70km, satLabels.speed_70_km_90km, satLabels.speed_90_km_120km, satLabels.speed_120_150km, satLabels.speed_over_150km, satLabels.global_total_vehicles_column))}" />
 	
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(speed &lt; 50); SUM(speed &gt;= 50 AND speed &lt; 70); SUM(speed &gt;= 70 AND speed &lt; 90); SUM(speed &gt;= 90 AND speed &lt; 120); SUM(speed &gt;= 120 AND speed &lt; 150); SUM(speed &gt;= 150); SUM(1)')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv.lane')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(DATA_HORA, `%d/%m/%Y`) as sd; TIME($period)@sd; NOME_ESTACAO; ROUND(IF(VEL_MEDIA_TOTAL &lt; 50, SUM(VOLUME_TOTAL), 0), 0); ROUND(IF(VEL_MEDIA_TOTAL &gt;= 50 AND  VEL_MEDIA_TOTAL &lt; 70, SUM(VOLUME_TOTAL), 0), 0); 
+		ROUND(IF(VEL_MEDIA_TOTAL &gt;= 70 AND VEL_MEDIA_TOTAL &lt; 90, SUM(VOLUME_TOTAL), 0), 0); ROUND(IF(VEL_MEDIA_TOTAL &gt;= 90 AND VEL_MEDIA_TOTAL &lt; 120, SUM(VOLUME_TOTAL), 0), 0); ROUND(IF(VEL_MEDIA_TOTAL &gt;= 120 AND VEL_MEDIA_TOTAL &lt; 150, SUM(VOLUME_TOTAL), 0), 0);
+		ROUND(IF(VEL_MEDIA_TOTAL &gt;= 150, SUM(VOLUME_TOTAL), 0), 0); SUM(VOLUME_TOTAL);')}" />
+		
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON q.equip_id = tb_dados15.NOME_ESTACAO AND q.lane = tb_dados15.NOME_FAIXA')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_estacao')}" />
 	   	<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('DATA_HORA')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />	
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />		
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
-		
-		
-		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions, direction, direction')}" />
+				
+	    <f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions q, q.direction, q.direction')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
+					
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('DATA_HORA', reportsLabels.reports_select_date, true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('q.direction', reportsLabels.reports_select_directions, 'filter_directions.direction', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('NOME_ESTACAO', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', true, true, true)}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('direction', reportsLabels.reports_select_directions, 'filter_directions.direction', true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
+		<!---->
 			               
     </f:metadata>
 	
@@ -80,7 +87,7 @@
 		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
 	 	<h:outputScript library="js/charts" name="chart.js" />
 	
-	   <!---->
+	   <!---->	 
 	
 	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
 	
@@ -116,26 +123,26 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
-		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
-		width="100%" headerClass="custom-table-header">
-		<!-- DATATABALE JSF -->
-		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
-			<h:column>
-				<!-- COLUMN -->
-				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->
-				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
-			</h:column> <!-- COLUMN END -->
-		</c:forEach> <!-- LOOP TAG END -->
-	</h:dataTable> <!-- DATATABALE JSF END -->
-	<!---->
-</h:form><!-- FORM TABLE END-->
+		<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
+			styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
+			width="100%" headerClass="custom-table-header">
+			<!-- DATATABALE JSF -->
+			<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
+				<h:column>
+					<!-- COLUMN -->
+					<f:facet name="header">#{header}</f:facet> <!-- HEADER -->
+					<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
+				</h:column> <!-- COLUMN END -->
+			</c:forEach> <!-- LOOP TAG END -->
+		</h:dataTable> <!-- DATATABALE JSF END -->
+	   <!---->
+	</h:form><!-- FORM TABLE END-->
 	 
 	  <!-- ============================================================================================================================= -->
 	 
-	    <!-- ACTION BUTTONS TEMPLATE: BOTÕES DE ENVIO DE FORMULÁRIO, LIMPEZA DE TABELA E VISUALIZAÇÃO DE GRÁFICOS -->
+	  <!-- ACTION BUTTONS TEMPLATE: BOTÕES DE ENVIO DE FORMULÁRIO, LIMPEZA DE TABELA E VISUALIZAÇÃO DE GRÁFICOS -->
 	 
-	      <ui:include src="/template/action-reports/buttons_template.xhtml" />
+	     <ui:include src="/template/action-reports/buttons_template.xhtml" />
 	  
 	  <!-- ============================================================================================================================= -->
 		
@@ -145,20 +152,20 @@
 	  
 	    <!-- CHART CONTAINER -->  
 	  
-	    <ui:include src="/template/chart/chart_template.xhtml" />
+	     <ui:include src="/template/chart/chart_template.xhtml" />
 	  
 		
 	  <!-- ============================================================================================================================= -->
 	  
 	     <!-- SUBMIT MODAL TEMPLATE: REALIZAR O PREENCHIMENTO DO FORMULÁRIO -->
 	   
-	      <ui:include src="/template/modal/submit_modal_template.xhtml" />
+	     <ui:include src="/template/modal/submit_modal_template.xhtml" />
 	        
       <!-- ============================================================================================================================= -->
              
          <!-- CLEAR MODAL TEMPLATE: LIMPAR DADOS DA TABELA -->
                
-          <ui:include src="/template/modal/clear_modal_template.xhtml" />
+         <ui:include src="/template/modal/clear_modal_template.xhtml" />
 	   
 	  <!-- ============================================================================================================================= -->
 	   
@@ -166,8 +173,8 @@
 	   
 	      <ui:include src="/template/modal/download_modal_template.xhtml" />
 		    
-	  <!-- ============================================================================================================================= -->	    
-		    		
+	  <!-- ============================================================================================================================= -->	
+	  	  		    		
 		<!-- LOADING MESSAGE: MENSAGEM DE CARREGAMENTO (ATIVADA ENQUANTO AS INFORMAÇÕES SÃO PROCESSADAS) -->
 							
 		<div id="loading"> 

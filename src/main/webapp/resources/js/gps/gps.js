@@ -1,4 +1,5 @@
 let draw = $(".drawLines")
+let content = $('.overflow')
 let idGps = {}
 let roadPoint = []
 let posZoom = {}
@@ -24,6 +25,7 @@ const coordToPixel = (x, y, deg, name) => {
 		s2: Number(start[1]),
 		e1: Number(end[0]),
 		e2: Number(end[1]),
+		px: (draw.width() - map.width()) / 2,
 		ps: Number(start[2] / 1000 * map.height() + pad),
 		pe: Number(end[2] / 1000 * map.height() + pad),
 		x: Number(x),
@@ -33,12 +35,12 @@ const coordToPixel = (x, y, deg, name) => {
 	let distance = {
 		longitude: pos.e1 - pos.s1,
 		latitude: pos.e2 - pos.s2,
-		x: d.width(),
+		x: map.width(),
 		y: pos.pe - pos.ps,
 		hypotenuse: () => Math.sqrt(Math.pow(distance.longitude, 2) + Math.pow(distance.latitude, 2)),
 		radius: () => Math.atan(distance.latitude / distance.longitude),
 		radiusOpposite: () => Math.atan(distance.longitude / distance.latitude),
-		pixel: () => Math.sqrt(Math.pow(d.width(), 2) + Math.pow(distance.y, 2)),
+		pixel: () => Math.sqrt(Math.pow(map.width(), 2) + Math.pow(distance.y, 2)),
 		radiusPixel: () => Math.atan(distance.y / distance.x),
 	}
 	let diff = {
@@ -71,9 +73,176 @@ const coordToPixel = (x, y, deg, name) => {
 		hypotenuse: diff.hypotenuse() / distance.hypotenuse()
 	}
 	return {
-		x: percent.hypotenuse * distance.pixel() * Math.cos(diff.radiusDiff()),
+		x: pos.px + percent.hypotenuse * distance.pixel() * Math.cos(diff.radiusDiff()),
 		y: pos.ps + percent.hypotenuse * distance.pixel() * Math.sin(diff.radiusDiff()),
 		rad: distance.radiusPixel() + diff.direction()
+	}
+}
+
+const selectCars = () => {
+	let areaSelect = $('<div>').css({
+		position: 'absolute',
+		left: 0,
+		top: 0,
+		width: '100%',
+		height: '100%',
+		'z-index': 9999
+	})
+	content.after(areaSelect);
+	let selectMap = $('<div class="mapSelect">')
+	let offset = areaSelect.offset()
+	let start = {
+		x: 0,
+		y: 0
+	};
+
+	alertToast('haga clic en punto y arrastre el puntero para seleccionar')
+
+	const mouseDown = function(e) {
+		e.stopPropagation()
+		start.x = (e.pageX - offset.left);
+		start.y = (e.pageY - offset.top);
+
+		selectMap.css({
+			'transform-origin': '0 0',
+			position: 'absolute',
+			left: start.x,
+			top: start.y
+		})
+
+		areaSelect.append(selectMap)
+		areaSelect.on('mousemove', mouseMove)
+		$(document).on('mouseup', mouseUp)
+		areaSelect.unbind('mousedown', mouseDown)
+	}
+
+	const mouseMove = function(e) {
+		let width = (e.pageX - offset.left) - start.x
+		let height = (e.pageY - offset.top) - start.y
+
+		selectMap.css({
+			width: Math.abs(width),
+			height: Math.abs(height),
+			transform: `scale(${width / Math.abs(width)}, ${height / Math.abs(height)})`
+		})
+	}
+
+	const mouseUp = function(e) {
+		areaSelect.unbind('mousemove', mouseMove)
+		$(document).unbind('mouseup', mouseUp)
+		showCarsSelected({
+			start: {
+				x: Number(selectMap.css('left').replaceAll(/[a-zA-Z]/g, '')),
+				y: Number(selectMap.css('top').replaceAll(/[a-zA-Z]/g, ''))
+			},
+			end: {
+				x: e.pageX - offset.left,
+				y: e.pageY - offset.top
+			}
+		})
+		areaSelect.remove()
+	}
+
+	$('.carSelection').remove()
+	areaSelect.on('mousedown', mouseDown)
+}
+
+const showCarsSelected = area => {
+	let offset = draw.offset()
+	let cars = draw.find('[id^=carGPS]').filter(function() {
+		let self = $(this)
+		let x = Number(self.css('left').replaceAll(/[a-zA-Z]/g, '')) * scale + offset.left
+		let y = Number(self.css('top').replaceAll(/[a-zA-Z]/g, '')) * scale + offset.top
+		return Math.abs(area.start.x - area.end.x) == Math.abs(area.end.x - x) + Math.abs(area.start.x - x)
+			&& Math.abs(area.start.y - area.end.y) == Math.abs(area.end.y - y) + Math.abs(area.start.y - y)
+	})
+	
+	let toast = $('<div class="position-fixed carSelection"> \
+					<div class="toast" data-autohide="false"> \
+						<div class="toast-header"> \
+							<!-- <img src="..." class="rounded mr-2" alt="..."> --> \
+							<strong class="mr-auto"></strong> \
+							<small></small> \
+							<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close"> \
+								<span aria-hidden="true">&times;</span> \
+							</button> \
+						</div> \
+						<div class="toast-body"> \
+							<div class="car-selected row"> \
+							</div> \
+						</div> \
+					</div> \
+				</div>').css({
+					left: '10px',
+					bottom: '10px',
+					'z-index': 9999
+				})
+	toast.find('.toast').css('width', '500px').find('.toast-body').css({
+		'overflow-x': 'hidden',
+		'overflow-y': 'auto',
+		'max-height': '500px'
+	}).prev().find('strong').text($('#CarSelect').attr('title'))
+	let selected = toast.find('.car-selected')
+	let struct = $('<div class="col d-flex p-1"> \
+						<div class="card mx-1"> \
+							<div class="card-body selected"> \
+							</div> \
+							<div class="card-footer"> \
+							</div> \
+						</div> \
+					</div>')
+	for (let car of cars) {
+		let c = struct.clone(false)
+		let carCloned = $(car).clone(false)
+		c.find('.selected').append(carCloned.removeAttr('style').css({
+			height: '30px'
+		})).next().text(carCloned.attr('data-original-title')).css('font-size', '10px')
+		selected.append(c)
+	}
+	content.after(toast)
+	toast.on("mousedown", move_gps)
+	toast.children().toast('show').on('hidden.bs.toast', function () {
+		toast.remove()
+	  })
+}
+
+const move_gps = function(e) {
+	let elmnt = $(this)
+	e.preventDefault();
+	e.stopPropagation()
+	// Get the mouse cursor position at startup:
+	pos3 = e.clientX;
+	pos4 = e.clientY;
+
+	$(document)
+		.on("mouseup", closeDragElement)
+
+		.on("mousemove", function (e) {
+			e.preventDefault();
+
+			// Calculate the new cursor position:
+			pos1 = pos3 - e.clientX;
+			pos2 = pos4 - e.clientY;
+			pos3 = e.clientX;
+			pos4 = e.clientY;
+
+			let pos = {
+				left: Math.round(Number(elmnt.css("left").replace("px", "")) - pos1),
+				bottom: Math.round(Number(elmnt.css("bottom").replace("px", "")) + pos2)
+			}
+
+			// Set the element's new position:
+			elmnt.css({
+				left: pos.left,
+				bottom: pos.bottom
+			})
+		})
+	
+	function closeDragElement() {
+		// Stop moving when mouse button is released:
+		$(document)
+			.off("mouseup")
+			.off("mousemove")
 	}
 }
 
@@ -355,11 +524,42 @@ const ChangeCarEvent = data => {
 	}
 }
 
+const initConfigPointGPS = () => {
+	roadPoint.map(road => {
+		let map = draw.prev()
+		let pad = (draw.height() - map.height()) / 2
+		let dot = {
+			x: road[1] / 1000 * draw.width(),
+			y: (1000 - road[2]) / 1000 * map.height() + pad
+		}
+		let point = $('<div>').css({
+			left: `${dot.x}px`,
+			bottom: `${dot.y}px`,
+			width: '5px',
+			height: '5px',
+			transform: 'translate(-50%, -50%)',
+			position: 'absolute',
+			'border-radius': '50%',
+			'background-color': 'red',
+		}).attr('title', `${road[1]}, ${road[2]}`).tooltip()
+		draw.append(point)
+		point.on("mousedown", move_gps)
+		point.on("mousemove", () => {
+			let pos = {
+				x: Number(point.css('left').replace(/[a-zA-Z]/g, '')),
+				y: Number(point.css('bottom').replace(/[a-zA-Z]/g, ''))
+			}
+			point.attr('data-original-title', `${pos.x / draw.width() * 1000}, ${1000 - (pos.y - pad) / map.height() * 1000}`)
+		})
+	})
+}
+
 const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = {}) => {
     $(async function () {
 		replyPos()
 		insertZoomPoint()
 		let units = await connectGPS('AllUnits')
+		let carButton = $('#CarSelect')
 
 		for (const item of units.items) {
 			idGps[item.id] = item.nm
@@ -367,6 +567,9 @@ const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = 
 		}
 
 		consumeGPS({ callback_gps, debug });
+		
+		if (carButton.hasClass('d-none'))
+			carButton.removeClass('d-none').click(selectCars)
 	});
 }
 
