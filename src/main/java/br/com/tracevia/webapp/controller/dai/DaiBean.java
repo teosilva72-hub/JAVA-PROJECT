@@ -95,16 +95,20 @@ public class DaiBean {
 
 	public static class Traffic {
 		int id, equipId;
-		String 	incident,
-				date,
-				channel,
-				lane,
-				direction,
-				hour,
-				name,
-				km = "unknown";
+		public String 	incident,
+						date,
+						channel,
+						lane,
+						direction,
+						hour,
+						name,
+						km = "unknown";
 
 		Path file;
+
+		public Path getFile() {
+			return file;
+		}
 
 		Traffic(Path path, int idx) throws IOException, ParseException {
 			file = path;
@@ -238,10 +242,15 @@ public class DaiBean {
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
 		SimpleDateFormat date_parse = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-		SimpleDateFormat date_formatter = new SimpleDateFormat("yyyyMMdd");
-		SimpleDateFormat hour_formatter = new SimpleDateFormat("HH:mm:ss:SSS");
 
 		Date date = date_parse.parse(params.get("filterDate"));
+
+		getSpecificFile(date);
+	}
+	
+	public void getSpecificFile(Date date) throws IOException, ParseException {
+		SimpleDateFormat date_formatter = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat hour_formatter = new SimpleDateFormat("HH:mm:ss:SSS");
 
 		String hour = hour_formatter.format(date);
 		List<Path> list = getAllFolders(date_formatter.format(date));

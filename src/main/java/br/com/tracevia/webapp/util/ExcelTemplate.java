@@ -616,6 +616,7 @@ public class ExcelTemplate {
 			    utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 10, columns - 1);
 			}
 								
+			}
 		}
 		
 		// ----------------------------------------------------------------------------------------------------------------
@@ -1054,6 +1055,8 @@ public class ExcelTemplate {
 				
 					}
 				
+					}
+				
 				}
 				
 				// TABLE HEADER
@@ -1233,6 +1236,8 @@ public class ExcelTemplate {
 		// TABLE COLUMNS AUTO SIZE
 		utilSheet.columnsWidthAuto(sheet, columns.size());
 				
+		}
+		
 		}
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1128,7 +1128,6 @@ public class ReportBean {
 					model[col[1]] = split[1];
 				} else
 					model[col[0]] = f;
-
 				while (step.before(dateReport) && step.before(date[1])) {
 					f = formatter.format(step);
 					if (sep) {
@@ -1240,6 +1239,8 @@ public class ReportBean {
 
 		if (count > 0)
 			report.secondaryLines = secondaryLines;
+								
+	   //   dta.fillEquipName(listEquips, model, equips, 2, temp.size(), Integer.parseInt(period[0]));
 		
 		return hasLine;
 		
@@ -1249,10 +1250,10 @@ public class ReportBean {
 		
 	   public void resetForm() {
 				
-				// Limpa valores da sessÃƒÂ£o
+				// Limpa valores da sessÃ£o
 				build.resetReportValues();
 				
-				// Reinicializa valores armazenados nas variÃƒÂ¡veis abaixo
+				// Reinicializa valores armazenados nas variÃ¡veis abaixo
 				build = new ReportBuild();
 				select = new ReportSelection();
 										
@@ -1269,7 +1270,7 @@ public class ReportBean {
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	  	
 			/**
-			 * MÃƒÂ©todo para carregar equipamentos disponÃƒÂ­veis para seleÃƒÂ§ÃƒÂ£o
+			 * MÃ©todo para carregar equipamentos disponÃ­veis para seleÃ§Ã£o
 			 * @author Wellington 26/10/2021
 			 * @version 1.0
 			 * @since 1.0
@@ -1296,7 +1297,7 @@ public class ReportBean {
 			// --------------------------------------------------------------------------------------------		
 
 			/**
-			 * MÃƒÂ©todo para carregar perÃƒÂ­odos disponÃƒÂ­veis para seleÃƒÂ§ÃƒÂ£o
+			 * MÃ©todo para carregar perÃ­odos disponÃ­veis para seleÃ§Ã£o
 			 * @author Wellington 26/10/2021
 			 * @version 1.0
 			 * @since 1.0	
