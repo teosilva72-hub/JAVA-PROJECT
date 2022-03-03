@@ -34,6 +34,16 @@ $(async function () {
   toast = new bootstrap.Toast(document.getElementById('liveToast'), { delay: 7000 })
 
   $(".btnRunCommandSOS").click(btnSOSCommand);
+  
+  $(window).on("storage", function() {
+    let report = localStorage.getItem('goReport');
+    
+	if(report){
+	  localStorage.removeItem('goReport');
+	  let r = report.split('/');
+	  location.href = location.origin + `/occurrence/occurrences.xhtml?from=${r[0]}&id=${r[1]}`;
+	}
+  })
 });
 
 var alertToast = msg => {

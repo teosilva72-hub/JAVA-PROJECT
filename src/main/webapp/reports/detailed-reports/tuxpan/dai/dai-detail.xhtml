@@ -44,7 +44,7 @@
 								<h:outputText value="#{data.name}" pt:idx="#{data.id}"
 									style="font-size: 12px; " />
 								<h:commandButton style="display: none" pt:setParameter="setParameter">
-									<f:ajax execute="@this" render=":modalPopUp" listener="#{daiBean.getTrafficById(data.id)}" />
+									<f:ajax execute="@this" render=":modalPopUp :filterDate" listener="#{daiBean.getTrafficById(data.id)}" />
 								</h:commandButton>
 							</h:column>
 							<h:column>

@@ -18,6 +18,7 @@ import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 import br.com.tracevia.webapp.model.meteo.Meteo;
 import br.com.tracevia.webapp.model.sat.SAT;
+import br.com.tracevia.webapp.model.sat.laneFilter;
 import br.com.tracevia.webapp.model.sos.SOS;
 
 public class EquipmentsDAO {
@@ -674,6 +675,67 @@ public class EquipmentsDAO {
 
 		return name;
 	}
+	
+	// --------------------------------------------------------------------------------------------------------------
+
+		/**
+		 * Método para obter uma lista com os nome dos equipamentos
+		 * 
+		 * @author Wellington
+		 * @version 1.0
+		 * @since 1.0
+		 * @param modulo módulo
+		 * @param equips lista com IDs dos equipamentos
+		 * @return lista com os nomes dos equipamentos selecionados
+		 * 
+		 */
+
+		public String[] equipmentsName(String modulo, List<String> equips) {
+					
+			String[] names = new String[equips.size()];
+
+			String sql = "SELECT name FROM " + modulo + "_equipment WHERE visible = 1 AND equip_id IN(";
+			
+			for(int l = 0; l < equips.size(); l++) {
+				 sql += equips.get(l);
+				 
+				 // ADICIONA VIRGULA
+				 if(l != (equips.size() - 1))
+					 sql += ", ";				 
+			}	
+			
+			sql += ") ";
+
+			try {
+				
+				conn.start(1);
+
+				// GET CONNECTION
+				conn.prepare(sql);
+				MapResult result = conn.executeQuery();
+				
+				int i = 0;
+
+				if (result != null) {
+
+					for (RowResult rs : result) {
+
+						names[i] = rs.getString(1);
+						
+						i++; // INC
+
+					}
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				conn.close();
+			}
+
+			return names;
+		}
+
 
 	// --------------------------------------------------------------------------------------------------------------
 
@@ -2447,7 +2509,7 @@ public class EquipmentsDAO {
 	 * @return Equipments - Objeto com informações do tipo Equipments
 	 */
 
-	public String[] numberLanesAndFisrtDirection(String equip_id) {
+	public String[] laneDirection(String equip_id) {
 
 		String sql = "SELECT number_lanes, dir_lane1 FROM sat_equipment WHERE equip_id = ? AND visible = 1";
 
@@ -2487,5 +2549,60 @@ public class EquipmentsDAO {
 	}
 
 	// --------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para obter dados das faixas dos SATs
+	 * 
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0	
+	 * @return lista com objetos do tipo laneFilter
+	 */
 
+	public List<laneFilter> listarFaixas() {
+
+		String sql = "SELECT equip_id, lane, direction FROM filter_directions";
+
+		List<laneFilter> lista = new ArrayList<laneFilter>();
+
+		try {
+			
+			conn.start(1);
+
+			conn.prepare(sql);
+	
+			MapResult result = conn.executeQuery();
+
+			// System.out.println(sql);
+
+			if (result != null) {
+				for (RowResult rs : result) {
+					
+					laneFilter lane = new laneFilter();
+					
+					lane.setEquipId(rs.getInt("equip_id"));
+					lane.setLane(rs.getInt("lane"));
+					lane.setDirection(rs.getString("direction"));
+					
+					lista.add(lane);					
+				}
+			}
+
+		} catch (Exception sqle) {
+
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));
+
+			SystemLog.logErrorSQL(errorFolder.concat("error_sat_dir1"), EquipmentsDAO.class.getCanonicalName(),
+					sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
+
+		} finally {
+			conn.close();
+		}
+
+		return lista;
+	}
+
+	// --------------------------------------------------------------------------------------------------------------
+	
 }

@@ -1,23 +1,20 @@
 package br.com.tracevia.webapp.dao.colas;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.colas.ColasQueue;
 import br.com.tracevia.webapp.model.colas.ColasData;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.util.ConnectionFactory;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 
 public class ColasDAO {
 
-	private Connection conn;
-	private PreparedStatement ps;
-	private ResultSet rs;
+	SQL_Tracevia conn = new SQL_Tracevia();
 	
 	public List<ColasData> cameraGet() throws Exception{
 		
@@ -25,14 +22,14 @@ public class ColasDAO {
 		String query = "SELECT name FROM colas_equipment";
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(query);			
+			conn.prepare(query);			
 
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 
 					ColasData colas = new ColasData();
 
@@ -44,7 +41,9 @@ public class ColasDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 		return list;
 		
@@ -67,14 +66,14 @@ public class ColasDAO {
 			query += " AND device = " + deviceS;
 
 		try {
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(query);
+			conn.prepare(query);
 			
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 
 					int device = rs.getInt("device");
 					int lane = rs.getInt("lane");
@@ -83,7 +82,9 @@ public class ColasDAO {
 
 					ColasQueue colas = new ColasQueue(device, lane, local, km);
 
-					colas.setDate(rs.getTimestamp("update_date"));
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd hh:MM");
+
+					colas.setDate(format.parse(rs.getString("update_date")));
 
 					list.add(colas);
 				}				
@@ -91,7 +92,9 @@ public class ColasDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 		return list;
 	}
@@ -105,14 +108,14 @@ public class ColasDAO {
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(select);			
+			conn.prepare(select);			
 
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 
 					Colas colas = new Colas();
 
@@ -126,7 +129,9 @@ public class ColasDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 		return list;
 

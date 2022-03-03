@@ -424,13 +424,26 @@
 		<div class="zoomRoad" id="zoomRoad">
 			<ui:param name="Naranjos" value="#{ loginAccount.coordMap('naranjos') }" />
 			<ui:param name="RightLosgil" value="#{ loginAccount.coordMap('right-losgil') }" />
+			<ui:param name="nunoTeste1" value="#{ loginAccount.coordMap('nunoteste') }" />
+			<ui:param name="nunoTeste2" value="#{ loginAccount.coordMap('nunoteste2') }" />
 
 			<div name="naranjos-zoomPoint" for="naranjos"></div>
 			<div name="naranjos" style="display: none" gps_start="#{''.format('%f;%f;%f', Naranjos[0][0], Naranjos[0][1], Naranjos[0][2])}" gps_end="#{''.format('%f;%f;%f', Naranjos[1][0], Naranjos[1][1], Naranjos[1][2])}">
 				<div class="background-zoomPoint"></div>
 				<img src="/resources/images/map/tuxpan/naranjos.webp" />
 			</div>
-
+			<!-- Teste Nuno -->
+			<div name="nunoteste-zoomPoint" for="nunoteste" style="width: 10px; height: 10px;"></div>
+			<div name="nunoteste" style="display: none" gps_start="#{''.format('%f;%f;%f', nunoTeste1[0][0], nunoTeste1[0][1], nunoTeste1[0][2])}" gps_end="#{''.format('%f;%f;%f', nunoTeste1[1][0], nunoTeste1[1][1], nunoTeste1[1][2])}">
+				<div class="background-zoomPoint"></div>
+				<img src="/resources/images/map/nunoTeste/lupa1.webp" />
+			</div>
+			<div name="nunoteste2-zoomPoint" for="nunoteste2" style="width: 10px; height: 10px;"></div>
+			<div name="nunoteste2" style="display: none" gps_start="#{''.format('%f;%f;%f', nunoTeste2[0][0], nunoTeste2[0][1], nunoTeste2[0][2])}" gps_end="#{''.format('%f;%f;%f', nunoTeste2[1][0], nunoTeste2[1][1], nunoTeste2[1][2])}">
+				<div class="background-zoomPoint"></div>
+				<img src="/resources/images/map/nunoTeste/lupa2.webp" />
+			</div>
+			<!--  -->
 			<div name="right-losgil-zoomPoint" for="right-losgil"></div>
 			<div name="right-losgil" style="display: none" gps_start="#{''.format('%f;%f;%f', RightLosgil[0][0], RightLosgil[0][1], RightLosgil[0][2])}" gps_end="#{''.format('%f;%f;%f', RightLosgil[1][0], RightLosgil[1][1], RightLosgil[1][2])}">
 				<div class="background-zoomPoint"></div>
@@ -582,7 +595,7 @@
 			
 				<!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
 
-				<input type="hidden" name="requiredEquipmentsMsg"	value="#{requiredMessages.required_user_interface_select_equipments}" /> <!-- EQUIPMENT REQUIRED MESSAGE -->				
+				<input type="hidden" name="requiredEquipmentsMsg" value="#{requiredMessages.required_user_interface_select_equipments}" /> <!-- EQUIPMENT REQUIRED MESSAGE -->				
 				<input type="hidden" name="requiredEquipIdMsg" value="#{requiredMessages.required_user_interface_equip_id}" /> <!-- EQUIPMENT ID REQUIRED MESSAGE -->
 				<input type="hidden" name="validatorNumberMsg" value="#{validatorMessages.validator_number_message}" />	<!-- EQUIPMENT ID IS NUMBER VALIDATION MESSAGE -->
 				<input type="hidden" name="validatorMaxLenght" value="#{validatorMessages.validator_global_maxlength}" /> <!-- EQUIPMENT NAME LENGHT VALIDATION MESSAGE -->

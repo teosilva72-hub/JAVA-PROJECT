@@ -98,6 +98,7 @@ public class RoadConcessionaire {
 	public boolean viaSul;	
 	public boolean eco101;	
 	public boolean hasNotification;
+	public boolean tester;
 			
 	// --------------------------------------------------------------------------------------------
 		
@@ -119,6 +120,7 @@ public class RoadConcessionaire {
 		viaSul = false;
 		eco101 = false;
 		hasNotification = false;
+		tester = false;
 		
 	}
 	
@@ -220,8 +222,8 @@ public class RoadConcessionaire {
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 			plaque = "";
-			mapEnabled = false;
-			reportsLLEnabled = false;
+			mapEnabled = true;
+			reportsLLEnabled = true;
 			cardel = true;
 		}
 		
@@ -682,7 +684,48 @@ public class RoadConcessionaire {
 		  viaSul = true;
 		  hasNotification = true;
 				  
-         }	
+         }
+       if(roadConcessionaire.equals(RoadConcessionairesEnum.tester.getConcessionaire())) {
+    	   classLight = Tracevia.LIGHT_VEHICLES.getClasse();
+ 		  classMotorcycle = Tracevia.MOTORCYCLES.getClasse();
+ 		  classUnknown = Tracevia.UNKNOWN_CLASS.getClasse();	
+ 		  classTrailer = Tracevia.TRAILER.getClasse();	
+ 		  classSemiTrailer = Tracevia.SEMI_TRAILER.getClasse();
+ 		  classBus2Axles = Tracevia.BUS_2AXLES.getClasse();	
+ 		  classBus3Axles = Tracevia.BUS_3AXLES.getClasse();
+ 		  classTruck2Axles = Tracevia.TRUCK_2AXLES.getClasse();	
+ 		  classTruck3Axles = Tracevia.TRUCK_3AXLES.getClasse();		
+ 		  classTruck4Axles = Tracevia.TRUCK_4AXLES.getClasse();	
+ 		  classTruck5Axles = Tracevia.TRUCK_5AXLES.getClasse();	
+ 		  classTruck6Axles = Tracevia.TRUCK_6AXLES.getClasse();	
+ 		  classTruck7Axles = Tracevia.TRUCK_7AXLES.getClasse();	
+ 		  classTruck8Axles = Tracevia.TRUCK_8AXLES.getClasse();	
+ 		  classTruck9Axles = Tracevia.TRUCK_9AXLES.getClasse();	
+ 		  classTruck10Axles = Tracevia.TRUCK_10AXLES.getClasse();	
+ 		  classNotIdentifiedAxl2 = Tracevia.NOT_ID_CLASS_2AXLES.getClasse();
+ 		  classNotIdentifiedAxl3 = Tracevia.NOT_ID_CLASS_3AXLES.getClasse();
+ 		  classNotIdentifiedAxl4 = Tracevia.NOT_ID_CLASS_4AXLES.getClasse();
+ 		  classNotIdentifiedAxl5 = Tracevia.NOT_ID_CLASS_5AXLES.getClasse();
+ 		  classNotIdentifiedAxl6 = Tracevia.NOT_ID_CLASS_6AXLES.getClasse();
+ 		  classNotIdentifiedAxl7 = Tracevia.NOT_ID_CLASS_7AXLES.getClasse();
+ 		  classNotIdentifiedAxl8 = Tracevia.NOT_ID_CLASS_8AXLES.getClasse();
+ 		  classNotIdentifiedAxl9 = Tracevia.NOT_ID_CLASS_9AXLES.getClasse();
+ 		  externalImagePath += "tracevia.jpg";		
+ 		  logo = "";
+ 		  linearMapUI = "/resources/images/map/nunoTeste/tuxpan_tampico.webp";
+ 		  mapUI = "/resources/images/map/nunoTeste/Tracevia-teste.webp";
+ 		  
+ 		  tableVBV = TraceviaTables.TraceviaVBV.getTable();
+ 		  tableDados15 = TraceviaTables.TraceviaDados15.getTable();
+ 		  tableStatus = TraceviaTables.TraceviaStatus.getTable();
+ 		  tableLL = TraceviaTables.TraceviaLL.getTable();
+ 	      tableCCR = TraceviaTables.TraceviaCCR.getTable();
+// 	      plaque = "";
+ 		  mapEnabled = true;
+ 		  reportsLLEnabled = false;
+ 		  tester = true;
+ 		  hasNotification = true;
+       }
               		 
        
 		}catch(Exception ex){ /* DO NOTHING */ }
@@ -728,6 +771,12 @@ public class RoadConcessionaire {
 	public boolean isHasNotification() {
 		return hasNotification;
 	}
+
+	public boolean isTester() {
+		return tester;
+	}
+
+	
 
 	
 }

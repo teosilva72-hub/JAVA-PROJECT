@@ -1,9 +1,5 @@
 package br.com.tracevia.webapp.dao.occ;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.faces.model.SelectItem;
@@ -11,19 +7,21 @@ import javax.faces.model.SelectItem;
 import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 import br.com.tracevia.webapp.model.occ.OccurrencesData;
-import br.com.tracevia.webapp.util.ConnectionFactory;
+import br.com.tracevia.webapp.model.sos.SOS;
 
 public class OccurrencesDAO {
-	private Connection conn;
-	private PreparedStatement ps;
-	private ResultSet rs;
+
+	SQL_Tracevia conn = new SQL_Tracevia();
 
 	//CREATE OCCURRENCE
 	public String cadastroOcorrencia (OccurrencesData data ) throws Exception {
 
 		String occ_number = null;
-		
+
 		//script BD
 		String query = "INSERT INTO occ_data(occ_number, type, origin, state_occurrence, start_date, start_hour, start_minute, end_date, end_hour, end_minute, cause, cause_description, kilometer, highway, "
 				+ "local_state, direction, lane, others, local_condition, traffic, characteristic, interference, signaling, conductor_condition, descrTitleDescr, descrDescr, envolvTypo, "
@@ -37,89 +35,89 @@ public class OccurrencesDAO {
 
 		try {
 
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(query);
-			
-			//passando valores para os atributos BD
-			ps.setString(1, data.getData_number());
-			ps.setString(2, data.getType());
-			ps.setString(3, data.getOrigin());
-			ps.setString(4, data.getState_occurrences());
-			ps.setString(5, data.getStart_date());
-			ps.setString(6, data.getStart_hour());
-			ps.setString(7, data.getStart_minute());
-			ps.setString(8, data.getEnd_date());
-			ps.setString(9, data.getEnd_hour());
-			ps.setString(10, data.getEnd_minute());
-			ps.setString(11, data.getCause());
-			ps.setString(12, data.getCause_description());
-			ps.setString(13, data.getKilometer());
-			ps.setString(14, data.getHighway());
-			ps.setString(15, data.getLocal_state());
-			ps.setString(16, data.getDirection());
-			ps.setString(17, data.getLane());
-			ps.setString(18, data.getOthers());
-			ps.setString(19, data.getLocal_condition());
-			ps.setString(20, data.getTraffic());
-			ps.setString(21, data.getCharacteristic());
-			ps.setString(22, data.getInterference());
-			ps.setString(23, data.getSignaling());
-			ps.setString(24, data.getConductor_condition());
-			ps.setString(25, data.getDescription_title());
-			ps.setString(26, data.getDescription_text());
-			ps.setString(27, data.getInvolved_type());
-			ps.setString(28, data.getInvolved_When());
-			ps.setString(29, data.getInvolved_description());
-			ps.setString(30, data.getProcedure_name());
-			ps.setString(31, data.getProcedure_description());
-			ps.setString(32, data.getTraffic_hours());
-			ps.setString(33, data.getTraffic_minutes());
-			ps.setString(34, data.getTraffic_extension());
-			ps.setString(35, data.getTraffic_stopped());
-			ps.setString(36, data.getDamage_date());
-			ps.setString(37, data.getDamage_type_damage());
-			ps.setString(38, data.getDamage_gravity());
-			ps.setString(39, data.getDemage_description());
-			ps.setString(40, data.getAction_type());
-			ps.setString(41, data.getAction_start());
-			ps.setString(42, data.getAction_end());
-			ps.setString(43, data.getAction_duration());
-			ps.setString(44, data.getAction_description());
-			ps.setString(45, data.getActionStartData()); 
-			ps.setString(46, data.getActionStartHour()); 
-			ps.setString(47, data.getActionStartMinute()); 
-			ps.setString(48, data.getActionEndData()); 
-			ps.setString(49, data.getActionEndHour()); 
-			ps.setString(50, data.getActionEndMinute()); 
-			ps.setString(51, data.getTrackStartDate()); 
-			ps.setString(52, data.getTrackStartHour()); 
-			ps.setString(53, data.getTrackStartMinute()); 
-			ps.setString(54, data.getTrackEndDate()); 
-			ps.setString(55, data.getTrackEndHour()); 
-			ps.setString(56, data.getTrackEndMinute()); 
-			ps.setString(57, data.getDamageDescriptionInternal());
-			ps.setString(58, data.getCauseDescrInter());
-			ps.setString(59, data.getDescriptionInter());
-			ps.setString(60, data.getInvolvedInter());
-			ps.setString(61, data.getActionInter());
-			ps.setString(62, data.getDamage_amount()); 
-			ps.setString(63, data.getStatusAction()); 
-			ps.setString(64, data.getDamageUnity());
+			conn.start(1);
+			conn.prepare(query);
 
-			int res = ps.executeUpdate();
-			
+			//passando valores para os atributos BD
+			conn.setString(1, data.getData_number());
+			conn.setString(2, data.getType());
+			conn.setString(3, data.getOrigin());
+			conn.setString(4, data.getState_occurrences());
+			conn.setString(5, data.getStart_date());
+			conn.setString(6, data.getStart_hour());
+			conn.setString(7, data.getStart_minute());
+			conn.setString(8, data.getEnd_date());
+			conn.setString(9, data.getEnd_hour());
+			conn.setString(10, data.getEnd_minute());
+			conn.setString(11, data.getCause());
+			conn.setString(12, data.getCause_description());
+			conn.setString(13, data.getKilometer());
+			conn.setString(14, data.getHighway());
+			conn.setString(15, data.getLocal_state());
+			conn.setString(16, data.getDirection());
+			conn.setString(17, data.getLane());
+			conn.setString(18, data.getOthers());
+			conn.setString(19, data.getLocal_condition());
+			conn.setString(20, data.getTraffic());
+			conn.setString(21, data.getCharacteristic());
+			conn.setString(22, data.getInterference());
+			conn.setString(23, data.getSignaling());
+			conn.setString(24, data.getConductor_condition());
+			conn.setString(25, data.getDescription_title());
+			conn.setString(26, data.getDescription_text());
+			conn.setString(27, data.getInvolved_type());
+			conn.setString(28, data.getInvolved_When());
+			conn.setString(29, data.getInvolved_description());
+			conn.setString(30, data.getProcedure_name());
+			conn.setString(31, data.getProcedure_description());
+			conn.setString(32, data.getTraffic_hours());
+			conn.setString(33, data.getTraffic_minutes());
+			conn.setString(34, data.getTraffic_extension());
+			conn.setString(35, data.getTraffic_stopped());
+			conn.setString(36, data.getDamage_date());
+			conn.setString(37, data.getDamage_type_damage());
+			conn.setString(38, data.getDamage_gravity());
+			conn.setString(39, data.getDemage_description());
+			conn.setString(40, data.getAction_type());
+			conn.setString(41, data.getAction_start());
+			conn.setString(42, data.getAction_end());
+			conn.setString(43, data.getAction_duration());
+			conn.setString(44, data.getAction_description());
+			conn.setString(45, data.getActionStartData()); 
+			conn.setString(46, data.getActionStartHour()); 
+			conn.setString(47, data.getActionStartMinute()); 
+			conn.setString(48, data.getActionEndData()); 
+			conn.setString(49, data.getActionEndHour()); 
+			conn.setString(50, data.getActionEndMinute()); 
+			conn.setString(51, data.getTrackStartDate()); 
+			conn.setString(52, data.getTrackStartHour()); 
+			conn.setString(53, data.getTrackStartMinute()); 
+			conn.setString(54, data.getTrackEndDate()); 
+			conn.setString(55, data.getTrackEndHour()); 
+			conn.setString(56, data.getTrackEndMinute()); 
+			conn.setString(57, data.getDamageDescriptionInternal());
+			conn.setString(58, data.getCauseDescrInter());
+			conn.setString(59, data.getDescriptionInter());
+			conn.setString(60, data.getInvolvedInter());
+			conn.setString(61, data.getActionInter());
+			conn.setString(62, data.getDamage_amount()); 
+			conn.setString(63, data.getStatusAction()); 
+			conn.setString(64, data.getDamageUnity());
+
+			long res = conn.executeUpdate();
+
 			//se a vari�vel for maior do que 0, acessamos a essa fun��o
 			if(res > 0) {
-				
+
 				//pengando o �ltimo valor do banco de dados
 				String query2 = "Select MAX(occ_number) AS last_Id  FROM occ_data";
 
-				ps = conn.prepareStatement(query2);
+				conn.prepare(query2);
 
-				rs = ps.executeQuery();
+				MapResult result = conn.executeQuery();
 
-				if(rs != null) {
-					while(rs.next()) {	
+				if(result.hasNext()) {
+					for (RowResult rs : result) {	
 						//atribuindo para a variavel occ_number o �ltimo valor do banco de dados
 						occ_number = rs.getString("last_Id");
 
@@ -128,16 +126,16 @@ public class OccurrencesDAO {
 
 			}
 
-		}catch (SQLException inserirOcorrencia){
+		}catch (Exception inserirOcorrencia){
 			throw new Exception("Erro ao inserir dados: " + inserirOcorrencia);
 		}finally {
-			ConnectionFactory.closeConnection(conn, ps);
+			conn.close();
 		}
 		//retordo o valor do m�todo como o �ltimo id do banco de dados
 		return occ_number;
 
 	}
-	
+
 	public ArrayList<SelectItem> dropDownFieldValues (String field) throws Exception {	
 
 		String query = "SELECT detail_id, value_ FROM tracevia_app.occ_details WHERE field = ? and active = 1";
@@ -145,63 +143,63 @@ public class OccurrencesDAO {
 		ArrayList<SelectItem> listarDropDownValue = new ArrayList<SelectItem>();
 		/*System.out.println(query);*/
 		TranslationMethods occTranslation = new TranslationMethods();
-		
+
 		try {
 
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(query);
-			ps.setString(1, field);
+			conn.start(1);
+			conn.prepare(query);
+			conn.setString(1, field);
 
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 
-			if(rs != null) {
-				while(rs.next()) {
+			if(result.hasNext()) {
+				for (RowResult rs : result) {
 					SelectItem listarDrop = new SelectItem();
 					listarDrop.setValue(rs.getInt(1));
 					listarDrop.setLabel(occTranslation.occurrencesTranslator(rs.getString(2)));
-															
+
 					listarDropDownValue.add(listarDrop);
 				}
 			}
 
 		}finally {
 
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 		return listarDropDownValue;
 	}
-	
+
 	//m�todo editTable, esse � o m�todo onde passamos os valores para os atributos para fazer o bloqueio e desbloqueio da tabela
 	public boolean editTable(boolean editTable, String name_user, int accessLevel, String id ) throws Exception {
-		
+
 		boolean status = false;
-		
+
 		//script para pegar os valores e passar valores
 		String query = "UPDATE occ_data SET editTable = ?, nameUser = ?, accessLevel = ? WHERE occ_number = ?";
 
 		DateTimeApplication dtm = new DateTimeApplication();
-		
+
 		try {
 			//passando ou pegando os valores dos atributos
-			conn = ConnectionFactory.connectToTraceviaApp();
+			conn.start(1);
 
-			ps = conn.prepareStatement(query);
+			conn.prepare(query);
 
-			ps.setBoolean(1, editTable);
-			ps.setString(2, name_user);
-			ps.setInt(3, accessLevel);
-			ps.setString(4, id);
+			conn.setBoolean(1, editTable);
+			conn.setString(2, name_user);
+			conn.setInt(3, accessLevel);
+			conn.setString(4, id);
 
-			ps.executeUpdate();
+			conn.executeUpdate();
 
 
-		}catch (SQLException alterarOcorrencia){
+		}catch (Exception alterarOcorrencia){
 
 			throw new Exception("Erro ao alterar dados: " + alterarOcorrencia);
 
 		}finally {
 
-			ConnectionFactory.closeConnection(conn, ps);
+			conn.close();
 
 		}		
 
@@ -209,28 +207,28 @@ public class OccurrencesDAO {
 
 	}
 	public boolean lastUser(String id, String lastData, String user) throws Exception {
-		
+
 		boolean status = false;
-		
+
 		String query = "UPDATE occ_data SET lastDateUser = ?, lastUser = ? WHERE occ_number = ?";
 		DateTimeApplication dtm = new DateTimeApplication();
 		try {
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(query);
-			ps.setString(1, lastData);
-			ps.setString(2, user);
-			ps.setString(3, id);
-			
-			int answer = ps.executeUpdate();
+			conn.start(1);
+			conn.prepare(query);
+			conn.setString(1, lastData);
+			conn.setString(2, user);
+			conn.setString(3, id);
+
+			long answer = conn.executeUpdate();
 
 			if(answer > 0) 
 				status = true;
-		}catch (SQLException alterarOcorrencia){
+		}catch (Exception alterarOcorrencia){
 			throw new Exception("Erro ao alterar dados: " + alterarOcorrencia);
 		}finally {
-			ConnectionFactory.closeConnection(conn, ps);
+			conn.close();
 		}	
-		
+
 		return status;
 	}
 	//m�todo atualizar ocorr�ncia 
@@ -250,93 +248,93 @@ public class OccurrencesDAO {
 				"typeHour2 = ?, typeHour3 = ?, typeHour4 = ?, typeHour5 = ?, typeHour6 = ? WHERE occ_number = ?";
 
 		DateTimeApplication dtm = new DateTimeApplication();
-		
+
 		try {
 			//atributos que ser�o atualizados quando o m�todo for chamado
-			
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(query);
 
-			ps.setString(1, data.getType());
-			ps.setString(2, data.getOrigin());
-			ps.setString(3, data.getState_occurrences());
-			ps.setString(4, data.getStart_date());
-			ps.setString(5, data.getStart_hour());
-			ps.setString(6, data.getStart_minute());
-			ps.setString(7, data.getEnd_date());
-			ps.setString(8, data.getEnd_hour());
-			ps.setString(9, data.getEnd_minute());
-			ps.setString(10, data.getCause());
-			ps.setString(11, data.getCause_description());
-			ps.setString(12, data.getKilometer());
-			ps.setString(13, data.getHighway());
-			ps.setString(14, data.getLocal_state());
-			ps.setString(15, data.getDirection());
-			ps.setString(16, data.getLane());
-			ps.setString(17, data.getOthers());
-			ps.setString(18, data.getLocal_condition());
-			ps.setString(19, data.getTraffic());
-			ps.setString(20, data.getCharacteristic());
-			ps.setString(21, data.getInterference());
-			ps.setString(22, data.getSignaling());
-			ps.setString(23, data.getConductor_condition());
-			ps.setString(24, data.getDescription_title());
-			ps.setString(25, data.getDescription_text());
-			ps.setString(26, data.getInvolved_type());
-			ps.setString(27, data.getInvolved_When());
-			ps.setString(28, data.getInvolved_description());
-			ps.setString(29, data.getProcedure_name());
-			ps.setString(30, data.getProcedure_description());
-			ps.setString(31, data.getTraffic_hours());
-			ps.setString(32, data.getTraffic_minutes());
-			ps.setString(33, data.getTraffic_extension());
-			ps.setString(34, data.getTraffic_stopped());
-			ps.setString(35, data.getDamage_date());
-			ps.setString(36, data.getDamage_type_damage());
-			ps.setString(37, data.getDamage_gravity());
-			ps.setString(38, data.getDemage_description());
-			ps.setString(39, data.getAction_type());
-			ps.setString(40, data.getAction_start());
-			ps.setString(41, data.getAction_end());
-			ps.setString(42, data.getAction_duration());
-			ps.setString(43, data.getAction_description());
-			ps.setString(44, data.getActionStartData());
-			ps.setString(45, data.getActionStartHour());
-			ps.setString(46, data.getActionStartMinute());
-			ps.setString(47, data.getActionEndData());
-			ps.setString(48, data.getActionEndHour());
-			ps.setString(49, data.getActionEndMinute());
-			ps.setString(50, data.getTrackStartDate());
-			ps.setString(51, data.getTrackStartHour());
-			ps.setString(52, data.getTrackStartMinute());
-			ps.setString(53, data.getTrackEndDate());
-			ps.setString(54, data.getTrackEndHour());
-			ps.setString(55, data.getTrackEndMinute());
-			ps.setString(56, data.getDamageDescriptionInternal());
-			ps.setString(57, data.getCauseDescrInter());
-			ps.setString(58, data.getDescriptionInter());
-			ps.setString(59, data.getInvolvedInter());
-			ps.setString(60, data.getActionInter());
-			ps.setString(61, data.getDamage_amount());
-			ps.setString(62, data.getStatusAction());
-			ps.setString(63, data.getDamageUnity());
-			ps.setString(64, data.getTypeHour1());
-			ps.setString(65, data.getTypeHour2());
-			ps.setString(66, data.getTypeHour3());
-			ps.setString(67, data.getTypeHour4());
-			ps.setString(68, data.getTypeHour5());
-			ps.setString(69, data.getTypeHour6());
-			ps.setString(70, data.getData_number());
+			conn.start(1);
+			conn.prepare(query);
 
-			int answer = ps.executeUpdate();
+			conn.setString(1, data.getType());
+			conn.setString(2, data.getOrigin());
+			conn.setString(3, data.getState_occurrences());
+			conn.setString(4, data.getStart_date());
+			conn.setString(5, data.getStart_hour());
+			conn.setString(6, data.getStart_minute());
+			conn.setString(7, data.getEnd_date());
+			conn.setString(8, data.getEnd_hour());
+			conn.setString(9, data.getEnd_minute());
+			conn.setString(10, data.getCause());
+			conn.setString(11, data.getCause_description());
+			conn.setString(12, data.getKilometer());
+			conn.setString(13, data.getHighway());
+			conn.setString(14, data.getLocal_state());
+			conn.setString(15, data.getDirection());
+			conn.setString(16, data.getLane());
+			conn.setString(17, data.getOthers());
+			conn.setString(18, data.getLocal_condition());
+			conn.setString(19, data.getTraffic());
+			conn.setString(20, data.getCharacteristic());
+			conn.setString(21, data.getInterference());
+			conn.setString(22, data.getSignaling());
+			conn.setString(23, data.getConductor_condition());
+			conn.setString(24, data.getDescription_title());
+			conn.setString(25, data.getDescription_text());
+			conn.setString(26, data.getInvolved_type());
+			conn.setString(27, data.getInvolved_When());
+			conn.setString(28, data.getInvolved_description());
+			conn.setString(29, data.getProcedure_name());
+			conn.setString(30, data.getProcedure_description());
+			conn.setString(31, data.getTraffic_hours());
+			conn.setString(32, data.getTraffic_minutes());
+			conn.setString(33, data.getTraffic_extension());
+			conn.setString(34, data.getTraffic_stopped());
+			conn.setString(35, data.getDamage_date());
+			conn.setString(36, data.getDamage_type_damage());
+			conn.setString(37, data.getDamage_gravity());
+			conn.setString(38, data.getDemage_description());
+			conn.setString(39, data.getAction_type());
+			conn.setString(40, data.getAction_start());
+			conn.setString(41, data.getAction_end());
+			conn.setString(42, data.getAction_duration());
+			conn.setString(43, data.getAction_description());
+			conn.setString(44, data.getActionStartData());
+			conn.setString(45, data.getActionStartHour());
+			conn.setString(46, data.getActionStartMinute());
+			conn.setString(47, data.getActionEndData());
+			conn.setString(48, data.getActionEndHour());
+			conn.setString(49, data.getActionEndMinute());
+			conn.setString(50, data.getTrackStartDate());
+			conn.setString(51, data.getTrackStartHour());
+			conn.setString(52, data.getTrackStartMinute());
+			conn.setString(53, data.getTrackEndDate());
+			conn.setString(54, data.getTrackEndHour());
+			conn.setString(55, data.getTrackEndMinute());
+			conn.setString(56, data.getDamageDescriptionInternal());
+			conn.setString(57, data.getCauseDescrInter());
+			conn.setString(58, data.getDescriptionInter());
+			conn.setString(59, data.getInvolvedInter());
+			conn.setString(60, data.getActionInter());
+			conn.setString(61, data.getDamage_amount());
+			conn.setString(62, data.getStatusAction());
+			conn.setString(63, data.getDamageUnity());
+			conn.setString(64, data.getTypeHour1());
+			conn.setString(65, data.getTypeHour2());
+			conn.setString(66, data.getTypeHour3());
+			conn.setString(67, data.getTypeHour4());
+			conn.setString(68, data.getTypeHour5());
+			conn.setString(69, data.getTypeHour6());
+			conn.setString(70, data.getData_number());
+
+			long answer = conn.executeUpdate();
 
 			if(answer > 0) 
 				status = true;
 
-		}catch (SQLException alterarOcorrencia){
+		}catch (Exception alterarOcorrencia){
 			throw new Exception("Erro ao alterar dados: " + alterarOcorrencia);
 		}finally {
-			ConnectionFactory.closeConnection(conn, ps);
+			conn.close();
 		}		
 
 		return status;
@@ -346,36 +344,36 @@ public class OccurrencesDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	//pegando o �ltimo registro do banco de dados
 	public int GetId() throws Exception{
 
 		String sql = "SELECT max(occ_number) FROM occ_data";
 
 		int value = 0; 
-		
+
 		//tentar
 		try {
-			
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
 
-			if(rs != null) {
-				while(rs.next()) {
+			conn.start(1);
+			conn.prepare(sql);
+			MapResult result = conn.executeQuery();
+
+			if(result.hasNext()) {
+				for (RowResult rs : result) {
 
 					value = rs.getInt(1);	   			
 				}
 			}
 		}finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
-		
+
 		//retornando o valor do �ltimo a id para a variavel (value)
 		return value;
 
 	}
-	
+
 	//m�todo PDF
 	public OccurrencesData submitPdf(int PdfGet) throws Exception {
 		TranslationMethods trad = new TranslationMethods();
@@ -410,13 +408,13 @@ public class OccurrencesDAO {
 
 		try {
 
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(pdf);
-			ps.setInt(1, PdfGet);
-			rs = ps.executeQuery();
+			conn.start(1);
+			conn.prepare(pdf);
+			conn.setInt(1, PdfGet);
+			MapResult result = conn.executeQuery();
 
-			if(rs != null) {
-				while(rs.next()) {
+			if(result.hasNext()) {
+				for (RowResult rs : result) {
 					//valores dos atributos dentro do banco de dados
 					occ.setType(rs.getString(1));
 					occ.setOrigin(rs.getString(2));
@@ -445,7 +443,7 @@ public class OccurrencesDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}	
 		//passando os valores dos atributos para dentro da var
 		return occ;
@@ -457,13 +455,13 @@ public class OccurrencesDAO {
 
 		try {
 
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(userId);
-			ps.setInt(1, user);
-			rs = ps.executeQuery();
+			conn.start(1);
+			conn.prepare(userId);
+			conn.setInt(1, user);
+			MapResult result = conn.executeQuery();
 
-			if(rs != null) {
-				while(rs.next()) {
+			if(result.hasNext()) {
+				for (RowResult rs : result) {
 
 					occ.getUser().setUser_id(rs.getInt(1));
 
@@ -473,13 +471,12 @@ public class OccurrencesDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 
 		return occ;
 	}
 	public ArrayList<OccurrencesData> listarOcorrencias() throws Exception {
-
 		String query = "SELECT d.occ_number, dt.value_, " +
 				"CONCAT(start_date, '-', d.start_hour, ':', d.start_minute, d.typeHour1) 'datetime', " +
 				"dt1.value_, dt2.value_ FROM occ_data d " +
@@ -491,12 +488,12 @@ public class OccurrencesDAO {
 		//System.out.println(query);
 		try {
 			TranslationMethods occTranslation = new TranslationMethods();
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(query);
-			rs = ps.executeQuery();
+			conn.start(1);
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
 
-			if(rs != null) {
-				while(rs.next()) {
+			if(result.hasNext()) {
+				for (RowResult rs : result) {
 					OccurrencesData occ = new OccurrencesData();
 					occ.setData_number(String.valueOf(rs.getInt(1)));		
 					occ.setType(occTranslation.listOcc(rs.getString(2)));
@@ -509,7 +506,7 @@ public class OccurrencesDAO {
 				}
 			}
 		}finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 		return listarOcc;
 	}
@@ -522,31 +519,118 @@ public class OccurrencesDAO {
 
 		try {
 
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(query);
+			conn.start(1);
+			conn.prepare(query);
 
-			ps.setString(1, path);
-			ps.setString(2, occNumber);
+			conn.setString(1, path);
+			conn.setString(2, occNumber);
 
-			int res = ps.executeUpdate();
+			long res = conn.executeUpdate();
 
 			if(res > 0)
 				status = true;
 
-		}catch (SQLException alterarPath){
+		}catch (Exception alterarPath){
 			throw new Exception("Erro ao alterar path: " + alterarPath);
 		}finally {
-			ConnectionFactory.closeConnection(conn, ps);
+			conn.close();
 		}	
 
 		return status;
 	}
+	public OccurrencesData rodovia(String id) {
+		
+		OccurrencesData occ = new OccurrencesData();
+		String query = "SELECT road FROM dai_equipment INNER JOIN concessionaire_roads WHERE equip_id ='"+id+"' LIMIT 1";
+		try {
+			conn.start(1);
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
+			
+			if(result.hasNext()) {
+				for (RowResult rs : result) {
+					occ.setHighway(rs.getString(1));
+				}	
+			}
 
+		}catch(Exception sqlbuscar) {
+			sqlbuscar.printStackTrace();
+
+		}finally {
+			conn.close();
+		}
+		return occ;
+	}
+	public OccurrencesData direction(String name)throws Exception {
+		String query = "SELECT direction FROM dai_equipment WHERE name = '"+name+"' ";
+		OccurrencesData occ = new OccurrencesData();
+		try {
+			conn.start(1);
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
+			
+			if(result.hasNext()) {
+				for (RowResult rs : result) {
+					occ.setDirection(rs.getString(1));
+				}	
+			}
+
+		}catch(Exception sqlbuscar) {
+			sqlbuscar.printStackTrace();
+
+		}finally {
+			conn.close();
+		}
+		
+		return occ;
+	}
+	public SOS getExternal(String id, String type) throws Exception {
+		String query = "";
+		if(type.equals("sos")) {
+			query = "SELECT max(equip.equip_id) AS ID, name, city, road, km, direction, max(start_date) AS start_data, max(end_date) end_start"
+					+ " FROM sos_equipment equip"
+					+ " INNER JOIN sos_calls"
+					+ " ON equip.equip_id ="+id+" and  sos_calls.equip_id ="+id;
+		}/*else if(type.equals("dai")){
+			System.out.println("dai aqui");
+		}*/
+		SOS sos = new SOS();
+
+		try {
+			conn.start(1);
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
+
+			if(result.hasNext()) {
+				for (RowResult rs : result) {
+
+					sos.setEquip_ip(rs.getString(1));
+					sos.setNome(rs.getString(2));
+					sos.setCidade(rs.getString(3));
+					sos.setEstrada(rs.getString(4));
+					sos.setKm(rs.getString(5));
+					sos.setDirection(rs.getString(6));
+					sos.setStart_data(rs.getString(7));
+					sos.setEnd_data(rs.getString(8));
+
+				}	
+			}
+
+		}catch(Exception sqlbuscar) {
+			sqlbuscar.printStackTrace();
+
+		}finally {
+			conn.close();
+		}
+
+		return sos;
+
+	}
 	//m�todo buscar ocorr�ncia por id
 	public OccurrencesData buscarOcorrenciaPorId(int id) throws Exception {
 
 		OccurrencesData occ = new OccurrencesData();
-		
+
 		//Script dos atributos que as infor��es ser�o requisitadas
 		String query = "SELECT occ_number, type, origin, state_occurrence, start_date, start_hour, start_minute, end_date, end_hour, " +
 				"end_minute, cause, cause_description, kilometer, highway, local_state, direction, lane, others, local_condition, " +
@@ -561,13 +645,13 @@ public class OccurrencesDAO {
 
 		try {
 
-			conn = ConnectionFactory.connectToTraceviaApp();
-			ps = conn.prepareStatement(query);
-			ps.setInt(1, id);
-			rs = ps.executeQuery();
+			conn.start(1);
+			conn.prepare(query);
+			conn.setInt(1, id);
+			MapResult result = conn.executeQuery();
 
-			if(rs != null) {
-				while(rs.next()) {
+			if(result.hasNext()) {
+				for (RowResult rs : result) {
 					//atributos onde as informa��es est�o armazenadas
 					occ.setData_number(rs.getString(1));
 					occ.setType(rs.getString(2));
@@ -647,11 +731,11 @@ public class OccurrencesDAO {
 				}
 
 			}
-		}catch(SQLException sqlbuscar) {
+		}catch(Exception sqlbuscar) {
 			sqlbuscar.printStackTrace();
 
 		}finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 		//passando os valores dos atributos para a vari�vel occ
 		return occ;

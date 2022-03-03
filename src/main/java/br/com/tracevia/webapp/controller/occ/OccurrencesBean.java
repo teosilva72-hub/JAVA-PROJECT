@@ -1,10 +1,13 @@
 package br.com.tracevia.webapp.controller.occ;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,6 +32,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Part;
 import javax.swing.ImageIcon;
 
+import org.apache.poi.util.IOUtils;
 import org.primefaces.context.RequestContext;
 
 import com.itextpdf.text.BaseColor;
@@ -43,12 +47,17 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import br.com.tracevia.webapp.controller.dai.DaiBean;
+import br.com.tracevia.webapp.controller.dai.DaiBean.Traffic;
 import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
+import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
+import br.com.tracevia.webapp.model.sos.SOS;
+import br.com.tracevia.webapp.model.sos.SosData;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="occurrencesBean")
@@ -65,9 +74,46 @@ public class OccurrencesBean {
 
 	private boolean save, edit, new_, reset, fields, enableBtn,
 	table, alterar, pdf;
-	private String logo, userPdf;
+	String img_dai;
+	private String logo, userPdf, externalId, externalType, dataDai, equip_id, id_get_rodov;
 
-	
+
+	public String getImg_dai() {
+		return img_dai;
+	}
+	public void setImg_dai(String img_dai) {
+		this.img_dai = img_dai;
+	}
+	public String getId_get_rodov() {
+		return id_get_rodov;
+	}
+	public void setId_get_rodov(String id_get_rodov) {
+		this.id_get_rodov = id_get_rodov;
+	}
+	public String getEquip_id() {
+		return equip_id;
+	}
+	public void setEquip_id(String equip_id) {
+		this.equip_id = equip_id;
+	}
+	public String getDataDai() {
+		return dataDai;
+	}
+	public void setDataDai(String dataDai) {
+		this.dataDai = dataDai;
+	}
+	public String getExternalType() {
+		return externalType;
+	}
+	public void setExternalType(String externalType) {
+		this.externalType = externalType;
+	}
+	public String getExternalId() {
+		return externalId;
+	}
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
 	public String getUserPdf() {
 		return userPdf;
 	}
@@ -532,9 +578,11 @@ public class OccurrencesBean {
 			//hours
 			horas = new  ArrayList<SelectItem>();
 
-			for(int h = 1; h < 13; h++) {				
-
-				horas.add(new SelectItem(String.valueOf(h), String.valueOf(h)));
+			for(int h = 0; h < 12; h++) {				
+				if(h < 10)
+					horas.add(new SelectItem("0"+String.valueOf(h), "0"+String.valueOf(h)));
+				else
+					horas.add(new SelectItem(String.valueOf(h), String.valueOf(h)));
 
 			}
 			//minutes
@@ -559,7 +607,6 @@ public class OccurrencesBean {
 
 			//Preencher Lista
 			occurrences = dao.listarOcorrencias();
-
 			//initialize btns
 			edit = true;
 			save = true;
@@ -578,7 +625,77 @@ public class OccurrencesBean {
 			ex.printStackTrace();
 		}
 	}	
+	public String equipDirection() throws Exception {
+		OccurrencesDAO dir = new OccurrencesDAO();
+		OccurrencesData x = dir.direction(getEquip_id());
+		RequestContext.getCurrentInstance().execute(String.format("getDirection('%s')", x.getDirection()));
+		return "";
+	}
+	public String getRodovia() {
+		OccurrencesDAO rod = new OccurrencesDAO();
+		OccurrencesData x = rod.rodovia(getId_get_rodov());
+		RequestContext.getCurrentInstance().execute(String.format("getRodivia('%s')", x.getHighway()));
+		return "";
+	}
+	public String externalID() throws Exception {
+		OccurrencesDAO sos = new OccurrencesDAO();
+		SOS x = sos.getExternal(getExternalId(), getExternalType());
+		if(externalType.equals("sos")) {
+			RequestContext.getCurrentInstance().execute(String.format("setType('24', '%s', '%s', '%s', '%s', '%s')",
+					x.getStart_data(), x.getKm(), x.getDirection(), x.getEstrada(), x.getNome()));
+		}else if(externalType.equals("dai")) {
+			//object
+			DaiBean dai = new DaiBean();
+			//passar data metodo
+			SimpleDateFormat date_parse = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+			Date date = date_parse.parse(getDataDai());
+			dai.getSpecificFile(date);
+			//objetos traffic
+			Traffic traffic = dai.traffic;
 
+			//js
+			RequestContext.getCurrentInstance().execute(String.format("setTypeDai('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+					traffic.incident, traffic.date, traffic.hour, traffic.direction,
+					traffic.km, traffic.channel, traffic.getName(), traffic.getEquipId(), traffic.getPath()));
+
+			String getFile = traffic.getFile().toAbsolutePath().toString();
+			//System.out.println(getFile);
+			File list = new File(getFile);
+			img_dai = list.getAbsolutePath();
+			//RequestContext.getCurrentInstance().execute(String.format("saveImgDaiOcc('%s')", img_dai));
+		}
+
+
+		return img_dai;
+	}
+	
+	public void copyImgDai() throws Exception {
+		String img = getImg_dai();
+		String occ_path = "C:\\Occurrences\\";
+		
+		OccurrencesDAO dao = new OccurrencesDAO();
+		int id = dao.GetId();
+		
+		DateTimeApplication dta = new DateTimeApplication();
+		LocalDate local = dta.localeDate();
+		
+		String absolutePath = occ_path+local.getYear()+"\\"+local.getMonthValue()+"\\"+"OCC_"+id+"\\";
+
+		String  sourcePath = img;   // source file path
+		File sourceFile = new File(sourcePath);        // Creating A Source File
+		File destinationFile = new File(absolutePath+sourceFile.getName());   //Creating A Destination File. Name stays the same this way, referring to getName()
+		try 
+		{
+			//Thread.sleep(2000);
+			Files.copy(sourceFile.toPath(), destinationFile.toPath());
+			// Static Methods To Copy Copy source path to destination path
+		} catch(Exception e)
+		{
+			System.out.println(e + " < error");  // printing in case of error.
+		}
+
+		//File destinationFile = new File(path+sourceFile.getName());
+	}
 	//taking the last id from the database and passing 1 more
 	public int pegarId() throws Exception{
 
@@ -600,7 +717,6 @@ public class OccurrencesBean {
 		occNumber = dao.cadastroOcorrencia(data);
 		//CREATE LOCAL PATH
 		localPath = localPath(occNumber);
-
 		//if id is non-null
 		if(occNumber != null) {
 
@@ -631,14 +747,13 @@ public class OccurrencesBean {
 
 		//ao atualizar a ocorrencia passamos um valor null para a variavel (nameUser),
 		//passos 0 para a variavel (accessLevel) e para a variavel (updateTable) passamos false
-		// ambos os valores serão armazenados no BD a fazer a requisição
+		// ambos os valores serÃ£o armazenados no BD a fazer a requisiÃ§Ã£o
 		String nameUser = ""; int accessLevel = 0; boolean updateTable = false; 
-		System.out.println(data.getData_number());
 		idUpdate = data.getData_number();
 		//Passando dados definidos para o banco de dados
 		dao.editTable(updateTable, nameUser, accessLevel, data.getData_number());
 
-		//passando falso para acessar a condição IF
+		//passando falso para acessar a condiÃ§Ã£o IF
 		boolean status = false;
 		status = dao.atualizarOcorrencia(data);
 		if(status) {
@@ -656,7 +771,7 @@ public class OccurrencesBean {
 			listUpdate = null;
 			listarFile = null;
 			tableFile = null;
-			//executando função javascript
+			//executando funÃ§Ã£o javascript
 			RequestContext.getCurrentInstance().execute("resetForm()");
 			RequestContext.getCurrentInstance().execute("fileTotalHidden()");
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
@@ -665,7 +780,7 @@ public class OccurrencesBean {
 			//listar ocorrencia
 			occurrences = dao.listarOcorrencias();
 
-			//listar arquivos sem direito a modificação
+			//listar arquivos sem direito a modificaÃ§Ã£o
 			//TableFile();
 
 		}
@@ -673,7 +788,7 @@ public class OccurrencesBean {
 
 	}
 
-	//metodo anular ocorrencia, esse metodo é chamado quando estamos na sessão novo
+	//metodo anular ocorrencia, esse metodo Ã© chamado quando estamos na sessÃ£o novo
 	public void resetOccurrencesData(){       
 
 		data = new OccurrencesData();
@@ -696,12 +811,12 @@ public class OccurrencesBean {
 		//deletar pasta
 		deleteDirectory();
 	}
-	//metodo anular ocorrencia, esse metodo é chamado quando estamos na sessão editar
+	//metodo anular ocorrencia, esse metodo Ã© chamado quando estamos na sessÃ£o editar
 	public void resetUpdate() throws Exception{
 		OccurrencesDAO dao = new OccurrencesDAO();
 
 		//ao anular a ocorrencia passamos os valores predeterminados para a seguintes variaveis:
-		//(nameUser = null, accessLevel = 0 e updateTable = False) ambos os valores são armazenados no BD.
+		//(nameUser = null, accessLevel = 0 e updateTable = False) ambos os valores sÃ£o armazenados no BD.
 		String nameUser = "";
 		int accessLevel = 0;
 		boolean updateTable = false;
@@ -712,7 +827,7 @@ public class OccurrencesBean {
 
 		//atualizar a ocorrencia depois que o metodo for chamado
 		occurrences = dao.listarOcorrencias();
-		//chamando função javascript
+		//chamando funÃ§Ã£o javascript
 		RequestContext.getCurrentInstance().execute("eventValidator()");
 
 		data = new OccurrencesData();
@@ -747,7 +862,7 @@ public class OccurrencesBean {
 
 		try {
 
-			//chamando valores do usuário de outro controller
+			//chamando valores do usuÃ¡rio de outro controller
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			ExternalContext externalContext = facesContext.getExternalContext();	
 
@@ -755,7 +870,7 @@ public class OccurrencesBean {
 			userName = (String) facesContext.getExternalContext().getSessionMap().get("user");
 			nivelUser = (int) facesContext.getExternalContext().getSessionMap().get("nivel");
 
-			//executando função javascript
+			//executando funÃ§Ã£o javascript
 			RequestContext.getCurrentInstance().execute("displayPdf()");
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 
@@ -775,16 +890,10 @@ public class OccurrencesBean {
 
 			//transformando em int
 			situation = Integer.parseInt(x);
-			System.out.println(data.getLastDateHour());
 
 			Date parsedDate = dateFormat.parse(data.getLastDateHour());
 			timestamp = new java.sql.Timestamp(parsedDate.getTime());
 			timestamp2 = new java.sql.Timestamp(b.getTime());
-			System.out.println(timestamp +" <");
-			System.out.println(timestamp2 + "<<");
-			System.out.println((timestamp.after(timestamp2)+" antes"));
-			System.out.println((timestamp.before(timestamp2)+" depois"));
-			System.out.println(data.getEditTable()+" editTable");
 		}catch(Exception ex){
 
 			ex.printStackTrace();
@@ -796,8 +905,8 @@ public class OccurrencesBean {
 		//Se a linha da table estiver selecionada:
 		if(selectedRow) {
 
-			//se a situação for igual 30 ou 31
-			//não é possivel fazer alteração
+			//se a situaÃ§Ã£o for igual 30 ou 31
+			//nÃ£o Ã© possivel fazer alteraÃ§Ã£o
 			if(situation == 31 || situation == 30) {
 
 				//btn
@@ -829,7 +938,7 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 				RequestContext.getCurrentInstance().execute("fileTotal()");
 
-				//senão se for igual a false acesso liberado para realizar edição
+				//senÃ£o se for igual a false acesso liberado para realizar ediÃ§Ã£o
 			}else if((data.getEditTable() == false)|| timestamp.before(timestamp2)) {
 
 				//btn
@@ -844,10 +953,10 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 				RequestContext.getCurrentInstance().execute("fileTotal()");
 
-				//senão se for igual a true acesso bloqueado para realizar edição
+				//senÃ£o se for igual a true acesso bloqueado para realizar ediÃ§Ã£o
 			}else if((data.getEditTable() == true && timestamp.after(timestamp2))) {
 
-				//executando função javascript
+				//executando funÃ§Ã£o javascript
 				RequestContext.getCurrentInstance().execute("msgUser()");
 
 				save = true;
@@ -859,7 +968,7 @@ public class OccurrencesBean {
 				table = true;
 
 				//se o nome do usuario local, for igual o nome da pessoa que esta editando
-				//a ocorrencia acessa pode acessar a essa condição
+				//a ocorrencia acessa pode acessar a essa condiÃ§Ã£o
 				if(userName.equals(data.getNameUser())){
 
 					//btn
@@ -874,8 +983,8 @@ public class OccurrencesBean {
 					RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 					RequestContext.getCurrentInstance().execute("fileTotal()");
 
-					//senão se o nivel de acesso do usuário for igual a 1 ou igual a 6
-					//tem permissão para acessar a condição
+					//senÃ£o se o nivel de acesso do usuÃ¡rio for igual a 1 ou igual a 6
+					//tem permissÃ£o para acessar a condiÃ§Ã£o
 				}else if(nivelUser == 1 || nivelUser == 6) {
 
 					//btn
@@ -893,8 +1002,8 @@ public class OccurrencesBean {
 
 			}
 
-			//método não está sendo usado
-			//senão estiver selecionada a linha da tabela
+			//mÃ©todo nÃ£o estÃ¡ sendo usado
+			//senÃ£o estiver selecionada a linha da tabela
 		}else {
 
 			save = true;
@@ -905,7 +1014,7 @@ public class OccurrencesBean {
 			edit = true;
 			table = true;
 
-			//executando as funções javascript
+			//executando as funÃ§Ãµes javascript
 			RequestContext.getCurrentInstance().execute("hiddenPdf()");
 			RequestContext.getCurrentInstance().execute("msgFinishedHidden()");
 			RequestContext.getCurrentInstance().execute("listingFileBtn()");
@@ -915,10 +1024,10 @@ public class OccurrencesBean {
 		//zerando as variaveis
 		listarFile = null;
 	}
-	//método novo
+	//mÃ©todo novo
 	public void btnEnable() throws Exception {
 
-		//executando as funções javascript
+		//executando as funÃ§Ãµes javascript
 		RequestContext.getCurrentInstance().execute("inputs()");
 		RequestContext.getCurrentInstance().execute("disableEdit()");
 		RequestContext.getCurrentInstance().execute("listUpdateFile1()");
@@ -927,10 +1036,10 @@ public class OccurrencesBean {
 		RequestContext.getCurrentInstance().execute("hiddenPdf()");
 		//pegando o valor da ultima variavel do vanco de dados
 		value = pegarId(); // pegarId() + 1
-		//se o valor for maior do que 0 acessamos a condição
+		//se o valor for maior do que 0 acessamos a condiÃ§Ã£o
 		if(value > 0) {
 
-			//executando o método cadastrar, ou seja, quando acessamos esse método
+			//executando o mÃ©todo cadastrar, ou seja, quando acessamos esse mÃ©todo
 			//estamos reservando o id no banco de dados.
 			cadastroOcorrencia();
 
@@ -959,12 +1068,12 @@ public class OccurrencesBean {
 		}
 
 	}
-	//método editar ocorrencia
+	//mÃ©todo editar ocorrencia
 	public void btnEdit() throws Exception {
 
 		OccurrencesDAO dao = new OccurrencesDAO();
 
-		//pegando valores dos usuários de outro controller
+		//pegando valores dos usuÃ¡rios de outro controller
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
 
@@ -983,7 +1092,7 @@ public class OccurrencesBean {
 		alterar = false;
 		pdf = true;
 
-		//executando funções javascript
+		//executando funÃ§Ãµes javascript
 		RequestContext request = RequestContext.getCurrentInstance();
 		request.execute("btnEnable();");
 		request.execute("inputs()");
@@ -1021,7 +1130,7 @@ public class OccurrencesBean {
 		return path;
 	}
 
-	//método para enviar arquivos na tela de atualização de cadastro
+	//mÃ©todo para enviar arquivos na tela de atualizaÃ§Ã£o de cadastro
 	public void updateFile() throws IOException, ServletException{
 		RequestContext.getCurrentInstance().execute("msgUploads()");
 		uploadBean up = new uploadBean();
@@ -1038,7 +1147,7 @@ public class OccurrencesBean {
 		//listando arquivos
 		listingUpdate();
 
-		//executando funções javascript
+		//executando funÃ§Ãµes javascript
 		RequestContext request = RequestContext.getCurrentInstance();
 		request.execute("btnEnable();");
 		RequestContext.getCurrentInstance().execute("mostrarTab2()");
@@ -1051,7 +1160,7 @@ public class OccurrencesBean {
 
 	}
 
-	//método enviando
+	//mÃ©todo enviando
 	public void uploadFile() throws Exception {
 
 		uploadBean up = new uploadBean();	
@@ -1081,7 +1190,7 @@ public class OccurrencesBean {
 
 	}
 
-	//método listar arqivos ao atualizar
+	//mÃ©todo listar arqivos ao atualizar
 	public String[] listingUpdate() {
 
 		//executar javascript
@@ -1105,12 +1214,11 @@ public class OccurrencesBean {
 		//pega o id da tabela.
 		int id = getValue();
 
-		//criando caminho da seleÃ§Ã£o da pasta.
+		//criando caminho da seleÃƒÂ§ÃƒÂ£o da pasta.
 		way = pathSQL;
 
 		//caminho criado
 		fileWay = new File(mainPath+way);
-		//System.out.println("Estamos aqui: > "+ fileWay);
 		//iniciando variavel com valor 0
 		int x = 0;
 
@@ -1122,28 +1230,25 @@ public class OccurrencesBean {
 		//enquantos os arquivos forem diferentes do valor 0 executa
 		while (x != arquivos.length){
 
-			//pegando os nomes do arquivos na posição
+			//pegando os nomes do arquivos na posiÃ§Ã£o
 			listUpdate[x] = arquivos[x].getName();
-
-			System.out.println("Position: "+x+" < Arquivo na pasta > "+ listUpdate[x]);
 
 			x++;
 
 		}
 
-		//retornando o valor do método listUpdate == nome do arquivo
+		//retornando o valor do mÃ©todo listUpdate == nome do arquivo
 		return listUpdate;
 	}
-	//método listar arquivos quando clicamos na tablea
+	//mÃ©todo listar arquivos quando clicamos na tablea
 	public String[] TableFile() {
-		System.out.println(timestamp+" <a");
-		System.out.println(timestamp2+" <b");
-		//pegando o status da ocorrência		
+
+		//pegando o status da ocorrÃªncia		
 		String b = data.getState_occurrences();
-		//tranformando o valor do status da ocorrência  em inteiro
+		//tranformando o valor do status da ocorrÃªncia  em inteiro
 		situation = Integer.parseInt(b);
 		pdf = false;
-		//se o status da occorencia for igual a 30 ou 31, acessamos esse função
+		//se o status da occorencia for igual a 30 ou 31, acessamos esse funÃ§Ã£o
 		if(situation == 31 || situation == 30) {
 			//btns
 			save = true;
@@ -1158,7 +1263,7 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			RequestContext.getCurrentInstance().execute("msgFinished()");
 
-			//se o nivel de acesso dop usuário for igual a 1 ou igual a 6, acessamos a função
+			//se o nivel de acesso dop usuÃ¡rio for igual a 1 ou igual a 6, acessamos a funÃ§Ã£o
 			if(nivelUser == 1 || nivelUser == 6) {
 				//btn
 				save = true;
@@ -1173,7 +1278,7 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 				RequestContext.getCurrentInstance().execute("fileTotal()");
 			}
-			//senão se o valor do atributo editTable for igual 0 (false), acessos a condição
+			//senÃ£o se o valor do atributo editTable for igual 0 (false), acessos a condiÃ§Ã£o
 		}else if(data.getEditTable() == false || timestamp.before(timestamp2)) {
 
 			//btn
@@ -1190,7 +1295,7 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 			RequestContext.getCurrentInstance().execute("fileTotal()");
 
-			//senão se for igual a true acesso bloqueado para realizar edição
+			//senÃ£o se for igual a true acesso bloqueado para realizar ediÃ§Ã£o
 		}else if(data.getEditTable() == true && timestamp.after(timestamp2)) {
 
 			RequestContext.getCurrentInstance().execute("msgUser()");
@@ -1203,7 +1308,7 @@ public class OccurrencesBean {
 			edit = true;
 			table = true;
 
-			//se o nome do usuário for igual o nome armazenado no atributo nameUser, acessamos a condição
+			//se o nome do usuÃ¡rio for igual o nome armazenado no atributo nameUser, acessamos a condiÃ§Ã£o
 			if(userName.equals(data.getNameUser())){
 
 				//btn
@@ -1220,7 +1325,7 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 				RequestContext.getCurrentInstance().execute("fileTotal()");
 
-				//senão se o nivel de acesso do usuário for igual a 1 ou igual a 6, acessamos a condição
+				//senÃ£o se o nivel de acesso do usuÃ¡rio for igual a 1 ou igual a 6, acessamos a condiÃ§Ã£o
 			}else if(nivelUser == 1 || nivelUser == 6) {
 				//btn
 				save = true;
@@ -1244,12 +1349,11 @@ public class OccurrencesBean {
 		//pega o id da tabela.
 		int id = getValue();
 
-		//criando caminho da seleção da pasta.
+		//criando caminho da seleÃ§Ã£o da pasta.
 		way = pathSQL;
 
 		//caminho criado
 		fileWay = new File(mainPath+way);
-		//System.out.println("Estamos aqui: > "+ fileWay);
 
 		int x = 0;
 
@@ -1261,20 +1365,18 @@ public class OccurrencesBean {
 
 			tableFile[x] = arquivos[x].getName();
 
-			System.out.println("Position: "+x+" < Arquivo na pasta > "+ tableFile[x]);
-
 			x++;
 
 		}
-		//passando valor final do método para a variavel tableFile
+		//passando valor final do mÃ©todo para a variavel tableFile
 		return tableFile;
 
 	}
 
-	//método listar arquivos
+	//mÃ©todo listar arquivos
 	public String[] listFiles() throws Exception{
 
-		//variÃ¡vel do tipo int
+		//variÃƒÂ¡vel do tipo int
 		content = 0;
 
 		//local do armazenamento do arquivo
@@ -1283,25 +1385,23 @@ public class OccurrencesBean {
 		//listar arquivos
 		arquivos = directory.listFiles();
 
-		//pega o total de arquivos no diretÃ³rio
+		//pega o total de arquivos no diretÃƒÂ³rio
 		total = arquivos.length;
-		System.out.println("Total Files: "+ total);
 
 		listarFile = new String[arquivos.length];
 
-		//lopping para pegar arquivos dentro do diretÃ³rio
+		//lopping para pegar arquivos dentro do diretÃƒÂ³rio
 		while (content != arquivos.length){
 			//pega arquivo pelo nome
 			listarFile[content] = arquivos[content].getName();		
-			System.out.println(content+": Arquivo recebido "+ listarFile[content]);
 			content++;
 
 		} 
-		//passando valor do método para a variável
+		//passando valor do mÃ©todo para a variÃ¡vel
 		return listarFile;
 	}
 
-	//esse método não esta sendo aplicado, está aqui para futuros testes
+	//esse mÃ©todo nÃ£o esta sendo aplicado, estÃ¡ aqui para futuros testes
 	//Buscando imagem
 
 	public String getImageUpload(String myImg) throws Exception{
@@ -1317,7 +1417,7 @@ public class OccurrencesBean {
 		return absoluteImage;
 
 	}
-	//esse método não esta sendo usado, está aqui para testes
+	//esse mÃ©todo nÃ£o esta sendo usado, estÃ¡ aqui para testes
 	public String getImageUpdate(String myImg) throws Exception{
 
 		//gerando o caminho onde se encontra a imagem
@@ -1331,17 +1431,17 @@ public class OccurrencesBean {
 
 	}
 
-	//método deletar arquivos na atualização do cadastro
+	//mÃ©todo deletar arquivos na atualizaÃ§Ã£o do cadastro
 	public void deleteFileUpdate(String file) throws Exception {
 		//tentar
 		try {
-			//criando o camingo onde os arquivos são armazenados
+			//criando o camingo onde os arquivos sÃ£o armazenados
 			fileWay = new File(mainPath+way+"\\");
 
-			//buscando arquivos para ver se existem dentro do diretório
+			//buscando arquivos para ver se existem dentro do diretÃ³rio
 			boolean check = new File(fileWay, file).exists();
 
-			//se existir arquivos dentro da pasta, acessamos a condição
+			//se existir arquivos dentro da pasta, acessamos a condiÃ§Ã£o
 			if(check) {
 				RequestContext request = RequestContext.getCurrentInstance();
 				request.execute("btnEnable();");
@@ -1369,14 +1469,13 @@ public class OccurrencesBean {
 
 			//capturar 
 		}catch(Exception ex) {
-			//executando função javascript
+			//executando funÃ§Ã£o javascript
 			RequestContext.getCurrentInstance().execute("mostrarTab2()");
 			//msg de erro ao deletar file
-			System.out.println("Erro ao excluir arquivo");
 		}
 
 	}
-	//método deletar arquivos quando estamos na tela de novo cadastri
+	//mÃ©todo deletar arquivos quando estamos na tela de novo cadastri
 	public void deleteFile(String file){
 		//tentar
 		try {
@@ -1384,9 +1483,9 @@ public class OccurrencesBean {
 			//caminho do diretorio e o arquivo que estou apagando
 			directory = new File(mainPath+path+"\\");
 
-			//buscando arquivos para ver se existem dentro do diretório
+			//buscando arquivos para ver se existem dentro do diretÃ³rio
 			boolean check = new File(directory, file).exists();
-			//se existir arquivos dentro da pasta, acessamos a condição
+			//se existir arquivos dentro da pasta, acessamos a condiÃ§Ã£o
 			if(check) {
 				//pegando o arquivo
 				File currentFile = new File(directory, file);
@@ -1396,9 +1495,9 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("bloquerTable()");
 				//quando deletamos um arquivo, passamos o valor -1 para o total
 				total -=  1;
-				//executando método listar arquivos
+				//executando mÃ©todo listar arquivos
 				listFiles();
-				//executando funções javascript
+				//executando funÃ§Ãµes javascript
 				RequestContext.getCurrentInstance().execute("mostrarTab2()");
 				RequestContext.getCurrentInstance().execute("msgDelete()");
 				RequestContext.getCurrentInstance().execute("bloquerTable()");
@@ -1410,11 +1509,10 @@ public class OccurrencesBean {
 			//executando js
 			RequestContext.getCurrentInstance().execute("mostrarTab2()");
 			//msg de erro
-			System.out.println("Erro ao excluir arquivo");
 		}
 
 	}
-	//exclui pasta gerada do occ quando é clicado em anular
+	//exclui pasta gerada do occ quando Ã© clicado em anular
 	public File deleteDirectory() {
 
 		try {
@@ -1423,7 +1521,7 @@ public class OccurrencesBean {
 
 			//se o diretorio for encontrado
 			if (folder.isDirectory()) {
-				//pegamos todos os arquivos que estão dentro da pasta
+				//pegamos todos os arquivos que estÃ£o dentro da pasta
 				File[] files = folder.listFiles();
 
 				//para deletar os objetos, percorremos a lista e fazemos de delete
@@ -1442,15 +1540,14 @@ public class OccurrencesBean {
 			//capturando
 		}catch(Exception ex) {
 			//msg de erro
-			System.out.println("Erro ao excluir diretorio");
-			//executando função js
+			//executando funÃ§Ã£o js
 			RequestContext.getCurrentInstance().execute("mostrarTab2()");
 
 		}
-		//retornando um valor nulo para esse método
+		//retornando um valor nulo para esse mÃ©todo
 		return null;
 	}
-	//método baixar arquivos
+	//mÃ©todo baixar arquivos
 	public void download(String fileName) throws Exception {
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -1460,25 +1557,25 @@ public class OccurrencesBean {
 
 		OccurrencesDAO dao = new OccurrencesDAO();
 		data = new OccurrencesData();
-		//pégando o id da ocorrência e atribuindo +1
+		//pÃ©gando o id da ocorrÃªncia e atribuindo +1
 		int id = dao.GetId();
 		id += 1;
 		//criando variavel global
 
 		data.setData_number(String.valueOf(id));
 
-		//chamando mÃªs e ano, para passar para o caminho.
+		//chamando mÃƒÂªs e ano, para passar para o caminho.
 		DateTimeApplication dddd = new DateTimeApplication();
 		LocalDate data = dddd.localeDate();
 
-		//criando caminho da seleÃ§Ã£o da pasta.
+		//criando caminho da seleÃƒÂ§ÃƒÂ£o da pasta.
 		String absoluteFile = data.getYear()+"/"+data.getMonthValue()+"/OCC_"+id+"/"+fileName;
 
 		//caminho onde pegamos o arquivo
 		URL url = new URL(downloadPath+absoluteFile);
 		String arquivos = url.getQuery();
 
-		//caminho onde o arquivo serÃ¡ guardado
+		//caminho onde o arquivo serÃƒÂ¡ guardado
 		//File file = new File(pathDownload+fileName);
 
 		InputStream is = url.openStream();
@@ -1486,7 +1583,7 @@ public class OccurrencesBean {
 
 		int bytes = 0;
 
-		//enquanto o byte faz a leitura do arquivo o qual é diferente de -1
+		//enquanto o byte faz a leitura do arquivo o qual Ã© diferente de -1
 		while ((bytes = is.read()) != -1) {
 			//subscreve/ copia o arquivo atual
 			baos.write(bytes);
@@ -1511,7 +1608,7 @@ public class OccurrencesBean {
 		// DOWNLOAD
 
 
-		//executando funções js
+		//executando funÃ§Ãµes js
 		RequestContext.getCurrentInstance().execute("bloquerTable()");
 		RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		RequestContext.getCurrentInstance().execute("msgDownload()");
@@ -1533,21 +1630,21 @@ public class OccurrencesBean {
 		//pegando o id
 		int id = getValue();
 
-		//criando caminho da seleÃ§Ã£o da pasta.
+		//criando caminho da seleÃƒÂ§ÃƒÂ£o da pasta.
 		String absoluteFile = pathSQL+"/"+fileName;
 
 		//caminho onde pegamos o arquivo
 		URL url = new URL(downloadPath+absoluteFile);
 		String arquivos = url.getQuery();
 
-		//caminho onde o arquivo serÃ¡ guardado
+		//caminho onde o arquivo serÃƒÂ¡ guardado
 		//File file = new File(pathDownload+fileName);
 
 		InputStream is = url.openStream();
 		//FileOutputStream fos = new FileOutputStream(file);
 
 		int bytes = 0;
-		//enquanto o byte faz a leitura do arquivo o qual é diferente de -1
+		//enquanto o byte faz a leitura do arquivo o qual Ã© diferente de -1
 		while ((bytes = is.read()) != -1) {
 			baos.write(bytes);
 		}
@@ -1581,21 +1678,21 @@ public class OccurrencesBean {
 		//pegando o id
 		int id = getValue();
 
-		//criando caminho da seleÃ§Ã£o da pasta.
+		//criando caminho da seleÃƒÂ§ÃƒÂ£o da pasta.
 		String absoluteFile = pathSQL+"/"+fileName;
 
 		//caminho onde pegamos o arquivo
 		URL url = new URL(downloadPath+absoluteFile);
 		String arquivos = url.getQuery();
 
-		//caminho onde o arquivo serÃ¡ guardado
+		//caminho onde o arquivo serÃƒÂ¡ guardado
 		//File file = new File(pathDownload+fileName);
 
 		InputStream is = url.openStream();
 		//FileOutputStream fos = new FileOutputStream(file);
 
 		int bytes = 0;
-		//enquanto o byte faz a leitura do arquivo o qual é diferente de -1
+		//enquanto o byte faz a leitura do arquivo o qual Ã© diferente de -1
 		while ((bytes = is.read()) != -1) {
 			baos.write(bytes);
 		}
@@ -1618,7 +1715,7 @@ public class OccurrencesBean {
 
 		// DOWNLOAD
 
-		//se a variavel situação for igual a 30 ou 31 acessamos a condição
+		//se a variavel situaÃ§Ã£o for igual a 30 ou 31 acessamos a condiÃ§Ã£o
 		if(situation == 31 || situation == 30) {
 			//btns
 			save = true;
@@ -1629,7 +1726,7 @@ public class OccurrencesBean {
 			edit = true;
 			table = true;
 
-			//senão acessamos a essa condição
+			//senÃ£o acessamos a essa condiÃ§Ã£o
 		}else {
 			//btns
 			save = true;
@@ -1644,12 +1741,11 @@ public class OccurrencesBean {
 		RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 		RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		RequestContext.getCurrentInstance().execute("msgDownload()");
-		System.out.println("Download realizado: "+fileName);
 	}
-	//método download PDF
+	//mÃ©todo download PDF
 	public String[] downloadPdf() throws Exception {
 
-		// cria��o do documento
+		// criaï¿½ï¿½o do documento
 		Document document = new Document();
 		TranslationMethods trad = new TranslationMethods();
 
@@ -1660,7 +1756,7 @@ public class OccurrencesBean {
 
 		try {			 	  
 
-			//caminho onde � gerado o pdf
+			//caminho onde ï¿½ gerado o pdf
 			PdfWriter writer = PdfWriter.getInstance(document, baos);
 
 			//gera o arquivo		
@@ -1692,7 +1788,7 @@ public class OccurrencesBean {
 			//Image image1 = Image.getInstance(RoadConcessionaire.externalDefaultLogo);
 			Image image2 = Image.getInstance(logo);
 
-			//edi��o das imagens
+			//ediï¿½ï¿½o das imagens
 			//image1.setAbsolutePosition(50, 790);
 			//image1.scaleAbsolute (100, 50);
 			image2.setAbsolutePosition(420, 800);
@@ -1752,7 +1848,7 @@ public class OccurrencesBean {
 			+"\n\n"));
 
 
-			//causa prov�vel e descri��o principal e interna.
+			//causa provï¿½vel e descriï¿½ï¿½o principal e interna.
 			/*Rectangle causePr= new Rectangle(577, 310, 10, 610); // you can resize rectangle 
 			causePr.enableBorderSide(1);
 			causePr.enableBorderSide(2);
@@ -1802,9 +1898,9 @@ public class OccurrencesBean {
 					+trad.occLabels("sinalizacao")+": "+getPdf.getSignaling()+"     "
 					+trad.occLabels("Situacao Condutor")+": "+ getPdf.getConductor_condition()));
 
-			//final da primeira p�gina
+			//final da primeira pï¿½gina
 
-			document.newPage();//inicio da segunda p�gina
+			document.newPage();//inicio da segunda pï¿½gina
 			Rectangle rowPage1 = new Rectangle(577, 40, 10, 820); //linha da pagina 
 			rowPage1.setBorderColor(BaseColor.BLACK);
 			rowPage1.setBorderWidth(2);
@@ -1845,7 +1941,7 @@ public class OccurrencesBean {
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 
-			//Tr�nsito
+			//Trï¿½nsito
 			/*Rectangle track1 = new Rectangle(577, 560, 10, 665); // you can resize rectangle 
 			track1.enableBorderSide(1);
 			track1.enableBorderSide(2);
@@ -1860,7 +1956,7 @@ public class OccurrencesBean {
 			document.add(new Paragraph());
 			document.add(new Paragraph(trad.occLabels("Extensao(KM)")+": "+data.getTraffic_extension()+"            "
 					+trad.occLabels("Pista Interrompida")+": "+ getPdf.getTraffic_stopped()+"\n\n"));
-			document.newPage();//inicio da terceira p�gina
+			document.newPage();//inicio da terceira pï¿½gina
 
 			Rectangle rowPage2 = new Rectangle(577, 40, 10, 820); //linha da pagina 
 			rowPage2.setBorderColor(BaseColor.BLACK);
@@ -1893,7 +1989,7 @@ public class OccurrencesBean {
 			document.add(new Paragraph(trad.occLabels("description")+": "+data.getDemage_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
-			//a�tion
+			//aï¿½tion
 			/*Rectangle action1 = new Rectangle(577, 225, 10, 415); // you can resize rectangle 
 			action1.enableBorderSide(1);
 			action1.enableBorderSide(2);
@@ -1929,7 +2025,6 @@ public class OccurrencesBean {
 			if(minute1 < 10) {minutePdf = "0"+String.valueOf(minute1);}else {minutePdf = String.valueOf(minute1);}
 			if(second1 < 10) {secondPdf = "0"+String.valueOf(second1);}else {secondPdf = String.valueOf(second1);}	
 
-			//System.out.println("testando aqui agora: "+ day+"/"+month+"/"+year);
 			userName = (String) facesContext.getExternalContext().getSessionMap().get("user");
 			document.add(new Paragraph("\n\n                "+trad.occLabels("operador")+": "+userPdf));
 			//assinatura
@@ -1964,11 +2059,8 @@ public class OccurrencesBean {
 		facesContext.responseComplete();  
 
 		// DOWNLOAD
-
-
 		//getRowValue();
-		System.out.println(timestamp+" <a");
-		System.out.println(timestamp2+" <b");
+
 		String x = data.getState_occurrences();
 		situation = Integer.parseInt(x);
 
@@ -1976,7 +2068,7 @@ public class OccurrencesBean {
 		userName = (String) facesContext.getExternalContext().getSessionMap().get("user");
 		nivelUser = (int) facesContext.getExternalContext().getSessionMap().get("nivel");
 
-		//se a variavel situa��o for igual a 30 ou 31 acessamos a essa condi��o
+		//se a variavel situaï¿½ï¿½o for igual a 30 ou 31 acessamos a essa condiï¿½ï¿½o
 		if(situation == 31 || situation == 30) {
 			//btns
 			save = true;
@@ -1987,11 +2079,11 @@ public class OccurrencesBean {
 			edit = true;
 			table = true;
 
-			//executando fun��es js
+			//executando funï¿½ï¿½es js
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 
-			//sen�o acessa a essa condi��o
+			//senï¿½o acessa a essa condiï¿½ï¿½o
 		}else if(userName.equals(data.getNameUser())){
 
 			//btn
@@ -2008,8 +2100,8 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 
-			//sen�o se o nivel de acesso do usu�rio for igual a 1 ou igual a 6
-			//tem permiss�o para acessar a condi��o
+			//senï¿½o se o nivel de acesso do usuï¿½rio for igual a 1 ou igual a 6
+			//tem permissï¿½o para acessar a condiï¿½ï¿½o
 		}else if((data.getEditTable() == false)||timestamp.before(timestamp2)) {
 
 			//btn
@@ -2025,10 +2117,10 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("fileTotal()");
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 
-			//sen�o se for igual a true acesso bloqueado para realizar edi��o
+			//senï¿½o se for igual a true acesso bloqueado para realizar ediï¿½ï¿½o
 		}else if((data.getEditTable() == true && timestamp.after(timestamp2))) {
 
-			//executando fun��o javascript
+			//executando funï¿½ï¿½o javascript
 
 			save = true;
 			alterar = true;
@@ -2039,7 +2131,7 @@ public class OccurrencesBean {
 			table = true;
 
 			//se o nome do usuario local, for igual o nome da pessoa que esta editando
-			//a ocorrencia acessa pode acessar a essa condi��o
+			//a ocorrencia acessa pode acessar a essa condiï¿½ï¿½o
 			if(userName.equals(data.getNameUser())){
 
 				//btn
@@ -2055,8 +2147,8 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("fileTotal()");
 				RequestContext.getCurrentInstance().execute("msgDownload()");
 
-				//sen�o se o nivel de acesso do usu�rio for igual a 1 ou igual a 6
-				//tem permiss�o para acessar a condi��o
+				//senï¿½o se o nivel de acesso do usuï¿½rio for igual a 1 ou igual a 6
+				//tem permissï¿½o para acessar a condiï¿½ï¿½o
 			}else {
 				//btn menu
 				save = true;
@@ -2066,19 +2158,18 @@ public class OccurrencesBean {
 				fields = true;
 				edit = true;
 				table = true;
-				//executando fun��es js
+				//executando funï¿½ï¿½es js
 				RequestContext.getCurrentInstance().execute("msgDownload()");
 				RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			}
 
 			int id = getValue();
 
-			//criando caminho da sele��o da pasta.
+			//criando caminho da seleï¿½ï¿½o da pasta.
 			way = pathSQL;
 
 			//caminho criado
 			fileWay = new File(mainPath+way);
-			//System.out.println("Estamos aqui: > "+ fileWay);
 
 			int y = 0;
 
@@ -2090,8 +2181,6 @@ public class OccurrencesBean {
 
 				tableFile[y] = arquivos[y].getName();
 
-				System.out.println("Position: "+y+" < Arquivo na pasta > "+ tableFile[y]);
-
 				y++;
 
 			}
@@ -2099,7 +2188,7 @@ public class OccurrencesBean {
 
 
 
-		//passando valor final do m�todo para a variavel tableFile
+		//passando valor final do mï¿½todo para a variavel tableFile
 		return tableFile;
 
 	}
@@ -2134,7 +2223,6 @@ public class OccurrencesBean {
 		RequestContext request = RequestContext.getCurrentInstance();
 		request.execute("btnEnable();");
 		request.execute("inputs()");
-		System.out.println("pronto");
 
 	}
 
@@ -2151,7 +2239,7 @@ public class OccurrencesBean {
 		}
 
 	}	
- 
-		
-	}
+
+
+}
 

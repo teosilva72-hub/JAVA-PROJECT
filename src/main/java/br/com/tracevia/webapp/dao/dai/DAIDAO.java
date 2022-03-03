@@ -1,23 +1,17 @@
 package br.com.tracevia.webapp.dao.dai;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.tracevia.webapp.model.colas.ColasQueue;
 import br.com.tracevia.webapp.model.dai.DAI;
-import br.com.tracevia.webapp.model.dai.DAIQueue;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.util.ConnectionFactory;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 
 public class DAIDAO {
 	
-	private Connection conn;
-	private PreparedStatement ps;
-	private ResultSet rs;
+	SQL_Tracevia conn = new SQL_Tracevia();
 	
 	public List<DAI> Status() throws Exception {
 		
@@ -28,14 +22,14 @@ public class DAIDAO {
 									
 		try {
 			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 			
-			ps = conn.prepareStatement(select);			
+			conn.prepare(select);			
 									
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 					
 					DAI dai = new DAI();
 
@@ -49,7 +43,9 @@ public class DAIDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		} finally {
+			conn.close();
+		}
 				
 		return list;
 		
@@ -62,15 +58,15 @@ public class DAIDAO {
 
 		try {
 			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 			
-			ps = conn.prepareStatement(select);
-			ps.setString(0, name);
+			conn.prepare(select);
+			conn.setString(0, name);
 									
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
-			if (rs.isBeforeFirst()) {
-				rs.next();
+			if (result.hasNext()) {
+				RowResult rs = result.first();
 					
 
 				dai.setEquip_id(rs.getInt("equip_id"));
@@ -80,7 +76,9 @@ public class DAIDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		} finally {
+			conn.close();
+		}
 				
 		return dai;
 		
