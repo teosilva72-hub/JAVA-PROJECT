@@ -28,14 +28,14 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('ocr_data')}"/>
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('id_ocr_data')}" />
 		<f:viewAction onPostback="true" escape="false" action="#{reportBean.setColumnsName('Data, Hora, ID, Nome, Placa, Placa?')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(datetime, `%d/%m/%Y`) as sd; TIME(datetime); id_ocr_data; site_name; plate; if(plate != `XXXXXXX`, `Ok`,`X`)')}" /> 
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(datetime, `%d/%m/%Y`) as sd; DATE_FORMAT(datetime, `%H:%i:%s`); id_ocr_data; site_name; plate; if(plate != `XXXXXXX`, `Ok`,`X`)')}" /> 
 	    <f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 		
 	
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('datetime', reportsLabels.reports_select_date, false, true)}" />	
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('id_ocr_data', reportsLabels.reports_select_equipment, true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('site_name', reportsLabels.reports_select_equipment, 'ocr_equipment.name', true, false)}" />
 	
     </f:metadata>
 	
