@@ -13,8 +13,7 @@ public enum RoadConcessionairesEnum {
 	ViaAmericas("Via Americas"),
 	ViaPaulista("Via Paulista"),
 	ViaRondon("Via Rondon"),
-	ViaSul("Via Sul"),
-	Eco101("Eco 101"),
+	ViaSul("Via Sul"),	
 	Tracevia("Tracevia"),
 	tester("Tester");
 			

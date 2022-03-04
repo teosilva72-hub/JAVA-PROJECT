@@ -11,8 +11,6 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -616,7 +614,6 @@ public class ExcelTemplate {
 			    utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 10, columns - 1);
 			}
 								
-			}
 		}
 		
 		// ----------------------------------------------------------------------------------------------------------------
@@ -1055,8 +1052,6 @@ public class ExcelTemplate {
 				
 					}
 				
-					}
-				
 				}
 				
 				// TABLE HEADER
@@ -1236,8 +1231,6 @@ public class ExcelTemplate {
 		// TABLE COLUMNS AUTO SIZE
 		utilSheet.columnsWidthAuto(sheet, columns.size());
 				
-		}
-		
 		}
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------
