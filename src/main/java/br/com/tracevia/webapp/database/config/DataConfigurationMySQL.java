@@ -26,7 +26,7 @@ public class DataConfigurationMySQL {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				traceviaAppConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/tracevia_app?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 				
 														
 		}catch(ClassNotFoundException cfe) {
