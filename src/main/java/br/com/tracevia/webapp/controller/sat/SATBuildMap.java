@@ -82,7 +82,7 @@ public class SATBuildMap {
 				// TABELA POSSUI DELAY DE 15 MINUTOS
 
 				satListValuesAux = dao.dataInterval(equips, "MINUTE", 15);
-								
+															
 				// START CHEKING 15 MIN
 				if (!satListValuesAux.isEmpty()) {
 

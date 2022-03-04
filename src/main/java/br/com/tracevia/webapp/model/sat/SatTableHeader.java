@@ -4,7 +4,6 @@ import java.util.List;
 
 import br.com.tracevia.webapp.controller.global.EquipmentsBean;
 import br.com.tracevia.webapp.util.LocaleUtil;
-import br.com.tracevia.webapp.util.SessionUtil;
 
 public class SatTableHeader {
 	
