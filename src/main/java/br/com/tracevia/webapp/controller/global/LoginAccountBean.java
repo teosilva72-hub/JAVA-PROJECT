@@ -276,7 +276,8 @@ public class LoginAccountBean {
 					// STARTS MAP
 														
 					if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()) ||
-						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire()))
+						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire())||
+						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.tester.getConcessionaire()))
 					    
 						return "/map/map.xhtml?faces-redirect=true";
 					
@@ -317,7 +318,8 @@ public class LoginAccountBean {
 							// STARTS MAP
 							
 							if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()) ||
-									RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire()))
+									RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire())||
+									RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.tester.getConcessionaire()))
 							    
 								return "/map/map.xhtml?faces-redirect=true";
 							

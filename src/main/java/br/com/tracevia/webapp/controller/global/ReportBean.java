@@ -1128,7 +1128,6 @@ public class ReportBean {
 					model[col[1]] = split[1];
 				} else
 					model[col[0]] = f;
-
 				while (step.before(dateReport) && step.before(date[1])) {
 					f = formatter.format(step);
 					if (sep) {
@@ -1240,6 +1239,8 @@ public class ReportBean {
 
 		if (count > 0)
 			report.secondaryLines = secondaryLines;
+								
+	   //   dta.fillEquipName(listEquips, model, equips, 2, temp.size(), Integer.parseInt(period[0]));
 		
 		return hasLine;
 		
@@ -1249,10 +1250,10 @@ public class ReportBean {
 		
 	   public void resetForm() {
 				
-				// Limpa valores da sessÃƒÂ£o
+				// Limpa valores da sessÃ£o
 				build.resetReportValues();
 				
-				// Reinicializa valores armazenados nas variÃƒÂ¡veis abaixo
+				// Reinicializa valores armazenados nas variÃ¡veis abaixo
 				build = new ReportBuild();
 				select = new ReportSelection();
 										
@@ -1269,7 +1270,7 @@ public class ReportBean {
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	  	
 			/**
-			 * MÃƒÂ©todo para carregar equipamentos disponÃƒÂ­veis para seleÃƒÂ§ÃƒÂ£o
+			 * MÃ©todo para carregar equipamentos disponÃ­veis para seleÃ§Ã£o
 			 * @author Wellington 26/10/2021
 			 * @version 1.0
 			 * @since 1.0
@@ -1296,7 +1297,7 @@ public class ReportBean {
 			// --------------------------------------------------------------------------------------------		
 
 			/**
-			 * MÃƒÂ©todo para carregar perÃƒÂ­odos disponÃƒÂ­veis para seleÃƒÂ§ÃƒÂ£o
+			 * MÃ©todo para carregar perÃ­odos disponÃ­veis para seleÃ§Ã£o
 			 * @author Wellington 26/10/2021
 			 * @version 1.0
 			 * @since 1.0	
@@ -1396,7 +1397,7 @@ public class ReportBean {
 			// -------------------------------------------------------------------
 			  
 				 int periodRange = 0;
-				 
+								 
 			  	// Create a new instance of Gson
 		      	Gson gson = new Gson();			    
 		     	    	  
@@ -1411,11 +1412,8 @@ public class ReportBean {
 	    	  		if(!field.contains("EQUIP"))
 	    	  			columnsAux.add(field);
 	    	  			
-	    	  	}	    
-	    	  	
-	    	  	          	    	  	
-	        	   if(period[1].toUpperCase().equals("DAY")) {
-	        		   	        		   	        		   	        			        		   
+	    	  	}	    	    	  	    	  	    	  	
+	        	 	        		   	        		   	        		   	        			        		   
 	        		   for(String[] field : lines) {	
 	        			   
 	        			   String[] aux = new String[field.length - 1];
@@ -1433,59 +1431,39 @@ public class ReportBean {
 	        			   
 	        			   linesAux.add(aux);	        			   
 	        			   
-	        		   }
-	        	   
-	        	   }else { 
-	        		   
-	        		   	        		   
-	        		   for(String[] field : lines) {
-	        			   	        			
-	        			   String[] aux = new String[field.length - 1];
-	 	       			      
-	        			   for (int i = 0, k = 0; i < field.length; i++) {	        				   	         		 
-	        		        
-	        		            // the removal element index
-	        				   if (i == 2) {
-	        		                continue;
-	        		            }
-	        				   
-	        				   aux[k++] = field[i];
-	        				
-	        		        } 
-	        			   
-	        			   linesAux.add(aux);	       
-	        			  		        		   
-		        		}	        	   
-	        	   }
-	         
-	    	  	
+	        		   }	        	   
+	        	          	  	
 	    	  			  
 	    	   // Converting multidimensional array into JSON	      
 		        String jsColumn = gson.toJson(columnsAux);	
 		        
 		        //String jsData = hAxisTitle;
 		        String jsData = "";
+		        String dateFormat_ = "";
 		        
 		        jsData = gson.toJson(linesAux);	
-		     		       		     	     		        
-				System.out.println(jsColumn);
-				System.out.println(jsData);
-				
-				if(period[1].toUpperCase().equals("MINUTE") || period[1].toUpperCase().equals("HOUR"))
+		        
+		        System.out.println(jsData);
+		        		     								
+				if(period[1].toUpperCase().equals("MINUTE") || period[1].toUpperCase().equals("HOUR")) {
+					
 					periodRange = dta.defineInterval(period);
-				
-				else
-						try {
-							
+					dateFormat_ = datetimeFormat;
+					
+				} else { 
+								
+					try {							
 							periodRange = (int) dta.diferencaDias(startDate, endDate) + 1;
+							dateFormat_ = dateFormat;
 							
 						} catch (ParseException e) {							
 							e.printStackTrace();
 						} 
+				}
 							
 				SessionUtil.executeScript(" $('#tabs').empty()");
-																	      	 
-				SessionUtil.executeScript("console.log('FOI-SE');createTabs('"+module+"','"+jsonArray+"', '"+jsColumn+"', '"+jsData+"', '"+periodRange+"', '"+title+"', '"+vAxis+"', '"+dateFormat+"', '"+imageName+"')");
+																								      	 
+				SessionUtil.executeScript("createTabs('"+module+"','"+jsonArray+"', '"+jsColumn+"', '"+jsData+"', '"+periodRange+"', '"+title+"', '"+vAxis+"', '"+dateFormat_+"', '"+imageName+"')");
 						  
 		  }	    	  
 		
@@ -1523,9 +1501,9 @@ public class ReportBean {
 	    for(String[] sa : report.lines) {
 	    	String date = "";
 	    	
-	    	if(multiChart)
-	    		date = "%s";
-	    	
+	    	if(multiChart)	    		    			
+	    		 date = "%s";	    		
+	    		
 	    	else date = "new Date(@aspas%s@aspas)";
 	    		
 	    	int c = 1;
@@ -1542,21 +1520,22 @@ public class ReportBean {
 	    		newArray[c] = sa[i];
 	    		c++;
 	    	}
-	    	
+	    		    	
 	    	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	    	SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
-	    	
+	    	SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    		    	
 	    	Date d;
 	    	
-	    	if (sep)
-	    		d = formatter.parse(String.format("%s %s", sa[col[0]], sa[col[1]]));
+	    	if (sep) 
+	    		d = formatter.parse(String.format("%s %s", sa[col[0]], sa[col[1]]));	    
 	    	
-	    	else
-    			d = formatter.parse(sa[col[0]]);
-	    	date = String.format(date, formatter2.format(d));
+	    	else d = formatter.parse(sa[col[0]]);
+	    	
+	    	date = String.format(date, formatter2.format(d));	    
 	    	
 	    	newArray[0] = date;
 	    	array.add(newArray);
+
 	    }
 	    
 	    return new Pair<>(column, array);
