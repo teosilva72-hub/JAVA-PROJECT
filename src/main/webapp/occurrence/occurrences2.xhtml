@@ -418,19 +418,14 @@
 										</svg>
 										<f:setPropertyActionListener value="#{data.data_number}"
 											target="#{occurrencesBean2.rowkey}" />
-										<f:ajax execute="@form" render=":btn-edit-report" />
+										<f:ajax execute="@form" render=":btn-edit-report :downloadpdf" />
 									</h:commandLink>
 									
 									</h:form>
 
 							</h:column>
 						</h:dataTable>
-					<h:form prependId="false" id="downloadpdf">
-							<h:commandButton pt:data-toggle="modal" style="display:none;"
-								id="pdfpdf" class="btn btn-dark form-draw-button"
-								action="#{occurrencesBean2.downloadPdf}" />
-
-						</h:form>
+				
 						</div>
 					</div>
 				<div class="text-center">
@@ -438,7 +433,12 @@
 					<button class="btnConf2 text-center mt-3" data-toggle="modal"
 						data-target="#Occorrencenew">Nova Ocorrencia</button>
 				</div>
+	<h:form prependId="false" id="downloadpdf">
+							<h:commandButton pt:data-toggle="modal" style="display:none;"
+								id="pdfpdf" class="btn btn-dark form-draw-button"
+								action="#{occurrencesBean2.downloadPdf}" value="teste" />
 
+						</h:form>
 				<!-- Modal -->
 				<!-- Formatação e cabeçalho modal -->
 				<div class="modal fade bd-example-modal-xl" tabindex="-1"
@@ -1608,9 +1608,9 @@
 		<!--  Termin Aqui --> </section>
 		<!-- Final do conteudo do site -->
 		<!-- Script -->
-		<h:outputScript name="occ.js" library="js/occ" />
-		<h:outputScript name="class_occ.js" library="js/occ" />
-		<h:outputScript name="controller_occ.js" library="js/occ" />
+		<h:outputScript name="occ2.js" library="js/occ" />
+		<h:outputScript name="class_occ2.js" library="js/occ" />
+		<h:outputScript name="controller_occ2.js" library="js/occ" />
 		<h:outputScript name="datepicker.js" library="js/datepicker" />
 		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
 		<h:outputScript name="jquery.validate.min.js"

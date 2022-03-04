@@ -356,8 +356,8 @@ public class LoginAccountBean {
 			
 			StringWriter errors = new StringWriter(); 
 			nex.printStackTrace(new PrintWriter(errors));	
-			
-			LogUtils.logError(LogUtils.fileDateTimeFormatter(loginNullExceptionLog), classLocation, nex.getMessage(), errors.toString());
+									
+			LogUtils.logError(LogUtils.fileDateTimeFormatter(loginNullExceptionLog), classLocation, "", errors.toString());
 						
 		}catch(Exception ex) {
 			
