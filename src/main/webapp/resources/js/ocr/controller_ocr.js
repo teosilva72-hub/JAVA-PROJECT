@@ -60,6 +60,7 @@ function dataPicker(){
 	changeYear: true,
 	changeMonth: true
 	})
+	img_all()
 }
 function updateView(){
 	$( "[id$=updateView]" ).click();
@@ -115,8 +116,17 @@ function updateDetails(){
 	$('[id$=updateDetails]').click();
 	preventDefault();
 }
+function img_all(){
+	let img = $('[id$=img_all]')
+	img.mouseleave(er =>{
+		$('[id$=img_all_get]').val(img.val())
+	})
+
+}
 $(document).ready(function () {
 	disabledBtn()
 	filtro()
 	updateDetails()
+	img_all()
 });
+
