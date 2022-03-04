@@ -54,10 +54,11 @@ import br.com.tracevia.webapp.controller.dai.DaiBean;
 import br.com.tracevia.webapp.controller.dai.DaiBean.Traffic;
 import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.dao.occ.OccurencesDao2;
+import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.dao.occ.OccurrencesDAO2;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
-
+import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.occ.OccurrencesData2;
 import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
 import br.com.tracevia.webapp.model.sos.SOS;
