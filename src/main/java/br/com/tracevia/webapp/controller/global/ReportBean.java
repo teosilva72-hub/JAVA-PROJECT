@@ -974,11 +974,16 @@ public class ReportBean {
 			
 			if(division != null)
 				hasDivision = true;
-				      		     						
-			 if(!special)										
-		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
-							 
-			 else generateSpecialFile(model, specialName);
+				
+			try {
+				
+				if(!special)										
+					model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
+				
+				else generateSpecialFile(model, specialName);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		     
 		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model);  
 		    
