@@ -931,6 +931,12 @@ public class ReportBean {
 					 return;
 				}				
 			}
+			
+			
+			for(String str: equipIDs) {
+				
+				System.out.println(str);
+			}
 										
 		     	//if (report.IDs.isEmpty())
 		     	//	report.IDs.addAll(idSearch);

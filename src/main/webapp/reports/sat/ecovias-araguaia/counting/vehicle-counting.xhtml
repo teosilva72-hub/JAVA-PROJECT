@@ -18,7 +18,9 @@
 		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.ecovias_araguaia_vehicle_counting_title)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECOVIAS ARAGUAIA')}" />		
 		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.ecovias_araguaia_class_title)}" />				
+		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.ecovias_araguaia_vehicle_counting_file_name)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.ecovias_araguaia_vehicle_counting_title)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />			
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />	   
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />

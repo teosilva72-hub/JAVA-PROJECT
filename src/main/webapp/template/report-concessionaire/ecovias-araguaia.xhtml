@@ -65,7 +65,22 @@
 							class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sat}</span></a>
 
 					<ul class="collapse list-unstyled" id="satSubmenu">
+						
 						<!-- SAT SUBMENU ITEM -->
+						
+						<!-- CLASSES REPORT -->
+
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/sat/ecovias-araguaia/class/class.xhtml')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span
+									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_classes}</span>
+							</h:commandLink>
+						</li>
+						
+						<!---->
 
 						<!-- CONTAGEM VEICULAR REPORT -->
 
@@ -78,54 +93,24 @@
 									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_count}</span>
 							</h:commandLink>
 						</li>
-						<!---->
-
-						<!---->
-
-						<!-- TIPO POR CLASSES REPORT -->
-
-						<li class="nav-item">
-							<h:commandLink class="nav-link"
-								action="#{navigationController.redirectToURL('/reports/sat/ecovias-araguaia/class/class.xhtml')}"
-								value="">
-								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-								<span
-									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_classes}</span>
-							</h:commandLink>
-						</li>
-						<!---->
-
-						<!---->
-
-						<!-- VELOCIDADE REPORT -->
-
-						<li class="nav-item">
-							<h:commandLink class="nav-link"
-								action="#{navigationController.redirectToURL('/reports/sat/ecovias-araguaia/speed/speed.xhtml')}"
-								value="">
-								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-								<span
-									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_speed}</span>
-							</h:commandLink>
-						</li>
-						<!---->
-
-						<!---->
-
-						<!-- TIPO -->
-
-						<li class="nav-item">
-							<h:commandLink class="nav-link"
-								action="#{navigationController.redirectToURL('/reports/sat/ecovias-araguaia/type/type.xhtml')}"
-								value="">
-								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-								<span
-									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type}</span>
-							</h:commandLink>
-						</li>
+						
 						<!---->
 						
-						<!-- TIPO -->
+						<!-- DENSIDADE DE TRAFEGO -->
+
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/sat/ecovias-araguaia/traffic-density/traffic-density.xhtml')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span
+									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_traffic_density}</span>
+							</h:commandLink>
+						</li>
+					
+						<!---->
+						
+					    <!-- TAXA OCUPACAO -->
 
 						<li class="nav-item">
 							<h:commandLink class="nav-link"
@@ -138,55 +123,40 @@
 						</li>
 						
 						<!---->
+						
+						<!-- TIPO -->
+
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/sat/ecovias-araguaia/type/type.xhtml')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span
+									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type}</span>
+							</h:commandLink>
+						</li>
+						
+						<!---->
+						
+						<!-- VELOCIDADE REPORT -->
+
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/sat/ecovias-araguaia/speed/speed.xhtml')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span
+									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_speed}</span>
+							</h:commandLink>
+						</li>
+					
+						<!---->						
 
 					</ul>
 				</li>
 
 				<!---->
-
-				<!-- REPORTS LL -->
-
-				<ui:fragment rendered="#{loginAccount.reportsLLEnabled}">
-					<!-- REPORTS LL FRAGMENT -->
-					<li class="nav-item"><a class="nav-link" href="#satLLSubmenu" data-toggle="collapse"
-							aria-expanded="false"><i class="fas fa-hdd icon-sub"></i><span
-								class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sat_ll}</span></a>
-
-						<ul class="collapse list-unstyled" id="satLLSubmenu">
-							<!-- REPORTS LL SUBMENU -->
-
-							<!-- CLASSES LL -->
-							<li class="nav-item">
-								<h:commandLink class="nav-link"
-									action="#{navigationController.redirectToURL('/reports/sat/via-sul/ll/class/class-ll.xhtml')}"
-									value="">
-									<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-									<span
-										class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_class}</span>
-								</h:commandLink>
-							</li>
-							<!---->
-
-							<!---->
-
-							<!-- VELOCIDADE LL -->
-
-							<li class="nav-item">
-								<h:commandLink class="nav-link"
-									action="#{navigationController.redirectToURL('/reports/sat/via-sul/ll/speed/speed-ll.xhtml')}"
-									value="">
-									<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-									<span
-										class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_speed}</span>
-								</h:commandLink>
-							</li>
-							<!---->
-
-						</ul>
-					</li>
-					<!---->
-				</ui:fragment>
-				<!---->
+		
 			</ui:fragment>
 			<!---->
 
