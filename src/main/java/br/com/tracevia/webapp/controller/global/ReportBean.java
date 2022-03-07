@@ -162,9 +162,7 @@ public class ReportBean {
 	}
 		
 	public void setColumnsName(String columns) {
-						
-	  //System.out.println(columns);
-		
+			
 		for (String col : columns.split(",")) {
 			if (col.contains("$foreach")) {
 				try {
@@ -719,9 +717,7 @@ public class ReportBean {
 					if (columnMS != null)
 						aliasMS = columnMS.split("@");
 					query += String.format("%s as %s, ", alias[0], group);
-					
-				//	System.out.println("ALIAS: "+alias[0]+" QUERY1: "+query);
-										
+																		
 					if (columnMS != null)
 						queryMS += String.format("%s as %s, ", aliasMS[0], groupMS);
 					
@@ -738,8 +734,6 @@ public class ReportBean {
 						order = String.format("STR_TO_DATE(CONCAT(%s, %s), '%%d/%%m/%%Y %%H:%%i:%%s')", alias[1], group);
 						group = String.format("%s, %s", alias[1], group);
 						
-						//System.out.println("QUERY2: "+query);
-						
 						if (columnMS != null) {
 							if (columnDate.contains("@")) {
 								String[] c = columnDate.split("@");
@@ -755,7 +749,7 @@ public class ReportBean {
 					}
 				} else {
 					query += String.format("%s as %s, ", column, group);
-				//	System.out.println("QUERY3: "+query);
+				
 					if (columnMS != null)
 						queryMS += String.format("%s as %s, ", columnMS, groupMS);
 				}
@@ -854,9 +848,7 @@ public class ReportBean {
 					}
 				} else {
 					String f = map.get(String.format("%s-filter", search.left[1]).replaceAll(" ", ""));
-					
-					//System.out.println(String.format("%s-filter", search.left[1]));
-					
+									
 					if (!f.isEmpty())
 						filter = String.format("%s'%s'", caseSensitive ? "BINARY " : "", f);
 					if (search.left[0].equals(idTable))
@@ -898,12 +890,9 @@ public class ReportBean {
 			}
 
 			if (setPeriod && hasPeriod()) {
-						
-				//System.out.println(group);
-				
+								
 				query += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", group, extraGroup, orderDate != null ? orderDate + ", " : "", order);
-				//System.out.println("QUERY5: "+query);
-				
+							
 				if (queryMS != null)
 					queryMS += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", groupMS, extraGroup, orderDate != null ? orderDate + ", " : "", orderMS);
 			} else if (orderDate != null) {
@@ -915,12 +904,12 @@ public class ReportBean {
 
 			if (extraSelect != null) {
 				query = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), query, group);
-				//System.out.println("QUERY6: "+query);
+				
 				if (queryMS != null)
 					queryMS = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), queryMS, groupMS);
 			}
 			
-			System.out.println(query);
+			//System.out.println(query);
 			  
 		    // Table Fields
 			report.getReport(query, queryMS, idTable, isDivision() ? division : null);
@@ -941,6 +930,12 @@ public class ReportBean {
 					 SessionUtil.executeScript("drawTable()");					
 					 return;
 				}				
+			}
+			
+			
+			for(String str: equipIDs) {
+				
+				System.out.println(str);
 			}
 										
 		     	//if (report.IDs.isEmpty())
@@ -1368,10 +1363,7 @@ public class ReportBean {
 	        jsData += gson.toJson(lines);
 	        	     	        
 	        jsData = jsData.toString().replaceAll("\"", "").replaceAll("null", "0").replaceAll("@aspas", "'");	     
-	        
-	        //System.out.println(jsColumn);
-	        //System.out.println(jsData);
-	        	   	       	        
+	        	        	   	       	        
 	        if(period[1].toUpperCase().equals("DAY"))
 	           SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"', '"+vAxis+"', '"+ dateFormat +"', '"+imageName+"');");
 	        
@@ -1447,9 +1439,7 @@ public class ReportBean {
 		        String dateFormat_ = "";
 		        
 		        jsData = gson.toJson(linesAux);	
-		        
-		        System.out.println(jsData);
-		        		     								
+		       		        		     								
 				if(period[1].toUpperCase().equals("MINUTE") || period[1].toUpperCase().equals("HOUR")) {
 					
 					periodRange = dta.defineInterval(period);

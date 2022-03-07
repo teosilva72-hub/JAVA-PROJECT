@@ -359,7 +359,7 @@ public class EquipmentsDAO {
 		TranslationMethods translator = new TranslationMethods();
 
 		String dir1 = " ", dir2 = " ", dir3 = " ", dir4 = " ", dir5 = " ", dir6 = " ", dir7 = " ", dir8 = " ";
-		String sentido1 = "", sentido2 = "";
+		String sentido1 = "", sentido2 = "", sentidoAbbr1 = "", sentidoAbbr2 = "";
 
 		String query = "";
 
@@ -401,6 +401,9 @@ public class EquipmentsDAO {
 
 					sentido1 = translator.CheckDirection(rs.getString(7));
 					sentido2 = translator.Check2ndDirection(rs.getString(7));
+					
+					sentidoAbbr1 = translator.directionAbbreviation(rs.getString(7));
+					sentidoAbbr2 = translator.oppositeDirectionAbbreviation(rs.getString(7));
 
 					dir1 = translator.CheckDirection(rs.getString(7));
 					dir2 = translator.CheckDirection(rs.getString(8));
@@ -429,6 +432,8 @@ public class EquipmentsDAO {
 					sat.setFaixa8(dir8);
 					sat.setSentido1(sentido1);
 					sat.setSentido2(sentido2);
+					sat.setSentido1Abbr(sentidoAbbr1);
+					sat.setSentido2Abbr(sentidoAbbr2);
 					sat.setLinearWidth(rs.getInt(15));
 					sat.setLinearPosX(rs.getInt(16));
 					sat.setLinearPosY(rs.getInt(17));

@@ -24,6 +24,11 @@
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.defineClassSublHeader('light-heavy')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('siteID')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.ecovias_araguaia_class_file_name)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.ecovias_araguaia_class_title)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiChart(true)}" />
 	    	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}" />
@@ -54,7 +59,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
-		<!-- <f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions, direction, direction')}" /> -->
+		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions q, q.direction, q.direction')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
@@ -91,7 +96,7 @@
 		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
 		<h:outputScript library="js/alert" name="alerts.js" />	<!-- ENABLE ALERTS -->
 		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
-	 	<h:outputScript library="js/charts" name="chart.js" />
+	 	<h:outputScript library="js/charts" name="multi-chart.js" />
 	
 	   <!---->
 	

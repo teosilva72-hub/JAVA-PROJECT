@@ -433,7 +433,7 @@ public class ExcelTemplate {
 			columnStartDate = columnsIndex + 1;
 			columnEndDate = columnsIndex + 3;	
 		}
-		
+			
 	
 		// ----------------------------------------------------------------------------------------------------------------
 					
@@ -865,6 +865,8 @@ public class ExcelTemplate {
 			}
 			
 			// -----------------------------------------------------
+			
+			System.out.println(selectOp);
 									
 		  for(int op = 0; op < selectOp; op++) {
 			  					  
@@ -899,6 +901,8 @@ public class ExcelTemplate {
 			  
 		    	// SheetName
 				sheet = workbook.createSheet(sheetNames[op]); // CREATE SHEET NAMES
+				
+				System.out.println(sheet.getSheetName());
 			
 				if(isEquipNameSheet) 
 					excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  

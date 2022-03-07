@@ -36,7 +36,7 @@ public class DataSatDAO {
 					"CASE WHEN " +
 					"MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), DATE_FORMAT(DATE_ADD(d.DATA_HORA ,INTERVAL 14 MINUTE), ' %H:%i')) ELSE CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 15 MINUTE), ' %H:%i')) END " + 
 					"END 'PACOTE_HORA', " +
-					"CASE WHEN DATEDIFF(NOW(), v.data) > 0 THEN date_format(MAX(v.data), '%d/%m/%y %H:%i') ELSE date_format(MAX(v.data), '%H:%i') END 'DADO_HORA', " +
+					"CASE WHEN DATEDIFF(NOW(), MAX(v.data)) > 0 THEN date_format(MAX(v.data), '%d/%m/%y %H:%i') ELSE date_format(MAX(v.data), '%H:%i') END 'DADO_HORA', " +
 						
 		"SUM(CASE " +
 			"WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4 AND d.NOME_FAIXA < 5) " +
@@ -53,27 +53,28 @@ public class DataSatDAO {
 			"THEN d.VOLUME_TOTAL " +
 		"ELSE 0 END) 'VOLUME_TOTAL_S2', " +
 		
-		"ROUND(AVG(CASE " +
+		"ROUND(AVG(NULLIF(CASE " +
 			"WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4 AND d.NOME_FAIXA < 5) " +
 			  "OR (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND d.NOME_FAIXA < 4) " +
 			  "OR (eq.dir_lane1 = eq.dir_lane2 AND d.NOME_FAIXA < 3) " +
 			  "OR (d.NOME_FAIXA = 1) " +
 			"THEN d.VEL_MEDIA_TOTAL " +
-		"ELSE 0 END), 0) 'VEL_MEDIA_TOTAL_S1', " +
-		"ROUND(AVG(CASE " +
+		"ELSE 0 END, 0)), 0) 'VEL_MEDIA_TOTAL_S1', " +
+		"ROUND(AVG(NULLIF(CASE " +
 			"WHEN (eq.dir_lane1 <> IFNULL(eq.dir_lane2, eq.dir_lane1) AND d.NOME_FAIXA > 1) " +
 			  "OR (eq.dir_lane1 <> IFNULL(eq.dir_lane3, eq.dir_lane1) AND d.NOME_FAIXA > 2) " +
 			  "OR (eq.dir_lane1 <> IFNULL(eq.dir_lane4, eq.dir_lane1) AND d.NOME_FAIXA > 3) " +
 			  "OR (eq.dir_lane1 <> IFNULL(eq.dir_lane5, eq.dir_lane1) AND d.NOME_FAIXA > 4) " +
 			"THEN d.VEL_MEDIA_TOTAL " +
-		"ELSE 0 END), 0) 'VEL_MEDIA_TOTAL_S2' " +
+		"ELSE 0 END, 0)), 0) 'VEL_MEDIA_TOTAL_S2' " +
 	 	 
 	 "FROM "+RoadConcessionaire.tableDados15+" d " +
 	 "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	 "INNER JOIN tb_vbv v ON (v.siteID = d.nome_estacao) AND v.lane = d.nome_faixa " +
-	 "WHERE DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 " +
-	 "GROUP BY d.DATA_HORA, d.NOME_ESTACAO " + 	
- 	 "ORDER BY d.DATA_HORA ";
+	 "INNER JOIN tb_vbv v on v.siteID = d.nome_estacao " +
+	 "WHERE DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 AND " +
+	 "v.data IN (SELECT MAX(data) FROM tb_vbv) " +
+	 "GROUP BY d.DATA_HORA, d.NOME_ESTACAO " +	
+ 	 "ORDER BY d.DATA_HORA DESC ";
 	 
 	 try {
 			
@@ -91,7 +92,7 @@ public class DataSatDAO {
 			
 			MapResult result = conn.executeQuery();
 			
-		  System.out.println("ORIGIN: "+select);		 	
+		//  System.out.println("ORIGIN: "+select);		 	
 			
 			if (result.hasNext()) {
 				for (RowResult rs : result) {
@@ -141,7 +142,7 @@ public class DataSatDAO {
 				"CASE WHEN " +
 				"MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), DATE_FORMAT(DATE_ADD(d.DATA_HORA ,INTERVAL 14 MINUTE), ' %H:%i')) ELSE CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 15 MINUTE), ' %H:%i')) END " + 
 				"END 'PACOTE_HORA', " +
-				"CASE WHEN DATEDIFF(NOW(), v.data) > 0 THEN date_format(MAX(v.data), '%d/%m/%y %H:%i') ELSE date_format(MAX(v.data), '%H:%i') END 'DADO_HORA', " +
+				"(SELECT CASE WHEN DATEDIFF(NOW(), MAX(data)) > 0 THEN date_format(MAX(data), '%d/%m/%y %H:%i') ELSE date_format(MAX(data), '%H:%i') END FROM tb_vbv WHERE siteID = ?) 'DADO_HORA', " +
 		
 		 "SUM(CASE " +
 			"WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4 AND d.NOME_FAIXA < 5) " +
@@ -158,24 +159,23 @@ public class DataSatDAO {
 			"THEN d.VOLUME_TOTAL " +
 		"ELSE 0 END) 'VOLUME_TOTAL_S2', " +
 		
-		"ROUND(AVG(CASE " +
+		"ROUND(AVG(NULLIF(CASE " +
 			"WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4 AND d.NOME_FAIXA < 5) " +
 			  "OR (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND d.NOME_FAIXA < 4) " +
 			  "OR (eq.dir_lane1 = eq.dir_lane2 AND d.NOME_FAIXA < 3) " +
 			  "OR (d.NOME_FAIXA = 1) " +
 			"THEN d.VEL_MEDIA_TOTAL " +
-		"ELSE 0 END), 0) 'VEL_MEDIA_TOTAL_S1', " +
-		"ROUND(AVG(CASE " +
+		"ELSE 0 END, 0)), 0) 'VEL_MEDIA_TOTAL_S1', " +
+		"ROUND(AVG(NULLIF(CASE " +
 			"WHEN (eq.dir_lane1 <> IFNULL(eq.dir_lane2, eq.dir_lane1) AND d.NOME_FAIXA > 1) " +
 			  "OR (eq.dir_lane1 <> IFNULL(eq.dir_lane3, eq.dir_lane1) AND d.NOME_FAIXA > 2) " +
 			  "OR (eq.dir_lane1 <> IFNULL(eq.dir_lane4, eq.dir_lane1) AND d.NOME_FAIXA > 3) " +
 			  "OR (eq.dir_lane1 <> IFNULL(eq.dir_lane5, eq.dir_lane1) AND d.NOME_FAIXA > 4) " +
 			"THEN d.VEL_MEDIA_TOTAL " +
-		"ELSE 0 END), 0) 'VEL_MEDIA_TOTAL_S2' " +
+		"ELSE 0 END, 0)), 0) 'VEL_MEDIA_TOTAL_S2' " +
  			 
  	 "FROM "+RoadConcessionaire.tableDados15+" d " +
  	 "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
- 	 "INNER JOIN tb_vbv v ON (v.siteID = d.nome_estacao) AND v.lane = d.nome_faixa " +
  	 "WHERE eq.equip_id = ? AND DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 "+ 
  	 "GROUP BY d.DATA_HORA " + 
  	 "ORDER BY d.DATA_HORA DESC ";
@@ -192,8 +192,9 @@ public class DataSatDAO {
 					.replaceFirst("SELECT", "SELECT TOP 1")
 					.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(%s, -%s, ? ", interval, time)));
  			conn.setInt(1, equip);	
- 			conn.setString(2, currentDate);
+ 			conn.setInt(2, equip);	
  			conn.setString(3, currentDate);
+ 			conn.setString(4, currentDate);
  						
  			MapResult result = conn.executeQuery();
  			
