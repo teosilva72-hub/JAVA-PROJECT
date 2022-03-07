@@ -32,7 +32,7 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_dados15 t')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('NOME_ESTACAO')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.global_equipment_id_column, satLabels.class_motos_column, satLabels.class_light_vehicles_column, satLabels.class_commercial_vehicles_column, satLabels.global_total_vehicles_column))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.global_equipment_id_column, satLabels.class_motos_column, satLabels.class_light_vehicles_column, satLabels.class_commercial_vehicles_column, satLabels.global_total_vehicles_column))}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(DATA_HORA, `%d/%m/%Y`) as sd; TIME($period)@sd; NOME_ESTACAO; SUM(VOLUME_MOTOS); SUM(VOLUME_AUTO); SUM(VOLUME_COM + VOLUME_LONGO); SUM(VOLUME_TOTAL)')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON q.equip_id = NOME_ESTACAO AND q.lane = t.NOME_FAIXA')}" />
 		
@@ -147,7 +147,7 @@
 	  
 	    <!-- CHART CONTAINER -->  
 	  
-	    <ui:include src="/template/chart/chart_template.xhtml" />
+	     <ui:include src="/template/chart/multichart_template.xhtml" />
 	
 		
 	  <!-- ============================================================================================================================= -->

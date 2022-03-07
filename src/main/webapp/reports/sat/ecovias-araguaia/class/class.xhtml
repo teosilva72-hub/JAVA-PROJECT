@@ -22,7 +22,6 @@
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />	
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.defineClassSublHeader('light-heavy')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('siteID')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.ecovias_araguaia_class_file_name)}" />		
@@ -33,18 +32,13 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" escape="false" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s',
-		satLabels.global_date_column, satLabels.global_interval_column, satLabels.global_equipment_id_column, satLabels.class_motorcycles_column, satLabels.class_light_column, satLabels.class_semi_trailer_column, satLabels.class_trailer_column,
-		satLabels.number_of_axles_2_column, satLabels.number_of_axles_3_column, satLabels.number_of_axles_4_column, satLabels.number_of_axles_5_column, satLabels.number_of_axles_6_column, satLabels.number_of_axles_7_column,
-		satLabels.number_of_axles_8_column, satLabels.number_of_axles_9_column, satLabels.number_of_axles_10_column, satLabels.global_total_vehicles_column))}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; siteID; SUM(classe = `9`); SUM(IF(classe = `1` OR (classe = `UC` AND axlNumber &lt; 10) OR classe = `2N`, 1, 0 )); 
-        SUM(classe = `3`); SUM(classe = `100`); SUM(IF(classe = `2` OR classe = `2A`, 1, 0)); SUM(IF(classe = `4` OR classe = `4A` OR classe = `3N`, 1, 0 ));
-		SUM(IF(classe = `6` OR classe = `4N`, 1, 0)); SUM(IF(classe = `7` OR classe = `5` OR classe = `5N`, 1, 0 ));
-		SUM(IF(classe = `8` OR classe = `6N`, 1, 0)); SUM(IF(classe = `10` OR classe = `7N`, 1, 0 ));
-		SUM(IF(classe = `11` OR classe = `8N`, 1, 0)); SUM(IF(classe = `E9` OR classe = `9N` OR (classe=`UC` AND axlNumber = 9), 1, 0 ));
-		SUM(IF(classe = `10N` OR (classe=`UC` AND axlNumber &gt;= 10), 1, 0)); SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.global_equipment_id_column, satLabels.class_motos_column, satLabels.class_light_vehicles_column, 
+		satLabels.class_small_column, satLabels.class_long_column, satLabels.class_bus_column, satLabels.global_total_vehicles_column))}" />
 		
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; siteID; SUM(classe = `1`); SUM(IF(classe = `2` OR (classe = `UC` AND lenght &lt;= 650), 1, 0 )); 
+        SUM(IF(classe = `3` OR classe = `4`, 1, 0 )); SUM(classe = `5`); SUM(classe = `6`); SUM(1)')}" />
+			
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv.lane')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
@@ -65,8 +59,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('direction', reportsLabels.reports_select_directions, 'filter_directions.direction', true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', true, true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true, true)}" />	
-
+	
     </f:metadata>
 	
 	<!---->
@@ -136,7 +129,7 @@
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
 	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
-		width="100%" headerClass="custom-table-header"> 	<!-- DATATABALE JSF -->
+		width="100%" headerClass="custom-table-header"> <!-- DATATABALE JSF -->
 			
 	 <f:facet name="header"> <!-- Header -->
 	 
@@ -145,27 +138,20 @@
       <tr>
         <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(0)}</th>
         <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(1)}</th>
-        <th colspan="4" class="custom-table-header" >#{satLabels.class_light_vehicles_column}</th> <!-- SUB HEADER -->
-        <th colspan="9" class="custom-table-header" >#{satLabels.class_heavy_vehicles_column}</th> <!-- SUB HEADER -->        
-        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(15)}</th> 
+        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(2)}</th>
+        <th colspan="2" class="custom-table-header" >#{satLabels.class_light_vehicles_column}</th> <!-- SUB HEADER -->
+        <th colspan="3" class="custom-table-header" >#{satLabels.class_heavy_vehicles_column}</th> <!-- SUB HEADER -->        
+        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(8)}</th> 
       </tr>
       
       <!-- Second Level -->
       
-        <tr>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(2)}</th>
+        <tr>  
         <th class="custom-table-header" >#{reportBean.columnsInUse.get(3)}</th>
         <th class="custom-table-header" >#{reportBean.columnsInUse.get(4)}</th>
         <th class="custom-table-header" >#{reportBean.columnsInUse.get(5)}</th>
         <th class="custom-table-header" >#{reportBean.columnsInUse.get(6)}</th>
         <th class="custom-table-header" >#{reportBean.columnsInUse.get(7)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(8)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(9)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(10)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(11)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(12)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(13)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(14)}</th>
       </tr>
       
       
@@ -198,7 +184,7 @@
 	  
 	    <!-- CHART CONTAINER -->  
 	  
-	    <ui:include src="/template/chart/chart_template.xhtml" />
+	        <ui:include src="/template/chart/multichart_template.xhtml" />
 	
 		
 	  <!-- ============================================================================================================================= -->

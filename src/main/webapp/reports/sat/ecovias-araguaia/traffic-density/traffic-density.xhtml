@@ -44,7 +44,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />		
-	    <f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('lane', reportsLabels.reports_select_lanes, 'filter_lanes.id_lane|name', false, true)}" />	
+	    <f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('lane', reportsLabels.reports_select_lanes, 'filter_lane.id_lane|name', false, true)}" />	
 	    <f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true, true)}" />
 		
     </f:metadata>
@@ -143,7 +143,7 @@
 	  
 	    <!-- CHART CONTAINER -->  
 	  
-	    <ui:include src="/template/chart/chart_template.xhtml" />
+	      <ui:include src="/template/chart/multichart_template.xhtml" />
 	 
 		
 	  <!-- ============================================================================================================================= -->

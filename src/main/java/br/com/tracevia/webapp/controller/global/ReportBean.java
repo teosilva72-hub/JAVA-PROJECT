@@ -909,7 +909,7 @@ public class ReportBean {
 					queryMS = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), queryMS, groupMS);
 			}
 			
-			//System.out.println(query);
+			System.out.println(query);
 			  
 		    // Table Fields
 			report.getReport(query, queryMS, idTable, isDivision() ? division : null);
