@@ -202,15 +202,26 @@
     
   <build>
     <plugins>
+<<<<<<< HEAD
      	<plugin>
+=======
+	    <plugin>
+>>>>>>> 840af383f5e825d0331d0e8ae1672e6b2c1c1a7f
 		    <groupId>org.apache.maven.plugins</groupId>
 		    <artifactId>maven-war-plugin</artifactId>
 		    <version>3.3.1</version>
 		</plugin>
+<<<<<<< HEAD
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.3</version> 
+=======
+		<plugin>
+		      <groupId>org.apache.maven.plugins</groupId>
+		      <artifactId>maven-compiler-plugin</artifactId>
+		      <version>3.3</version>		
+>>>>>>> 840af383f5e825d0331d0e8ae1672e6b2c1c1a7f
             <configuration>
                 <!-- http://maven.apache.org/plugins/maven-compiler-plugin/ -->
                 <source>1.8</source>
