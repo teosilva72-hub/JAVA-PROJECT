@@ -1,5 +1,10 @@
-html,body{
+html, body {
 	margin: 0;
 	width: 100%;
 	height: 100%;
+}
+
+#new_occ {
+	margin-top: 15px;
+	width: 100%;
 }

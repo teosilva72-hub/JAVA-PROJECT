@@ -36,6 +36,7 @@ import org.apache.poi.util.IOUtils;
 import org.primefaces.context.RequestContext;
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -45,6 +46,7 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -58,6 +60,7 @@ import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.dao.occ.OccurrencesDAO2;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.occ.OccurrencesData2;
 import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
@@ -987,7 +990,6 @@ public class OccurrencesBean2 {
 				fields = true;
 				edit = true;
 				table = true;
-					System.out.println("aqui1");
 				if(nivelUser == 1 || nivelUser == 6) {
 					//btn
 					save = true;
@@ -996,17 +998,8 @@ public class OccurrencesBean2 {
 					new_ = false;
 					reset = true;
 					fields = true; 
-					System.out.println("aqui2");
 					//execute js
-					RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
-					RequestContext.getCurrentInstance().execute("fileTotal()");
 				}
-
-				//listar arquivos
-
-				//execute js
-				RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
-				RequestContext.getCurrentInstance().execute("fileTotal()");
 
 				//senÃ£o se for igual a false acesso liberado para realizar ediÃ§Ã£o
 			}else if((data.getEditTable() == false)|| timestamp.before(timestamp2)) {
@@ -1816,9 +1809,7 @@ System.out.println("btnedit");
 	}
 	//mÃ©todo download PDF
 	public String[] downloadPdf() throws Exception {
-			
-		System.out.println("pdf veio");
-		// cria��o do documento
+					// cria��o do documento
 		Document document = new Document();
 		TranslationMethods trad = new TranslationMethods();
 
@@ -1854,160 +1845,52 @@ System.out.println("btnedit");
 			tl.addElement(tx);
 			tl.go();
 			document.add(new Paragraph("\n\n\n\n"));
-		
-		PdfPTable table1 = new PdfPTable(new float[]  { 5f, 10f });
-		
-		PdfPCell[][] seguroTab = new PdfPCell[13][2];
-		
-		seguroTab[0][0] = new PdfPCell(new Phrase("PLAZA DE COBRO"));
-		seguroTab[0][1] = new PdfPCell(new Phrase(" "));
-		
-		seguroTab[1][0] = new PdfPCell(new Phrase("FOLIO SEQUENCIA"));
-		seguroTab[1][1] = new PdfPCell(new Phrase(" "));
-		
-		seguroTab[2][0] = new PdfPCell(new Phrase("REPORT"));
-		seguroTab[2][1] = new PdfPCell(new Phrase(" "));
-		
-		seguroTab[3][0] = new PdfPCell(new Phrase("SINISTRO"));
-		seguroTab[3][1] = new PdfPCell(new Phrase(" "));
-		
-		seguroTab[4][0] = new PdfPCell(new Phrase("FECHA"));
-		seguroTab[4][1] = new PdfPCell(new Phrase(" "));
-		
-		seguroTab[5][0] = new PdfPCell(new Phrase("HORA"));
-		seguroTab[5][1] = new PdfPCell(new Phrase(" "));
-		
-		seguroTab[6][0] = new PdfPCell(new Phrase("DIRECAO"));
-		seguroTab[6][1] = new PdfPCell(new Phrase(" "));
-		
-		seguroTab[7][0] = new PdfPCell(new Phrase("KM DE REEGISTRO"));
-		seguroTab[7][1] = new PdfPCell(new Phrase(" "));
-		
-		seguroTab[8][0] = new PdfPCell(new Phrase("KM INICIAL"));
-		seguroTab[8][1] = new PdfPCell(new Phrase(" "));
-		
-		seguroTab[9][0] = new PdfPCell(new Phrase("KM FINAL"));
-		seguroTab[9][1] = new PdfPCell(new Phrase(" "));
-		
-		seguroTab[10][0] = new PdfPCell(new Phrase("POLIZA"));
-		seguroTab[10][1] = new PdfPCell(new Phrase(" "));
-		
-		seguroTab[11][0] = new PdfPCell(new Phrase("HORA REGISTRO"));
-		seguroTab[11][1] = new PdfPCell(new Phrase(" "));
-		
-		seguroTab[12][0] = new PdfPCell(new Phrase("HORA CHEGADA"));
-		seguroTab[12][1] = new PdfPCell(new Phrase(" "));
-		
-		
-		for(int j = 0; j <	seguroTab.length; j++) 
-		for(int i = 0; i <	seguroTab[0].length; i++) 
 	
 			
-		/*ColumnText tl = new ColumnText(writer.getDirectContent());
-		Paragraph tx = new Paragraph();
-		tl.setSimpleColumn(400,780,200,50);
-		tx.add(pTitulo);
-		tl.addElement(tx);
-		tl.go();
-		document.add(new Paragraph("\n\n\n\n"));*/
-		
-		
-		
-//	PdfPTable table2 = new PdfPTable(new float[]  { 5f, 10f });
-//		
-//		PdfPCell[][] veicTab = new PdfPCell[2][2];	
-//		veicTab[0][0] = new PdfPCell(new Phrase("Tipo de Veiculo"));
-//		veicTab[0][1] = new PdfPCell(new Phrase(" "));
-//		
-//		veicTab[1][0] = new PdfPCell(new Phrase("Numero de veiculos"));
-//		veicTab[1][1] = new PdfPCell(new Phrase(" "));
-//		
-//
-//		for(int j = 0; j <	seguroTab.length; j++) 
-//			for(int i = 0; i <	seguroTab[0].length; i++) 
-//		
-//		table2.addCell(veicTab[j][i]);
-		
-		
-		
-		/*PdfPTable table3 = new PdfPTable(new float[] { 5f, 5f, 5f , 5f, 5f, 5f , 5f });
-		
-		PdfPCell celulaN = new PdfPCell(new Phrase("N°"));
-		celulaN.setHorizontalAlignment(Element.ALIGN_CENTER);
-		PdfPCell celulaMarca = new PdfPCell(new Phrase("MARCA"));
-		celulaMarca.setHorizontalAlignment(Element.ALIGN_CENTER);
-		PdfPCell celulaTipo= new PdfPCell(new Phrase("TIPO"));
-		celulaTipo.setHorizontalAlignment(Element.ALIGN_CENTER);
-		PdfPCell celulaModelo = new PdfPCell(new Phrase("MODELO"));
-		celulaModelo.setHorizontalAlignment(Element.ALIGN_CENTER);
-		PdfPCell celulaCor = new PdfPCell(new Phrase("COR"));
-		celulaCor.setHorizontalAlignment(Element.ALIGN_CENTER);
-		PdfPCell celulaPlaca = new PdfPCell(new Phrase("PLACA/ESTADO"));
-		celulaPlaca.setHorizontalAlignment(Element.ALIGN_CENTER);
-		PdfPCell celulaTele = new PdfPCell(new Phrase("TELEFONE"));
-	celulaTele.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-		table3.addCell(celulaN);
-		table3.addCell(celulaMarca);
-		table3.addCell(celulaTipo);
-		table3.addCell(celulaModelo);
-		table3.addCell(celulaCor);
-		table3.addCell(celulaPlaca);
-		table3.addCell(celulaTele);
-		
-		
-		PdfPTable table4 = new PdfPTable(new float[] { 5f, 5f, 5f , 5f });
-		
-		PdfPCell celulaNm = new PdfPCell(new Phrase("N°"));
-		celulaNm.setHorizontalAlignment(Element.ALIGN_CENTER);
-		PdfPCell celulaNome = new PdfPCell(new Phrase("NOME"));
-		celulaNome.setHorizontalAlignment(Element.ALIGN_CENTER);
-		PdfPCell celulaIdade= new PdfPCell(new Phrase("IDADE"));
-		celulaIdade.setHorizontalAlignment(Element.ALIGN_CENTER);
-		PdfPCell celulaSaude = new PdfPCell(new Phrase(" CONDIÇÇOES DE SAUDE"));
-		celulaSaude.setHorizontalAlignment(Element.ALIGN_CENTER);
-	
-
-		table4.addCell(celulaNm);
-		table4.addCell(celulaNome);
-		table4.addCell(celulaIdade);
-		table4.addCell(celulaSaude);
-	*/
-
-		
-		
-	
-	{
-		//	PdfPCell celula = new PdfPCell(new Phrase(("")));
-			//PdfPCell celula = new PdfPCell(new Phrase(("")));
-		
-
-			//table1.addCell(celula1);
-			//table1.addCell(celula2);
-	
-		}
-
-
-		document.add(table1);
-		//document.add(table2);
-		/*document.add(table3);
-		document.add(table4);*/
 			
 			//chamando a imagem
 			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
-			//Image image1 = Image.getInstance(RoadConcessionaire.externalDefaultLogo);
+			Image image1 = Image.getInstance(RoadConcessionaire.externalDefaultLogo);
 			Image image2 = Image.getInstance(logo);
 
 			//ediï¿½ï¿½o das imagens
-			//image1.setAbsolutePosition(50, 790);
-			//image1.scaleAbsolute (100, 50);
+			image1.setAbsolutePosition(50, 790);
+			image1.scaleAbsolute (100, 50);
 			image2.setAbsolutePosition(320, 800);
 			image2.scaleAbsolute (70, 30);
 			//passando a imagem
 			//document.add(image1);
 			document.add(image2);
 			
-		
+			document.add(new Paragraph("Alo mundo!!"));
+			Paragraph conteudo = new Paragraph();
+			// Assim criaremos uma linha em branco
+			conteudo.add(new Paragraph(" "));
+			Chapter capitulo = new Chapter(new Paragraph("teste"), 1);
+			PdfPTable table = new PdfPTable(2);
+			Paragraph novoParagrafo = new Paragraph("Tabela de precos");
+ 
+			// Seção é uma área que adicionaremos conteúdo
+			Section secao = capitulo.addSection(novoParagrafo);
+			PdfPCell c1 = new PdfPCell(new Phrase("Cabecalho1"));
+			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(c1);
+ 
+			c1 = new PdfPCell(new Phrase("Cabecalho 2"));
+			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table.addCell(c1);
+			table.setHeaderRows(1);
+ 
+			table.addCell("Banana");
+			table.addCell("Laranja");
+			table.addCell("2.1");
+			table.addCell("2.2");
+			for (int i = 0; i < 13; i++) {
+				table.addCell("Céclula" + i);
+			}
+			secao.add(table);
+			document.add(conteudo);
+			document.add(secao);
 		
 		}
 		catch(DocumentException de) {
