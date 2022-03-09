@@ -61,7 +61,7 @@ public class ReportBean {
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
 	public boolean 	isSat = false, haveTotal, multiSheet = true, equipSheetName = false, directionsOnSheet = false, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false,
-			groupId = false,  limitColumn = false, hasDivision = false, additionalTitleName = false, multiChart = false;
+			groupId = false,  limitColumn = false, hasDivision = false, additionalTitleName = false, multiChart = false, extraPeriod = false;
 		
 	public String totalType = "standard";
 	public String module = "default";
@@ -351,6 +351,10 @@ public class ReportBean {
 	
 	public void setExtraGroup(String extraGroup) {
 		this.extraGroup = ", " + extraGroup;
+	}	
+	
+	public void setExtraPeriod(boolean extraPeriod) {
+		this.extraPeriod = extraPeriod;
 	}
 
 	public void setReport(ReportDAO report) {
@@ -697,6 +701,8 @@ public class ReportBean {
 		List<String> equipIDs = new ArrayList<String>();
 		List<String> directions = new ArrayList<String>();
 		
+		String selectedLane = "";
+		
 		if (!searchParametersMS.isEmpty())
 			queryMS = "SELECT ";
 		for (String col : columnsTemp) {
@@ -820,8 +826,8 @@ public class ReportBean {
 							moreInterval.put(search.left[1], filterArray.length);
 					
 					if (filterArray != null) {						
-						for (String f : filterArray) { // HERE
-							
+						for (String f : filterArray) { // HERE					
+												
 							if(search.left[0].equals("q.direction") || search.left[0].equals("direction"))	
 								directions.add(f);
 																			
@@ -853,12 +859,14 @@ public class ReportBean {
 						filter = String.format("%s'%s'", caseSensitive ? "BINARY " : "", f);
 					if (search.left[0].equals(idTable))
 						 idSearch.add(f);
-					
+										
 					if(search.left[0].equals("siteID"))														
 						 equipIDs.add(f);
 					
-					if(search.left[0].equals("NOME_FAIXA"))
+					if(search.left[0].equals("NOME_FAIXA") || search.left[0].equals("lane")) {
 						laneName = " : "+getLaneName(f);
+						selectedLane = f;							
+					}										
 				}
 
 				if (count == 0 && !filter.isEmpty()) {
@@ -909,7 +917,21 @@ public class ReportBean {
 					queryMS = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), queryMS, groupMS);
 			}
 			
-			//System.out.println(query);
+			// ----------------------------------------------------------------------
+			
+			if(extraPeriod) {
+				
+				String extraPeriodValue = "1";
+				
+				if(period[1].toUpperCase().equals("DAY"))
+					extraPeriodValue = "24";
+							
+				query = query.replace("$extraPeriod", extraPeriodValue);
+			}
+				
+			// ----------------------------------------------------------------------
+			
+			// System.out.println(query);
 			  
 		    // Table Fields
 			report.getReport(query, queryMS, idTable, isDivision() ? division : null);
@@ -931,16 +953,11 @@ public class ReportBean {
 					 return;
 				}				
 			}
-			
-			
-			for(String str: equipIDs) {
-				
+						
+			for(String str: equipIDs) {				
 				System.out.println(str);
 			}
-										
-		     	//if (report.IDs.isEmpty())
-		     	//	report.IDs.addAll(idSearch);
-		
+				
 			// -------------------------------------------------------------------------------------
 		
 			// TABLE DINAMIC HEADER
@@ -973,7 +990,7 @@ public class ReportBean {
 			try {
 				
 				if(!special)										
-					model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
+					model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, selectedLane, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
 				
 				else generateSpecialFile(model, specialName);
 			} catch (Exception e) {

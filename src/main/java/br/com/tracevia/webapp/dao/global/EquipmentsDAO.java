@@ -836,7 +836,7 @@ public class EquipmentsDAO {
 			conn.prepare(sql);
 			MapResult result = conn.executeQuery();
 
-			// System.out.println(sql);
+			 System.out.println(sql);
 
 			if (result != null) {
 				for (RowResult rs : result) {
@@ -2660,5 +2660,56 @@ public class EquipmentsDAO {
 		}
 
 		// --------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para obter dados das faixas dos SATs
+		 * 
+		 * @author Wellington
+		 * @version 1.0
+		 * @since Release 1.0	
+		 * @return lista com objetos do tipo laneFilter
+		 */
+
+		public String getLaneDir(String equipId, String lane) {
+
+			String sql = "SELECT IFNULL(dir_lane"+lane+", ' --- ') FROM sat_equipment WHERE equip_id = ? ";
+
+			String direction = "";
+
+			try {
+				
+				conn.start(1);
+				conn.prepare(sql);				
+				conn.setString(1, equipId);
+						
+				MapResult result = conn.executeQuery();
+
+				// System.out.println(sql);
+
+				if (result != null) {
+					for (RowResult rs : result) {
+											
+						direction = rs.getString(1);
+										
+					}
+				}
+
+			} catch (Exception sqle) {
+
+				StringWriter errors = new StringWriter();
+				sqle.printStackTrace(new PrintWriter(errors));
+
+				SystemLog.logErrorSQL(errorFolder.concat("error_sat_lane"), EquipmentsDAO.class.getCanonicalName(),
+						sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
+
+			} finally {
+				conn.close();
+			}
+
+			return direction;
+		}
+
+		// --------------------------------------------------------------------------------------------------------------
+		
 		
 }

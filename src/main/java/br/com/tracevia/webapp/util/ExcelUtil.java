@@ -2578,7 +2578,8 @@ public class ExcelUtil {
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------
 		
-		public void fileBodySimpleDirs(XSSFSheet sheet, XSSFRow row, List<String> columnName, String left, List<String[]> values, String[] directions, List<String> equips, List<laneFilter> lanes, int equipIndex, int days, int startCol, int endCol, int dirCol, int startRow, int endRow, boolean all , boolean isDirectionsOnSheet) {
+		public void fileBodySimpleDirs(XSSFSheet sheet, XSSFRow row, List<String> columnName, String left, List<String[]> values, String[] directions, List<String> equips, List<laneFilter> lanes, int equipIndex, int days, int startCol, int endCol, int dirCol, int startRow, int endRow, boolean all , boolean isDirectionsOnSheet, 
+				boolean isSingleDirectionFilter) {
 
 			int rowLenght = startRow + endRow;
 			
@@ -2609,6 +2610,13 @@ public class ExcelUtil {
 					  // COLUMNS DIRECTIONS
 						
 					if(isDirectionsOnSheet) {
+						
+						if(isSingleDirectionFilter) {
+							
+							if(col == columnName.size() - 1) 
+								  row.getCell(dirCol).setCellValue(directions[0]);
+							
+						} else {							
 																		
 					      if(col == columnName.size() - 1) {
 					    					    	  
@@ -2640,7 +2648,8 @@ public class ExcelUtil {
 											    																												
 									    }			    	
 					    	  	     }				    	  
-							     }	    	  
+							     }	 
+							  } // DEAD CODE
 					         				      
 					  } // DIR ENABLE
 					
@@ -2825,7 +2834,8 @@ public class ExcelUtil {
 			
 		// -----------------------------------------------------------------------------------------------------------------------------------------------
 		 
-		 public void fileBodyMultiDirs(XSSFSheet sheet, XSSFRow row, List<String> columnName, String left, List<String[]> values, String[] directions, List<String> equips, List<laneFilter> lanes, int equipIndex, int days, int interval, int startCol, int endCol, int dirCol, int startRow, int endRow, boolean all, boolean isDirectionsOnSheet) {
+		 public void fileBodyMultiDirs(XSSFSheet sheet, XSSFRow row, List<String> columnName, String left, List<String[]> values, String[] directions, List<String> equips, List<laneFilter> lanes, 
+				 int equipIndex, int days, int interval, int startCol, int endCol, int dirCol, int startRow, int endRow, boolean all, boolean isDirectionsOnSheet, boolean isSingleDirectionFilter) {
 
 				int rowLenght = startRow + endRow;
 				
@@ -2856,8 +2866,15 @@ public class ExcelUtil {
 						  // COLUMNS DIRECTIONS
 							
 						if(isDirectionsOnSheet) {
+							
+							if(isSingleDirectionFilter) {
+								
+								if(col == columnName.size() - 1) 
+									  row.getCell(dirCol).setCellValue(directions[0]);
+								
+							} else {								
 																			
-					      if(col == columnName.size() - 1) {
+								if(col == columnName.size() - 1) {				    	
 					    					    	  
 					    	if(equips.size() > 1) {
 					    	  
@@ -2869,10 +2886,8 @@ public class ExcelUtil {
 												row.getCell(dirCol).setCellValue(direction);
 											}
 										
-										} else row.getCell(dirCol).setCellValue(left);										    
-									      
-							        }
-					    
+										} else row.getCell(dirCol).setCellValue(left);								      
+							        }					    
 					    } else {
 					    	
 					    	 for(int l = 0; l < lanes.size(); l++) {
@@ -2886,8 +2901,9 @@ public class ExcelUtil {
 									} else row.getCell(dirCol).setCellValue(left);		
 										    																												
 								    }					    	  
-							     }				    	  
-					         }
+							     }	
+							   }
+					        }
 					      
 						} // DIR ENABLE
 						
@@ -2897,8 +2913,7 @@ public class ExcelUtil {
 			  }
 			
 			// -----------------------------------------------------------------------------------------------------------------------------------------------
-				
-		 					
+						 					
 			public String getLane(String direction, String[] dirs) {
 														
 				for(int i = 0; i < dirs.length; i++) {
