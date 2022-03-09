@@ -82,6 +82,8 @@ public class RoadConcessionaireDAO {
 			conn.prepare(query);
 			conn.setString(1, serverAddress);
 			MapResult result = conn.executeQuery();
+			
+			//System.out.println(query+" "+serverAddress);
 
 			if (result.hasNext()) {
 				for (RowResult rs : result) {

@@ -438,8 +438,7 @@ public class ExcelTemplate {
 		// ----------------------------------------------------------------------------------------------------------------
 					
 		if(module.equals("sat")) {					
-			 satInfo = SATInfo(equipId);
-			 System.out.println("EXC ID: "+satInfo.get(0).getNome());
+			 satInfo = SATInfo(equipId);			
 		}
 		   
 		else equipsInfo = genericInfo(equipId, module);				
@@ -1962,49 +1961,91 @@ public class ExcelTemplate {
 	}
 	
 	 // ----------------------------------------------------------------------------------------------------------------
-		
-		
+				
 		public String getLane(String lane, String[] dirs) {
-																					
-				for(int i = 0; i < dirs.length; i++) {
-					
-					System.out.println(dirs[i]);
+						
+			String auxLane = "";
+			
+			boolean north = false, south = false, east = false, west = false;
+																							
+				for(int i = 0; i < dirs.length; i++) {																	
 															
-					   if(dirs[i] != null) {						 
+					 if(dirs[i] != null) {						 
 							
 							if(lane.equals("N")) {
-								 
-								  if(dirs[i].equals("S"))									
-									  lane += " / S";											
-									
+								
+								  if(dirs[i].equals("N")) {									
+									  auxLane = "N";	
+									  north = true;
+								  }
+								  
+								  else if(north && dirs[i].equals("S"))
+								 		auxLane = "N / S";
+								  
+								  else if(!north && dirs[i].equals("S"))
+								 		auxLane = "S";								 
+								 								  
 								}
 							
+							// --------------------------------------------------
+							
 							if(lane.equals("S")) {
-								 
-								  if(dirs[i].equals("N"))									
-									  lane += " / N";											
-									
-								}	
+								
+								  if(dirs[i].equals("N")) {									
+									  auxLane = "N";	
+									  south = true;
+								  }
+								  
+								  else if(south && dirs[i].equals("S"))
+								 		auxLane = "S / N";
+								  
+								  else if(!south && dirs[i].equals("S"))
+								 		auxLane = "S";										
+								 								  
+								}
+							
+							// --------------------------------------------------
 							
 							if(lane.equals("L")) {
-								 
-								  if(dirs[i].equals("O"))									
-									  lane += " / O";											
-									
-								}	
+								
+								  if(dirs[i].equals("L")) {									
+									  auxLane = "L";	
+									  east = true;
+								  }
+								  
+								  else if(east && dirs[i].equals("O"))
+								 		auxLane = "L / O";
+								  
+								  else if(!east && dirs[i].equals("O"))
+								 		auxLane = "O";										
+								 								  
+								}
+							
+							// --------------------------------------------------
 							
 							if(lane.equals("O")) {
-								 
-								  if(dirs[i].equals("L"))									
-									  lane += " / L";											
-									
-								}		
-							}
-						}		
-					
+								
+								  if(dirs[i].equals("L")) {									
+									  auxLane = "L";	
+									  west = true;
+								  }
+								  
+								  else if(west && dirs[i].equals("O"))
+								 		auxLane = "O / L";
+								  
+								  else if(!west && dirs[i].equals("O"))
+								 		auxLane = "O";																						
+								 								  
+								}
+							
+							// --------------------------------------------------
+										
+							}										   
+					    }							  
+										
 				// ---------------------																														
 													
-					return lane;
+					return auxLane;
 			}
 				
 	// ----------------------------------------------------------------------------------------------------------------	

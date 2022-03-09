@@ -836,7 +836,7 @@ public class EquipmentsDAO {
 			conn.prepare(sql);
 			MapResult result = conn.executeQuery();
 
-			 System.out.println(sql);
+			 //System.out.println(sql);
 
 			if (result != null) {
 				for (RowResult rs : result) {

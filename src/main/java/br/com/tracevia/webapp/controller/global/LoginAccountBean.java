@@ -27,9 +27,8 @@ import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.LogUtils;
 import br.com.tracevia.webapp.util.SessionUtil;
 
-
 /**
- * Classe para ger�ncia de logins
+ * Classe para gerência de logins
  * @author Wellington 05/06/2020
  * @version 1.0
  * @since 1.0
@@ -291,7 +290,7 @@ public class LoginAccountBean {
 
 				status = dao.UserValidation(user.getUsername());
 
-				// caso seja verdadeiro passar usu�rio e senha para valida��o
+				// caso seja verdadeiro passar usu�rio e senha para validacao
 
 				if (status) {
 
