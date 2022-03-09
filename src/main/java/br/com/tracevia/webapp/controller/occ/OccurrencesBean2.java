@@ -40,6 +40,7 @@ import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
@@ -1819,7 +1820,7 @@ System.out.println("btnedit");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(); //SOLUTION
 
 		try {			 	  
-
+			
 			//caminho onde ï¿½ gerado o pdf
 			PdfWriter writer = PdfWriter.getInstance(document, baos);
 
@@ -1833,21 +1834,7 @@ System.out.println("btnedit");
 			RequestContext.getCurrentInstance().execute("displayPdf()");
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			RequestContext.getCurrentInstance().execute("msgDownload()");
-
-			//Editando o tipo de fonte do titulo
-			Paragraph pTitulo = new Paragraph(new Phrase(20F , ("Tracevia"), FontFactory.getFont(FontFactory.HELVETICA, 17F)));
-			Paragraph  ptable1 = new Paragraph(new Phrase(20F , trad.occLabels("Eventos"), FontFactory.getFont(FontFactory.HELVETICA, 10F)));
-					//add titulo
-			ColumnText tl = new ColumnText(writer.getDirectContent());
-			Paragraph tx = new Paragraph();
-			tl.setSimpleColumn(400,780,200,50);
-			tx.add(pTitulo);
-			tl.addElement(tx);
-			tl.go();
-			document.add(new Paragraph("\n\n\n\n"));
-	
-			
-			
+					
 			//chamando a imagem
 			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
 			Image image1 = Image.getInstance(RoadConcessionaire.externalDefaultLogo);
@@ -1862,16 +1849,18 @@ System.out.println("btnedit");
 			//document.add(image1);
 			document.add(image2);
 			
-			document.add(new Paragraph("Alo mundo!!"));
 			Paragraph conteudo = new Paragraph();
 			// Assim criaremos uma linha em branco
 			conteudo.add(new Paragraph(" "));
-			Chapter capitulo = new Chapter(new Paragraph("teste"), 1);
+			Chapter capitulo = new Chapter(new Paragraph(""), 1);
 			PdfPTable table = new PdfPTable(2);
-			Paragraph novoParagrafo = new Paragraph("Tabela de precos");
- 
+			Paragraph title1 = new Paragraph("REGISTRO DE ACCIDENTE \n AUTOPISTA TUXPAN-TAMPICO\nSEGUROS SURA, S.A de C.V.", FontFactory.getFont(FontFactory.TIMES_ROMAN,8, Font.BOLD, BaseColor.BLACK));
+			table.setTotalWidth(500);
+			table.setWidthPercentage(50);
+
+			table.setLockedWidth(true);
 			// Seção é uma área que adicionaremos conteúdo
-			Section secao = capitulo.addSection(novoParagrafo);
+			Section secao = capitulo.addSection(title1);
 			PdfPCell c1 = new PdfPCell(new Phrase("Cabecalho1"));
 			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(c1);
@@ -1880,17 +1869,119 @@ System.out.println("btnedit");
 			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(c1);
 			table.setHeaderRows(1);
- 
-			table.addCell("Banana");
-			table.addCell("Laranja");
-			table.addCell("2.1");
-			table.addCell("2.2");
-			for (int i = 0; i < 13; i++) {
-				table.addCell("Céclula" + i);
-			}
+			table.addCell("Plaza de Cobro");
+			table.addCell("");
+			table.addCell("Folio Secuencial");
+			table.addCell("");
+			table.addCell("Reporte");
+			table.addCell("");
+			table.addCell("Siniestro");
+			table.addCell("");
+			table.addCell("Fecha");
+			table.addCell("");
+			table.addCell("Hora");
+			table.addCell("");
+			table.addCell("Dirección Y/O Trayecto");
+			table.addCell("");
+			table.addCell("Kilómetro de Registro");
+			table.addCell("");
+			table.addCell("Kilómetro Inicial");
+			table.addCell("");
+			table.addCell("Kilómetro Final");
+			table.addCell("");
+			table.addCell("Póliza Por Afectar");
+			table.addCell("");
+			table.addCell("Hora de Registro a Cabina");
+			table.addCell("");
+			table.addCell("Hora de Arribo de Ajustador");
+			table.addCell("");
+			
+			
 			secao.add(table);
 			document.add(conteudo);
 			document.add(secao);
+			//
+			
+			Paragraph title2 = new Paragraph("Vehículos Involucrados");
+			Section secao1 = capitulo.addSection(title2);
+			PdfPTable table1 = new PdfPTable(4);
+			Paragraph conteudo1 = new Paragraph();
+			PdfPCell c2 = new PdfPCell(new Phrase("Cabecalho2"));
+			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table1.setHeaderRows(1);
+			table1.addCell("Tipo de Vehículo");
+			table1.addCell("");
+			table1.addCell("Número de ejes de la unidad");
+			table1.addCell("");
+			table1.addCell("Tipo de Vehículo");
+			table1.addCell("");
+			table1.addCell("Número de ejes de la unidad");
+			table1.addCell("");
+			table1.addCell("Tipo de Vehículo");
+			table1.addCell("");
+			table1.addCell("Número de ejes de la unidad");
+			table1.addCell("");
+			
+			secao1.add(table1);
+			document.add(conteudo);
+			document.add(secao1);
+			
+			Paragraph title3 = new Paragraph("Vehículos Involucrados");
+			Section secao2 = capitulo.addSection(title2);
+			PdfPTable table2 = new PdfPTable(7);
+			PdfPCell c3 = new PdfPCell(new Phrase("Cabecalho2"));
+			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table2.setHeaderRows(1);
+			table2.addCell("No.");
+			table2.addCell("Marca");
+			table2.addCell("Tipo");
+			table2.addCell("Modelo");
+			table2.addCell("Color");
+			table2.addCell("Placas/Estado");
+			table2.addCell("Telefone");
+			for(int i = 0; i< 32; i++)
+				table2.addCell("column " + i);
+			
+			secao2.add(table2);
+			document.add(conteudo);
+			document.add(secao2);
+			
+			Paragraph title4 = new Paragraph("Datos de Personas");
+			Section secao4 = capitulo.addSection(title4);
+			PdfPTable table4 = new PdfPTable(4);
+			Paragraph conteudo2 = new Paragraph();
+			PdfPCell c4 = new PdfPCell(new Phrase("Cabecalho2"));
+			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table4.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table4.setHeaderRows(1);
+			table4.addCell("No.");
+			table4.addCell("NOMBRE DEL CONTUCTOR");
+			table4.addCell("EDAD");
+			table4.addCell("CONDICIONES DE SALUD");
+			for(int i = 0; i< 9; i++)
+			table4.addCell("column " + i);
+			
+			secao4.add(table4);
+			document.add(conteudo);
+			document.add(secao4);
+			
+			Paragraph title5 = new Paragraph("");
+			Section secao5 = capitulo.addSection(title5);
+			PdfPTable table5 = new PdfPTable(2);
+			Paragraph conteudo3 = new Paragraph();
+			PdfPCell c5 = new PdfPCell(new Phrase("Cabecalho2"));
+			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table5.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table5.setHeaderRows(1);
+			table5.addCell("MOTIVO DEL ACCIDENTE:");
+			table5.addCell("");
+
+			secao4.add(table5);
+			document.add(conteudo);
+			document.add(secao5);
+			
 		
 		}
 		catch(DocumentException de) {
