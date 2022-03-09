@@ -952,12 +952,8 @@ public class ReportBean {
 					 SessionUtil.executeScript("drawTable()");					
 					 return;
 				}				
-			}
+			}					
 						
-			for(String str: equipIDs) {				
-				System.out.println(str);
-			}
-				
 			// -------------------------------------------------------------------------------------
 		
 			// TABLE DINAMIC HEADER
