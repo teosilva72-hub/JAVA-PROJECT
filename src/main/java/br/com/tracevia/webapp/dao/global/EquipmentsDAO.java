@@ -1655,6 +1655,7 @@ public class EquipmentsDAO {
 					dataSource.setLatitude(rs.getDouble(7));
 					dataSource.setLongitude(rs.getDouble(8));
 					dataSource.setDirection(rs.getString(9));
+					dataSource.setIpAddress(rs.getString(10));
 
 					if (table.equals("meteo")) {
 						dataSource.setIpAddress(rs.getString(10));
