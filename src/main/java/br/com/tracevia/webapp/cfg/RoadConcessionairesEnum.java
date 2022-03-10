@@ -14,7 +14,8 @@ public enum RoadConcessionairesEnum {
 	ViaPaulista("Via Paulista"),
 	ViaRondon("Via Rondon"),
 	ViaSul("Via Sul"),
-	Tracevia("Tracevia");
+	Tracevia("Tracevia"),
+	tester("Tester");
 			
 	private String concessionaire; 	 
 	 

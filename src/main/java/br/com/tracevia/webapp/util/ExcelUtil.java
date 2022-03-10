@@ -2578,7 +2578,8 @@ public class ExcelUtil {
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------
 		
-		public void fileBodySimpleDirs(XSSFSheet sheet, XSSFRow row, List<String> columnName, String left, List<String[]> values, String[] directions, List<String> equips, List<laneFilter> lanes, int equipIndex, int days, int startCol, int endCol, int dirCol, int startRow, int endRow, boolean all , boolean isDirectionsOnSheet) {
+		public void fileBodySimpleDirs(XSSFSheet sheet, XSSFRow row, List<String> columnName, String left, List<String[]> values, String[] directions, List<String> equips, List<laneFilter> lanes, int equipIndex, int days, int startCol, int endCol, int dirCol, int startRow, int endRow, boolean all , boolean isDirectionsOnSheet, 
+				boolean isSingleDirectionFilter) {
 
 			int rowLenght = startRow + endRow;
 			
@@ -2609,6 +2610,13 @@ public class ExcelUtil {
 					  // COLUMNS DIRECTIONS
 						
 					if(isDirectionsOnSheet) {
+						
+						if(isSingleDirectionFilter) {
+							
+							if(col == columnName.size() - 1) 
+								  row.getCell(dirCol).setCellValue(directions[0]);
+							
+						} else {							
 																		
 					      if(col == columnName.size() - 1) {
 					    					    	  
@@ -2640,7 +2648,8 @@ public class ExcelUtil {
 											    																												
 									    }			    	
 					    	  	     }				    	  
-							     }	    	  
+							     }	 
+							  } // DEAD CODE
 					         				      
 					  } // DIR ENABLE
 					
@@ -2825,7 +2834,8 @@ public class ExcelUtil {
 			
 		// -----------------------------------------------------------------------------------------------------------------------------------------------
 		 
-		 public void fileBodyMultiDirs(XSSFSheet sheet, XSSFRow row, List<String> columnName, String left, List<String[]> values, String[] directions, List<String> equips, List<laneFilter> lanes, int equipIndex, int days, int interval, int startCol, int endCol, int dirCol, int startRow, int endRow, boolean all, boolean isDirectionsOnSheet) {
+		 public void fileBodyMultiDirs(XSSFSheet sheet, XSSFRow row, List<String> columnName, String left, List<String[]> values, String[] directions, List<String> equips, List<laneFilter> lanes, 
+				 int equipIndex, int days, int interval, int startCol, int endCol, int dirCol, int startRow, int endRow, boolean all, boolean isDirectionsOnSheet, boolean isSingleDirectionFilter) {
 
 				int rowLenght = startRow + endRow;
 				
@@ -2856,8 +2866,15 @@ public class ExcelUtil {
 						  // COLUMNS DIRECTIONS
 							
 						if(isDirectionsOnSheet) {
+							
+							if(isSingleDirectionFilter) {
+								
+								if(col == columnName.size() - 1) 
+									  row.getCell(dirCol).setCellValue(directions[0]);
+								
+							} else {								
 																			
-					      if(col == columnName.size() - 1) {
+								if(col == columnName.size() - 1) {				    	
 					    					    	  
 					    	if(equips.size() > 1) {
 					    	  
@@ -2869,10 +2886,8 @@ public class ExcelUtil {
 												row.getCell(dirCol).setCellValue(direction);
 											}
 										
-										} else row.getCell(dirCol).setCellValue(left);										    
-									      
-							        }
-					    
+										} else row.getCell(dirCol).setCellValue(left);								      
+							        }					    
 					    } else {
 					    	
 					    	 for(int l = 0; l < lanes.size(); l++) {
@@ -2886,8 +2901,9 @@ public class ExcelUtil {
 									} else row.getCell(dirCol).setCellValue(left);		
 										    																												
 								    }					    	  
-							     }				    	  
-					         }
+							     }	
+							   }
+					        }
 					      
 						} // DIR ENABLE
 						
@@ -2897,49 +2913,91 @@ public class ExcelUtil {
 			  }
 			
 			// -----------------------------------------------------------------------------------------------------------------------------------------------
+						 					
+		 public String getLane(String lane, String[] dirs) {
 				
-		 					
-			public String getLane(String direction, String[] dirs) {
-														
-				for(int i = 0; i < dirs.length; i++) {
-															
-					   if(dirs[i] != null) {						 
-							
-							if(direction.equals("N")) {
-								 
-								  if(dirs[i].equals("S"))									
-									  direction += " / S";											
-									
-								}
-							
-							else if(direction.equals("S")) {
-								 
-								  if(dirs[i].equals("N"))									
-									  direction += " / N";											
-									
-								}	
-							
-							else if(direction.equals("L")) {
-								 
-								  if(dirs[i].equals("O"))									
-									  direction += " / O";											
-									
-								}	
-							
-							else if(direction.equals("O")) {
-								 
-								  if(dirs[i].equals("L"))									
-									  direction += " / L";											
-									
-								}		
-							}
-						}
+				String auxLane = "";
 				
-			
-					// ---------------------																																	
-				
+				boolean north = false, south = false, east = false, west = false;
+																								
+					for(int i = 0; i < dirs.length; i++) {																	
+																
+						 if(dirs[i] != null) {						 
+								
+								if(lane.equals("N")) {
+									
+									  if(dirs[i].equals("N")) {									
+										  auxLane = "N";	
+										  north = true;
+									  }
+									  
+									  else if(north && dirs[i].equals("S"))
+									 		auxLane = "N / S";
+									  
+									  else if(!north && dirs[i].equals("S"))
+									 		auxLane = "S";								 
+									 								  
+									}
+								
+								// --------------------------------------------------
+								
+								if(lane.equals("S")) {
+									
+									  if(dirs[i].equals("N")) {									
+										  auxLane = "N";	
+										  south = true;
+									  }
+									  
+									  else if(south && dirs[i].equals("S"))
+									 		auxLane = "S / N";
+									  
+									  else if(!south && dirs[i].equals("S"))
+									 		auxLane = "S";										
+									 								  
+									}
+								
+								// --------------------------------------------------
+								
+								if(lane.equals("L")) {
+									
+									  if(dirs[i].equals("L")) {									
+										  auxLane = "L";	
+										  east = true;
+									  }
+									  
+									  else if(east && dirs[i].equals("O"))
+									 		auxLane = "L / O";
+									  
+									  else if(!east && dirs[i].equals("O"))
+									 		auxLane = "O";										
+									 								  
+									}
+								
+								// --------------------------------------------------
+								
+								if(lane.equals("O")) {
+									
+									  if(dirs[i].equals("L")) {									
+										  auxLane = "L";	
+										  west = true;
+									  }
+									  
+									  else if(west && dirs[i].equals("O"))
+									 		auxLane = "O / L";
+									  
+									  else if(!west && dirs[i].equals("O"))
+									 		auxLane = "O";																						
+									 								  
+									}
+								
+								// --------------------------------------------------
 											
-						return direction;
+								}										   
+						    }							  
+											
+					// ---------------------																														
+														
+						return auxLane;
 				}
 			
 		// ----------------------------------------------------------------------------------------------------------------			

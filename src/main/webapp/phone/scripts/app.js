@@ -327,7 +327,8 @@ async function initPhone() {
                 if (item.status === 'ringing' && item.flow === 'incoming') {
                     i += '<button class="btn btn-xs btn-success btnCall" title="Call"><svg class="svg-inline--fa fa-phone fa-w-16" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="phone" role="img" width="16" height="16" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"></path></svg></button>';
                 } else if (item.owner) {
-                    i += '<button class="btn btn-xs btn-primary btnHoldResume" title="Hold"><svg class="svg-inline--fa fa-pause fa-w-14" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="pause" role="img" width="16" height="16" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M144 479H48c-26.5 0-48-21.5-48-48V79c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v352c0 26.5-21.5 48-48 48zm304-48V79c0-26.5-21.5-48-48-48h-96c-26.5 0-48 21.5-48 48v352c0 26.5 21.5 48 48 48h96c26.5 0 48-21.5 48-48z"></path></svg></i></button>';
+					i += '<button class="btn btn-xs btn-info btnSendReport" title="Report"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-text-fill" viewBox="0 0 16 16"><path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1zM4.5 9a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1h-7zM4 10.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 1 0-1h4a.5.5 0 0 1 0 1h-4z"/></svg></button>'
+                    i += '<button class="btn btn-xs btn-primary btnHoldResume" title="Hold"><svg class="svg-inline--fa fa-pause fa-w-14" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="pause" role="img" width="16" height="16" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M144 479H48c-26.5 0-48-21.5-48-48V79c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v352c0 26.5-21.5 48-48 48zm304-48V79c0-26.5-21.5-48-48-48h-96c-26.5 0-48 21.5-48 48v352c0 26.5 21.5 48 48 48h96c26.5 0 48-21.5 48-48z"></path></svg></button>';
                     // i += '<button class="btn btn-xs btn-info btnTransfer" title="Transfer"><i class="fa fa-random"></i></button>';
                     i += '<button class="btn btn-xs btn-warning btnMute" title="Mute">';
                     if (!item.isMuted)
@@ -491,7 +492,12 @@ async function initPhone() {
                 ctxSip.logShow();
             }
         },
-
+		
+		genReport: function(id){
+			window.
+			localStorage.setItem('goReport', `sos/${id}`)
+		},
+		
         sipCall : function(target) {
 
             try {
@@ -900,7 +906,14 @@ async function initPhone() {
         ctxSip.phoneCallButtonPressed(sessionid);
         return false;
     });
-
+	
+	$('#sip-logitems').delegate('.sip-logitem .btnSendReport', 'click', function(event) {
+        var sessionid = $(this).closest('.sip-logitem').data('sessionid');
+        var id = ctxSip.Sessions[sessionid].EquipmentID;
+        ctxSip.genReport(id);
+        return false;
+    });
+	
     $('#sip-logitems').delegate('.sip-logitem .btnHoldResume', 'click', function(event) {
         var sessionid = $(this).closest('.sip-logitem').data('sessionid');
         ctxSip.phoneHoldButtonPressed(sessionid);

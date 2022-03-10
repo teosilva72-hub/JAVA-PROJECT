@@ -26,7 +26,7 @@ $(async () => {
         secondaryAudio.push(audio);
     }
     
-    window.onstorage = eventGetReaction;
+    $(window).on("storage", eventGetReaction);
 
     eventGetReaction()
 })
@@ -78,7 +78,7 @@ const eventGetReaction = async () => {
 
     $("#txtRegStatus").html(status || ".");
     $('#txtCallStatus').html(reaction);
-
+	
     if (reaction && !last_reaction)
         showStatesCallbox('open')
     else if (!reaction && last_reaction)

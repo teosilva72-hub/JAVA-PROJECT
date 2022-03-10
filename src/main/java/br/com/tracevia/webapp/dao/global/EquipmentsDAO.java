@@ -359,7 +359,7 @@ public class EquipmentsDAO {
 		TranslationMethods translator = new TranslationMethods();
 
 		String dir1 = " ", dir2 = " ", dir3 = " ", dir4 = " ", dir5 = " ", dir6 = " ", dir7 = " ", dir8 = " ";
-		String sentido1 = "", sentido2 = "";
+		String sentido1 = "", sentido2 = "", sentidoAbbr1 = "", sentidoAbbr2 = "";
 
 		String query = "";
 
@@ -401,6 +401,9 @@ public class EquipmentsDAO {
 
 					sentido1 = translator.CheckDirection(rs.getString(7));
 					sentido2 = translator.Check2ndDirection(rs.getString(7));
+					
+					sentidoAbbr1 = translator.directionAbbreviation(rs.getString(7));
+					sentidoAbbr2 = translator.oppositeDirectionAbbreviation(rs.getString(7));
 
 					dir1 = translator.CheckDirection(rs.getString(7));
 					dir2 = translator.CheckDirection(rs.getString(8));
@@ -429,6 +432,8 @@ public class EquipmentsDAO {
 					sat.setFaixa8(dir8);
 					sat.setSentido1(sentido1);
 					sat.setSentido2(sentido2);
+					sat.setSentido1Abbr(sentidoAbbr1);
+					sat.setSentido2Abbr(sentidoAbbr2);
 					sat.setLinearWidth(rs.getInt(15));
 					sat.setLinearPosX(rs.getInt(16));
 					sat.setLinearPosY(rs.getInt(17));
@@ -831,7 +836,7 @@ public class EquipmentsDAO {
 			conn.prepare(sql);
 			MapResult result = conn.executeQuery();
 
-			// System.out.println(sql);
+			 //System.out.println(sql);
 
 			if (result != null) {
 				for (RowResult rs : result) {
@@ -1650,6 +1655,7 @@ public class EquipmentsDAO {
 					dataSource.setLatitude(rs.getDouble(7));
 					dataSource.setLongitude(rs.getDouble(8));
 					dataSource.setDirection(rs.getString(9));
+					dataSource.setIpAddress(rs.getString(10));
 
 					if (table.equals("meteo")) {
 						dataSource.setIpAddress(rs.getString(10));
@@ -2655,5 +2661,56 @@ public class EquipmentsDAO {
 		}
 
 		// --------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para obter dados das faixas dos SATs
+		 * 
+		 * @author Wellington
+		 * @version 1.0
+		 * @since Release 1.0	
+		 * @return lista com objetos do tipo laneFilter
+		 */
+
+		public String getLaneDir(String equipId, String lane) {
+
+			String sql = "SELECT IFNULL(dir_lane"+lane+", ' --- ') FROM sat_equipment WHERE equip_id = ? ";
+
+			String direction = "";
+
+			try {
+				
+				conn.start(1);
+				conn.prepare(sql);				
+				conn.setString(1, equipId);
+						
+				MapResult result = conn.executeQuery();
+
+				// System.out.println(sql);
+
+				if (result != null) {
+					for (RowResult rs : result) {
+											
+						direction = rs.getString(1);
+										
+					}
+				}
+
+			} catch (Exception sqle) {
+
+				StringWriter errors = new StringWriter();
+				sqle.printStackTrace(new PrintWriter(errors));
+
+				SystemLog.logErrorSQL(errorFolder.concat("error_sat_lane"), EquipmentsDAO.class.getCanonicalName(),
+						sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
+
+			} finally {
+				conn.close();
+			}
+
+			return direction;
+		}
+
+		// --------------------------------------------------------------------------------------------------------------
+		
 		
 }

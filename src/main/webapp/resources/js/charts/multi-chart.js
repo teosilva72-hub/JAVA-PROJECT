@@ -1,20 +1,21 @@
-      
-google.charts.load('current', {packages: ['line', 'corechart']}); 
-                 
+
+google.charts.load('current', {packages: ['line', 'corechart']})
+
+let md = '';
 
 function drawTab(id, mod, name){
 	
 	if(id == 0)	
-	  	return   '<li class="nav-item" id="chart'+mod+''+id+'">'+
+	  	return   '<li class="nav-item" id="chart'+mod+''+id+'" >'+
 	                   '<a class="nav-link active" data-toggle="tab" href="#'+mod+''+id+'">'+name+'</a>' + 		      
 			  	 '</li>';	
 	
-	   else  return   '<li class="nav-item" id="chart'+mod+''+id+'">'+
-	                   '<a class="nav-link" data-toggle="tab" href="#'+mod+''+id+'">'+name+'</a>' + 		      
-			  	 '</li>';	
+	   else  return   '<li class="nav-item" id="chart'+mod+''+id+'" >'+
+	                   		'<a class="nav-link" data-toggle="tab" href="#'+mod+''+id+'">'+name+'</a>' + 		      
+		  	 		  '</li>';	
  
 } 
-	
+
 function drawTabContent(id, mod){
 	
 	if(id == 0)	
@@ -48,13 +49,14 @@ function drawTabContent(id, mod){
 	let array = JSON.parse(jsonArray)
 	let cols = JSON.parse(columns)
 	let rows = JSON.parse(dataRow)	
-			
+	md = mod;
+				
 	for(let i = 0; i < rows.length; i++){
 			
 		let test = rows[i][0]
-		
+						
 		rows[i][0] = new Date(test)
-			
+							
 	    let obj = rows[i];	   
 
 		for(var prop = 1; prop < obj.length; prop++){		  
@@ -69,17 +71,30 @@ function drawTabContent(id, mod){
 							
 		 $('#tabs').append(drawTab(i, mod, array[i])); // CRIAR A TAB
 
-		 $('.tab-content').append(drawTabContent(i, mod)); // CRIA O CONTEUDO DINÂMICO
-		 	
-         draw('chart-div'+i, mod, array, i, cols, rows, interval, title, vAxisTitle, dateFormat, imageName); // CRIAR O GRÁFICO
-   
- 		}
-	}
+		 $('.tab-content').append(drawTabContent(i, mod)); // CRIA O CONTEUDO DINÂMICO		
+		  	
+        }
+
+         // CRIA SOMENTE OS DADOS PARA O 1o GRAFICO
+		 draw('chart-div0', mod, array, 0, cols, rows, interval, title, vAxisTitle, dateFormat, imageName);
+	
+	   // DESENHA O GRAFICO A CADA ABA SELECIONADA
+	
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  			let target = $(e.target).attr("href") // activated tab
+  				
+	        let num = Number(target.replace('#'+md, ''))
+			
+			draw('chart-div'+num, mod, array, num, cols, rows, interval, title, vAxisTitle, dateFormat, imageName);
+		
+		});
+ 	
+	} 
 
 // ------------------------------------------------------------------------------------------------
 
 function draw(div, mod, array, equipIndex, columns, rows, interval, title, vAxisTitle, dateFormat, imageName){
-  
+	  
  	let chart_div;
     let chart;
     let data; 
@@ -107,37 +122,35 @@ function draw(div, mod, array, equipIndex, columns, rows, interval, title, vAxis
 		
   }
 	
-  //According to rows number
+  	// According to rows number     
+     for (let i = 0; i < data.getNumberOfRows(); i++)
+       		ticks.push(data.getValue(i, 0));	
      
-     for (let i = 0; i < data.getNumberOfRows(); i++) {
-       ticks.push(data.getValue(i, 0));
-     }
-
     options = {
       title: title+' ('+array[equipIndex]+')',
-       titleTextStyle: {
-        color: 'black',    
-        fontName: 'Verdana', 
-        fontSize: 16, 
-        bold: true,   
-        italic: false  
-    },
       theme: 'material',
       lineWidth: 3,    
       width: 1150,
-      height: 550,       
-          legend: {
-            position: 'right',
-            maxLine: 3,
-            textStyle: {
-            fontName: 'Verdana', 
-            color: 'black',
-            bold: true       
-            },
-         },
-        vAxis: {      
-          minValue: 0,
-          title: vAxisTitle,
+      height: 550, 
+	  chartArea: {width: '63%'},
+      titleTextStyle: {
+	        color: 'black',    
+	        fontName: 'Verdana', 
+	        fontSize: 16, 
+	        bold: true,   
+	        italic: false  
+   		 },
+      legend: {
+        position: 'right',
+        maxLine: 3,
+        textStyle: {
+        fontName: 'Verdana', 
+        color: 'black',
+        bold: true       
+        	}
+     	},
+         vAxis: {      
+            title: vAxisTitle,
             textStyle : {
             fontName: 'Verdana', 
             color: 'black',
@@ -154,22 +167,20 @@ function draw(div, mod, array, equipIndex, columns, rows, interval, title, vAxis
             format: dateFormat, 
             slantedText: true,
             slantedTextAngle: 45, 
-            ticks: ticks,      
-            textStyle : {
-            fontName: 'Verdana', 
-            color: 'black',
-            bold:true
-        }                        
-       }            
-     }; 
-
- 	   console.log(options)
+           	 ticks: ticks,      
+	            textStyle : {
+	            fontName: 'Verdana', 
+	            color: 'black',
+	            bold:true
+       		 }                        
+       	   }         
+        }; 
          
        chart_div = document.getElementById(div);               
        chart = new google.visualization.LineChart(chart_div);
        chart.draw(data, options);  
 
-   /*    google.visualization.events.addListener(chart, 'ready', function() {
+    google.visualization.events.addListener(chart, 'ready', function() {
       
        var canvas;
        var domURL;
@@ -201,7 +212,7 @@ function draw(div, mod, array, equipIndex, columns, rows, interval, title, vAxis
       
       image.src = imageURI;              
                 
-  });   */         
+  });        
     						
    	
 }
@@ -209,19 +220,21 @@ function draw(div, mod, array, equipIndex, columns, rows, interval, title, vAxis
 // ------------------------------------------------------------------------------------------------
 
 function toggleChart(){			 
- $('#chart-area').removeClass('invisible');	
- $('.table-container').addClass('d-none');
+	 $('#chart-area').removeClass('invisible');	
+	 $('.table-container').addClass('d-none');
+	 $('.logo-concessionaire').addClass('d-none');
 }
 
 $(function () {
     
-	 $('#close-link').click(function () {
-	 $('#chart-area').addClass('invisible');	
-	 $('.table-container').removeClass('d-none');
+	 $('#close-link-multi').click(function () {
+	 	  $('#chart-area').addClass('invisible');	
+	 	  $('.table-container').removeClass('d-none');
+		  $('.logo-concessionaire').removeClass('d-none');
 	 
-	 //Column adjust
-	  $($.fn.dataTable.tables(true)).DataTable()
-	  .columns.adjust();
+		  // Column adjust
+		  $($.fn.dataTable.tables(true)).DataTable()
+		  .columns.adjust();
  
-})		
+	})		
 }); 

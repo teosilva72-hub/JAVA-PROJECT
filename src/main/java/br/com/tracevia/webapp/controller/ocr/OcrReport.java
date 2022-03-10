@@ -53,7 +53,7 @@ public class OcrReport{
 
 	private String dtStart, hrStart,
 	minStart, dtFinal, hrFinal,
-	minFinal, camera, imageVeh, imagePlt, ftpFolder, noImageFolder;
+	minFinal, camera, imageVeh, imagePlt, ftpFolder, noImageFolder, all_img;
 
 	private List<SelectItem> minutos, horas, cams;
 	private List<OCR> list;
@@ -61,6 +61,15 @@ public class OcrReport{
 	private boolean selectedRow;
 
 	
+
+	public String getAll_img() {
+		return all_img;
+	}
+
+	public void setAll_img(String all_img) {
+		this.all_img = all_img;
+	}
+
 	public OCR getOthers() {
 		return others;
 	}
@@ -251,7 +260,7 @@ public class OcrReport{
 		localeOCR.getResourceBundle(LocaleUtil.LABELS_OCR);
 		RequestContext.getCurrentInstance().execute("getTr()");
 
-		ftpFolder = "C:\\Cameras\\OCR\\NormalType\\"; 
+		ftpFolder = "C:\\Cameras\\OCR_Types\\"; 
 		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
 		
 		imageVeh = noImageFolder + "no-image.jpg";
@@ -300,7 +309,7 @@ public class OcrReport{
 	}
 
 	public void search() throws IOException {
-
+		
 		dao = new reportDAO();
 		data = new OCR();
 		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
@@ -314,12 +323,16 @@ public class OcrReport{
 		if(camera == "Todos") camera ="";
 
 		String cam = camera;
-
-		if(cam != "") {
+		
+		String all_search = "";
+		if(all_img.equals("0")) all_search = "";
+		else if(all_img.equals("1") || all_img.equals("2")) all_search = "XXXXXXX";
+		System.out.println(all_img);
+ 		if(cam != "") {
 
 			try {
-
-				list = dao.searchTable(start, end, cam);
+				
+				list = dao.searchTable(start, end, cam, all_search, all_img);
 
 				RequestContext.getCurrentInstance().execute("getTr()");
 				RequestContext.getCurrentInstance().execute("dataPicker()");
@@ -338,7 +351,7 @@ public class OcrReport{
 			RequestContext.getCurrentInstance().execute("dataPicker()");
 
 			try {
-				list = dao.searchTable2(start2, end2);
+				list = dao.searchTable2(start2, end2, all_search, all_img);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -349,11 +362,12 @@ public class OcrReport{
 	public void idGet() {
 
 		try {
-
+			System.out.println();
 			dao = new reportDAO();
 			data = new OCR();
-			System.out.println(camera);
+			
 			data = dao.searchId(rowkey, camera);
+			
 			String dt = data.getDataHour();
 			dt = dt.replaceAll("\\.","");
 			dt = dt.replaceAll("-", "");
@@ -365,7 +379,7 @@ public class OcrReport{
 
 			File f = new File(ftpFolder+nameVeh+"\\"+subFolder+"\\"+nameVeh+"_"+dt+"_"+data.getPlaca()+".jpg");
 			File g = new File(ftpFolder+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dt+"_"+data.getPlaca()+".jpg");
-					
+
 			if(f.exists()) 						
 				imageVeh = f.getPath();
 			
@@ -374,8 +388,7 @@ public class OcrReport{
 			if(g.exists())	
 				imagePlt = g.getPath();
 
-			else imagePlt = noImageFolder + "no-image.jpg";							
-
+			else imagePlt = noImageFolder + "no-image.jpg";	
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

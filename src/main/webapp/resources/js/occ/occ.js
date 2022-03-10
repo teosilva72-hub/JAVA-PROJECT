@@ -1161,7 +1161,4 @@ var upload2 = document.getElementById("myFile2");
 		document.getElementById("btnUpdate").style.display = "block"; 
 	}
     e.preventDefault();
-
-
-
 });

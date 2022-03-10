@@ -145,7 +145,8 @@ public class OccurrencesDAO2 {
 			ps.setString(90, data.getMotivo());
 	
 			int res = ps.executeUpdate();
-			
+			System.out.println(data.getStart_hour()+" hora" );
+			System.out.println( "Teste hora") ;
 			//se a vari�vel for maior do que 0, acessamos a essa fun��o
 			if(res > 0) {
 				
@@ -547,8 +548,7 @@ public class OccurrencesDAO2 {
 	}
 	public ArrayList<OccurrencesData2> listarOcorrencias() throws Exception {
 
-		String query = "SELECT d.occ_number, dt.value_, " +
-				"CONCAT(start_date, '-', d.start_hour, ':', d.start_minute, d.typeHour1) 'datetime', " +
+		String query = "SELECT d.occ_number, dt.value_, CONCAT(start_date, '-', d.start_hour, ':', d.start_minute, d.typeHour1) 'date_time', " +
 				"dt1.value_, dt2.value_ FROM occ_data d " +
 				"INNER JOIN occ_details dt ON d.type = dt.detail_id " +
 				"INNER JOIN occ_details dt1 ON d.cause = dt1.detail_id " +

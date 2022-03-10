@@ -62,7 +62,8 @@
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{ocrLabels.direction}</f:facet>
-								<h:outputText value="#{data.direction}" style="font-size: 12px; " />
+								<h:outputText value="#{data.direction}"
+									style="font-size: 12px; " />
 							</h:column>
 						</h:dataTable>
 						<div class="c-loader"></div>
@@ -112,7 +113,7 @@
 		<h:form prependId="false" id="ID">
 			<h:inputText value="#{OcrReport.rowkey}" id="event"
 				style="display:none;" />
-				<h:inputText value="#{OcrReport.camera}" id="camSet"
+			<h:inputText value="#{OcrReport.camera}" id="camSet"
 				style="display:none;" />
 			<h:commandButton id="btnTable" style="display:none;">
 				<f:ajax listener="#{OcrReport.idGet}" execute="@form"
@@ -120,7 +121,7 @@
 			</h:commandButton>
 		</h:form>
 		<!-- Modal -->
-		<h:form prependId="false"	 id="pesquisar">
+		<h:form prependId="false" id="pesquisar">
 			<div class="modal fade" id="modalPesquisa" tabindex="-1"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
@@ -137,8 +138,8 @@
 								<div class="col-md-4">
 									<span>#{ocrLabels.ocr_report_modal_search_dateInitial}</span>
 									<h:inputText class="form-control inputDesign ll"
-										id="dateInitial" pt:placeholder="yyyy-mm-dd" autocomplete="off"
-										value="#{OcrReport.dtStart}"></h:inputText>
+										id="dateInitial" pt:placeholder="yyyy-mm-dd"
+										autocomplete="off" value="#{OcrReport.dtStart}"></h:inputText>
 								</div>
 								<div class="col-md-4">
 									<span>#{ocrLabels.ocr_report_modal_search_hourInitial}</span>
@@ -160,7 +161,8 @@
 									<hr></hr>
 									<span>#{ocrLabels.ocr_report_modal_search_dateFinal}</span>
 									<h:inputText class="form-control inputDesign ll" id="dateFinal"
-										pt:placeholder="yyyy-mm-dd" autocomplete="off" value="#{OcrReport.dtFinal}"></h:inputText>
+										pt:placeholder="yyyy-mm-dd" autocomplete="off"
+										value="#{OcrReport.dtFinal}"></h:inputText>
 								</div>
 								<div class="col-md-4">
 									<hr></hr>
@@ -182,32 +184,44 @@
 								</div>
 								<div class="col-md-12">
 									<hr></hr>
+									<span>#{ocrLabels.ocr_filter_img}</span> <select name="img_all"
+										id="img_all" class="form-control inputDesign">
+										<option value="0">#{ocrLabels.ocr_option_filter_all_img}</option>
+										<option value="1">#{ocrLabels.ocr_option_filer_img_plate}</option>
+										<option value="2">#{ocrLabels.ocr_option_filter_img}</option>
+									</select>
+									<h:inputHidden id="img_all_get" value="#{OcrReport.all_img}"></h:inputHidden>
+								</div>
+								<div class="col-md-12">
+									<hr></hr>
 									<span>#{ocrLabels.ocr_report_modal_search_camera}</span>
 									<h:selectOneMenu value="#{OcrReport.camera}"
 										class="form-control inputDesign" id="camera">
-										<f:selectItem itemLabel="#{ocrLabels.ocr_report_modal_search_all_cam}" itemValue="" />
+										<f:selectItem
+											itemLabel="#{ocrLabels.ocr_report_modal_search_all_cam}"
+											itemValue="" />
 										<f:selectItems value="#{OcrReport.cams}" />
 									</h:selectOneMenu>
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
-						
+
 							<button type="button" class="btn btn-secondary"
 								data-dismiss="modal">#{ocrLabels.ocr_report_modal_search_close_button}</button>
-								
+
 							<button type="button" class="btn btn-dark" id="enviar"
 								onclick="validador()">#{ocrLabels.ocr_report_modal_search_search_button}</button>
 						</div>
 					</div>
 				</div>
 			</div>
-			
+
 			<h:commandButton style="display:none;" id="setForm">
 				<f:ajax execute="@form" listener="#{OcrReport.search}"
-					render=":pesquisar :tabela"  />
+					render=":pesquisar :tabela" />
 			</h:commandButton>
-			
+
 		</h:form>
 		<!-- modal pdf -->
 		<h:form prependId="false" id="pdfModal">
@@ -217,7 +231,8 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="exampleModalLabel">
-								#{ocrLabels.ocr_report_modal_download_title} <i class="fas fa-cloud-download-alt"></i>
+								#{ocrLabels.ocr_report_modal_download_title} <i
+									class="fas fa-cloud-download-alt"></i>
 							</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
@@ -225,31 +240,31 @@
 							</button>
 						</div>
 						<div class="modal-body">
-						<div class="row">
-						<div class="font-weight-bold ml-5">ID: #{OcrReport.rowkey}</div>						
-						</div>
-							<div class="row">															
+							<div class="row">
+								<div class="font-weight-bold ml-5">ID: #{OcrReport.rowkey}</div>
+							</div>
+							<div class="row">
 								<p class="text-dark ml-5">
-								    #{ocrLabels.ocr_reports_modal_download_file} <span
-									class="text-danger">#{ocrLabels.ocr_reports_modal_download_extension_pdf}</span> ?
-							   </p>							
+									#{ocrLabels.ocr_reports_modal_download_file} <span
+										class="text-danger">#{ocrLabels.ocr_reports_modal_download_extension_pdf}</span>
+									?
+								</p>
 							</div>
 						</div>
 						<div class="modal-footer">
-															
+
 							<h:commandButton
-								value="#{ocrLabels.ocr_reports_modal_download_btn_no}" 
-								class="btn btn-dark form-draw-button" id="limpar" >
-							   <f:passThroughAttribute name="data-dismiss" value="modal" />
-							   <f:ajax execute="@form" render="@none" />
+								value="#{ocrLabels.ocr_reports_modal_download_btn_no}"
+								class="btn btn-dark form-draw-button" id="limpar">
+								<f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
 							</h:commandButton>
-								
+
 							<h:commandButton pt:onclose="download" pt:data-toggle="modal"
 								pt:data-target="#modalPdf" id="gerarPdf"
-							    value="#{ocrLabels.ocr_reports_modal_download_btn_yes}"
-								class="btn btn-dark form-draw-button"
-								action="#{OcrReport.pdf}" />
-															
+								value="#{ocrLabels.ocr_reports_modal_download_btn_yes}"
+								class="btn btn-dark form-draw-button" action="#{OcrReport.pdf}" />
+
 						</div>
 					</div>
 				</div>

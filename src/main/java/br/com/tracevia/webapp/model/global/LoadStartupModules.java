@@ -239,7 +239,7 @@ public class LoadStartupModules {
 			en_dai = false;
 			en_ocr = false;
 			en_meteo = false;
-			en_occ = false;
+			en_occ = true;
 			en_dms = false;			
 			en_sat = false;
 			en_sos = false;

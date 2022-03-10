@@ -27,9 +27,8 @@ import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.LogUtils;
 import br.com.tracevia.webapp.util.SessionUtil;
 
-
 /**
- * Classe para ger�ncia de logins
+ * Classe para gerência de logins
  * @author Wellington 05/06/2020
  * @version 1.0
  * @since 1.0
@@ -276,7 +275,8 @@ public class LoginAccountBean {
 					// STARTS MAP
 														
 					if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()) ||
-						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire()))
+						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire())||
+						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.tester.getConcessionaire()))
 					    
 						return "/map/map.xhtml?faces-redirect=true";
 					
@@ -290,7 +290,7 @@ public class LoginAccountBean {
 
 				status = dao.UserValidation(user.getUsername());
 
-				// caso seja verdadeiro passar usu�rio e senha para valida��o
+				// caso seja verdadeiro passar usu�rio e senha para validacao
 
 				if (status) {
 
@@ -317,7 +317,8 @@ public class LoginAccountBean {
 							// STARTS MAP
 							
 							if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()) ||
-									RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire()))
+									RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire())||
+									RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.tester.getConcessionaire()))
 							    
 								return "/map/map.xhtml?faces-redirect=true";
 							
@@ -354,7 +355,7 @@ public class LoginAccountBean {
 			
 			StringWriter errors = new StringWriter(); 
 			nex.printStackTrace(new PrintWriter(errors));	
-			
+									
 			LogUtils.logError(LogUtils.fileDateTimeFormatter(loginNullExceptionLog), classLocation, nex.getMessage(), errors.toString());
 						
 		}catch(Exception ex) {

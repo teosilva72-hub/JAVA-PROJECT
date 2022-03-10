@@ -11,8 +11,6 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -413,7 +411,7 @@ public class ExcelTemplate {
 
 		DateTimeApplication dta = new DateTimeApplication();
 		TranslationMethods tm = new TranslationMethods();
-	
+			
 		// INDEX DA COLUNA DE INICIO DA DATA
 		
 		int columnsIndex = 0;
@@ -435,12 +433,13 @@ public class ExcelTemplate {
 			columnStartDate = columnsIndex + 1;
 			columnEndDate = columnsIndex + 3;	
 		}
-		
+			
 	
 		// ----------------------------------------------------------------------------------------------------------------
 					
-		if(module.equals("sat"))					
-			 satInfo = SATInfo(equipId);
+		if(module.equals("sat")) {					
+			 satInfo = SATInfo(equipId);			
+		}
 		   
 		else equipsInfo = genericInfo(equipId, module);				
 		  					
@@ -493,7 +492,7 @@ public class ExcelTemplate {
        				
 		// NOME DO EQUIPAMENTO
 		utilSheet.createCell(sheet, row, 5, 2);		
-		utilSheet.setCellValue(sheet, row, 5, 2, module.equals("sat")? satInfo.get(0).getNome() : equipsInfo.get(0).getNome()); // null? 0 :
+		utilSheet.setCellValue(sheet, row, 5, 2, module.equals("sat") ? satInfo.get(0).getNome() : equipsInfo.get(0).getNome()); // null? 0 :
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 5, 2); 
  
 		// DATA DE CONSULTA LABEL
@@ -767,7 +766,7 @@ public class ExcelTemplate {
 	// TEMPLATE MODEL
 	// ----------------------------------------------------------------------------------------------------------------
 	
-	public void generateExcelFile(List<String> columns, List<String[]> lines, List<Pair<String, List<String[]>>> secondRows, String module, List<String> directions, List<String> equips, 
+	public void generateExcelFile(List<String> columns, List<String[]> lines, List<Pair<String, List<String[]>>> secondRows, String module, String filterLane, List<String> directions, List<String> equips, 
 			String startDate, String endDate, String[] period, String sheetName, String fileTitle, String totalType, boolean isSat, boolean isTotal, boolean isMultiSheet, boolean isEquipNameSheet, boolean isDirectionsOnSheet, boolean division, String classSubHeader) {
 		
 		sheet = null;	
@@ -790,6 +789,7 @@ public class ExcelTemplate {
 		int dataEndRow = 0;
 		int startCol = 0;
 		int endCol = columns.size() - 1;
+		boolean singleDirectionFilter = false;
 		
 		// --------------------------------------------------------------------------------------
 		
@@ -867,7 +867,7 @@ public class ExcelTemplate {
 			}
 			
 			// -----------------------------------------------------
-									
+											
 		  for(int op = 0; op < selectOp; op++) {
 			  					  
 			  if(isEquipNameSheet && division) {
@@ -900,7 +900,7 @@ public class ExcelTemplate {
 			  // --------------------------------------------------------------------------------------------			  
 			  
 		    	// SheetName
-				sheet = workbook.createSheet(sheetNames[op]); // CREATE SHEET NAMES
+				sheet = workbook.createSheet(sheetNames[op]); // CREATE SHEET NAMES								
 			
 				if(isEquipNameSheet) 
 					excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
@@ -970,40 +970,76 @@ public class ExcelTemplate {
 			
 			String[] dirs = null;	
 			int dirCol = 0;
-			String lane = "";
-			
+			String lane = "", laneValue = "";	
+						
 			if(isDirectionsOnSheet) {
 			
 				lanesLista = dao.listarFaixas();
-				lane = dao.firstLane(equips.get(op));
+				
+				// --------------------------------
+				
+				if(filterLane.equals("")) {
+					
+					lane = dao.firstLane(equips.get(op));
+					dirs = getFiltersDirection(directions);						
+					laneValue = getLane(lane, dirs);
+					
+				}
+				
+				else {
+					
+					  laneValue = dao.getLaneDir(equips.get(op), filterLane);
+				      dirs = new String[1];
+				      dirs[0] = laneValue;
+				      singleDirectionFilter = true;
+				
+					 }
+						
+				// ----------------------------------------------------------
 			
 				dirCol = endCol + 1;
-				utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
-				
-				dirs = getFiltersDirection(directions);
-				
-				String laneValue = getLane(lane, dirs);
-				
+				utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);								
+								
 				utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);	
 				
 				utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
 				
 			}
 				
-			utilSheet.fileBodySimpleDirs(sheet, row, columns, null, lines, dirs, equips, lanesLista, op, daysCount, startCol, endCol, dirCol, dataStartRow, dataEndRow, true, isDirectionsOnSheet);						
+			utilSheet.fileBodySimpleDirs(sheet, row, columns, null, lines, dirs, equips, lanesLista, op, daysCount, startCol, endCol, dirCol, dataStartRow, dataEndRow, true, isDirectionsOnSheet, singleDirectionFilter);						
 												
 		} else if(!isEquipNameSheet && isDirectionsOnSheet) {
+			
+			String[] dirs = null;	
+			int dirCol = 0;
+			String lane = "", laneValue = "";	
 						
 			lanesLista = dao.listarFaixas();
-			String lane = dao.firstLane(equips.get(op));
 			
-			int dirCol = endCol + 1;
+			// --------------------------------
+			
+			if(filterLane.equals("")) {
+				
+				lane = dao.firstLane(equips.get(op));
+				dirs = getFiltersDirection(directions);						
+				laneValue = getLane(lane, dirs);
+				
+			}
+			
+			else {
+				
+				  laneValue = dao.getLaneDir(equips.get(op), filterLane);
+			      dirs = new String[1];
+			      dirs[0] = laneValue;
+			      singleDirectionFilter = true;
+			
+				 }
+					
+			// ----------------------------------------------------------
+						
+			dirCol = endCol + 1;
 			utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
-			
-			String[] dirs = getFiltersDirection(directions);
-			
-			String laneValue = getLane(lane, dirs);
-			
+					
 			utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);									
 				
 			utilSheet.fileBodySimpleDirection(sheet, row, columns, null, lines, dirs, equips, lanesLista, startCol, endCol, dirCol, dataStartRow, true);			
@@ -1175,7 +1211,7 @@ public class ExcelTemplate {
 					
 				}
 							
-					utilSheet.fileBodySimpleDirs(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, op, daysCount, startCol, endCol, dirCol, dataStartRow, dataEndRow, false, isDirectionsOnSheet);													
+					utilSheet.fileBodySimpleDirs(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, op, daysCount, startCol, endCol, dirCol, dataStartRow, dataEndRow, false, isDirectionsOnSheet, singleDirectionFilter);													
 															
 				} else if(!isEquipNameSheet && isDirectionsOnSheet) {
 					
@@ -1403,40 +1439,76 @@ public class ExcelTemplate {
 				
 				String[] dirs = null;	
 				int dirCol = 0;
-				String lane = "";
+				String lane = "", laneValue = "";
 				
 				if(isDirectionsOnSheet) {
 				
 					lanesLista = dao.listarFaixas();
-					lane = dao.firstLane(equips.get(op));
 					
 					dirCol = endCol + 1;			
 					utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
-							
-					dirs = getFiltersDirection(directions);
 					
-					String laneValue = getLane(lane, dirs);
+					// ----------------------------------------------------------
 					
+					if(filterLane.equals("")) {
+						
+						lane = dao.firstLane(equips.get(op));
+						dirs = getFiltersDirection(directions);						
+						laneValue = getLane(lane, dirs);
+						
+					}
+					
+					else {
+						
+						  laneValue = dao.getLaneDir(equips.get(op), filterLane);
+					      dirs = new String[1];
+					      dirs[0] = laneValue;
+					      singleDirectionFilter = true;
+					
+						 }
+										
+					// ----------------------------------------------------------	
+										
 					utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
 					
 					utilSheet.setCellsStyle(sheet, row, centerStyle, dirCol, dirCol, dataStartRow-1, dataEndRow); // DIR COL STYLE
 					
 				}										
 								
-				utilSheet.fileBodyMultiDirs(sheet, row, columns, null, lines, dirs, equips, lanesLista, op, daysCount, interval, startCol, endCol, dirCol, dataStartRow, dataEndRow, true, isDirectionsOnSheet);
+				utilSheet.fileBodyMultiDirs(sheet, row, columns, null, lines, dirs, equips, lanesLista, op, daysCount, interval, startCol, endCol, dirCol, dataStartRow, dataEndRow, true, isDirectionsOnSheet, singleDirectionFilter);
 				
 			} else if(!isEquipNameSheet && isDirectionsOnSheet) {
 				
+				String[] dirs = null;	
+				int dirCol = 0;
+				String lane = "", laneValue = "";
+				
 				lanesLista = dao.listarFaixas();
-				String lane = dao.firstLane(equips.get(op));
 				
-				int dirCol = endCol + 1;			
-				utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
+				// --------------------------------
+				
+				if(filterLane.equals("")) {
+					
+					lane = dao.firstLane(equips.get(op));
+					dirs = getFiltersDirection(directions);						
+					laneValue = getLane(lane, dirs);
+					
+				}
+				
+				else {
+					
+					  laneValue = dao.getLaneDir(equips.get(op), filterLane);
+				      dirs = new String[1];
+				      dirs[0] = laneValue;
+				      singleDirectionFilter = true;
+				
+					 }
 						
-				String[] dirs = getFiltersDirection(directions);
-				
-				String laneValue = getLane(lane, dirs);
-				
+				// ----------------------------------------------------------
+								
+				dirCol = endCol + 1;			
+				utilSheet.createCells(sheet, row, dirCol, dirCol, dataStartRow-1, dataEndRow);
+							
 				utilSheet.setCellValue(sheet, row, dataStartRow-1, dirCol, laneValue);
 				
 				// -----------------------------------------------------	
@@ -1613,7 +1685,7 @@ public class ExcelTemplate {
 						
 					}
 							
-					utilSheet.fileBodyMultiDirs(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, op, daysCount, interval, startCol, endCol, dirCol, dataStartRow, dataEndRow, false, isDirectionsOnSheet);						
+					utilSheet.fileBodyMultiDirs(sheet, row, columns, p.left, p.right, dirs, equips, lanesLista, op, daysCount, interval, startCol, endCol, dirCol, dataStartRow, dataEndRow, false, isDirectionsOnSheet, singleDirectionFilter);						
 					
 				}else if(!isEquipNameSheet && isDirectionsOnSheet) {
 					
@@ -1889,47 +1961,91 @@ public class ExcelTemplate {
 	}
 	
 	 // ----------------------------------------------------------------------------------------------------------------
-		
-		
+				
 		public String getLane(String lane, String[] dirs) {
-																					
-				for(int i = 0; i < dirs.length; i++) {
+						
+			String auxLane = "";
+			
+			boolean north = false, south = false, east = false, west = false;
+																							
+				for(int i = 0; i < dirs.length; i++) {																	
 															
-					   if(dirs[i] != null) {						 
+					 if(dirs[i] != null) {						 
 							
 							if(lane.equals("N")) {
-								 
-								  if(dirs[i].equals("S"))									
-									  lane += " / S";											
-									
+								
+								  if(dirs[i].equals("N")) {									
+									  auxLane = "N";	
+									  north = true;
+								  }
+								  
+								  else if(north && dirs[i].equals("S"))
+								 		auxLane = "N / S";
+								  
+								  else if(!north && dirs[i].equals("S"))
+								 		auxLane = "S";								 
+								 								  
 								}
 							
+							// --------------------------------------------------
+							
 							if(lane.equals("S")) {
-								 
-								  if(dirs[i].equals("N"))									
-									  lane += " / N";											
-									
-								}	
+								
+								  if(dirs[i].equals("N")) {									
+									  auxLane = "N";	
+									  south = true;
+								  }
+								  
+								  else if(south && dirs[i].equals("S"))
+								 		auxLane = "S / N";
+								  
+								  else if(!south && dirs[i].equals("S"))
+								 		auxLane = "S";										
+								 								  
+								}
+							
+							// --------------------------------------------------
 							
 							if(lane.equals("L")) {
-								 
-								  if(dirs[i].equals("O"))									
-									  lane += " / O";											
-									
-								}	
+								
+								  if(dirs[i].equals("L")) {									
+									  auxLane = "L";	
+									  east = true;
+								  }
+								  
+								  else if(east && dirs[i].equals("O"))
+								 		auxLane = "L / O";
+								  
+								  else if(!east && dirs[i].equals("O"))
+								 		auxLane = "O";										
+								 								  
+								}
+							
+							// --------------------------------------------------
 							
 							if(lane.equals("O")) {
-								 
-								  if(dirs[i].equals("L"))									
-									  lane += " / L";											
-									
-								}		
-							}
-						}		
-					
+								
+								  if(dirs[i].equals("L")) {									
+									  auxLane = "L";	
+									  west = true;
+								  }
+								  
+								  else if(west && dirs[i].equals("O"))
+								 		auxLane = "O / L";
+								  
+								  else if(!west && dirs[i].equals("O"))
+								 		auxLane = "O";																						
+								 								  
+								}
+							
+							// --------------------------------------------------
+										
+							}										   
+					    }							  
+										
 				// ---------------------																														
 													
-					return lane;
+					return auxLane;
 			}
 				
 	// ----------------------------------------------------------------------------------------------------------------	
