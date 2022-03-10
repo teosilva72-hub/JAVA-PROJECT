@@ -1855,8 +1855,7 @@ System.out.println("btnedit");
 			Chapter capitulo = new Chapter(new Paragraph(""), 1);
 			PdfPTable table = new PdfPTable(2);
 			Paragraph title1 = new Paragraph("REGISTRO DE ACCIDENTE \n AUTOPISTA TUXPAN-TAMPICO\nSEGUROS SURA, S.A de C.V.", FontFactory.getFont(FontFactory.TIMES_ROMAN,8, Font.BOLD, BaseColor.BLACK));
-			table.setTotalWidth(500);
-			table.setWidthPercentage(50);
+			table.setTotalWidth(new float[]{ 350, 50 });
 
 			table.setLockedWidth(true);
 			// Seção é uma área que adicionaremos conteúdo
@@ -1866,7 +1865,7 @@ System.out.println("btnedit");
 			table.addCell(c1);
  
 			c1 = new PdfPCell(new Phrase("Cabecalho 2"));
-			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			//c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(c1);
 			table.setHeaderRows(1);
 			table.addCell("Plaza de Cobro");
