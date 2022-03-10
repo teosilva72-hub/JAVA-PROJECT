@@ -1854,19 +1854,13 @@ System.out.println("btnedit");
 			conteudo.add(new Paragraph(" "));
 			Chapter capitulo = new Chapter(new Paragraph(""), 1);
 			PdfPTable table = new PdfPTable(2);
-			Paragraph title1 = new Paragraph("REGISTRO DE ACCIDENTE \n AUTOPISTA TUXPAN-TAMPICO\nSEGUROS SURA, S.A de C.V.", FontFactory.getFont(FontFactory.TIMES_ROMAN,8, Font.BOLD, BaseColor.BLACK));
-			table.setTotalWidth(new float[]{ 350, 50 });
+			Paragraph title1 = new Paragraph("REGISTRO DE ACCIDENTE \n AUTOPISTA TUXPAN-TAMPICO\nSEGUROS SURA, S.A de C.V.", FontFactory.getFont(FontFactory.TIMES_ROMAN,10, Font.BOLD, BaseColor.BLACK));
+			table.setTotalWidth(new float[]{ 250, 200 });
 
 			table.setLockedWidth(true);
 			// Seção é uma área que adicionaremos conteúdo
-			Section secao = capitulo.addSection(title1);
-			PdfPCell c1 = new PdfPCell(new Phrase("Cabecalho1"));
-			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table.addCell(c1);
- 
-			c1 = new PdfPCell(new Phrase("Cabecalho 2"));
+			document.add(new Paragraph(title1));
 			//c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table.addCell(c1);
 			table.setHeaderRows(1);
 			table.addCell("Plaza de Cobro");
 			table.addCell("");
@@ -1895,19 +1889,15 @@ System.out.println("btnedit");
 			table.addCell("Hora de Arribo de Ajustador");
 			table.addCell("");
 			
-			
-			secao.add(table);
 			document.add(conteudo);
-			document.add(secao);
+			document.add(table);
 			//
 			
 			Paragraph title2 = new Paragraph("Vehículos Involucrados");
 			Section secao1 = capitulo.addSection(title2);
 			PdfPTable table1 = new PdfPTable(4);
-			Paragraph conteudo1 = new Paragraph();
-			PdfPCell c2 = new PdfPCell(new Phrase("Cabecalho2"));
-			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table1.setTotalWidth(new float[]{ 100, 100});
+			document.add(title2);
 			table1.setHeaderRows(1);
 			table1.addCell("Tipo de Vehículo");
 			table1.addCell("");
@@ -1922,16 +1912,11 @@ System.out.println("btnedit");
 			table1.addCell("Número de ejes de la unidad");
 			table1.addCell("");
 			
-			secao1.add(table1);
 			document.add(conteudo);
-			document.add(secao1);
+			document.add(table1);
 			
 			Paragraph title3 = new Paragraph("Vehículos Involucrados");
-			Section secao2 = capitulo.addSection(title2);
 			PdfPTable table2 = new PdfPTable(7);
-			PdfPCell c3 = new PdfPCell(new Phrase("Cabecalho2"));
-			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table2.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table2.setHeaderRows(1);
 			table2.addCell("No.");
 			table2.addCell("Marca");
@@ -1943,16 +1928,12 @@ System.out.println("btnedit");
 			for(int i = 0; i< 32; i++)
 				table2.addCell("column " + i);
 			
-			secao2.add(table2);
 			document.add(conteudo);
-			document.add(secao2);
+			document.add(table2);
 			
 			Paragraph title4 = new Paragraph("Datos de Personas");
-			Section secao4 = capitulo.addSection(title4);
 			PdfPTable table4 = new PdfPTable(4);
-			Paragraph conteudo2 = new Paragraph();
-			PdfPCell c4 = new PdfPCell(new Phrase("Cabecalho2"));
-			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			document.add(title4);
 			table4.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.setHeaderRows(1);
 			table4.addCell("No.");
@@ -1962,24 +1943,18 @@ System.out.println("btnedit");
 			for(int i = 0; i< 9; i++)
 			table4.addCell("column " + i);
 			
-			secao4.add(table4);
 			document.add(conteudo);
-			document.add(secao4);
+			document.add(table4);
 			
 			Paragraph title5 = new Paragraph("");
-			Section secao5 = capitulo.addSection(title5);
 			PdfPTable table5 = new PdfPTable(2);
-			Paragraph conteudo3 = new Paragraph();
-			PdfPCell c5 = new PdfPCell(new Phrase("Cabecalho2"));
-			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table5.setHorizontalAlignment(Element.ALIGN_CENTER);
+			document.add(title5);
 			table5.setHeaderRows(1);
 			table5.addCell("MOTIVO DEL ACCIDENTE:");
 			table5.addCell("");
 
-			secao4.add(table5);
 			document.add(conteudo);
-			document.add(secao5);
+			document.add(table5);
 			
 		
 		}
