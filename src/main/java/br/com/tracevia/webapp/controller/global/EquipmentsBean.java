@@ -16,6 +16,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.context.RequestContext;
+
 import br.com.tracevia.webapp.cfg.ModulesEnum;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
@@ -237,8 +239,8 @@ public class EquipmentsBean implements Serializable {
 	//--------------------------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para salvar novos equipamentos na base de dados
-	 * de acordo com seu respectivo módulo
+	 * MÃ©todo para salvar novos equipamentos na base de dados
+	 * de acordo com seu respectivo mÃ³dulo
 	 * @author Wellington 25/12/2021
 	 * @version 1.0
 	 * @since 1.0
@@ -250,13 +252,13 @@ public class EquipmentsBean implements Serializable {
 		DateTimeApplication dta = new DateTimeApplication(); // DATETIME APPLICATION OBJ			
 		EquipmentsDAO equipDAO = new EquipmentsDAO(); // EQUIPMENT DAO
 		
-		checked = false; // VARIÁVEL PARA VERFICAR OPERAÇÕES AO SALVAR NOVO EQUIPAMENTO	
+		checked = false; // VARIÃ�VEL PARA VERFICAR OPERAÃ‡Ã•ES AO SALVAR NOVO EQUIPAMENTO	
 		
 		EquipmentDataSource dataSource = new EquipmentDataSource();
 				
 		// ------------------------------------------------------------------------------------------------------
 
-		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap(); // OBTER PARÂMETROS EXTERNOS		 			
+		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap(); // OBTER PARÃ‚METROS EXTERNOS		 			
 		
 		dataSource.setModuleID(parameterMap.get("equips") == "" ? 0 : Integer.parseInt(parameterMap.get("equips"))); // GET MODULE ID
 	
@@ -368,7 +370,7 @@ public class EquipmentsBean implements Serializable {
    //--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para pesquisar equipamentos
+	 * MÃ©todo para pesquisar equipamentos
 	 * @author Wellington 25/12/2021
 	 * @version 1.0
 	 * @since Release 1.0		
@@ -456,7 +458,7 @@ public class EquipmentsBean implements Serializable {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para executar deleção de equipamentos
+	 * MÃ©todo para executar deleÃ§Ã£o de equipamentos
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0	
@@ -488,7 +490,7 @@ public class EquipmentsBean implements Serializable {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para atualizar equipamentos
+	 * MÃ©todo para atualizar equipamentos
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0	
@@ -500,7 +502,7 @@ public class EquipmentsBean implements Serializable {
 		DateTimeApplication dta = new DateTimeApplication(); // DATETIME APPLICATION OBJ			
 		EquipmentsDAO dao = new EquipmentsDAO(); // EQUIPMENT DAO
 		
-		checked = false; // VARIÁVEL PARA VERFICAR OPERAÇÕES AO SALVAR NOVO EQUIPAMENTO	
+		checked = false; // VARIÃ�VEL PARA VERFICAR OPERAÃ‡Ã•ES AO SALVAR NOVO EQUIPAMENTO	
 		
 		int equipId = getEquipId();		 
 		String equipTable = getEquipTable();
@@ -509,7 +511,7 @@ public class EquipmentsBean implements Serializable {
 				
 		// ------------------------------------------------------------------------------------------------------
 		
-        Map<String, String> parameterMap = SessionUtil.getRequestParameterMap(); // OBTER PARÂMETROS EXTERNOS		 	
+        Map<String, String> parameterMap = SessionUtil.getRequestParameterMap(); // OBTER PARÃ‚METROS EXTERNOS		 	
                		
 		dataSource.setModuleID(getModuleByName(equipTable)); // GET MODULE ID
 	
@@ -600,12 +602,13 @@ public class EquipmentsBean implements Serializable {
 		  checked = dao.updateEquipment(dataSource, interfaceView, login.getLogin().getPermission_id());
 		
 		if(checked) {
-			
+			RequestContext.getCurrentInstance().execute(String.format("editBtnDisabled('%b')", checked));
 			SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
 			SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");			
 			SessionUtil.remove("meteoType");
 			
 		} else {
+			RequestContext.getCurrentInstance().execute(String.format("editBtnDisabled('%b')", checked));
 			SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
 		}
 		
@@ -614,7 +617,7 @@ public class EquipmentsBean implements Serializable {
 	//--------------------------------------------------------------------------------------------------------------	
 
 	/**
-	 * Método para deleção de equipamentos
+	 * MÃ©todo para deleÃ§Ã£o de equipamentos
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0	
@@ -648,7 +651,7 @@ public class EquipmentsBean implements Serializable {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para definir posição de equipamentos
+	 * MÃ©todo para definir posiÃ§Ã£o de equipamentos
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0	
@@ -684,7 +687,7 @@ public class EquipmentsBean implements Serializable {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para definir tamanho de um grupo de equipamentos
+	 * MÃ©todo para definir tamanho de um grupo de equipamentos
 	 * @author Guilherme
 	 * @version 1.0
 	 * @since Release 1.0	
@@ -711,7 +714,7 @@ public class EquipmentsBean implements Serializable {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter o tipo da tabela pelo id
+	 * MÃ©todo para obter o tipo da tabela pelo id
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
@@ -746,7 +749,7 @@ public class EquipmentsBean implements Serializable {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter a tabela pelo tipo do módulo
+	 * MÃ©todo para obter a tabela pelo tipo do mÃ³dulo
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
@@ -781,12 +784,12 @@ public class EquipmentsBean implements Serializable {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter o ID do módulo pelo tipo
+	 * MÃ©todo para obter o ID do mÃ³dulo pelo tipo
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
-	 * @param type - Tipo do módulo
-	 * @return int - Módulo ID
+	 * @param type - Tipo do mÃ³dulo
+	 * @return int - MÃ³dulo ID
 	 * @throws Exception
 	 */
 
@@ -815,7 +818,7 @@ public class EquipmentsBean implements Serializable {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter tipo do equipamento
+	 * MÃ©todo para obter tipo do equipamento
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0   	
@@ -848,12 +851,12 @@ public class EquipmentsBean implements Serializable {
 	//--------------------------------------------------------------------------------------------------------------
 	       
 	/**
-	 * Método para obter informações de um cabeçalho para o SAT
+	 * MÃ©todo para obter informaÃ§Ãµes de um cabeÃ§alho para o SAT
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0   	
 	 * @param id ID do equipamento   	
-	 * @return objeto do SAT com informações para o cabeçalho
+	 * @return objeto do SAT com informaÃ§Ãµes para o cabeÃ§alho
 	 */	
 	   public SAT satHeaderInformation(String id) {
 		   
