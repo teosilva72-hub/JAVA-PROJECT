@@ -3,12 +3,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -34,38 +31,28 @@ import com.itextpdf.text.pdf.PdfWriter;
 import br.com.tracevia.webapp.dao.wim.WIMDAO;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.ColumnModel;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.speed.SpeedReport.Builder;
 import br.com.tracevia.webapp.model.wim.WimData;
+import br.com.tracevia.webapp.util.ImageUtil;
 
-@ManagedBean(name="wimReport")
+@ManagedBean(name="WimReport")
 @ViewScoped
-public class wimReport {
+public class WimReport {
 
 	private WIMDAO dao = new WIMDAO();
 	private WimData data = new WimData();
 	private String logo;
+	
+	String noImage, vehFolder, silFolder;
 
 	public String getLogo() {
-		try {
-
-			Path path = Paths.get(logo);
-			byte[] file = Files.readAllBytes(path);
-			return Base64.getEncoder().encodeToString(file);
-		} catch (IOException e) {
-			return "";
-		}
+		return logo;
 	}
-	private String noImage;
 
 	private String dateInitial, dateFinal, minuteInitial,
 	minuteFinal, classs, hourInitial, hourFinal;
-
-	String silFolder = "C:\\Tracevia\\Software\\External\\Wim\\Silhuetas\\";
-
-	String vehiclesFolder = "C:\\Tracevia\\Software\\External\\Wim\\Veiculos\\";
-
-	String noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
-
+	
 	private int rowkey;
 	private boolean selectedRow;
 
@@ -305,7 +292,9 @@ public class wimReport {
 	@PostConstruct
 	public void initalize(){
 
-		noImage = noImageFolder + "no-image.jpg";
+		silFolder = "wim/sil";		
+	    vehFolder = "wim/veh";		
+		noImage = "no-image.jpg";
 
 		reset = true;
 
@@ -316,10 +305,13 @@ public class wimReport {
 		data.setSpeed("-");
 		data.setPbtTotal("-");
 		data.setSize("-");
+		
+		String unknownImage = ImageUtil.getImagePath("images", "unknown", noImage);
+		String encondedUnknownImage = ImageUtil.encodeToBase64(unknownImage);
 
-		setImage(getImagePath(noImage));
-		setImagePlate(getImagePath(noImage));
-		setImageSil(getImagePath(noImage));
+		setImage(encondedUnknownImage);
+		setImagePlate(encondedUnknownImage);
+		setImageSil(encondedUnknownImage);
 
 		minutos = new  ArrayList<SelectItem>();
 
@@ -548,26 +540,28 @@ public class wimReport {
 				data = dao.searchId(rowkey);	
 
 				indicator(data);
-				File img1 = new File(vehiclesFolder+data.getImage());
-				File img2 = new File(vehiclesFolder+data.getImagePlate());
-				File sil = new File(silFolder+data.getImageSil());
+				
+				String vehImg = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, data.getImage());
+				String plateImg = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, data.getImagePlate());
+				String silImg = ImageUtil.getImagePathAndEncodeToBase64("images", silFolder, data.getImageSil());
+								
 				//VEHICLE IMAGE
-				if(img1.exists())				
-					image = getImagePath(vehiclesFolder+data.getImage());
+				if(vehImg != null)				
+					image = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, data.getImage());
 
-				else image = getImagePath(noImageFolder+"no-image.jpg");
+				else image = ImageUtil.getImagePathAndEncodeToBase64("images", "unknown", noImage);
 
 				//PLATE IMAGE
-				if(img2.exists())				
-					imagePlate = getImagePath(vehiclesFolder+data.getImagePlate());
+				if(plateImg != null)	
+					imagePlate = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, data.getImagePlate());
 
-				else imagePlate = getImagePath(noImageFolder+"no-image.jpg");
-
+				else imagePlate = ImageUtil.getImagePathAndEncodeToBase64("images", "unknown", noImage);
+				
 				//SIL IMAGE
-				if(sil.exists())				
-					imageSil = getImagePath(silFolder+data.getImageSil());
+				if(silImg != null)					
+					imageSil = ImageUtil.getImagePathAndEncodeToBase64("images", silFolder, data.getImageSil());
 
-				else imageSil = getImagePath(noImageFolder+"no-image.jpg");				
+				else imageSil = ImageUtil.getImagePathAndEncodeToBase64("images", "unknown", noImage);			
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -575,7 +569,7 @@ public class wimReport {
 			}
 
 		}
-
+		
 		request.execute("btnTable();");
 	}
 
@@ -611,40 +605,54 @@ public class wimReport {
 			document.add(new Paragraph("_____________________________________________________________________________\n\n"));
 			document.add(new Paragraph(trad.wimLabels("indicator")+": "+getRateTxt()+"\n\n"));
 			document.add(new Paragraph(trad.wimLabels("INFORMATION2")+"\n\n"));
-			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
-			File  tuxpan = new File(logo);
-			if(tuxpan.exists()) {
+			
+			
+			logo = ImageUtil.getImagePath("images", "files", RoadConcessionaire.externalImagePath);
+						
+			if(!logo.equals("")) {
 				Image tuxpanL = Image.getInstance(logo);
 				tuxpanL.setAbsolutePosition(420, 800);
 				tuxpanL.scaleAbsolute (100, 30);
 				document.add(tuxpanL);
 			}
-			File img1 = new File(vehiclesFolder+data.getImage());
-			File img2 = new File(vehiclesFolder+data.getImagePlate());
-			if(img1.exists()) {
-				Image imgX = Image.getInstance(vehiclesFolder+data.getImage());
+			
+			String vehImg = ImageUtil.getImagePath("images", vehFolder, data.getImage());
+			String plateImg = ImageUtil.getImagePath("images", vehFolder, data.getImagePlate());
+			String blankImage = ImageUtil.getImagePath("images", "unknown", noImage);
+									
+			if(!vehImg.equals("")) {
+				
+				Image imgX = Image.getInstance(vehImg);
 				imgX.setAbsolutePosition(100, 230);
 				imgX.scaleAbsolute (200, 150);
 				document.add(imgX);
+				
 			}else {
-				Image imgX = Image.getInstance(noImageFolder+"no-image.jpg");
+				
+				Image imgX = Image.getInstance(blankImage);
+				
 				imgX.setAbsolutePosition(100, 230);
 				imgX.scaleAbsolute (200, 150);
 				document.add(imgX);
 			}
-			if(img2.exists()) {
-				Image imgY = Image.getInstance(vehiclesFolder+data.getImagePlate());
+			
+			if(!plateImg.equals("")) {
+				
+				Image imgY = Image.getInstance(plateImg);
 				imgY.setAbsolutePosition(300, 230);
 				imgY.scaleAbsolute (200, 150);
 				document.add(imgY);
+				
 			}else {
-				Image imgY = Image.getInstance(noImageFolder+"no-image.jpg");
+				
+				Image imgY = Image.getInstance(blankImage);
+				
 				imgY.setAbsolutePosition(300, 230);
 				imgY.scaleAbsolute (200, 150);
 				document.add(imgY);
 			}
+			
 			//passando a imagem
-
 
 			document.add(new Paragraph());
 			Rectangle rowPage = new Rectangle(577, 40, 10, 790); //linha da pagina 
@@ -726,18 +734,5 @@ public class wimReport {
 		facesContext.responseComplete();  
 
 	}
-
-	public String getImagePath(String image) {
-
-		try {
-
-			Path path = Paths.get(image);								
-			byte[] file = Files.readAllBytes(path);
-			return Base64.getEncoder().encodeToString(file);
-
-		} catch (IOException e) {											
-			return "";
-		}
-
-	}
+	
 }

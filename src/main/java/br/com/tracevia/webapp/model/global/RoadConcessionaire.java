@@ -20,7 +20,7 @@ import br.com.tracevia.webapp.classes.ViaRondon;
 import br.com.tracevia.webapp.classes.ViaSul;
 
 /**
- * Classe para definir atributos de acordo com a concession�ria
+ * Classe para definir atributos de acordo com a concessionária
  * @author Wellington 10/03/2020
  * @version 1.0
  * @since 1.0
@@ -77,8 +77,7 @@ public class RoadConcessionaire {
 	public static String classNotIdentifiedAxl7;
 	public static String classNotIdentifiedAxl8;
 	public static String classNotIdentifiedAxl9;
-	public static String externalImagePath;	
-	public static String externalDefaultLogo;
+	public static String externalImagePath;		
 	public static String logo;
 	public static String mapUI;
 	public static String linearMapUI;
@@ -108,9 +107,7 @@ public class RoadConcessionaire {
 	// CONSTRUTOR 
 		
 	public RoadConcessionaire() {
-		
-		externalDefaultLogo = "C:\\Tracevia\\Software\\External\\Logo\\tracevia.jpg";
-		
+			
 		//System.getenv("APPDATA")+
 		
 		ecoviasAraguaia = false;	
@@ -475,7 +472,7 @@ public class RoadConcessionaire {
    			mapEnabled = true;
    			reportsLLEnabled = false;
    			ecoviasAraguaia = true;   		
-   			hasNotification = true;
+   			hasNotification = true;   			
    													
    		}       
 		
@@ -708,6 +705,7 @@ public class RoadConcessionaire {
 		  hasNotification = true;
 				  
          }
+       
        if(roadConcessionaire.equals(RoadConcessionairesEnum.tester.getConcessionaire())) {
     	   classLight = Tracevia.LIGHT_VEHICLES.getClasse();
  		  classMotorcycle = Tracevia.MOTORCYCLES.getClasse();
@@ -733,7 +731,7 @@ public class RoadConcessionaire {
  		  classNotIdentifiedAxl7 = Tracevia.NOT_ID_CLASS_7AXLES.getClasse();
  		  classNotIdentifiedAxl8 = Tracevia.NOT_ID_CLASS_8AXLES.getClasse();
  		  classNotIdentifiedAxl9 = Tracevia.NOT_ID_CLASS_9AXLES.getClasse();
- 		  externalImagePath += "tracevia.jpg";		
+ 		  externalImagePath = "tracevia.jpg";		
  		  logo = "";
  		  linearMapUI = "/resources/images/map/nunoTeste/tuxpan_tampico.webp";
  		  mapUI = "/resources/images/map/nunoTeste/Tracevia-teste.webp";
@@ -743,7 +741,7 @@ public class RoadConcessionaire {
  		  tableStatus = TraceviaTables.TraceviaStatus.getTable();
  		  tableLL = TraceviaTables.TraceviaLL.getTable();
  	      tableCCR = TraceviaTables.TraceviaCCR.getTable();
-// 	      plaque = "";
+          //plaque = "";
  		  mapEnabled = true;
  		  reportsLLEnabled = false;
  		  tester = true;

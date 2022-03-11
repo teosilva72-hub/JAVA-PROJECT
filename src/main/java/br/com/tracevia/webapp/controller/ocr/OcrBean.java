@@ -1,11 +1,6 @@
 package br.com.tracevia.webapp.controller.ocr;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -20,6 +15,7 @@ import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.ocr.OCRDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.ocr.OCR;
+import br.com.tracevia.webapp.util.ImageUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="OcrRealtime")
@@ -34,8 +30,8 @@ public class OcrBean{
 	List<? extends Equipments> listOcr; 
 	LocaleUtil localeOCR;
 	
-	String cam, imageVeh, imagePlt, noImageFolder;
-				
+	String cam, imageVeh, imagePlt, noImage;
+					
 	public List<SelectItem> getCams() {
 		return cams;
 	}
@@ -79,11 +75,15 @@ public class OcrBean{
 		
 		localeOCR = new LocaleUtil();	
 		localeOCR.getResourceBundle(LocaleUtil.LABELS_OCR);
-			
-		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
 		
-		imageVeh = noImageFolder + "no-image.jpg";
-		imagePlt = noImageFolder + "no-image.jpg";
+		dao = new OCRDAO();
+		
+	    noImage = "no-image.jpg";
+		
+		String unknownImage = ImageUtil.getImagePath("images", "unknown", noImage);
+						
+		imageVeh = unknownImage;
+		imagePlt = unknownImage;
 		
 		RequestContext.getCurrentInstance().execute("filtro()");
 		
@@ -91,7 +91,6 @@ public class OcrBean{
 
 		updateView();
 			
-		dao = new OCRDAO();
 		
 		equipDAO = new EquipmentsDAO();		
 		cams = new ArrayList<SelectItem>();			
@@ -125,8 +124,8 @@ public class OcrBean{
 			data.getDataHour();
 			data.getCam();
 			data.getPlaca();
-			data.setPlateImage(getImagePath(data.getPlateImage()));
-			data.setVehicleImage(getImagePath(data.getVehicleImage()));
+			data.setPlateImage(ImageUtil.encodeToBase64(data.getPlateImage()));
+			data.setVehicleImage(ImageUtil.encodeToBase64(data.getVehicleImage()));
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -163,8 +162,8 @@ public class OcrBean{
 					data.setDataHour(localeOCR.getStringKey("ocr_no_date_label"));
 					data.setCam(localeOCR.getStringKey("ocr_no_cam_label"));
 					data.setPlaca(localeOCR.getStringKey("ocr_no_plate_label"));
-					data.setPlateImage(getImagePath(imagePlt));
-					data.setVehicleImage(getImagePath(imageVeh));								
+					data.setPlateImage(ImageUtil.encodeToBase64(imagePlt));
+					data.setVehicleImage(ImageUtil.encodeToBase64(imageVeh));								
 					
 				}else { 
 												
@@ -172,8 +171,8 @@ public class OcrBean{
 				data.getDataHour();
 				data.getCam();
 				data.getPlaca();
-				data.setPlateImage(getImagePath(data.getPlateImage()));
-				data.setVehicleImage(getImagePath(data.getVehicleImage()));
+				data.setPlateImage(ImageUtil.encodeToBase64(data.getPlateImage()));
+				data.setVehicleImage(ImageUtil.encodeToBase64(data.getVehicleImage()));
 													
 				}				
 				
@@ -187,8 +186,8 @@ public class OcrBean{
 					data.setDataHour(localeOCR.getStringKey("ocr_no_date_label"));
 					data.setCam(localeOCR.getStringKey("ocr_no_cam_label"));
 					data.setPlaca(localeOCR.getStringKey("ocr_no_plate_label"));
-					data.setPlateImage(getImagePath(imagePlt));
-					data.setVehicleImage(getImagePath(imageVeh));
+					data.setPlateImage(ImageUtil.encodeToBase64(imagePlt));
+					data.setVehicleImage(ImageUtil.encodeToBase64(imageVeh));
 															
 				}else { 
 														
@@ -196,8 +195,8 @@ public class OcrBean{
 				data.getDataHour();
 				data.getCam();
 				data.getPlaca();
-				data.setPlateImage(getImagePath(data.getPlateImage()));
-				data.setVehicleImage(getImagePath(data.getVehicleImage()));
+				data.setPlateImage(ImageUtil.encodeToBase64(data.getPlateImage()));
+				data.setVehicleImage(ImageUtil.encodeToBase64(data.getVehicleImage()));
 											
 				}			
 			  }
@@ -214,18 +213,6 @@ public class OcrBean{
 		
 	}
 	
-	public String getImagePath(String image) {
-		
-		try {
-
-			Path path = Paths.get(image);								
-			  byte[] file = Files.readAllBytes(path);
-			  return Base64.getEncoder().encodeToString(file);
-			  
-		} catch (IOException e) {											
-			return "";
-		}
-
-	}
+	
 	
 }

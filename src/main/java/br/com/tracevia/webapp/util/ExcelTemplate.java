@@ -525,15 +525,15 @@ public class ExcelTemplate {
 		
 		if(!period.equals("")) {
 
-		// PERÍODO LABEL
-		utilSheet.createCell(sheet, row, 6, 7);
-		utilSheet.setCellValue(sheet, row, 6, 7, localeExcel.getStringKey("excel_sheet_header_period"));
-		utilSheet.setCellStyle(sheet, row, centerBoldStyle, 6, 7);
-
-		// PERIODO
-		utilSheet.createCell(sheet, row, 6, 8);
-		utilSheet.setCellValue(sheet, row, 6, 8, period[2]);
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 6, 8);
+			// PERÍODO LABEL
+			utilSheet.createCell(sheet, row, 6, 7);
+			utilSheet.setCellValue(sheet, row, 6, 7, localeExcel.getStringKey("excel_sheet_header_period"));
+			utilSheet.setCellStyle(sheet, row, centerBoldStyle, 6, 7);
+	
+			// PERIODO
+			utilSheet.createCell(sheet, row, 6, 8);
+			utilSheet.setCellValue(sheet, row, 6, 8, period[2]);
+			utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 6, 8);
 		
 		}
 		

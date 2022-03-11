@@ -1837,7 +1837,7 @@ System.out.println("btnedit");
 					
 			//chamando a imagem
 			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
-			Image image1 = Image.getInstance(RoadConcessionaire.externalDefaultLogo);
+			Image image1 = Image.getInstance(RoadConcessionaire.externalImagePath);
 			Image image2 = Image.getInstance(logo);
 
 			//ediï¿½ï¿½o das imagens

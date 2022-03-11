@@ -872,10 +872,9 @@ public class ExcelUtil {
 		
 		try {
 			
-			String current = FacesContext.getCurrentInstance().getExternalContext().getRealPath("");
-			Path path = Paths.get(current, "resources", "images", "excel", logo);
-	
-			InputStream my_banner_image = new FileInputStream(path.toString());
+			String path = ImageUtil.getImagePath("images", "files", logo);
+				
+			InputStream my_banner_image = new FileInputStream(path);
 
 			byte[] bytes = IOUtils.toByteArray(my_banner_image);	
 
