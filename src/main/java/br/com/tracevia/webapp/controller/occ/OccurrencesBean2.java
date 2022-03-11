@@ -33,6 +33,7 @@ import javax.servlet.http.Part;
 import javax.swing.ImageIcon;
 
 import org.apache.poi.util.IOUtils;
+import org.apache.poi.xwpf.usermodel.TextAlignment;
 import org.primefaces.component.tabview.Tab;
 import org.primefaces.context.RequestContext;
 
@@ -1983,7 +1984,7 @@ public class OccurrencesBean2 {
 				}
 				if(i == 1) {
 					table5.addCell("B");
-					table5.addCell(new PdfPCell(new Phrase("TRABAJOS DE\\nCONSERVACIÓN", formatText1)));
+					table5.addCell(new PdfPCell(new Phrase("TRABAJOS DE\nCONSERVACIÓN", formatText1)));
 					table5.addCell(new PdfPCell(new Phrase("COLUMN", formatText1)));
 				}
 				if(i == 2) {
@@ -2009,20 +2010,69 @@ public class OccurrencesBean2 {
 				//table5.addCell("column "+ i);
 			}
 
-
 			document.add(table5);
-
+			
 			Rectangle obs = new Rectangle(48, 140, 548, 180);
 			obs.setBorder(Rectangle.BOX);
 			obs.setBorderWidth(2);
 			canvas.rectangle(obs);
 			Paragraph obs_ = new Paragraph();
 			document.add(conteudo);
-			obs_.add(new Paragraph(new Phrase(10F, "Daños pendientes por cuantificar: Usuario no cuenta con seguro, la autopista no reclama daño alguno.", FontFactory.getFont(FontFactory.HELVETICA, 10F))));
+			obs_.add(new Paragraph(new Phrase(10F, "Daños pendientes por cuantificar: Usuario no cuenta con seguro, la autopista no reclama daño alguno.Daños pendientes por cuantificar: Usuario no cuenta con seguro, la autopista no reclama daño alguno", FontFactory.getFont(FontFactory.HELVETICA, 10F))));
+			obs_.setIndentationLeft(40f);
 			document.add(obs_);
 			
-			Rectangle ass = new Rectangle(48, 130, 548, 50);
+			
+			Rectangle ass = new Rectangle(48, 130, 548, 60);
 			ass.setBorder(Rectangle.BOX);
+			document.add(conteudo);
+			
+			PdfPTable table_ass = new PdfPTable(2);
+			table_ass.setTotalWidth(500);
+			table_ass.setTotalWidth(new float[]{ 250, 250 });
+			table_ass.setLockedWidth(true);
+			
+			Paragraph title__ = new Paragraph(new Phrase(10F, "OPERADOR DEL C. CONTROL", FontFactory.getFont(FontFactory.COURIER_BOLD, 10F)));
+			Paragraph title_ = new Paragraph(new Phrase(10F, "AJUSTADOR", FontFactory.getFont(FontFactory.COURIER_BOLD, 10F)));
+			table_ass.addCell(title__);
+			table_ass.addCell(title_);
+			table_ass.addCell(new PdfPCell(new Phrase("\nNOMBRE: Juan Baptista Mendez", formatText1)));
+			table_ass.addCell(new PdfPCell(new Phrase("\nNOMBRE: Alvaro Angel Millano", formatText1)));
+			table_ass.addCell(new PdfPCell(new Phrase("\nFIRMA: ______________________", formatText1)));
+			table_ass.addCell(new PdfPCell(new Phrase("\nFIRMA: ______________________", formatText1)));
+			
+			
+			
+			
+			document.add(table_ass);			
+			/*Paragraph ass__ = new Paragraph();
+			Paragraph name__ = new Paragraph();
+			Paragraph title__ = new Paragraph();
+			title__.add(new Paragraph(new Phrase(10F, "OPERADOR DEL C. CONTROL", FontFactory.getFont(FontFactory.HELVETICA, 10F))));
+			title__.setIndentationLeft(30f);
+			document.add(conteudo);
+			document.add(title__);
+			name__.add("Nombre: Tester");
+			name__.setIndentationLeft(30f);
+			document.add(name__);
+			ass__.add("Firma:  _______________");
+			ass__.setIndentationLeft(30f);
+			document.add(ass__);
+			
+			Paragraph ass_ = new Paragraph();
+			Paragraph name_ = new Paragraph();
+			Paragraph title_ = new Paragraph();
+			title_.add(new Paragraph(new Phrase(10F, "AJUSTADOR", FontFactory.getFont(FontFactory.HELVETICA, 10F))));
+			title_.setIndentationLeft(300f);
+			document.add(conteudo);
+			document.add(title_);
+			name_.add("Nombre: Tester");
+			name_.setIndentationLeft(300f);
+			document.add(name_);
+			ass_.add("Firma:  _______________");
+			ass_.setIndentationLeft(300f);
+			document.add(ass_);*/
+			
 			ass.setBorderWidth(2);
 			canvas.rectangle(ass);
 		}
