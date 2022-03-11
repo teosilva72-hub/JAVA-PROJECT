@@ -1331,7 +1331,7 @@ public class ReportBean {
 			
 	    public void createChartData(boolean chartBool, String[] period, List<String> columns, List<String[]> lines, List<String> ids) {
 					
-	    TranslationMethods tm = new TranslationMethods();
+	 // TranslationMethods tm = new TranslationMethods();
 	   				
 		LocalDateTime local =  LocalDateTime.now();
 		EquipmentsDAO dao = new EquipmentsDAO();
@@ -1391,7 +1391,7 @@ public class ReportBean {
 			  						  
 			// -------------------------------------------------------------------
 			  
-			  	TranslationMethods tm = new TranslationMethods();
+			 // TranslationMethods tm = new TranslationMethods();
 			  	DateTimeApplication dta = new DateTimeApplication();
 		    							
 				LocalDateTime local =  LocalDateTime.now();

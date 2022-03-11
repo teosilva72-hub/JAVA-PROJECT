@@ -8,27 +8,25 @@ import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
 import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.model.ocr.OCR;
+import br.com.tracevia.webapp.util.ImageUtil;
 
 public class OCRDAO{
 	
 	SQL_Tracevia conn = new SQL_Tracevia();
 	
-	private String ftpFolder, noImageFolder;
-	
+	String ftpFolder, noImage;
+		
 	public OCRDAO() {
 		
 		ftpFolder = "C:\\Cameras\\OCR_Types\\";
-		
-		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+		noImage = "no-image.jpg";	
 				
 	}
 
 	public ArrayList<OCR> searchTable(String start, String end, String ocr_site_name) throws Exception {
 		
 		String search = "SELECT * FROM ocr_data WHERE datetime BETWEEN'"+ start +"'AND'"+ end +"'AND site_name ='"+ ocr_site_name+"'";
-		
-		//String search1 = "SELECT * FROM ocr_data WHERE datetime BETWEEN'"+ start +"'AND'"+ end+"'";
-		
+			
 		ArrayList<OCR> list = new ArrayList<OCR>();
 		
 		try {
@@ -67,14 +65,15 @@ public class OCRDAO{
 	public OCR searchCam(String cam) throws Exception {
 		
 		OCR search = new OCR();
-		
-		//Script dos atributos que as infor��es ser�o requisitadas
+				
 		String query = "SELECT * FROM ocr_data WHERE site_name ='"+cam+"'ORDER BY id_ocr_data desc limit 1";
 			
 		try {
+			
 			conn.start(1);
 			conn.prepare(query);
 			MapResult result = conn.executeQuery();
+			
 			if(result.hasNext()) {
 				for (RowResult rs : result) {
 					
@@ -121,9 +120,7 @@ public class OCRDAO{
 					search.setPlaca(rs.getString(4));
 					search.setVehicleImage(findVehicleImage(search));
 					search.setPlateImage(findPlateImage(search));
-					
-					//System.out.println(search.getVehicleImage());
-										
+															
 				}
 			}
 			
@@ -145,13 +142,14 @@ public class OCRDAO{
 		String dateVeh = formataDados(data.getDataHour());
 		String subFolder = dateVeh.substring(0, 8);		
 		String nameVeh = data.getCam().replaceAll(" ", "_");
-				
-		if(data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
-			 path = noImageFolder.concat("no-image.jpg");
-			// path =  ftpFolder+""+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_.jpg";
 		
-		else path = ftpFolder+""+nameVeh+"\\"+subFolder+"\\"+nameVeh+"_"+dateVeh+"_"+data.getPlaca()+".jpg";
-					
+		String sourcePath = ftpFolder.concat(nameVeh).concat("\\"+subFolder).concat("\\"+nameVeh).concat("_"+dateVeh+"_").concat(data.getPlaca()+".jpg");
+						
+		if(data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
+			 path = ImageUtil.getImagePath("images", "unknown", noImage);
+				
+		else path = sourcePath;
+										
 		return path;
 				
 	}
@@ -162,14 +160,13 @@ public class OCRDAO{
 		String dateVeh = formataDados(data.getDataHour());
 		String subFolder = dateVeh.substring(0, 8);		
 		String nameVeh = data.getCam().replaceAll(" ", "_");
-				
+		
+		String sourcePath = ftpFolder.concat(nameVeh).concat("\\"+subFolder).concat("\\Plate"+nameVeh).concat("_"+dateVeh+"_").concat(data.getPlaca()+".jpg");
+						
 		if(data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
-			path = noImageFolder.concat("no-image.jpg");
-		  //path = ftpFolder+""+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_.jpg";
-		
-		  
-		
-		else path = ftpFolder+""+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_"+data.getPlaca()+".jpg";
+			 path = ImageUtil.getImagePath("images", "unknown", noImage);
+						  	
+		else path = sourcePath;
 							
 		return path;			
 		
@@ -223,7 +220,7 @@ public class OCRDAO{
 		}finally {
 			conn.close();
 		}
-		//passando os valores dos atributos para a vari�vel occ
+		
 		return ocr;
 
 	}
