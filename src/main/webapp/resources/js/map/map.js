@@ -790,7 +790,16 @@ function sendType() {
 	document.getElementById('edit-equip-form:equipId1').value = id;
 	document.getElementById('edit-equip-form:equipTable1').value = type;
 }
-
+$(editModal=>{
+	
+	editBtnDisabled(true)
+	$('#edit-equip-form input').change(e=>{
+		editBtnDisabled(false)
+	})
+})
+function editBtnDisabled(cheked){
+	$('#btn-form-confirm-edit').attr("disabled", cheked)
+}
 function deleteParameters() {
 
 	document.getElementById('delete-equip-form:equipDel').value = id;
