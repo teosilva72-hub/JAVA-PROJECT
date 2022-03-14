@@ -21,25 +21,25 @@
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{reportBean.setTable('VBVData')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('EquipmentID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.weight_per_time_interval_quantity, satLabels.weight_per_time_interval_gross_weight))}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(DateTime, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(1); SUM(gross)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(1); SUM(gross)')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(DateTime, `dd/MM/yyyy`); CAST($period as TIME); SUM(1) as `total`; SUM(AxlesWeight01 + AxlesWeight02 + AxlesWeight03 + AxlesWeight04 + AxlesWeight05 + AxlesWeight06 + AxlesWeight07 + AxlesWeight08 + AxlesWeight09 + AxlesWeight10 + AxlesWeight11 + AxlesWeight12 + AxlesWeight13 + AxlesWeight14 + AxlesWeight15 + AxlesWeight16 + AxlesWeight17 + AxlesWeight18 + AxlesWeight19 + AxlesWeight20 + AxlesWeight21 + AxlesWeight22 + AxlesWeight23 + AxlesWeight24 + AxlesWeight25) as `sum`')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('DateTime')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('DateTime', reportsLabels.reports_select_date, true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('EquipmentID', reportsLabels.reports_select_equipments, 'tblEquipment.EquipmentID|EquipmentName', false, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('TrafficClassID', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', false, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	
 		
     </f:metadata>
 	
