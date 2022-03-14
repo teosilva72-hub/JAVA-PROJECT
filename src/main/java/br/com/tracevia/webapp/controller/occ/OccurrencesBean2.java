@@ -70,6 +70,7 @@ import br.com.tracevia.webapp.model.occ.OccurrencesData2;
 import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
 import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.model.sos.SosData;
+import br.com.tracevia.webapp.util.ImageUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="occurrencesBean2")
@@ -1837,20 +1838,15 @@ public class OccurrencesBean2 {
 			RequestContext.getCurrentInstance().execute("displayPdf()");
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			RequestContext.getCurrentInstance().execute("msgDownload()");
-
-			//chamando a imagem
-			String f = System.getProperty("user.home")+"\\eclipse-workspace\\tracevia-application\\src\\main\\webapp\\resources\\images\\logo\\road_concessionaires\\tuxpan_tampico.webp";
-			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
-			Image image2 = Image.getInstance(f);
-
-			//ediï¿½ï¿½o das imagens
-			image2.setAbsolutePosition(70, 770);
-			image2.scaleAbsolute (80, 30);
-
-			//passando a imagem
-			//document.add(image1);
-
-			document.add(image2);
+			
+			logo = ImageUtil.getImagePath("images", "files", RoadConcessionaire.externalImagePath);
+			
+			if(!logo.equals("")) {
+				Image tuxpanL = Image.getInstance(logo);
+				tuxpanL.setAbsolutePosition(70, 770);
+				tuxpanL.scaleAbsolute (80, 30);
+				document.add(tuxpanL);
+			}
 
 			PdfContentByte canvas = writer.getDirectContent();
 			Paragraph conteudo = new Paragraph();
