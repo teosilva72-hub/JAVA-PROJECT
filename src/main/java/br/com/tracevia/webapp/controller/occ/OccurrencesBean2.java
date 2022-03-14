@@ -1839,9 +1839,9 @@ public class OccurrencesBean2 {
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 
 			//chamando a imagem
+			String f = System.getProperty("user.home")+"\\eclipse-workspace\\tracevia-application\\src\\main\\webapp\\resources\\images\\logo\\road_concessionaires\\tuxpan_tampico.webp";
 			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
-			Image image1 = Image.getInstance(RoadConcessionaire.externalImagePath);
-			Image image2 = Image.getInstance(logo);
+			Image image2 = Image.getInstance(f);
 
 			//ediï¿½ï¿½o das imagens
 			image2.setAbsolutePosition(70, 770);
@@ -2023,7 +2023,7 @@ public class OccurrencesBean2 {
 			document.add(obs_);
 			
 			
-			Rectangle ass = new Rectangle(48, 130, 548, 60);
+			Rectangle ass = new Rectangle(48, 130, 548, 50);
 			ass.setBorder(Rectangle.BOX);
 			document.add(conteudo);
 			
@@ -2041,37 +2041,7 @@ public class OccurrencesBean2 {
 			table_ass.addCell(new PdfPCell(new Phrase("\nFIRMA: ______________________", formatText1)));
 			table_ass.addCell(new PdfPCell(new Phrase("\nFIRMA: ______________________", formatText1)));
 			
-			
-			
-			
 			document.add(table_ass);			
-			/*Paragraph ass__ = new Paragraph();
-			Paragraph name__ = new Paragraph();
-			Paragraph title__ = new Paragraph();
-			title__.add(new Paragraph(new Phrase(10F, "OPERADOR DEL C. CONTROL", FontFactory.getFont(FontFactory.HELVETICA, 10F))));
-			title__.setIndentationLeft(30f);
-			document.add(conteudo);
-			document.add(title__);
-			name__.add("Nombre: Tester");
-			name__.setIndentationLeft(30f);
-			document.add(name__);
-			ass__.add("Firma:  _______________");
-			ass__.setIndentationLeft(30f);
-			document.add(ass__);
-			
-			Paragraph ass_ = new Paragraph();
-			Paragraph name_ = new Paragraph();
-			Paragraph title_ = new Paragraph();
-			title_.add(new Paragraph(new Phrase(10F, "AJUSTADOR", FontFactory.getFont(FontFactory.HELVETICA, 10F))));
-			title_.setIndentationLeft(300f);
-			document.add(conteudo);
-			document.add(title_);
-			name_.add("Nombre: Tester");
-			name_.setIndentationLeft(300f);
-			document.add(name_);
-			ass_.add("Firma:  _______________");
-			ass_.setIndentationLeft(300f);
-			document.add(ass_);*/
 			
 			ass.setBorderWidth(2);
 			canvas.rectangle(ass);
