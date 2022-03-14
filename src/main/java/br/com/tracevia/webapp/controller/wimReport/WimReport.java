@@ -36,7 +36,7 @@ import br.com.tracevia.webapp.model.speed.SpeedReport.Builder;
 import br.com.tracevia.webapp.model.wim.WimData;
 import br.com.tracevia.webapp.util.ImageUtil;
 
-@ManagedBean(name="WimReport")
+@ManagedBean(name="wimReport")
 @ViewScoped
 public class WimReport {
 
@@ -306,12 +306,11 @@ public class WimReport {
 		data.setPbtTotal("-");
 		data.setSize("-");
 		
-		String unknownImage = ImageUtil.getImagePath("images", "unknown", noImage);
-		String encondedUnknownImage = ImageUtil.encodeToBase64(unknownImage);
-
-		setImage(encondedUnknownImage);
-		setImagePlate(encondedUnknownImage);
-		setImageSil(encondedUnknownImage);
+		String unknownImage = ImageUtil.getInternalImagePathAndEncodeToBase64("images", "unknown", noImage);
+	
+		setImage(unknownImage);
+		setImagePlate(unknownImage);
+		setImageSil(unknownImage);
 
 		minutos = new  ArrayList<SelectItem>();
 
@@ -541,27 +540,28 @@ public class WimReport {
 
 				indicator(data);
 				
-				String vehImg = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, data.getImage());
-				String plateImg = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, data.getImagePlate());
-				String silImg = ImageUtil.getImagePathAndEncodeToBase64("images", silFolder, data.getImageSil());
+				String vehImg = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, data.getImage());
+				String plateImg = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, data.getImagePlate());
+				String silImg = ImageUtil.getInternalImagePathAndEncodeToBase64("images", silFolder, data.getImageSil());
+				String blankImg = ImageUtil.getInternalImagePathAndEncodeToBase64("images", "unknown", noImage);
 								
 				//VEHICLE IMAGE
 				if(vehImg != null)				
-					image = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, data.getImage());
+					image = vehImg;
 
-				else image = ImageUtil.getImagePathAndEncodeToBase64("images", "unknown", noImage);
+				else image = blankImg;
 
 				//PLATE IMAGE
 				if(plateImg != null)	
-					imagePlate = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, data.getImagePlate());
+					imagePlate = plateImg;
 
-				else imagePlate = ImageUtil.getImagePathAndEncodeToBase64("images", "unknown", noImage);
+				else imagePlate = blankImg;
 				
 				//SIL IMAGE
 				if(silImg != null)					
-					imageSil = ImageUtil.getImagePathAndEncodeToBase64("images", silFolder, data.getImageSil());
+					imageSil = silImg;
 
-				else imageSil = ImageUtil.getImagePathAndEncodeToBase64("images", "unknown", noImage);			
+				else imageSil = blankImg;			
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -607,7 +607,7 @@ public class WimReport {
 			document.add(new Paragraph(trad.wimLabels("INFORMATION2")+"\n\n"));
 			
 			
-			logo = ImageUtil.getImagePath("images", "files", RoadConcessionaire.externalImagePath);
+			logo = ImageUtil.getInternalImagePath("images", "files", RoadConcessionaire.externalImagePath);
 						
 			if(!logo.equals("")) {
 				Image tuxpanL = Image.getInstance(logo);
@@ -616,9 +616,9 @@ public class WimReport {
 				document.add(tuxpanL);
 			}
 			
-			String vehImg = ImageUtil.getImagePath("images", vehFolder, data.getImage());
-			String plateImg = ImageUtil.getImagePath("images", vehFolder, data.getImagePlate());
-			String blankImage = ImageUtil.getImagePath("images", "unknown", noImage);
+			String vehImg = ImageUtil.getInternalImagePath("images", vehFolder, data.getImage());
+			String plateImg = ImageUtil.getInternalImagePath("images", vehFolder, data.getImagePlate());
+			String blankImage = ImageUtil.getInternalImagePath("images", "unknown", noImage);
 									
 			if(!vehImg.equals("")) {
 				

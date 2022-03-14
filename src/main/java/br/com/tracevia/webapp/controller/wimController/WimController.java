@@ -16,7 +16,7 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.wim.WimData;
 import br.com.tracevia.webapp.util.ImageUtil;
 
-@ManagedBean(name="WimController")
+@ManagedBean(name="wimController")
 @ViewScoped
 public class WimController {
 		
@@ -97,20 +97,15 @@ public class WimController {
 	@PostConstruct
 	public void initalize(){
 				
-		data = new WimData();
-		dao = new WIMDAO();
-		
-		silFolder = "wim/sil";		
-	    vehFolder = "wim/veh";		
-		noImage = "no-image.jpg";
-		
-		// initalize wim realtime
-		//colorInitial();
-		//rate();
-		//updateView();
-			
 		try {
 			
+			data = new WimData();
+			dao = new WIMDAO();
+			
+			silFolder = "wim/sil";		
+		    vehFolder = "wim/veh";		
+			noImage = "no-image.jpg";		
+						
 			//dados();
 			initializeVeh();
 							
@@ -320,7 +315,7 @@ public class WimController {
 			  
 	  public void initializeVeh() {
 		  
-		  String unknownImage = ImageUtil.getImagePath("images", "unknown", noImage);
+		  String unknownImage = ImageUtil.getInternalImagePath("images", "unknown", noImage);
 		  String encondedUnknownImage = ImageUtil.encodeToBase64(unknownImage);
 		 		 
 		  img1 = encondedUnknownImage;
@@ -386,9 +381,9 @@ public class WimController {
 	   						   
 	      boolean saved = false;
   		  
-		  img1 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "WIM_car.jpg");
-		  img2 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_car.jpg");
-		  silueta = ImageUtil.getImagePathAndEncodeToBase64("images", silFolder, "car.jpg");
+		  img1 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "WIM_car.jpg");
+		  img2 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_car.jpg");
+		  silueta = ImageUtil.getInternalImagePathAndEncodeToBase64("images", silFolder, "car.jpg");
 		  					      			
 		  data.setImage("WIM_car.jpg");
 		  data.setImagePlate("Plate_WIM_car.jpg");
@@ -466,9 +461,9 @@ public class WimController {
 		  
 	      DateTimeApplication dta = new DateTimeApplication();
 	    		  
-		  img1 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "WIM_bus2.jpg");
-		  img2 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_bus2.jpg");
-		  silueta = ImageUtil.getImagePathAndEncodeToBase64("images", silFolder, "bus2.jpg");
+		  img1 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "WIM_bus2.jpg");
+		  img2 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_bus2.jpg");
+		  silueta = ImageUtil.getInternalImagePathAndEncodeToBase64("images", silFolder, "bus2.jpg");
 					      		
 		  data.setImage("WIM_bus2.jpg");
 		  data.setImagePlate("Plate_WIM_bus2.jpg");
@@ -545,9 +540,9 @@ public class WimController {
 		  
 		  DateTimeApplication dta = new DateTimeApplication();
 	   	   			  
-		  img1 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "WIM_trck2.jpg");
-		  img2 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_trck2.jpg");
-		  silueta = ImageUtil.getImagePathAndEncodeToBase64("images", silFolder, "2.jpg");
+		  img1 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "WIM_trck2.jpg");
+		  img2 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_trck2.jpg");
+		  silueta = ImageUtil.getInternalImagePathAndEncodeToBase64("images", silFolder, "2.jpg");
 					   
 		  data.setImage("WIM_trck2.jpg");
 		  data.setImagePlate("Plate_WIM_trck2.jpg");
@@ -624,9 +619,9 @@ public class WimController {
 		  
 	   DateTimeApplication dta = new DateTimeApplication();
   		  			  
-		  img1 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "WIM_trck3.jpg");
-		  img2 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_trck3.jpg");
-		  silueta = ImageUtil.getImagePathAndEncodeToBase64("images", silFolder, "3.jpg");
+		  img1 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "WIM_trck3.jpg");
+		  img2 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_trck3.jpg");
+		  silueta = ImageUtil.getInternalImagePathAndEncodeToBase64("images", silFolder, "3.jpg");
 					   		   
 	      data.setImage("WIM_trck3.jpg");
 	      data.setImagePlate("Plate_WIM_trck3.jpg");
@@ -703,9 +698,9 @@ public class WimController {
 		  
 	   DateTimeApplication dta = new DateTimeApplication();
   				  
-		  img1 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "WIM_trck5.jpg");
-		  img2 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_trck5.jpg");
-		  silueta = ImageUtil.getImagePathAndEncodeToBase64("images", silFolder, "5.jpg");
+		  img1 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "WIM_trck5.jpg");
+		  img2 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_trck5.jpg");
+		  silueta = ImageUtil.getInternalImagePathAndEncodeToBase64("images", silFolder, "5.jpg");
 					   					     
 		  data.setImage("WIM_trck5.jpg");
 	      data.setImagePlate("Plate_WIM_trck5.jpg");
@@ -781,9 +776,9 @@ public class WimController {
 		  
 	   DateTimeApplication dta = new DateTimeApplication();
   		  		  
-		  img1 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "WIM_trck6.jpg");
-		  img2 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_trck6.jpg");
-		  silueta = ImageUtil.getImagePathAndEncodeToBase64("images", silFolder, "6.jpg");
+		  img1 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "WIM_trck6.jpg");
+		  img2 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_trck6.jpg");
+		  silueta = ImageUtil.getInternalImagePathAndEncodeToBase64("images", silFolder, "6.jpg");
 					   					      	
 		  data.setImage("WIM_trck6.jpg");
 	      data.setImagePlate("Plate_WIM_trck6.jpg");
@@ -858,9 +853,9 @@ public class WimController {
 		  
 	   DateTimeApplication dta = new DateTimeApplication();
   			  
-		  img1 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "WIM_trck7.jpg");
-		  img2 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_trck7.jpg");
-		  silueta = ImageUtil.getImagePathAndEncodeToBase64("images", silFolder, "7.jpg");				   
+		  img1 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "WIM_trck7.jpg");
+		  img2 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_trck7.jpg");
+		  silueta = ImageUtil.getInternalImagePathAndEncodeToBase64("images", silFolder, "7.jpg");				   
 					      		
 		  data.setImage("WIM_trck7.jpg");
 	      data.setImagePlate("Plate_WIM_trck7.jpg");
@@ -935,9 +930,9 @@ public class WimController {
 		  
 	   DateTimeApplication dta = new DateTimeApplication();
   		  				  
-		  img1 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "WIM_trck9.jpg");
-		  img2 = ImageUtil.getImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_trck9.jpg");
-		  silueta = ImageUtil.getImagePathAndEncodeToBase64("images", silFolder, "9.jpg");
+		  img1 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "WIM_trck9.jpg");
+		  img2 = ImageUtil.getInternalImagePathAndEncodeToBase64("images", vehFolder, "Plate_WIM_trck9.jpg");
+		  silueta = ImageUtil.getInternalImagePathAndEncodeToBase64("images", silFolder, "9.jpg");
 					   		    	
 		  data.setImage("WIM_trck9.jpg");
 	      data.setImagePlate("Plate_WIM_trck9.jpg");

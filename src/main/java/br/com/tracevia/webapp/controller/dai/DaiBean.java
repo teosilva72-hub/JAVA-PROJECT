@@ -23,6 +23,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.naming.NoInitialContextException;
 
 import org.primefaces.context.RequestContext;
 
@@ -39,6 +40,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.util.ImageUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="daiBean")
@@ -49,16 +52,12 @@ public class DaiBean {
 	public Traffic traffic;
 	public static List<Equipments> listDai;
 	private String logo;
+	
+	static String noImage;
+	String ftpFolder;
 
 	public String getLogo() {
-		try {
-
-			Path path = Paths.get(logo);
-			byte[] file = Files.readAllBytes(path);
-			return Base64.getEncoder().encodeToString(file);
-		} catch (IOException e) {
-			return "";
-		}
+		return logo;
 	}
 	public Traffic getTraffic() {
 		return traffic;
@@ -74,15 +73,21 @@ public class DaiBean {
 
 	@PostConstruct
 	public void initalize(){
+		
 		SimpleDateFormat formattter = new SimpleDateFormat("yyyyMMdd");
 		Date date = new Date();
-
+		
 		try {
+			
 			DAI dai = new DAI();
 			listDai = dai.listEquipments("dai", 0);
 			traffic = new Traffic();
 			
+			ftpFolder = "C:\\Cameras\\DAI\\"; 
+			noImage = "no-image.jpg";
+			
 			getAllFile(formattter.format(date));
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -111,6 +116,7 @@ public class DaiBean {
 		}
 
 		Traffic(Path path, int idx) throws IOException, ParseException {
+			
 			file = path;
 			
 			String[] pathS = path.toString().split("\\\\");
@@ -193,12 +199,12 @@ public class DaiBean {
 
 		public String getPath() {
 			try {
-				if (file != null) {				
-						return Base64.getEncoder().encodeToString(Files.readAllBytes(file));
+				if (file != null) {	
+					 return ImageUtil.encodeToBase64(file.toString());					
 				} else {
-					return Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get("C:\\Tracevia\\Software\\External\\Unknown\\no-image.jpg")));
+					return ImageUtil.getInternalImagePathAndEncodeToBase64("images", "unknown", noImage);	
 				}
-			} catch (IOException e) {}
+			} catch (Exception e) {}
 			return "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 		}
 
@@ -311,14 +317,13 @@ public class DaiBean {
 
 	}
 
-	public List<Path> getAllFolders(String date) {
-		String folder = "C:\\Cameras\\DAI\\";
+	public List<Path> getAllFolders(String date) {		
 		List<Path> allPath = new ArrayList<>();
-		String[] allEquip = listFolder(folder);
+		String[] allEquip = listFolder(ftpFolder);
 		if (allEquip != null)
 			for (final String path : allEquip) {			
 				try {
-					allPath.addAll(listAllFiles(folder + path + "\\Traffic Incident\\" + date));
+					allPath.addAll(listAllFiles(ftpFolder.concat(path).concat("\\Traffic Incident\\").concat(date)));
 				} catch (IOException e) {}
 			}
 		
@@ -385,14 +390,16 @@ public class DaiBean {
 			p.add("                              Pag 1");//paragrafo Evento
 			ct.addElement(p);
 			ct.go();
-			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
-			File  tuxpan = new File(logo);
-			if(tuxpan.exists()) {
+			
+			logo = ImageUtil.getInternalImagePath("images", "files", RoadConcessionaire.externalImagePath);
+			
+			if(!logo.equals("")) {
 				Image tuxpanL = Image.getInstance(logo);
 				tuxpanL.setAbsolutePosition(420, 800);
 				tuxpanL.scaleAbsolute (100, 30);
 				document.add(tuxpanL);
 			}
+			
 			document.add(new Paragraph("\n\n"));
 			document.add(new Paragraph(localeDai.getStringKey("camera")+": "+traffic.name));
 			document.add(new Paragraph(localeDai.getStringKey("way")+": "+trad.daiLabels(traffic.direction)));
@@ -401,15 +408,18 @@ public class DaiBean {
 			document.add(new Paragraph(localeDai.getStringKey("date")+": "+traffic.date));
 			document.add(new Paragraph(localeDai.getStringKey("time")+": "+traffic.hour));
 			document.add(new Paragraph(localeDai.getStringKey("incident")+": "+trad.daiLabels(traffic.incident)));
-			String noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+			
 			File img1 = new File(traffic.file.toString());
-			if(img1.exists()) {
+			
+			if(img1.exists()) {				
 				Image imgX = Image.getInstance(img1.getPath());
 				imgX.setAbsolutePosition(50, 200);
 				imgX.scaleAbsolute (500, 400);
 				document.add(imgX);
 			}else {
-				Image imgX = Image.getInstance(noImageFolder+"no-image.jpg");
+				
+				String blankImage = ImageUtil.getInternalImagePath("images", "unknown", noImage);
+				Image imgX = Image.getInstance(blankImage);
 				imgX.setAbsolutePosition(100, 280);
 				imgX.scaleAbsolute (200, 150);
 				document.add(imgX);

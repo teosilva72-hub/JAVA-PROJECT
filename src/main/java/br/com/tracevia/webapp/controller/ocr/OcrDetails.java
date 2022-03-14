@@ -15,6 +15,7 @@ import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.dao.ocr.OCRDAO;
 import br.com.tracevia.webapp.model.ocr.OCR;
+import br.com.tracevia.webapp.util.ImageUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ViewScoped
@@ -37,7 +38,7 @@ public class OcrDetails{
 	
 	LocaleUtil localeOCR;
 	
-	String imageVeh, imagePlt, noImageFolder, ftpFolder;		
+	String imageVeh, imagePlt, noImage, ftpFolder;		
 		
 	public String getImagePath() {
 		try {
@@ -101,12 +102,14 @@ public class OcrDetails{
 		localeOCR = new LocaleUtil();	
 		localeOCR.getResourceBundle(LocaleUtil.LABELS_OCR);
 		
-		ftpFolder = "C:\\Cameras\\OCR\\NormalType\\";
+		ftpFolder = "C:\\Cameras\\OCR_Types\\"; 
 		
-        noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+		noImage = "no-image.jpg";
 		
-		imageVeh = noImageFolder + "no-image.jpg";
-		imagePlt = noImageFolder + "no-image.jpg";
+		String unknownImage = ImageUtil.getInternalImagePath("images", "unknown", noImage);
+							
+		imageVeh = unknownImage;
+		imagePlt = unknownImage;
 		
 		// System.out.println("Inicializou");
 		updateView();
@@ -204,9 +207,8 @@ public class OcrDetails{
 		dateHour[index] = localeOCR.getStringKey("ocr_no_date_label");
 		cam[index] = camName.replaceAll(" ", "");
 		plate[index] = localeOCR.getStringKey("ocr_no_plate_label");
-		imageVei[index] = getImagePath(imageVeh);
-		imagePlate[index] = getImagePath(imagePlt);
-		
+		imageVei[index] = ImageUtil.encodeToBase64(imageVeh);
+		imagePlate[index] = ImageUtil.encodeToBase64(imagePlt);		
 							
 	}
 		
@@ -216,23 +218,9 @@ public class OcrDetails{
 		dateHour[index] = data.getDataHour();
 		cam[index] = data.getCam().replaceAll(" ", "");
 		plate[index] = data.getPlaca();
-		imageVei[index] = getImagePath(data.getVehicleImage());
-		imagePlate[index] = getImagePath(data.getPlateImage());
+		imageVei[index] = ImageUtil.encodeToBase64(data.getVehicleImage());
+		imagePlate[index] = ImageUtil.encodeToBase64(data.getPlateImage());
 						
-	}
-	
-    public String getImagePath(String image) {
-		
-		try {
-
-			Path path = Paths.get(image);								
-			  byte[] file = Files.readAllBytes(path);
-			  return Base64.getEncoder().encodeToString(file);
-			  
-		} catch (IOException e) {											
-			return "";
-		}
-
-	}
+	}  
     
  }

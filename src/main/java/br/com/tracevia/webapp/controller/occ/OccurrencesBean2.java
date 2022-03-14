@@ -70,6 +70,7 @@ import br.com.tracevia.webapp.model.occ.OccurrencesData2;
 import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
 import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.model.sos.SosData;
+import br.com.tracevia.webapp.util.ImageUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="occurrencesBean2")
@@ -1837,20 +1838,15 @@ public class OccurrencesBean2 {
 			RequestContext.getCurrentInstance().execute("displayPdf()");
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			RequestContext.getCurrentInstance().execute("msgDownload()");
-
-			//chamando a imagem
-			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
-			Image image1 = Image.getInstance(RoadConcessionaire.externalImagePath);
-			Image image2 = Image.getInstance(logo);
-
-			//ediï¿½ï¿½o das imagens
-			image2.setAbsolutePosition(70, 770);
-			image2.scaleAbsolute (80, 30);
-
-			//passando a imagem
-			//document.add(image1);
-
-			document.add(image2);
+			
+			logo = ImageUtil.getInternalImagePath("images", "files", RoadConcessionaire.externalImagePath);
+			
+			if(!logo.equals("")) {
+				Image tuxpanL = Image.getInstance(logo);
+				tuxpanL.setAbsolutePosition(70, 770);
+				tuxpanL.scaleAbsolute (80, 30);
+				document.add(tuxpanL);
+			}
 
 			PdfContentByte canvas = writer.getDirectContent();
 			Paragraph conteudo = new Paragraph();
@@ -2023,7 +2019,7 @@ public class OccurrencesBean2 {
 			document.add(obs_);
 			
 			
-			Rectangle ass = new Rectangle(48, 130, 548, 60);
+			Rectangle ass = new Rectangle(48, 130, 548, 50);
 			ass.setBorder(Rectangle.BOX);
 			document.add(conteudo);
 			
@@ -2041,37 +2037,7 @@ public class OccurrencesBean2 {
 			table_ass.addCell(new PdfPCell(new Phrase("\nFIRMA: ______________________", formatText1)));
 			table_ass.addCell(new PdfPCell(new Phrase("\nFIRMA: ______________________", formatText1)));
 			
-			
-			
-			
 			document.add(table_ass);			
-			/*Paragraph ass__ = new Paragraph();
-			Paragraph name__ = new Paragraph();
-			Paragraph title__ = new Paragraph();
-			title__.add(new Paragraph(new Phrase(10F, "OPERADOR DEL C. CONTROL", FontFactory.getFont(FontFactory.HELVETICA, 10F))));
-			title__.setIndentationLeft(30f);
-			document.add(conteudo);
-			document.add(title__);
-			name__.add("Nombre: Tester");
-			name__.setIndentationLeft(30f);
-			document.add(name__);
-			ass__.add("Firma:  _______________");
-			ass__.setIndentationLeft(30f);
-			document.add(ass__);
-			
-			Paragraph ass_ = new Paragraph();
-			Paragraph name_ = new Paragraph();
-			Paragraph title_ = new Paragraph();
-			title_.add(new Paragraph(new Phrase(10F, "AJUSTADOR", FontFactory.getFont(FontFactory.HELVETICA, 10F))));
-			title_.setIndentationLeft(300f);
-			document.add(conteudo);
-			document.add(title_);
-			name_.add("Nombre: Tester");
-			name_.setIndentationLeft(300f);
-			document.add(name_);
-			ass_.add("Firma:  _______________");
-			ass_.setIndentationLeft(300f);
-			document.add(ass_);*/
 			
 			ass.setBorderWidth(2);
 			canvas.rectangle(ass);

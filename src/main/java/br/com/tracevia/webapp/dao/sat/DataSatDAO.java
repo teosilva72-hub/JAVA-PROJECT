@@ -92,7 +92,7 @@ public class DataSatDAO {
 			
 			MapResult result = conn.executeQuery();
 			
-		 // System.out.println("ORIGIN: "+select);		 	
+		//  System.out.println("ORIGIN: "+select);		 	
 			
 			if (result.hasNext()) {
 				for (RowResult rs : result) {
