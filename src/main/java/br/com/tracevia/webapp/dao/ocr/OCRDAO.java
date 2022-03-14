@@ -1,5 +1,6 @@
 package br.com.tracevia.webapp.dao.ocr;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,12 +144,15 @@ public class OCRDAO{
 		String subFolder = dateVeh.substring(0, 8);		
 		String nameVeh = data.getCam().replaceAll(" ", "_");
 		
-		String sourcePath = ftpFolder.concat(nameVeh).concat("\\"+subFolder).concat("\\"+nameVeh).concat("_"+dateVeh+"_").concat(data.getPlaca()+".jpg");
-						
-		if(data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
-			 path = ImageUtil.getImagePath("images", "unknown", noImage);
+		String sourceFolder = ftpFolder.concat(nameVeh).concat("\\"+subFolder);		
+		String vehicleImg = sourceFolder.concat("\\"+nameVeh).concat("_"+dateVeh+"_").concat(data.getPlaca()+".jpg");
 				
-		else path = sourcePath;
+		File image = new File(vehicleImg); // To check IF exists
+				
+		if(!image.exists() || data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
+			 path = ImageUtil.getInternalImagePath("images", "unknown", noImage);
+				
+		else path = vehicleImg;
 										
 		return path;
 				
@@ -161,12 +165,15 @@ public class OCRDAO{
 		String subFolder = dateVeh.substring(0, 8);		
 		String nameVeh = data.getCam().replaceAll(" ", "_");
 		
-		String sourcePath = ftpFolder.concat(nameVeh).concat("\\"+subFolder).concat("\\Plate"+nameVeh).concat("_"+dateVeh+"_").concat(data.getPlaca()+".jpg");
-						
-		if(data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
-			 path = ImageUtil.getImagePath("images", "unknown", noImage);
+		String sourceFolder = ftpFolder.concat(nameVeh).concat("\\"+subFolder);		
+		String vehicleImg = sourceFolder.concat("\\"+nameVeh).concat("_"+dateVeh+"_").concat(data.getPlaca()+".jpg");
+				
+		File image = new File(vehicleImg); // To check IF exists
+									
+		if(!image.exists() || data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
+			 path = ImageUtil.getInternalImagePath("images", "unknown", noImage);
 						  	
-		else path = sourcePath;
+		else path = vehicleImg;
 							
 		return path;			
 		

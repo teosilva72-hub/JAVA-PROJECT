@@ -80,7 +80,7 @@ public class OcrBean{
 		
 	    noImage = "no-image.jpg";
 		
-		String unknownImage = ImageUtil.getImagePath("images", "unknown", noImage);
+		String unknownImage = ImageUtil.getInternalImagePath("images", "unknown", noImage);
 						
 		imageVeh = unknownImage;
 		imagePlt = unknownImage;

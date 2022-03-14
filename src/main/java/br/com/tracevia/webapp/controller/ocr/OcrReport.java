@@ -4,11 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -39,6 +35,7 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.ocr.OCR;
+import br.com.tracevia.webapp.util.ImageUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ViewScoped
@@ -53,14 +50,14 @@ public class OcrReport{
 
 	private String dtStart, hrStart,
 	minStart, dtFinal, hrFinal,
-	minFinal, camera, imageVeh, imagePlt, ftpFolder, noImageFolder, all_img;
+	minFinal, camera, imageVeh, imagePlt, imageVehPdf, imagePltPdf, ftpFolder, all_img;
+	
+	String noImage;
 
 	private List<SelectItem> minutos, horas, cams;
 	private List<OCR> list;
 	private int rowkey;
 	private boolean selectedRow;
-
-	
 
 	public String getAll_img() {
 		return all_img;
@@ -79,16 +76,7 @@ public class OcrReport{
 	}
 
 	public String getImageVeh() {
-		try {
-
-			Path path = Paths.get(imageVeh);								
-			byte[] file = Files.readAllBytes(path);
-			return Base64.getEncoder().encodeToString(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-
-			return "";
-		}
+		return imageVeh;
 	}
 	
 	public void setImageVeh(String imageVeh) {
@@ -96,26 +84,12 @@ public class OcrReport{
 	}
 
 	public String getImagePlt() {
-		try {
-
-			Path path = Paths.get(imagePlt);
-			byte[] file = Files.readAllBytes(path);
-			return Base64.getEncoder().encodeToString(file);
-		} catch (IOException e) {
-			return "";
-		}
+		return imagePlt;
 	}
 	private String logo;
 	
 	public String getLogo() {
-		try {
-
-			Path path = Paths.get(logo);
-			byte[] file = Files.readAllBytes(path);
-			return Base64.getEncoder().encodeToString(file);
-		} catch (IOException e) {
-			return "";
-		}
+		return logo;
 	}
 
 	public void setImagePlt(String imagePlt) {
@@ -256,22 +230,25 @@ public class OcrReport{
 
 	@PostConstruct
 	public void initialize() {
+		
 		localeOCR = new LocaleUtil();	
 		localeOCR.getResourceBundle(LocaleUtil.LABELS_OCR);
 		RequestContext.getCurrentInstance().execute("getTr()");
 
 		ftpFolder = "C:\\Cameras\\OCR_Types\\"; 
-		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
-		
-		imageVeh = noImageFolder + "no-image.jpg";
-		imagePlt = noImageFolder + "no-image.jpg";
+				
+		noImage = "no-image.jpg";
+					
+		String unknownImage = ImageUtil.getInternalImagePathAndEncodeToBase64("images", "unknown", noImage);
+							
+		imageVeh = unknownImage;
+		imagePlt = unknownImage;
 		
 		horas = new ArrayList<SelectItem>();
 		minutos = new ArrayList<SelectItem>();
 
 		equipDAO = new EquipmentsDAO();		
 		cams = new ArrayList<SelectItem>();
-
 
 		try {
 
@@ -304,19 +281,12 @@ public class OcrReport{
 				minutos.add(new SelectItem(String.valueOf(m), String.valueOf(m)));
 		}
 	}
-	public String path() throws IOException {
-		return Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get("C:\\Users\\mateu\\Pictures\\bahianorte.jpg")));
-	}
-
+	
 	public void search() throws IOException {
 		
 		dao = new reportDAO();
 		data = new OCR();
-		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
-		imageVeh = noImageFolder + "no-image.jpg";
-		imagePlt = noImageFolder + "no-image.jpg";
-		
-
+			
 		String start = dtStart+" "+ hrStart+":"+minStart;
 		String end = dtFinal+" "+ hrFinal+":"+minFinal;
 
@@ -327,7 +297,7 @@ public class OcrReport{
 		String all_search = "";
 		if(all_img.equals("0")) all_search = "";
 		else if(all_img.equals("1") || all_img.equals("2")) all_search = "XXXXXXX";
-		System.out.println(all_img);
+		//System.out.println(all_img);
  		if(cam != "") {
 
 			try {
@@ -362,7 +332,7 @@ public class OcrReport{
 	public void idGet() {
 
 		try {
-			System.out.println();
+			
 			dao = new reportDAO();
 			data = new OCR();
 			
@@ -376,19 +346,27 @@ public class OcrReport{
 			
 			String subFolder = dt.substring(0, 8);
 			String nameVeh = data.getCam().replaceAll(" ", "_");	
-
-			File f = new File(ftpFolder+nameVeh+"\\"+subFolder+"\\"+nameVeh+"_"+dt+"_"+data.getPlaca()+".jpg");
-			File g = new File(ftpFolder+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dt+"_"+data.getPlaca()+".jpg");
-
-			if(f.exists()) 						
-				imageVeh = f.getPath();
 			
-			else imageVeh= noImageFolder + "no-image.jpg";
+			String sourceFolder = ftpFolder.concat(nameVeh).concat("\\"+subFolder);
+			
+			//WEB
+			String vehImg = sourceFolder.concat("\\"+nameVeh).concat("_"+dt+"_").concat(data.getPlaca()+".jpg");
+			String plateImg = sourceFolder.concat("\\Plate"+nameVeh).concat("_"+dt+"_").concat(data.getPlaca()+".jpg");									
+			String blankImage = ImageUtil.getInternalImagePath("images", "unknown", noImage);
+			
+			// CREATE FILES			
+			File veh = new File(vehImg);
+			File plate = new File(plateImg);
+												
+			if(veh.exists()) 						
+				imageVeh = ImageUtil.encodeToBase64(vehImg);
+			
+			else imageVeh = ImageUtil.encodeToBase64(blankImage);
+			
+			if(plate.exists())	
+				imagePlt = ImageUtil.encodeToBase64(plateImg);
 
-			if(g.exists())	
-				imagePlt = g.getPath();
-
-			else imagePlt = noImageFolder + "no-image.jpg";	
+			else imagePlt = ImageUtil.encodeToBase64(blankImage);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -400,7 +378,7 @@ public class OcrReport{
 
 		// criação do  documento
 		Document document = new Document();
-		TranslationMethods trad = new TranslationMethods();
+		//TranslationMethods trad = new TranslationMethods();
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();	
@@ -424,15 +402,28 @@ public class OcrReport{
 			
 			String subFolder = dt.substring(0, 8);
 			String nameVeh = data.getCam().replaceAll(" ", "_");
-			File img1 = new File(ftpFolder+nameVeh+"\\"+subFolder+"\\"+nameVeh+"_"+dt+"_"+data.getPlaca()+".jpg");
-			File img2 = new File(ftpFolder+nameVeh+"\\"+subFolder+"\\"+"\\Plate"+nameVeh+"_"+dt+"_"+data.getPlaca()+".jpg");
-			noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
-			if(img1.exists())imageVeh = img1.getPath();
-			else imageVeh = noImageFolder+"no-image.jpg";
-			if(img2.exists())imagePlt = img2.getPath();
-			else imagePlt = noImageFolder+"no-image.jpg";
 			
+			String sourceFolder = ftpFolder.concat(nameVeh).concat("\\"+subFolder);
 			
+			//PDF
+			String vehImg = sourceFolder.concat("\\"+nameVeh).concat("_"+dt+"_").concat(data.getPlaca()+".jpg");
+			String plateImg = sourceFolder.concat("\\Plate"+nameVeh).concat("_"+dt+"_").concat(data.getPlaca()+".jpg");									
+			String blankImg = ImageUtil.getInternalImagePath("images", "unknown", noImage);
+						
+			// CREATE FILES			
+			File veh = new File(vehImg);
+			File plate = new File(plateImg);
+									
+			if(veh.exists()) 						
+				imageVehPdf = vehImg;
+			
+			else imageVehPdf = blankImg;
+
+			if(plate.exists())	
+				imagePltPdf = plateImg;
+
+			else imagePltPdf = blankImg;
+				
 			PdfWriter writer = PdfWriter.getInstance(document, baos);
 
 			document.open();
@@ -441,14 +432,16 @@ public class OcrReport{
 			Paragraph pTitulo = new Paragraph(new Phrase(27F,localeOCR.getStringKey("ocr_report_title"), FontFactory.getFont(FontFactory.HELVETICA, 20F)));
 			ColumnText tl = new ColumnText(writer.getDirectContent());
 			Paragraph tx = new Paragraph();
-			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
-			File  tuxpan = new File(logo);
-			if(tuxpan.exists()) {
+			
+			logo = ImageUtil.getInternalImagePath("images", "files", RoadConcessionaire.externalImagePath);
+			
+			if(!logo.equals("")) {
 				Image image2 = Image.getInstance(logo);
 				image2.setAbsolutePosition(420, 800);
 				image2.scaleAbsolute (100, 30);
 				document.add(image2);
 			}
+			
 			tl.setSimpleColumn(400,780,200,50);
 			tx.add(pTitulo);
 			tl.addElement(tx);
@@ -485,11 +478,11 @@ public class OcrReport{
 			document.add(table3);
 			document.add(table6);
 			document.add(table5);
-			Image imgX = Image.getInstance(imageVeh);
+			Image imgX = Image.getInstance(imageVehPdf);
 			imgX.setAbsolutePosition(60, 480);
 			imgX.scaleAbsolute (220, 150);
 			
-			Image imgY = Image.getInstance(imagePlt);
+			Image imgY = Image.getInstance(imagePltPdf);
 			imgY.setAbsolutePosition(300, 480);
 			imgY.scaleAbsolute (220, 150);
 			//passando a imagem
