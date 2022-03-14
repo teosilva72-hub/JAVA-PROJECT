@@ -36,7 +36,7 @@ import br.com.tracevia.webapp.model.speed.SpeedReport.Builder;
 import br.com.tracevia.webapp.model.wim.WimData;
 import br.com.tracevia.webapp.util.ImageUtil;
 
-@ManagedBean(name="WimReport")
+@ManagedBean(name="wimReport")
 @ViewScoped
 public class WimReport {
 
