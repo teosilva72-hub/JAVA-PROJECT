@@ -43,7 +43,7 @@ public class ModulesDAO {
 			conn.prepare(query);
 			MapResult result = conn.executeQuery();
 
-			 System.out.println(result.first());
+			// System.out.println(result.first());
 
 			if (result.hasNext()) {
 				for (RowResult rs : result) {

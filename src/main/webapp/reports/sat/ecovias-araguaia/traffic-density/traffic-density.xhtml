@@ -30,7 +30,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.global_equipment_id_column, satLabels.traffic_density))}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; siteID; ROUND((SUM(1) * ((4 * ROUND(AVG(speed), 2)) / 60) / 1000) / $extraPeriod, 2)')}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; siteID; ROUND((SUM(1) * ((4 * AVG(speed)) / 60) / 1000) / $extraPeriod, 2)')}" />	
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 

@@ -16,7 +16,7 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.wim.WimData;
 import br.com.tracevia.webapp.util.ImageUtil;
 
-@ManagedBean(name="WimController")
+@ManagedBean(name="wimController")
 @ViewScoped
 public class WimController {
 		
@@ -97,20 +97,15 @@ public class WimController {
 	@PostConstruct
 	public void initalize(){
 				
-		data = new WimData();
-		dao = new WIMDAO();
-		
-		silFolder = "wim/sil";		
-	    vehFolder = "wim/veh";		
-		noImage = "no-image.jpg";
-		
-		// initalize wim realtime
-		//colorInitial();
-		//rate();
-		//updateView();
-			
 		try {
 			
+			data = new WimData();
+			dao = new WIMDAO();
+			
+			silFolder = "wim/sil";		
+		    vehFolder = "wim/veh";		
+			noImage = "no-image.jpg";		
+						
 			//dados();
 			initializeVeh();
 							
