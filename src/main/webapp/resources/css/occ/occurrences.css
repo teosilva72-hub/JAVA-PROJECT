@@ -11,12 +11,6 @@ body {
     height: 100%;
 }
 
-.container-fluid.main {
-    overflow: auto;
-    text-align: center;
-}
-
-
 /**/
 
 #tabelaOculta {

@@ -1885,7 +1885,6 @@ public class EquipmentsDAO {
 	 * @return boolean - Verdairo ou falso
 	 */
 	public boolean updateEquipment(EquipmentDataSource dataSource, String updateView, int permission) {
-
 		boolean updated = false;
 		int id = 0;
 
@@ -2089,7 +2088,6 @@ public class EquipmentsDAO {
 			conn.setString(4, dataSource.getRoad());
 			conn.setString(5, dataSource.getKm());
 			conn.setInt(6, dataSource.getWidth());
-
 			if (updateView.equals("linear")) {
 
 				if (dataSource.getTable().equals("meteo")) {
@@ -2136,7 +2134,6 @@ public class EquipmentsDAO {
 				}
 
 			} else {
-
 				conn.setDouble(7, dataSource.getLatitude());
 				conn.setDouble(8, dataSource.getLongitude());
 
@@ -2181,12 +2178,12 @@ public class EquipmentsDAO {
 					conn.setInt(10, dataSource.getEquipId());
 
 				}
+				updated = true;
 			}
 
 			long res = conn.executeUpdate();
 
 			if (res > 0) {
-
 				if (!dataSource.getTable().equals("speed")) {
 
 					conn.prepare(notificationId);
@@ -2221,7 +2218,7 @@ public class EquipmentsDAO {
 					// UPDATE INDICATOR REGISTER
 
 					conn.prepare(notificationId);
-
+					System.out.println("i m herar");
 					conn.setInt(1, dataSource.getEquipId());
 					conn.setString(2, dataSource.getEquipType() + " I");
 
@@ -2229,7 +2226,6 @@ public class EquipmentsDAO {
 
 					if (result != null) {
 						for (RowResult rs : result) {
-
 							id = rs.getInt(1);
 						}
 					}
@@ -2244,7 +2240,6 @@ public class EquipmentsDAO {
 					long res2 = conn.executeUpdate();
 
 					if (res2 > 0) {
-
 						// UPDATE RADAR REGISTER
 
 						conn.prepare(notificationId);

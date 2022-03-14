@@ -33,6 +33,8 @@ import javax.servlet.http.Part;
 import javax.swing.ImageIcon;
 
 import org.apache.poi.util.IOUtils;
+import org.apache.poi.xwpf.usermodel.TextAlignment;
+import org.primefaces.component.tabview.Tab;
 import org.primefaces.context.RequestContext;
 
 import com.itextpdf.text.BaseColor;
@@ -49,6 +51,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -81,7 +84,7 @@ public class OccurrencesBean2 {
 	OccurrencesDAO2 dao;
 	LocaleUtil occLabel, occMessages;
 
-	
+
 
 	private boolean save, edit, new_, reset, fields, enableBtn,
 	table, alterar, pdf;
@@ -158,8 +161,8 @@ public class OccurrencesBean2 {
 	private boolean selectedRow;
 	private List<OccurrencesData2> occurrences;
 
-	
-	
+
+
 	public String getNumveiculo() {
 		return numveiculo;
 	}
@@ -663,12 +666,12 @@ public class OccurrencesBean2 {
 
 			//Preencher Lista
 			occurrences = dao.listarOcorrencias();
-		
+
 			data = new  OccurrencesData2();
-		
-			
+
+
 			//occurrences = dao.listarOcorrencias();
-	 
+
 
 			//initialize btns
 			edit = true;
@@ -731,17 +734,17 @@ public class OccurrencesBean2 {
 
 		return img_dai;
 	}
-	
+
 	public void copyImgDai() throws Exception {
 		String img = getImg_dai();
 		String occ_path = "C:\\Occurrences\\";
-		
+
 		OccurrencesDAO dao = new OccurrencesDAO();
 		int id = dao.GetId();
-		
+
 		DateTimeApplication dta = new DateTimeApplication();
 		LocalDate local = dta.localeDate();
-		
+
 		String absolutePath = occ_path+local.getYear()+"\\"+local.getMonthValue()+"\\"+"OCC_"+id+"\\";
 
 		String  sourcePath = img;   // source file path
@@ -924,10 +927,10 @@ public class OccurrencesBean2 {
 		calendar.setTime(date);
 		calendar.add(calendar.MINUTE, -5);
 		Date b = calendar.getTime();
-			System.out.println(rowkey);
-			System.out.println("rowkey pdf" + rowkey);
-			
-		
+		System.out.println(rowkey);
+		System.out.println("rowkey pdf" + rowkey);
+
+
 		try {
 
 			//chamando valores do usuÃ¡rio de outro controller
@@ -946,7 +949,7 @@ public class OccurrencesBean2 {
 
 			//buscar dados por id
 			data = dao.buscarOcorrenciaPorId(rowkey);
-			
+
 			//buscar dados pdf
 			//getPdf = dao.submitPdf(rowkey);
 
@@ -963,11 +966,11 @@ public class OccurrencesBean2 {
 			//Date parsedDate = dateFormat.parse(data.getLastDateHour());
 			//timestamp = new java.sql.Timestamp(parsedDate.getTime());
 			//timestamp2 = new java.sql.Timestamp(b.getTime());
-//			System.out.println(timestamp +" <");
-//			System.out.println(timestamp2 + "<<");
-//			System.out.println((timestamp.after(timestamp2)+" antes"));
-//			System.out.println((timestamp.before(timestamp2)+" depois"));
-//			System.out.println(data.getEditTable()+" editTable");
+			//			System.out.println(timestamp +" <");
+			//			System.out.println(timestamp2 + "<<");
+			//			System.out.println((timestamp.after(timestamp2)+" antes"));
+			//			System.out.println((timestamp.before(timestamp2)+" depois"));
+			//			System.out.println(data.getEditTable()+" editTable");
 		}catch(Exception ex){
 
 			ex.printStackTrace();
@@ -1136,7 +1139,7 @@ public class OccurrencesBean2 {
 	public void btnEdit() throws Exception {
 
 		OccurrencesDAO2 dao = new OccurrencesDAO2();
-System.out.println("btnedit");
+		System.out.println("btnedit");
 		//pegando valores dos usuários de outro controller
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
@@ -1167,7 +1170,7 @@ System.out.println("btnedit");
 		RequestContext.getCurrentInstance().execute("atualizarTela()");
 
 		//listando arquivos
-	//	listingUpdate();
+		//	listingUpdate();
 
 	}
 	//CREATE DIRECTORY FOR FILES
@@ -1344,7 +1347,7 @@ System.out.println("btnedit");
 				RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 				RequestContext.getCurrentInstance().execute("fileTotal()");
 			}
-		//senão se o valor do atributo editTable for igual 0 (false), acessos a condição
+			//senão se o valor do atributo editTable for igual 0 (false), acessos a condição
 		}else if(data.getEditTable() == false || timestamp.before(timestamp2)) {
 
 			//btn
@@ -1424,7 +1427,7 @@ System.out.println("btnedit");
 
 		arquivos = fileWay.listFiles();
 
-	tableFile = new String[arquivos.length];
+		tableFile = new String[arquivos.length];
 		total = arquivos.length;
 		while (x != arquivos.length){
 
@@ -1810,7 +1813,7 @@ System.out.println("btnedit");
 	}
 	//mÃ©todo download PDF
 	public String[] downloadPdf() throws Exception {
-					// cria��o do documento
+		// cria��o do documento
 		Document document = new Document();
 		TranslationMethods trad = new TranslationMethods();
 
@@ -1820,7 +1823,7 @@ System.out.println("btnedit");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(); //SOLUTION
 
 		try {			 	  
-			
+
 			//caminho onde ï¿½ gerado o pdf
 			PdfWriter writer = PdfWriter.getInstance(document, baos);
 
@@ -1829,159 +1832,249 @@ System.out.println("btnedit");
 
 			//formato da folha
 			document.setPageSize(PageSize.A4);
-			
+
 			RequestContext.getCurrentInstance().execute("uploadFile()");
 			RequestContext.getCurrentInstance().execute("displayPdf()");
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			RequestContext.getCurrentInstance().execute("msgDownload()");
-					
+
 			//chamando a imagem
 			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
-			Image image1 = Image.getInstance(RoadConcessionaire.externalDefaultLogo);
+			Image image1 = Image.getInstance(RoadConcessionaire.externalImagePath);
 			Image image2 = Image.getInstance(logo);
 
 			//ediï¿½ï¿½o das imagens
-			image1.setAbsolutePosition(50, 790);
-			image1.scaleAbsolute (100, 50);
-			image2.setAbsolutePosition(320, 800);
-			image2.scaleAbsolute (70, 30);
+			image2.setAbsolutePosition(70, 770);
+			image2.scaleAbsolute (80, 30);
+
 			//passando a imagem
 			//document.add(image1);
+
 			document.add(image2);
-			
+
+			PdfContentByte canvas = writer.getDirectContent();
 			Paragraph conteudo = new Paragraph();
+
 			// Assim criaremos uma linha em branco
 			conteudo.add(new Paragraph(" "));
-			Chapter capitulo = new Chapter(new Paragraph(""), 1);
+
 			PdfPTable table = new PdfPTable(2);
-			Paragraph title1 = new Paragraph("REGISTRO DE ACCIDENTE \n AUTOPISTA TUXPAN-TAMPICO\nSEGUROS SURA, S.A de C.V.", FontFactory.getFont(FontFactory.TIMES_ROMAN,8, Font.BOLD, BaseColor.BLACK));
-			table.setTotalWidth(new float[]{ 350, 50 });
+			Paragraph title1 = new Paragraph("REGISTRO DE ACCIDENTE \n AUTOPISTA TUXPAN-TAMPICO\nSEGUROS SURA, S.A de C.V.", FontFactory.getFont(FontFactory.TIMES_ROMAN,9, Font.BOLD, BaseColor.BLACK));
 
+			title1.setIndentationLeft(170);
+			table.setTotalWidth(new float[]{ 250, 200 });
 			table.setLockedWidth(true);
-			// Seção é uma área que adicionaremos conteúdo
-			Section secao = capitulo.addSection(title1);
-			PdfPCell c1 = new PdfPCell(new Phrase("Cabecalho1"));
-			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table.addCell(c1);
- 
-			c1 = new PdfPCell(new Phrase("Cabecalho 2"));
-			//c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table.addCell(c1);
-			table.setHeaderRows(1);
-			table.addCell("Plaza de Cobro");
-			table.addCell("");
-			table.addCell("Folio Secuencial");
-			table.addCell("");
-			table.addCell("Reporte");
-			table.addCell("");
-			table.addCell("Siniestro");
-			table.addCell("");
-			table.addCell("Fecha");
-			table.addCell("");
-			table.addCell("Hora");
-			table.addCell("");
-			table.addCell("Dirección Y/O Trayecto");
-			table.addCell("");
-			table.addCell("Kilómetro de Registro");
-			table.addCell("");
-			table.addCell("Kilómetro Inicial");
-			table.addCell("");
-			table.addCell("Kilómetro Final");
-			table.addCell("");
-			table.addCell("Póliza Por Afectar");
-			table.addCell("");
-			table.addCell("Hora de Registro a Cabina");
-			table.addCell("");
-			table.addCell("Hora de Arribo de Ajustador");
-			table.addCell("");
-			
-			
-			secao.add(table);
-			document.add(conteudo);
-			document.add(secao);
-			//
-			
-			Paragraph title2 = new Paragraph("Vehículos Involucrados");
-			Section secao1 = capitulo.addSection(title2);
-			PdfPTable table1 = new PdfPTable(4);
-			Paragraph conteudo1 = new Paragraph();
-			PdfPCell c2 = new PdfPCell(new Phrase("Cabecalho2"));
-			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table1.setHeaderRows(1);
-			table1.addCell("Tipo de Vehículo");
-			table1.addCell("");
-			table1.addCell("Número de ejes de la unidad");
-			table1.addCell("");
-			table1.addCell("Tipo de Vehículo");
-			table1.addCell("");
-			table1.addCell("Número de ejes de la unidad");
-			table1.addCell("");
-			table1.addCell("Tipo de Vehículo");
-			table1.addCell("");
-			table1.addCell("Número de ejes de la unidad");
-			table1.addCell("");
-			
-			secao1.add(table1);
-			document.add(conteudo);
-			document.add(secao1);
-			
-			Paragraph title3 = new Paragraph("Vehículos Involucrados");
-			Section secao2 = capitulo.addSection(title2);
-			PdfPTable table2 = new PdfPTable(7);
-			PdfPCell c3 = new PdfPCell(new Phrase("Cabecalho2"));
-			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table2.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table2.setHeaderRows(1);
-			table2.addCell("No.");
-			table2.addCell("Marca");
-			table2.addCell("Tipo");
-			table2.addCell("Modelo");
-			table2.addCell("Color");
-			table2.addCell("Placas/Estado");
-			table2.addCell("Telefone");
-			for(int i = 0; i< 32; i++)
-				table2.addCell("column " + i);
-			
-			secao2.add(table2);
-			document.add(conteudo);
-			document.add(secao2);
-			
-			Paragraph title4 = new Paragraph("Datos de Personas");
-			Section secao4 = capitulo.addSection(title4);
-			PdfPTable table4 = new PdfPTable(4);
-			Paragraph conteudo2 = new Paragraph();
-			PdfPCell c4 = new PdfPCell(new Phrase("Cabecalho2"));
-			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table4.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table4.setHeaderRows(1);
-			table4.addCell("No.");
-			table4.addCell("NOMBRE DEL CONTUCTOR");
-			table4.addCell("EDAD");
-			table4.addCell("CONDICIONES DE SALUD");
-			for(int i = 0; i< 9; i++)
-			table4.addCell("column " + i);
-			
-			secao4.add(table4);
-			document.add(conteudo);
-			document.add(secao4);
-			
-			Paragraph title5 = new Paragraph("");
-			Section secao5 = capitulo.addSection(title5);
-			PdfPTable table5 = new PdfPTable(2);
-			Paragraph conteudo3 = new Paragraph();
-			PdfPCell c5 = new PdfPCell(new Phrase("Cabecalho2"));
-			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table5.setHorizontalAlignment(Element.ALIGN_CENTER);
-			table5.setHeaderRows(1);
-			table5.addCell("MOTIVO DEL ACCIDENTE:");
-			table5.addCell("");
 
-			secao4.add(table5);
+
+			Font formatText1 = new Font(Font.FontFamily.TIMES_ROMAN, 9f, Font.BOLD);
+			document.add(new Paragraph(title1));
+			//table.writeSelectedRows(0, 2, 0, -1, canvas);
+
+			table.addCell(new PdfPCell(new Phrase("Plaza de Cobro", formatText1)));
+			table.addCell("");
+			table.addCell(new PdfPCell(new Phrase("Folio Secuencial", formatText1)));
+			table.addCell("");
+			table.addCell(new PdfPCell(new Phrase("Reporte", formatText1)));
+			table.addCell("");
+			table.addCell(new PdfPCell(new Phrase("Reporte", formatText1)));
+			table.addCell("");
+			table.addCell(new PdfPCell(new Phrase("Fecha", formatText1)));
+			table.addCell("");
+			table.addCell(new PdfPCell(new Phrase("Hora", formatText1)));
+			table.addCell("");
+			table.addCell(new PdfPCell(new Phrase("Dirección Y/O Trayecto", formatText1)));
+			table.addCell("");
+			table.addCell(new PdfPCell(new Phrase("Kilómetro de Registro", formatText1)));
+			table.addCell("");
+			table.addCell(new PdfPCell(new Phrase("Kilómetro Inicial", formatText1)));
+			table.addCell("");
+			table.addCell(new PdfPCell(new Phrase("Kilómetro Final", formatText1)));
+			table.addCell("");
+			table.addCell(new PdfPCell(new Phrase("Póliza Por Afectar", formatText1)));
+			table.addCell("");
+			table.addCell(new PdfPCell(new Phrase("Hora de Registro a Cabina", formatText1)));
+			table.addCell("");
+			table.addCell(new PdfPCell(new Phrase("Hora de Arribo de Ajustador", formatText1)));
+			table.addCell("");
+
 			document.add(conteudo);
-			document.add(secao5);
+			document.add(table);
+			document.add(conteudo);
+			//
+
+			Paragraph title2 = new Paragraph("Vehículos Involucrados");
+			PdfPTable table1 = new PdfPTable(4);
+			table1.setTotalWidth(500);
+			table1.setLockedWidth(true);
+			document.add(title2);
+
+			table1.addCell(new PdfPCell(new Phrase("Tipo de Vehículo", formatText1)));
+			table1.addCell("");
+			table1.addCell(new PdfPCell(new Phrase("Número de ejes de la unidad", formatText1)));
+			table1.addCell("");
+			table1.addCell(new PdfPCell(new Phrase("Tipo de Vehículo", formatText1)));
+			table1.addCell("");
+			table1.addCell(new PdfPCell(new Phrase("Número de ejes de la unidad", formatText1)));
+			table1.addCell("");
+			table1.addCell(new PdfPCell(new Phrase("Tipo de Vehículo", formatText1)));
+			table1.addCell("");
+			table1.addCell(new PdfPCell(new Phrase("Número de ejes de la unidad", formatText1)));
+			table1.addCell("");
+
+			document.add(conteudo);
+			document.add(table1);
+
+			PdfPTable table2 = new PdfPTable(7);
+			table2.setTotalWidth(500);
+			table2.setLockedWidth(true);
+			table2.setHeaderRows(1);
+			table2.addCell(new PdfPCell(new Phrase("No.", formatText1)));
+			table2.addCell(new PdfPCell(new Phrase("Marca", formatText1)));
+			table2.addCell(new PdfPCell(new Phrase("Tipo", formatText1)));
+			table2.addCell(new PdfPCell(new Phrase("Modelo", formatText1)));
+			table2.addCell(new PdfPCell(new Phrase("Color", formatText1)));
+			table2.addCell(new PdfPCell(new Phrase("Placas/Estado", formatText1)));
+			table2.addCell(new PdfPCell(new Phrase("Telefone", formatText1)));
+			for(int i = 0; i< 32; i++)
+				table2.addCell(new PdfPCell(new Phrase("Column", formatText1)));
+
+			document.add(conteudo);
+			document.add(table2);
+			document.add(conteudo);
+
+			Paragraph title4 = new Paragraph("Datos de Personas");
+			PdfPTable table3= new PdfPTable(4);
+			table3.setTotalWidth(500);
+			table3.setTotalWidth(new float[]{75, 150, 75, 200 });
+			table3.setLockedWidth(true);
+			document.add(title4);
+			table3.setHorizontalAlignment(Element.ALIGN_CENTER);
+			table3.setHeaderRows(1);
+			table3.addCell(new PdfPCell(new Phrase("No.", formatText1)));
+			table3.addCell(new PdfPCell(new Phrase("NOMBRE DEL CONTUCTOR", formatText1)));
+			table3.addCell(new PdfPCell(new Phrase("EDAD", formatText1)));
+			table3.addCell(new PdfPCell(new Phrase("CONDICIONES DE SALUD", formatText1)));
+			for(int i = 0; i< 9; i++)
+				table3.addCell(new PdfPCell(new Phrase("Column", formatText1)));
+
+			document.add(conteudo);
+			document.add(table3);
+
+			Paragraph title5 = new Paragraph("");
+			PdfPTable table4 = new PdfPTable(2);
+			table4.setTotalWidth(500);
+			table4.setTotalWidth(new float[]{ 200, 300 });
+			table4.setLockedWidth(true);
+			table4.addCell(new PdfPCell(new Phrase("MOTIVO DEL ACCIDENTE:", formatText1)));
+			table4.addCell("");
+
+			document.add(conteudo);
+			document.add(table4);
+
+			PdfPTable table5 = new PdfPTable(3);
+			table5.setTotalWidth(500);
+			table5.setTotalWidth(new float[]{ 50, 150, 300 });
+			table5.setLockedWidth(true);
+			int[] test = new int[19];
+			for(int i=0;i<19;i++) {
+				if(i == 0) {
+					table5.addCell(new PdfPCell(new Phrase("A", formatText1)));
+					table5.addCell(new PdfPCell(new Phrase("SEMOVIENTE", formatText1)));
+					table5.addCell(new PdfPCell(new Phrase("COLUMN", formatText1)));
+				}
+				if(i == 1) {
+					table5.addCell("B");
+					table5.addCell(new PdfPCell(new Phrase("TRABAJOS DE\nCONSERVACIÓN", formatText1)));
+					table5.addCell(new PdfPCell(new Phrase("COLUMN", formatText1)));
+				}
+				if(i == 2) {
+					table5.addCell(new PdfPCell(new Phrase("C", formatText1)));
+					table5.addCell(new PdfPCell(new Phrase("LLUVIA, GRANIZO", formatText1)));
+					table5.addCell(new PdfPCell(new Phrase("COLUMN", formatText1)));
+				}
+				if(i == 3) {
+					table5.addCell(new PdfPCell(new Phrase("D", formatText1)));
+					table5.addCell(new PdfPCell(new Phrase("NEBLINA", formatText1)));
+					table5.addCell(new PdfPCell(new Phrase("COLUMN", formatText1)));
+				}
+				if(i == 4) {
+					table5.addCell(new PdfPCell(new Phrase("E", formatText1)));
+					table5.addCell(new PdfPCell(new Phrase("VANDALISMO", formatText1)));
+					table5.addCell(new PdfPCell(new Phrase("COLUMN", formatText1)));
+				}
+				if(i == 5) {
+					table5.addCell(new PdfPCell(new Phrase("F", formatText1)));
+					table5.addCell(new PdfPCell(new Phrase("OTRO", formatText1)));
+					table5.addCell(new PdfPCell(new Phrase("COLUMN", formatText1)));
+				}
+				//table5.addCell("column "+ i);
+			}
+
+			document.add(table5);
 			
-		
+			Rectangle obs = new Rectangle(48, 140, 548, 180);
+			obs.setBorder(Rectangle.BOX);
+			obs.setBorderWidth(2);
+			canvas.rectangle(obs);
+			Paragraph obs_ = new Paragraph();
+			document.add(conteudo);
+			obs_.add(new Paragraph(new Phrase(10F, "Daños pendientes por cuantificar: Usuario no cuenta con seguro, la autopista no reclama daño alguno.Daños pendientes por cuantificar: Usuario no cuenta con seguro, la autopista no reclama daño alguno", FontFactory.getFont(FontFactory.HELVETICA, 10F))));
+			obs_.setIndentationLeft(40f);
+			document.add(obs_);
+			
+			
+			Rectangle ass = new Rectangle(48, 130, 548, 60);
+			ass.setBorder(Rectangle.BOX);
+			document.add(conteudo);
+			
+			PdfPTable table_ass = new PdfPTable(2);
+			table_ass.setTotalWidth(500);
+			table_ass.setTotalWidth(new float[]{ 250, 250 });
+			table_ass.setLockedWidth(true);
+			
+			Paragraph title__ = new Paragraph(new Phrase(10F, "OPERADOR DEL C. CONTROL", FontFactory.getFont(FontFactory.COURIER_BOLD, 10F)));
+			Paragraph title_ = new Paragraph(new Phrase(10F, "AJUSTADOR", FontFactory.getFont(FontFactory.COURIER_BOLD, 10F)));
+			table_ass.addCell(title__);
+			table_ass.addCell(title_);
+			table_ass.addCell(new PdfPCell(new Phrase("\nNOMBRE: Juan Baptista Mendez", formatText1)));
+			table_ass.addCell(new PdfPCell(new Phrase("\nNOMBRE: Alvaro Angel Millano", formatText1)));
+			table_ass.addCell(new PdfPCell(new Phrase("\nFIRMA: ______________________", formatText1)));
+			table_ass.addCell(new PdfPCell(new Phrase("\nFIRMA: ______________________", formatText1)));
+			
+			
+			
+			
+			document.add(table_ass);			
+			/*Paragraph ass__ = new Paragraph();
+			Paragraph name__ = new Paragraph();
+			Paragraph title__ = new Paragraph();
+			title__.add(new Paragraph(new Phrase(10F, "OPERADOR DEL C. CONTROL", FontFactory.getFont(FontFactory.HELVETICA, 10F))));
+			title__.setIndentationLeft(30f);
+			document.add(conteudo);
+			document.add(title__);
+			name__.add("Nombre: Tester");
+			name__.setIndentationLeft(30f);
+			document.add(name__);
+			ass__.add("Firma:  _______________");
+			ass__.setIndentationLeft(30f);
+			document.add(ass__);
+			
+			Paragraph ass_ = new Paragraph();
+			Paragraph name_ = new Paragraph();
+			Paragraph title_ = new Paragraph();
+			title_.add(new Paragraph(new Phrase(10F, "AJUSTADOR", FontFactory.getFont(FontFactory.HELVETICA, 10F))));
+			title_.setIndentationLeft(300f);
+			document.add(conteudo);
+			document.add(title_);
+			name_.add("Nombre: Tester");
+			name_.setIndentationLeft(300f);
+			document.add(name_);
+			ass_.add("Firma:  _______________");
+			ass_.setIndentationLeft(300f);
+			document.add(ass_);*/
+			
+			ass.setBorderWidth(2);
+			canvas.rectangle(ass);
 		}
 		catch(DocumentException de) {
 			System.err.println(de.getMessage());
@@ -1996,7 +2089,7 @@ System.out.println("btnedit");
 		// DOWNLOAD
 
 		externalContext.setResponseContentType("application/pdf");
-		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+"OCC_"+data.getData_number()+".pdf\"");
+		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+"informe_ocurrencias_"+data.getData_number()+".pdf\"");
 
 		externalContext.setResponseContentLength(baos.size());
 
@@ -2061,7 +2154,7 @@ System.out.println("btnedit");
 		}
 
 	}	
- 
-		
+
+
 }
 

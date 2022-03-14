@@ -1,14 +1,8 @@
 package br.com.tracevia.webapp.controller.cftv;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -22,25 +16,30 @@ import br.com.tracevia.webapp.dao.cftv.CFTVDAO;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.ModulesDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.util.ImageUtil;
+
 @ManagedBean(name="CftvCam")
 @ViewScoped
 public class CftvCam {
-	Equipments equip;
+	
+	Equipments equip;	
 	private int id, idTotal, sumId;
 	//GLOBAL VARIABLES
-	private String cam, MoveUp, MoveDown, MoveLeft, km, presetCall="", presetSet, presetDetails, MoveRight, command, ZoomIn, ZoomOut, camCftv, imgControle = "";
+	private String cam, MoveUp, MoveDown, MoveLeft, km, presetCall="", presetSet, presetDetails, MoveRight, /*command,*/ ZoomIn, ZoomOut, camCftv, imgControle;
 	String callsArray[];
 	private List<SelectItem> presetList;
-	private CFTVDAO cftv;
+	//private CFTVDAO cftv;
 	private String[] credentials, patrolPreset;
 	//getters and setters
 	
+	String cftvControlImage = "controller.png";
+	
 	public String getCam() {
 		return cam;
-	}
+	}	
 	public String[] getPatrolPreset() {
 		return patrolPreset;
-	}
+	}	
 	public void setPatrolPreset(String[] patrolPreset) {
 		this.patrolPreset = patrolPreset;
 	}
@@ -87,13 +86,7 @@ public class CftvCam {
 		this.km = km;
 	}
 	public String getImgControle() {
-		try {
-			Path path = Paths.get(imgControle);
-			byte[] file = Files.readAllBytes(path);
-			return Base64.getEncoder().encodeToString(file);
-		} catch (IOException e) {
-			return "";
-		}
+		return imgControle;
 	}
 	public void setImgControle(String imgControle) {
 		this.imgControle = imgControle;
@@ -137,11 +130,15 @@ public class CftvCam {
 	public void setMoveRight(String moveRight) {
 		MoveRight = moveRight;
 	}
-	//Methods
+	
+	
 	@PostConstruct
 	public void initialize() {
-		CFTVDAO ptz = new CFTVDAO();
-		totalId() ;
+		
+		//CFTVDAO ptz = new CFTVDAO();
+		
+		totalId();
+		
 		try {
 			credentials();
 		} catch (Exception e) {
@@ -149,15 +146,19 @@ public class CftvCam {
 			e.printStackTrace();
 		}
 	}
+	
 	public String[] presetPatrol() {
-		System.out.println("Estamos aqui");
+		//System.out.println("Estamos aqui");
 		RequestContext.getCurrentInstance().execute("btnPatrol()");
-		System.out.println(patrolPreset.length);	
+		//System.out.println(patrolPreset.length);	
 		
 		return patrolPreset;
 	}
+	
 	public int totalId() {
+		
 		CFTVDAO ptz = new CFTVDAO();
+		
 		try {
 			equip = ptz.getTotalId();
 			idTotal = equip.getEquip_id();
@@ -165,34 +166,47 @@ public class CftvCam {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return idTotal;
 	}
+	
 	public int searchCftv() {
+		
 		EquipmentsDAO search = new EquipmentsDAO();
 		equip = new Equipments();
 		presetCall = "";
+		
 		try {
 			getCam(Integer.toString(id));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
 		presetList();
+		
 		try {
 			equip = search.cftvCam(id);
 			setKm(equip.getKm());
-			imgControle = "C:\\Tracevia\\Software\\External\\Cftv\\controller\\controller.png";
+			
+			String control = ImageUtil.getImagePath("images", "cftv", cftvControlImage);
+			setImgControle(ImageUtil.encodeToBase64(control));
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return id;
 	}
+
 	public String[] credentials() throws Exception {
+		
 		ModulesDAO mod = new ModulesDAO();
 		credentials = mod.getCred("digifort");
-	return credentials;
-}
+	
+		return credentials;
+	}
+	
 	public void getCam(String ptz) throws IOException {
 		String ext ="";
 		if(id > 0 && id != 0) {
@@ -201,16 +215,18 @@ public class CftvCam {
 			URL url = new URL(camCftv);
 			HttpURLConnection http = (HttpURLConnection)url.openConnection();
 			http.disconnect();
-			System.out.println(camCftv);
-			System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+			//System.out.println(camCftv);
+			//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 		}
 	}
+	
 	public void presetList() {
 		presetList = new  ArrayList<SelectItem>();
 		for(int m = 0; m <= 300; m++){				 
 			presetList.add(new SelectItem(String.valueOf(m), String.valueOf(m)));
 		}
 	}
+	
 	public int callPreset() {
 		try {
 			presetCall(Integer.toString(id));
@@ -220,15 +236,18 @@ public class CftvCam {
 		}
 		return id;
 	}
+	
 	public String presetCall(String id) throws IOException {
+		
 		if(presetCall == "") {
 			RequestContext.getCurrentInstance().execute("validatePresetCall()");
 			RequestContext.getCurrentInstance().execute("presetCftv()");
 			//return presetCall = "teste";
 		}
+		
 		else {
 			int z = 0, o = 0, t = 0;
-			String zr = "", on = "", tw= "";
+			//String zr = "", on = "", tw= "";
 			callsArray = presetCall.split("");
 			if(callsArray.length == 1) {
 				if(!callsArray[0].equals("0")) {
@@ -258,12 +277,13 @@ public class CftvCam {
 				URL url = new URL(call);
 				HttpURLConnection http = (HttpURLConnection)url.openConnection();
 				http.disconnect();
-				System.out.println(call);
-				System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+				//System.out.println(call);
+				//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 			}
 		}
 		return presetCall;
 	}
+	
 	public int setPreset() {
 		try {
 			presetSet(Integer.toString(id));
@@ -273,6 +293,7 @@ public class CftvCam {
 		}
 		return id;
 	}
+	
 	public void presetSet(String id) throws IOException {
 		if(presetSet == "" || presetDetails == "")RequestContext.getCurrentInstance().execute("validatePresetSet()");
 		else{
@@ -284,11 +305,12 @@ public class CftvCam {
 				URL url = new URL(call);
 				HttpURLConnection http = (HttpURLConnection)url.openConnection();
 				http.disconnect();
-				System.out.println(call);
-				System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+				//System.out.println(call);
+				//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 			}
 		}
 	}
+	
 	public void UpMove() {
 		try {
 			moveUp(Integer.toString(id));
@@ -297,6 +319,7 @@ public class CftvCam {
 			e.printStackTrace();
 		}
 	}
+	
 	public void moveUp(String cam) throws IOException {
 		String zero = "";
 		if(Integer.parseInt(cam) < 10)zero = "0";
@@ -304,9 +327,10 @@ public class CftvCam {
 		URL url = new URL(MoveUp);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
-		System.out.println(MoveUp);
-		System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+		//System.out.println(MoveUp);
+		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
+	
 	public void downMove() {
 		try {
 			moveDown(Integer.toString(id));
@@ -315,6 +339,7 @@ public class CftvCam {
 			e.printStackTrace();
 		}
 	}
+	
 	public void moveDown(String cam) throws IOException {
 		String zero = "";
 		if(Integer.parseInt(cam) < 10)zero = "0";
@@ -322,9 +347,10 @@ public class CftvCam {
 		URL url = new URL(MoveDown);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
-		System.out.println(MoveDown);
-		System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+		//System.out.println(MoveDown);
+		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
+	
 	public void leftMove() {
 		try {
 			moveLeft(Integer.toString(id));
@@ -333,6 +359,7 @@ public class CftvCam {
 			e.printStackTrace();
 		}
 	}
+	
 	public void moveLeft(String cam) throws IOException {
 		String zero = "";
 		if(Integer.parseInt(cam) < 10)zero = "0";
@@ -340,9 +367,10 @@ public class CftvCam {
 		URL url = new URL(MoveLeft);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
-		System.out.println(MoveLeft);
-		System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+		//System.out.println(MoveLeft);
+		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
+	
 	public void rightMove() {
 		try {
 			moveRight(Integer.toString(id));
@@ -351,6 +379,7 @@ public class CftvCam {
 			e.printStackTrace();
 		}
 	}
+	
 	public void moveRight(String cam) throws IOException {
 		String zero = "";
 		if(Integer.parseInt(cam) < 10)zero = "0";
@@ -358,9 +387,10 @@ public class CftvCam {
 		URL url = new URL(MoveRight);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
-		System.out.println(MoveRight);
-		System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+		// System.out.println(MoveRight);
+		// System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
+	
 	public void zoomInMove() {
 		try {
 			MoveZoomIn(Integer.toString(id));
@@ -369,6 +399,7 @@ public class CftvCam {
 			e.printStackTrace();
 		}
 	}
+	
 	public void MoveZoomIn(String cam) throws IOException {
 		String zero = "";
 		if(Integer.parseInt(cam) < 10)zero = "0";
@@ -376,9 +407,10 @@ public class CftvCam {
 		URL url = new URL(ZoomIn);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
-		System.out.println(ZoomIn);
-		System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+		// System.out.println(ZoomIn);
+		// System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
+	
 	public void zoomOutMove() {
 		try {
 			MoveZoomOut(Integer.toString(id));
@@ -387,6 +419,7 @@ public class CftvCam {
 			e.printStackTrace();
 		}
 	}
+	
 	public void MoveZoomOut(String cam) throws IOException {
 		String zero = "";
 		if(Integer.parseInt(cam) < 10)zero = "0";
@@ -394,7 +427,7 @@ public class CftvCam {
 		URL url = new URL(ZoomOut);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
-		System.out.println(ZoomOut);
-		System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+		//System.out.println(ZoomOut);
+		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 }
