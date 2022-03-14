@@ -25,7 +25,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv s')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s', 'Data anterior', satLabels.global_date_column, 'diferenca1'))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s', 'data_anterior', satLabels.global_date_column, 1, 2))}" />
 		<f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
 			
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('IFNULL(@data_b, @data_b := data); DATE_FORMAT(@data_b := data, `%d/%m/%Y %H:%i:%s`) as sd; ABS(TIMESTAMPDIFF(SECOND, @data_b, @data_b := @data_a))')}" />
@@ -132,7 +132,7 @@
       
       <tr>
         <th class="custom-table-header" >#{reportBean.satTab.direction1}</th>
-        <!-- <th class="custom-table-header" >#{reportBean.satTab.direction2}</th>              -->
+        <th class="custom-table-header" >#{reportBean.satTab.direction2}</th>
       </tr>
       
      </f:facet> <!---->	
