@@ -113,7 +113,7 @@ public class TranslationMethods {
 	public String wimLabels(String wim) {
 		String converteWim = "";
 		switch(wim){
-		case "WIM REPORT": converteWim = localeWim.getStringKey("WimReport");break;
+		case "WIM REPORT": converteWim = localeWim.getStringKey("wimReport");break;
 		case "N SERIAL": converteWim = localeWim.getStringKey("serial_number");break;
 		case "CLASSE": converteWim = localeWim.getStringKey("classe");break;
 		case "DATAHOUR": converteWim = localeWim.getStringKey("date_hour");break;

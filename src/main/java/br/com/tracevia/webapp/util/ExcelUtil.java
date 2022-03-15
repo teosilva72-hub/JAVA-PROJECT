@@ -872,7 +872,7 @@ public class ExcelUtil {
 		
 		try {
 			
-			String path = ImageUtil.getImagePath("images", "files", logo);
+			String path = ImageUtil.getInternalImagePath("images", "files", logo);
 				
 			InputStream my_banner_image = new FileInputStream(path);
 

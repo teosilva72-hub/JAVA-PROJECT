@@ -189,7 +189,7 @@ public class CftvCam {
 			equip = search.cftvCam(id);
 			setKm(equip.getKm());
 			
-			String control = ImageUtil.getImagePath("images", "cftv", cftvControlImage);
+			String control = ImageUtil.getInternalImagePath("images", "cftv", cftvControlImage);
 			setImgControle(ImageUtil.encodeToBase64(control));
 			
 		} catch (Exception e) {

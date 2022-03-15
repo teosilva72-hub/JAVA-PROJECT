@@ -22,7 +22,7 @@ public class ImageUtil {
 	 * 
 	 */
 	
-	public static String getImagePath(String sourcePath, String targetPath, String file) {
+	public static String getInternalImagePath(String sourcePath, String targetPath, String file) { 
 		
 		String realPath = SessionUtil.getExternalContext().getRealPath("");
 						
@@ -76,7 +76,7 @@ public class ImageUtil {
 	 * 
 	 */
 	
-	public static String getImagePathAndEncodeToBase64(String sourcePath, String targetPath, String file) {
+	public static String getInternalImagePathAndEncodeToBase64(String sourcePath, String targetPath, String file) {
 		
 		String realPath = SessionUtil.getExternalContext().getRealPath("");
 						

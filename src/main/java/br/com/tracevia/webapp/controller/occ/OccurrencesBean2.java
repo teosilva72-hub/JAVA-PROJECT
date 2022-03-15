@@ -1839,7 +1839,7 @@ public class OccurrencesBean2 {
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 			
-			logo = ImageUtil.getImagePath("images", "files", RoadConcessionaire.externalImagePath);
+			logo = ImageUtil.getInternalImagePath("images", "files", RoadConcessionaire.externalImagePath);
 			
 			if(!logo.equals("")) {
 				Image tuxpanL = Image.getInstance(logo);
