@@ -755,6 +755,7 @@ public class ReportBean {
 					}
 				} else {
 					query += String.format("%s as %s, ", column, group);
+					order = String.format("STR_TO_DATE(%s, '%%d/%%m/%%Y %%H:%%i:%%s')", periodColumn);
 				
 					if (columnMS != null)
 						queryMS += String.format("%s as %s, ", columnMS, groupMS);
