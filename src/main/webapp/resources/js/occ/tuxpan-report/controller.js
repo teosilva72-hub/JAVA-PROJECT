@@ -1,6 +1,7 @@
 $(init => {
     table()
     vehInvAppend()
+     addTipo()
 })
 
 function table() {
@@ -26,8 +27,7 @@ function vehInvAppend() {
     let vehInv = 'vehInv'
     let eje = 'eje'
     add.click(e => {
-        let x = $('#vehInv_append')
-            .append(`
+        let x = $('#vehInv_append').append(`
 			<div class="col-5">
 				<div class="input-group has-validation">
 					<div class="input-group-prepend">
@@ -50,13 +50,13 @@ function vehInvAppend() {
 function addTipo(){
 	let add = $('#btn_append_veh')
 	add.click(e => {
-		$('.addNum').append(`<input type="text" value="" id="num_veh" name="num_veh"/>`)
-		$('.addMarca').append(`<input value="" type="text" id="marca_veh" name="marca_veh"/>`)
-		$('.addTipo').append(`<input value="" type="text" id="tipo_veh" name="tipo_veh"/>`)
-		$('.addModelo').append(`<input value="" type="text" id="modelo_veh" name="modelo_veh"/>`)
-		$('.addCor').append(`<input value="" type="text" id="cor_veh" name="cor_veh"/>`)
-		$('.addPlaca').append(`<input value="" type="text" id="placa_veh" name="placa_veh"/>`)
-		$('.addTel').append(`<input value="" type="text" id="tel_veh" name="tel_veh"/>`)
+		$('.addNum').append(`<input class="form-control" type="text" value="" id="num_veh" name="num_veh"/>`)
+		$('.addMarca').append(`<input class="form-control" value="" type="text" id="marca_veh" name="marca_veh"/>`)
+		$('.addTipo').append(`<input class="form-control" value="" type="text" id="tipo_veh" name="tipo_veh"/>`)
+		$('.addModelo').append(`<input class="form-control" value="" type="text" id="modelo_veh" name="modelo_veh"/>`)
+		$('.addCor').append(`<input class="form-control" value="" type="text" id="cor_veh" name="cor_veh"/>`)
+		$('.addPlaca').append(`<input class="form-control" value="" type="text" id="placa_veh" name="placa_veh"/>`)
+		$('.addTel').append(`<input class="form-control" value="" type="text" id="tel_veh" name="tel_veh"/>`)
 	})
 	
 }

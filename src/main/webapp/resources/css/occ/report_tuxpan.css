@@ -4,7 +4,8 @@ html, body {
 	height: 100%;
 }
 
-#new_occ, #new_sin{
-    position: relative;
+.btn-modal {
+	margin-top: 10px !important;
+	width: 100%;
 	margin: 5px;
 }
