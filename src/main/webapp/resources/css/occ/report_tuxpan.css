@@ -4,7 +4,7 @@ html, body {
 	height: 100%;
 }
 
-#new_occ {
-	margin-top: 15px;
-	width: 100%;
+#new_occ, #new_sin{
+    position: relative;
+	margin: 5px;
 }

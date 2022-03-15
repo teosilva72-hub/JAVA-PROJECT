@@ -1,1606 +1,258 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://jcp.org/ui"
-	template="/template/dashboard-rov-layout.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions" xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://jcp.org/ui" template="/template/dashboard-rov-layout.xhtml">
 
-	<ui:define name="loading"></ui:define>
+    <ui:define name="loading"></ui:define>
 
-	<ui:define name="head">
-		<title>#{abaLabels.occurrences}</title>
-		<!-- Style -->
-		<h:outputStylesheet library="css/datatables/custom"
-			name="table-style.css" />
-		<h:outputStylesheet library="css/occ" name="occurrences.css" />
-		<h:outputStylesheet library="css/occ" name="report_tuxpan.css" />
-		<h:outputStylesheet library="css/global" name="global.css" />
-		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
-		<h:outputStylesheet library="css/commom" name="commons.css" />
-		<h:outputStylesheet library="css/forms" name="form-style.css" />
-		<!-- FONTAWESOME JS IMPORT -->
-		<script type="text/javascript">
-			$(document)
-					.ready(
-							function() {
-								$('#form-cadastro')
-										.validate(
-												{
-													rules : {
-														tipoEvento : {
-															required : true
-														},
+    <ui:define name="head">
+        <title>#{abaLabels.occurrences}</title>
+        <!-- Style -->
+        <h:outputStylesheet library="css/datatables/custom" name="table-style.css" />
+        <h:outputStylesheet library="css/occ" name="occurrences.css" />
+        <h:outputStylesheet library="css/occ" name="report_tuxpan.css" />
+        <h:outputStylesheet library="css/global" name="global.css" />
+        <h:outputStylesheet name="datepicker.css" library="css/datepicker" />
+        <h:outputStylesheet library="css/commom" name="commons.css" />
+        <h:outputStylesheet library="css/forms" name="form-style.css" />
+        <!-- FONTAWESOME JS IMPORT -->
 
-														dataInicial : {
-															required : true
-														},
-														horaInicial : {
-															required : true
-														},
-														minutoInicial : {
-															required : true
-														},
-														causaProvavel : {
-															required : true
-														},
-														situacaoEvento : {
-															required : true
-														},
-														eventoKm : {
-															minlength : 1,
-															maxlength : 7
-														},
-														descricaoCausa : {
-															minlength : 1,
-															maxlength : 1000
-														},
-														outrosEventos : {
-															minlength : 3,
-															maxlength : 50
-														},
-														tituloDescr : {
-															minlength : 4,
-															maxlength : 50
-														},
-														descricaoCausa2 : {
-															minlength : 4,
-															maxlength : 1000
-														},
-														descrDescr : {
-															minlength : 4,
-															maxlength : 1000
-														},
-														envolvDescr2 : {
-															minlength : 4,
-															maxlength : 1000
-														},
-														envolvDescr : {
-															minlength : 4,
-															maxlength : 1000
-														},
-														trasitoExtKm : {
-															minlength : 1,
-															maxlength : 7
-														},
-														danoDescr : {
-															minlength : 4,
-															maxlength : 1000
-														},
-														acaoDescr : {
-															minlength : 4,
-															maxlength : 1000
-														},
-														/*new inputs*/
-														damageAmount : {
-															minlength : 1,
-															maxlength : 10
-														},
-														acaoDescrOtro : {
-															minlength : 4,
-															maxlength : 50
-														},
-														danoDescr2 : {
-															minlength : 4,
-															maxlength : 1000
-														},
-														envolvDescr2 : {
-															minlength : 4,
-															maxlength : 1000
-														},
-														descrDescr1 : {
-															minlength : 4,
-															maxlength : 1000
-														},
-														descricaoCausa2 : {
-															minlength : 4,
-															maxlength : 1000
-														},
-														descricaoCausa : {
-															minlength : 4,
-															maxlength : 1000
-														},
-														typeHour1 : {
-															required : true
-														}
+    </ui:define>
+    <ui:define name="default-content">
 
-													},
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <h:dataTable id="occurrence-table" var="data" disabled="true" value="#{occurrencesBean2.occurrences}" class="text-center" styleClass="table table-sm custom-table table-striped table-dark table-hover" cellspacing="0" width="100%" headerClass="custom-table-header"
+                    columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn, text-center justify-content-center">
 
-													messages : {
-														tipoEvento : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														origemEvento : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														situacaoEvento : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														dataInicial : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														horaInicial : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														minutoInicial : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														causaProvavel : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														eventoKm : {
-															required : "#{occLabels.campo_obrigatorio}",
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														eventoRodovia : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														eventoEstado1 : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														eventoSentido : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														eventoFaixa : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														condLocal : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														condTrafego : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														detalCaract : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														interFaixa : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														sinalizacao : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														situacCond : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														tab1 : {
-															required : "#{occLabels.campo_obrigatorio}"
-														},
-														tituloDescr : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														descrDescr : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														envolvDescr : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														procedimentoNome : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														procedimentoDescr : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														trasitoExtKm : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														danoDescr : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														acaoDescr : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														damageAmount : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														acaoDescrOtro : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														danoDescr2 : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														envolvDescr2 : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														descrDescr1 : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														descricaoCausa2 : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														descricaoCausa : {
-															minlength : "#{occLabels.occ_minLength}",
-															maxlength : "#{occLabels.occ_maxLength}"
-														},
-														typeHour1 : {
-															required : "#{occLabels.campo_obrigatorio}"
-														}
+                    <h:column>
+                        <f:facet name="header">#{occLabels.occ_list_table_id}</f:facet>
+                        <h:outputText value="#{data.data_number}" class="text-center" style="font-size: 12px; " />
+                    </h:column>
 
-													},
-													errorClass : "error-global",
-													// use highlight and unhighlight
-													highlight : function(
-															element, errorClass) {
-														$(element).addClass(
-																errorClass);
-														$(element.form)
-																.find(
-																		"label[for="
-																				+ element.id
-																				+ "]")
-																.addClass(
-																		errorClass);
-														$(element.form)
-																.find("select")
-																.addClass(
-																		'invalid');
-														$(element.form)
-																.find("input")
-																.addClass(
-																		'invalid');
-														$(element.form)
-																.find(
-																		"textarea")
-																.addClass(
-																		'invalid');
-													},
-													unhighlight : function(
-															element, errorClass) {
-														$(element).removeClass(
-																errorClass);
-														$(element.form)
-																.find(
-																		"label[for="
-																				+ element.id
-																				+ "]")
-																.removeClass(
-																		errorClass);
-														$(element.form)
-																.find("select")
-																.removeClass(
-																		'invalid');
-														$(element.form)
-																.find("input")
-																.removeClass(
-																		'invalid');
-														$(element.form)
-																.find(
-																		"textarea")
-																.removeClass(
-																		'invalid');
-														$(element.form)
-																.find("select")
-																.addClass(
-																		'valid');
-														$(element.form)
-																.find("input")
-																.addClass(
-																		'valid');
-														$(element.form)
-																.find(
-																		"textarea")
-																.addClass(
-																		'valid');
-													}
-												});
+                    <h:column>
+                        <f:facet name="header">#{occLabels.occ_list_table_type}</f:facet>
+                        <h:outputText value="#{data.type}" style="font-size: 12px;" />
+                    </h:column>
 
-							});
+                    <h:column>
+                        <f:facet name="header">#{occLabels.occ_list_table_source}</f:facet>
+                        <h:outputText value="#{data.date_time}" style="font-size: 12px;" />
+                    </h:column>
 
-			//Scroll stucked on Top  ==> FOR SCROLL
+                    <h:column>
+                        <f:facet name="header">#{occLabels.occ_list_table_cause}</f:facet>
+                        <h:outputText value="#{data.cause}" style="font-size: 12px;" />
+                    </h:column>
 
-			function setTopo() {
-				$(window).scrollTop(0);
-			}
-			//Call setTopo()
-			$(window).bind('scroll', setTopo);
-			$.datepicker
-					.setDefaults($.datepicker.regional['#{language.locale}']);
+                    <h:column>
+                        <f:facet class="barraTable text-center" name="header">#{occLabels.occ_list_table_status}</f:facet>
+                        <h:outputText value="#{data.state_occurrences}" style="font-size: 12px;" />
+                    </h:column>
+                    <h:column>
+                        <f:facet class="barraTable text-center" name="header">Tipo</f:facet>
+                        <h:outputText value="#{data.state_occurrences}" style="font-size: 12px;" />
+                    </h:column>
 
-			/* $('#save').on('show.bs.modal', function () {
-				
-				 $('#exampleModalLabel').text('My New Modal Title');
-			     
-			  });*/
-		</script>
+                    <h:column>
 
-	</ui:define>
-	<ui:define name="default-content">
-
-		<!-- Inicio do conteudo do site -->
-		<section class="conteudo"> <!--Inicio da animação  -->
-		<div id="preloader" style="display: none;">
-			<div class="inner">
-				<!-- HTML DA ANIMAÇÃO MUITO LOUCA DO SEU PRELOADER! -->
-				<div class="bolas">
-					<div></div>
-					<div></div>
-					<div></div>
-				</div>
-			</div>
-		</div>
-		<!-- Final da animação -->
-		<div class="row">
-			<!-- Inicio do lado direito -->
-			<div class="col-md-12 col-sm-6 colDireita">
-				<!-- Inicio da lista -->
-				<div class="tabela-occ col-md-8 container justify-content-center">
-					<!-- Tabela listar -->
-					<div id="tabelaReal text-center">
-						<h:dataTable id="occurrence-table" var="data" disabled="true"
-							value="#{occurrencesBean2.occurrences}" class="text-center"
-							styleClass="table table-sm custom-table table-striped table-dark table-hover"
-							cellspacing="0" width="100%" headerClass="custom-table-header"
-							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn, text-center justify-content-center">
-
-							<h:column>
-								<f:facet name="header">#{occLabels.occ_list_table_id}</f:facet>
-								<h:outputText value="#{data.data_number}" class="text-center"
-									style="font-size: 12px; " />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">#{occLabels.occ_list_table_type}</f:facet>
-								<h:outputText value="#{data.type}" style="font-size: 12px;" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">#{occLabels.occ_list_table_source}</f:facet>
-								<h:outputText value="#{data.date_time}" style="font-size: 12px;" />
-							</h:column>
-
-							<h:column>
-								<f:facet name="header">#{occLabels.occ_list_table_cause}</f:facet>
-								<h:outputText value="#{data.cause}" style="font-size: 12px;" />
-							</h:column>
-
-							<h:column>
-								<f:facet class="barraTable text-center" name="header">#{occLabels.occ_list_table_status}</f:facet>
-								<h:outputText value="#{data.state_occurrences}"
-									style="font-size: 12px;" />
-							</h:column>
+                        <f:facet name="header">AÇÕES</f:facet>
+                        <h:form prependId="false" id="btn-edit-report">
 
 
-							<h:column>
-								<f:facet name="header">AÇÕES</f:facet>
-								<h:form prependId="false" id="btn-edit-report">
-									<!-- Edit -->
-									<h:commandLink id="editocc"
-										action="#{occurrencesBean2.getRowValue}">
-										<i class="fas fa-edit" style="color: gray;"></i>
-										<f:setPropertyActionListener value="#{data.data_number}"
-											target="#{occurrencesBean2.rowkey}" />
-										<f:passThroughAttribute name="data-toggle" value="modal" />
-										<f:passThroughAttribute name="data-target"
-											value="#Occorrencenew" />
-										<f:ajax execute="@form"
-											render=":form-cadastro :btn-edit-report" />
-									</h:commandLink>
-									<!-- PDF -->
-									<h:commandLink style="color: gray;" id="occpdf"
-										action="#{occurrencesBean2.getRowValue}">
-										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-											fill="currentColor" class="bi bi-file-earmark-pdf-fill"
-											viewBox="0 0 16 16"> <path
-											d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z" />
-										<path fill-rule="evenodd"
-											d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z" />
-										</svg>
-										<f:setPropertyActionListener value="#{data.data_number}"
-											target="#{occurrencesBean2.rowkey}" />
-										<f:ajax execute="@form" render=":btn-edit-report :downloadpdf" />
-									</h:commandLink>
-
-								</h:form>
-
-							</h:column>
-						</h:dataTable>
-
-					</div>
-				</div>
-				<div class="text-center">
-					<!-- Botão modal nova ocorrencia -->
-					<h:commandButton id="new_occ" class="btn bnt-dark"
-						action="#{occurrencesBean2.resetOccurrencesData}" value="Cadastrar Nova Ocorrência">
-							
-						<f:setPropertyActionListener value="#{data.data_number}"
-							target="#{occurrencesBean2.rowkey}" />
-						<f:passThroughAttribute name="data-toggle" value="modal" />
-						<f:passThroughAttribute name="data-target" value="#Occorrencenew" />
-						<f:ajax execute="@form" render=":form-cadastro :btn-edit-report" />
-					</h:commandButton>
-				</div>
-				<h:form prependId="false" id="downloadpdf">
-					<h:commandButton pt:data-toggle="modal" style="display:none;"
-						id="pdfpdf" class="btn btn-dark form-draw-button"
-						action="#{occurrencesBean2.downloadPdf}" value="teste" />
-
-				</h:form>
-				<!-- Modal -->
-				<!-- Formatação e cabeçalho modal -->
-				<div class="modal fade bd-example-modal-xl" tabindex="-1"
-					role="dialog" aria-labelledby="myExtraLargeModalLabel"
-					aria-hidden="true" id="Occorrencenew" data-backdrop="static"
-					data-keyboard="false">
-					<div class="modal-dialog modal-xl ">
-						<div class="modal-content fundo">
-							<div class="modal-header ">
-								<h5 class="modal-title ml-auto ">#{occLabels.occ_title_pdf}</h5>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Fechar">
-									<span aria-hidden="true">&times;</span>
+                            <div class="dropdown">
+                                <!-- Edit -->
+                                <h:commandLink id="editocc" action="#{occurrencesBean2.getRowValue}">
+                                    <i class="fas fa-edit" style="color: gray;"></i>
+                                    <f:setPropertyActionListener value="#{data.data_number}" target="#{occurrencesBean2.rowkey}" />
+                                    <f:passThroughAttribute name="data-toggle" value="modal" />
+                                    <f:passThroughAttribute name="data-target" value="#Occorrencenew" />
+                                    <f:ajax execute="@form" render=":form-cadastro :btn-edit-report" />
+                                </h:commandLink>
+                                <!-- option PDF -->
+                                <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+										fill="currentColor" class="bi bi-file-earmark-pdf-fill"
+										viewBox="0 0 16 16"> <path
+										d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z" />
+									<path fill-rule="evenodd"
+										d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z" />
+									</svg>
 								</button>
-							</div>
-
-
-							<div class="modal-body COL-12">
-								<div class="form-group col-md-12 text-center">
-									<div class="btn-group col-md-5  mb-3 menu" role="group"
-										aria-label="Basic example">
-										<!-- FILE FORM -->
-										<h:form id="form-file" prependId="false">
-											<!-- MODAL DOWNLOAD -->
-
-											<!-- MODAL DOWNLOAD END -->
-
-										</h:form>
-										<!-- FILE FORM -->
-
-									</div>
-									<!-- Final do lado direito -->
-									<!-- Inicio do lado esquerdo -->
-									<div class="col-md-12 col-sm-6 colEsquerda">
-										<h:form prependId="false" enctype="multipart/form-data"
-											id="form-cadastro">
-
-											<!-- INICIO DOS MODAIS -->
-											<!-- Modal editar -->
-											<div class="modal fade" id="modalEditar" tabindex="-1"
-												aria-labelledby="exampleModalLabel" aria-hidden="true">
-												<div class="modal-dialog">
-													<div class="modal-content">
-														<div class="modal-header">
-															<h5 class="modal-title" id="exampleModalLabel">#{occLabels.btn_editar}</h5>
-														</div>
-														<div class="modal-body">
-															<p id="editModal">#{occLabels.msg_editar}</p>
-															<p>#{occLabels.msg_occ_id_p}:
-																#{occurrencesBean2.data.data_number}</p>
-															<p id="editorTextModal"
-																style="display: none; color: red;">#{occLabels.occ_modal_Btn_Hidden}</p>
-															<p id="editorTextModal2"
-																style="display: none; color: red;">#{occLabels.occ_modal_Btn_Hidden2}</p>
-															<p id="editorTextModal3"
-																style="display: none; color: red;">#{occLabels.occ_modal_Btn_Hidden3}</p>
-															<p id="editorTextModal4"
-																style="display: none; color: red;">#{occLabels.occ_validation_hidden}</p>
-														</div>
-														<div class="modal-footer">
-															<button type="submit" class="btn btnConf"
-																data-dismiss="modal" id="editModalExit">#{occLabels.btn_nao}</button>
-															<button type="submit" style="display: none"
-																class="btn btnConf" data-dismiss="modal"
-																id="editModalVoltar">#{occLabels.occ_btn_voltar}</button>
-															<h:commandButton value="#{occLabels.btn_sim}"
-																action="#{occurrencesBean2.atualizarOcorrencia}"
-																class="btn btnConf" id="editarBtn"
-																onclick="mostrarTab1();" />
-
-														</div>
-													</div>
-												</div>
-											</div>
-											<!-- Final do modal editar -->
-											<!-- Modal salvar -->
-											<div class="modal fade" id="modalSalvar" tabindex="-1"
-												aria-labelledby="exampleModalLabel" aria-hidden="true">
-												<div class="modal-dialog  modal-lg modal-sm modal-xl">
-													<div class="modal-content">
-														<div class="modal-header">
-															<h5 class="modal-title" id="exampleModalLabel">#{occurrencesBean2.title_modal}</h5>
-														</div>
-														<div class="modal-body">
-															<p id="saveModal">#{occurrencesBean2.message_modal}</p>
-															<p id="saveTextModal" style="display: none; color: red;">
-																#{occLabels.occ_modal_Btn_Hidden}</p>
-															<p id="saveTextModal2" style="display: none; color: red;">
-																#{occLabels.occ_modal_Btn_Hidden2}</p>
-															<p id="saveTextModal3" style="display: none; color: red;">
-																#{occLabels.occ_modal_Btn_Hidden3}</p>
-															<p id="saveTextModal4" style="display: none; color: red;">
-																#{occLabels.occ_validation_hidden}</p>
-														</div>
-														<div class="modal-footer">
-															<button type="button" class="btn btnConf"
-																data-dismiss="modal" id="SaveModalExit">#{occLabels.btn_nao}</button>
-															<button type="submit" style="display: none"
-																class="btn btnConf" data-dismiss="modal"
-																id="saveModalVoltar">#{occLabels.occ_btn_voltar}</button>
-															<h:commandButton value="#{occLabels.btn_sim}"
-																action="#{occurrencesBean2.atualizarOcorrencia}"
-																class="btn btnConf" id="saveBtn"
-																onclick="mostrarTab1();" />
-														</div>
-													</div>
-												</div>
-											</div>
-											<!-- Final do modal Salvar -->
-											<!-- Modal Anular -->
-											<div class="modal fade" id="modalAnular" tabindex="-1"
-												aria-labelledby="exampleModalLabel" aria-hidden="true">
-												<div class="modal-dialog">
-													<div class="modal-content">
-														<div class="modal-header">
-															<h5 class="modal-title" id="exampleModalLabel">#{occLabels.btn_anular}</h5>
-														</div>
-														<div class="modal-body">#{occLabels.msg_anular}</div>
-														<div class="modal-footer">
-															<button type="submit" class="btn btnConf"
-																data-dismiss="modal">#{occLabels.btn_nao}</button>
-															<h:commandLink value="#{occLabels.btn_sim}"
-																onclick="resetForm(); reload();" id="anularAtual"
-																action="#{occurrencesBean2.resetOccurrencesData}"
-																class="btn btnConf" />
-															<!-- BOTÃO ANULAR SIM OCULTO = RESET TABLE -->
-															<h:commandButton style="display: none;"
-																value="#{occLabels.btn_sim}" type="reset"
-																id="anularAtualHidden" onclick=" reload(); "
-																action="#{occurrencesBean2.resetOccurrencesData}"
-																class="btn btnConf" />
-															<h:commandButton style="display: none;"
-																value="#{occLabels.btn_sim}" id="resetUpdate"
-																action="#{occurrencesBean2.resetUpdate}"
-																class="btn btnConf" />
-														</div>
-													</div>
-												</div>
-											</div>
-											<!--  FINAL DOS MODAIS -->
-											<!-- Final do modal anular -->
-											<div class="borderBtn col-12">
-												<!-- alert msg delete, save and download -->
-												<!-- Arquivo salvo com sucesso -->
-												
-												<div class="container">
-													<div class="row ">
-														<div class="col-md-6" id="hiddenAnular">
-															<!-- Botões de ações -->
-															<div class="btn-group confBtnSubmit" role="group"
-																aria-label="Basic example">
-
-																<!-- Botão alterar -->
-																<h:commandButton id="edit" class="btn btnConf"
-																	disabled="#{occurrencesBean2.edit}"
-																	value="#{occLabels.btn_editar}"
-																	action="#{occurrencesBean2.btnEdit}">
-																	<f:passThroughAttribute name="data-toggle"
-																		value="modal" />
-																	<f:passThroughAttribute name="data-target"
-																		value="#modalEditar" />
-																	<f:ajax execute="@form"
-																		render=":form-cadastro :btn-edit-report" />
-																</h:commandButton>
-
-																<!-- Botão editar -->
-																<h:commandButton id="alterar" class="btn btnConf"
-																	style="display: none;"
-																	abled="#{occurrencesBean2.alterar}"
-																	value="#{occLabels.btn_salvar}">
-
-																	<f:passThroughAttribute name="data-toggle"
-																		value="modal" />
-																	<f:passThroughAttribute name="data-target"
-																		value="#modalEditar" />
-																	<f:ajax execute="@form"
-																		render=":form-cadastro :btn-edit-report" />
-																</h:commandButton>
-
-																<!-- Botão Salvar -->
-																<h:commandButton id="save" class="btn btnConf"
-																	disabled="#{occurrencesBean2.save}"
-																	value="#{occLabels.btn_salvar}">
-																	<f:passThroughAttribute name="data-toggle"
-																		value="modal" />
-																	<f:passThroughAttribute name="data-target"
-																		value="#modalSalvar" />
-																	<f:ajax execute="@form" render="@none" />
-																</h:commandButton>
-
-																<!-- Botão Novo -->
-																<h:commandButton class="btn btnConf" id="new"
-																	disabled="#{occurrencesBean2.new_}"
-																	value="#{occLabels.btn_novo}">
-																	<f:ajax execute="@form" render="@form"
-																		listener="#{occurrencesBean2.btnEnable}" />
-																</h:commandButton>
-
-																<!-- Botão Anular -->
-																<h:commandButton id="reset" class="btn btnConf"
-																	disabled="#{occurrencesBean2.reset}"
-																	value="#{occLabels.btn_anular}">
-																	<f:passThroughAttribute name="data-toggle"
-																		value="modal" />
-																	<f:passThroughAttribute name="data-target"
-																		value="#modalAnular" />
-																	<f:ajax execute="@form" render="@none" />
-																</h:commandButton>
-															</div>
-														</div>
-
-														<!-- col para separar btn e pdf -->
-														<div class="col-md-1 btnPdf" id="iconPdf"
-															style="display: none;">
-															<!-- Icon PDF -->
-															<h:commandLink class="btnPdf" id="pdfId"
-																disabled="#{occurrencesBean2.pdf}" data-toggle="tooltip"
-																data-bs-placement="top"
-																title="#{occLabels.occ_download_file}">
-																<i class="fas fa-file-pdf pdf-shadow"></i>
-																<f:passThroughAttribute name="data-toggle" value="modal" />
-																<f:passThroughAttribute name="data-target"
-																	value="#modalDownload" />
-																<f:ajax execute="@form" render="@none" />
-															</h:commandLink>
-														</div>
-														<!-- final do pdf -->
-														<!-- btns forms -->
-														<div class="col-md-5">
-															<!-- Botão form 1 -->
-															<div class="btn-group" role="group"
-																aria-label="Basic example" style="width: 100%;">
-
-																<!-- Botão form 2 -->
-
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-
-											<!-- Inicio da primeira tabela -->
-											<div id="tab1" name="tab1">
-
-												<!-- Alert evento -->
-												<div class="alert alert-dark confAlert" role="alert">
-													<h5 class="text-center confTextAlert">#{occLabels.occ_titulo_evento}</h5>
-												</div>
-
-
-
-
-												<h:inputHidden value="#{occurrencesBean2.enableBtn}"
-													id="varX"></h:inputHidden>
-												<!-- data inicial -->
-												<div class="form-row justify-content-center">
-													<div class="form-group col-md-1">
-														<em for="inputEmail4">#{occLabels.occ_register_table_number}</em>
-														<h:inputText class="form-control inputDesign"
-															disabled="true" id="occNumber" name="occNumber"
-															value="#{occurrencesBean2.data.data_number}" />
-
-													</div>
-
-
-													<div class="form-group col-md-2">
-														<em for="inputAddress">#{occLabels.occ_register_table_dt_start}</em>
-														<h:inputText value="#{occurrencesBean2.data.start_date}"
-															pt:placeholder="--/--/----"
-															disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign datepickerStart"
-															id="dataInicial" name="dataInicial" />
-														<span style="display: none;" class="errorInputs"
-															id="errorEvent1">#{occLabels.occ_error_input}</span>
-													</div>
-													<!-- Hora inicial -->
-													<div class="form-group col-md-2">
-														<em for="inputAddress2">#{occLabels.occ_register_table_hour_start}</em>
-														<h:selectOneMenu class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}"
-															value="#{occurrencesBean2.data.start_hour}"
-															id="horaInicial" name="horaInicial">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<f:selectItems value="#{occurrencesBean2.horas}" />
-														</h:selectOneMenu>
-														<span style="display: none;" class="errorInputs"
-															id="errorEvent2">#{occLabels.occ_error_input}</span>
-													</div>
-													<!-- minuto inicial -->
-													<div class="form-group col-md-2">
-														<em for="inputCity">#{occLabels.occ_register_table_minute_start}</em>
-														<h:selectOneMenu class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}"
-															value="#{occurrencesBean2.data.start_minute}"
-															id="minutoInicial" name="minutoInicial">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<f:selectItems value="#{occurrencesBean2.minutos}" />
-														</h:selectOneMenu>
-														<span style="display: none;" class="errorInputs"
-															id="errorEvent3">#{occLabels.occ_error_input}</span>
-													</div>
-													<!-- AM/PM -->
-													<div class="form-group col-md-2">
-														<em for="inputCity">am/pm</em>
-														<h:selectOneMenu class="form-control inputDesign"
-															value="#{occurrencesBean2.data.typeHour1}"
-															disabled="#{occurrencesBean2.fields}" id="typeHour1"
-															name="typeHour1">
-															<f:selectItem itemLabel="select" itemValue=""></f:selectItem>
-															<f:selectItems value="#{occurrencesBean2.typeHour1}" />
-														</h:selectOneMenu>
-														<span style="display: none;" class="errorInputs"
-															id="errorEvent7">#{occLabels.occ_error_input}</span>
-
-													</div>
-												</div>
-												<div class="form-row justify-content-center">
-													<div class="form-group col-md-3">
-														<em for="inputAddress">#{occLabels.occ_register_table_cause}</em>
-														<h:selectOneMenu value="#{occurrencesBean2.data.cause}"
-															disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign" id="causaProvavel"
-															name="causaProvavel">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<f:selectItems
-																value="#{occurrencesBean2.causa_provaveis}" />
-														</h:selectOneMenu>
-													</div>
-
-													<div class="form-group col-md-3">
-														<em for="inputPassword4">#{occLabels.occ_register_table_type}</em>
-														<h:selectOneMenu value="#{occurrencesBean2.data.type}"
-															disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign" id="tipoEvento"
-															name="tipoEvento">
-															<f:selectItem itemLabel="select" itemValue=""
-																onclick="alert();" />
-															<f:selectItems value="#{occurrencesBean2.tipos}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- Origem occ -->
-													<div class="form-group col-md-3">
-														<em for="inputPassword4">#{occLabels.occ_register_table_source}</em>
-														<h:selectOneMenu class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}"
-															value="#{occurrencesBean2.data.origin}" id="origemEvento"
-															name="origemEvento">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<f:selectItems value="#{occurrencesBean2.origens}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- situacao occ -->
-													<div class="form-group col-md-2">
-														<em for="inputPassword4">#{occLabels.occ_register_table_status}</em>
-														<h:selectOneMenu class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}"
-															value="#{occurrencesBean2.data.state_occurrences}"
-															id="situacaoEvento" name="situacaoEvento">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<f:selectItems value="#{occurrencesBean2.estados}" />
-														</h:selectOneMenu>
-													</div>
-												</div>
-
-												<div class="form-row justify-content-center">
-													<div class="form-group col-md-5">
-														<em for="inputAddress2">#{occLabels.$label_occ_reports_toll}</em>
-														<h:inputText value="#{occurrencesBean2.data.pedagio}"
-															id="toll" name="toll" class="inputDesign form-control"
-															disabled="#{occurrencesBean2.fields}" />
-													</div>
-
-													<div class="form-group col-md-5">
-														<em for="inputAddress2">#{occLabels.$label_occ_reports_folio}</em>
-														<h:inputText value="#{occurrencesBean2.data.folio}"
-															id="folio" name="folio" class="inputDesign  form-control"
-															disabled="#{occurrencesBean2.fields}" />
-													</div>
-												</div>
-												<div class="form-row justify-content-center">
-
-													<div class="form-group col-md-5">
-														<em for="inputAddress2">#{occLabels.$label_occ_reports_report}</em>
-														<h:inputText value="#{occurrencesBean2.data.report}"
-															id="report" name="report"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}" />
-													</div>
-													<div class="form-group col-md-5">
-														<em for="inputAddress">#{occLabels.$label_occ_reports_politcs}</em>
-														<h:inputText class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}"
-															value="#{occurrencesBean2.data.politica}" id="politics"
-															name="politics" />
-
-
-													</div>
-
-												</div>
-												<div class="form-row justify-content-center">
-													<div class="form-group col-md-5">
-														<em for="inputAddress">#{occLabels.$label_occ_reports_direction}</em>
-														<h:inputText value="#{occurrencesBean2.data.direcao}"
-															id="direction" name="direction"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}" />
-
-													</div>
-													<div class="form-group col-md-5">
-														<em for="inputAddress">#{occLabels.$label_occ_reports_km_register}</em>
-														<h:inputText value="#{occurrencesBean2.data.kmregistro}"
-															disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign" id="kmreg" name="kmreg" />
-
-													</div>
-												</div>
-												<div class="form-row justify-content-center">
-													<div class="form-group col-md-5">
-														<em for="i">#{occLabels.$label_occ_reports_km_start}</em>
-														<h:inputText class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}"
-															value="#{occurrencesBean2.data.kminicial}" id="kminicio"
-															name="kminicio" />
-
-													</div>
-													<!-- situacao occ -->
-													<div class="form-group col-md-5">
-														<em for="inputPassword4">#{occLabels.$label_occ_reports_km_final}</em>
-														<h:inputText class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}"
-															value="#{occurrencesBean2.data.kmfinal}" id="kmfinal"
-															name="kmfinal" />
-
-													</div>
-												</div>
-												<div class="form-row justify-content-center">
-													<div class="form-group col-md-5">
-														<em for="inputCity">#{occLabels.$label_occ_reports_hour_register}</em>
-														<h:inputText class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}"
-															value="#{occurrencesBean2.data.hrReg}" id="hrreg"
-															name="hrreg" />
-													</div>
-
-													<!-- CODICAO TRAFEGO -->
-													<div class="form-group col-md-5">
-														<em for="inputAddress2">#{occLabels.$label_occ_reports_hour_start}</em>
-														<h:inputText class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}"
-															value="#{occurrencesBean2.data.start_hour}"
-															id="start_hour" name="Start_hour" />
-
-
-													</div>
-												</div>
-
-												<div class="form-row justify-content-center">
-													<div class="form-group col-md-5">
-														<em for="inputAddress2">#{occLabels.$label_occ_vehicle_type}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.tipo_veic}" id="typeveic"
-															name="typeveic" class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}">
-
-														</h:selectOneMenu>
-													</div>
-													<!-- SITUACAO CONDUTOR -->
-
-													<div class="form-group col-md-5">
-														<em for="inputCity">#{occLabels.$label_occ_vehicle_quantity}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.quantidade}"
-															id="quantveic" name="quantveic"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}">
-
-														</h:selectOneMenu>
-													</div>
-												</div>
-												<div class="form-row justify-content-center">
-													<div class="form-group col-md-1">
-														<em for="inputAddress">#{occLabels.$label_occ_number}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.numveiculo}" name="num"
-															id="num" disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<!-- falta alterar parametro -->
-															<f:selectItems value="#{occurrencesBean2.horas}" />
-														</h:selectOneMenu>
-														<span style="display: none;" class="errorInputs"
-															id="errorTrack2">#{occLabels.occ_error_input}</span>
-													</div>
-
-
-													<div class="form-group col-md-2">
-														<em for="inputAddress">#{occLabels.$label_occ_vehicle_brand}</em>
-														<h:inputText value="#{occurrencesBean2.data.marca}"
-															id="brand" name="brand" onclick="validatorJs();"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}" />
-													</div>
-													<!-- HORA INICIAL -->
-													<div class="form-group col-md-2">
-														<em for="inputEmail4">#{occLabels.$label_occ_type}</em>
-														<h:inputText value="#{occurrencesBean2.data.tipo_veic}"
-															id="type" name="type" onclick="validatorJs();"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}" />
-													</div>
-
-													<!-- MINUTO INICIAL -->
-
-													<div class="form-group col-md-2">
-														<em for="inputEmail4">#{occLabels.$label_occ_vehicle_model}</em>
-														<h:inputText value="#{occurrencesBean2.data.modelo}"
-															id="model" name="model" onclick="validatorJs();"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}" />
-
-													</div>
-													<div class="form-group col-md-2">
-														<em for="inputCity">#{occLabels.$label_occ_vehicle_color}</em>
-														<h:inputText value="#{occurrencesBean2.data.cor}"
-															id="color" name="color" onclick="validatorJs();"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}" />
-													</div>
-
-													<div class="form-group col-md-1">
-														<em for="inputAddress">#{occLabels.$label_occ_vehicle_plate}</em>
-														<h:inputText value="#{occurrencesBean2.data.placa}"
-															id="plate" name="plate" onclick="validatorJs();"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}" />
-													</div>
-
-													<div class="form-group col-md-1">
-														<em for="inputAddress2">#{occLabels.$label_occ_vehicle_telefone}</em>
-														<h:inputText value="#{occurrencesBean2.data.telefone}"
-															id="tel" name="tel" onclick="validatorJs();"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}" />
-
-													</div>
-												</div>
-
-
-												<div class="form-row justify-content-center">
-													<div class="form-group col-md-1">
-														<em for="inputCity">#{occLabels.$label_occ_number}</em>
-														<h:selectOneMenu value="#{occurrencesBean2.data.numcond}"
-															name="numc" id="numc"
-															disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<!-- falta alterar parametro -->
-															<f:selectItems value="#{occurrencesBean2.horas}" />
-														</h:selectOneMenu>
-														<span style="display: none;" class="errorInputs"
-															id="errorTrack6">#{occLabels.occ_error_input}</span>
-													</div>
-
-													<div class="col-md-3">
-														<em for="inputCity">#{occLabels.$label_occ_driver_name}</em>
-														<h:inputText value="#{occurrencesBean2.data.nome}"
-															id="name" name="name" onclick="validatorJs();"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}" />
-
-													</div>
-
-													<div class="form-group col-md-3">
-														<em for="inputEmail4">#{occLabels.$label_occ_age}</em>
-														<h:inputText value="#{occurrencesBean2.data.idade}"
-															disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign" name="age" id="age" />
-													</div>
-													<!-- PISTA INTERROMPIDA -->
-													<div class="form-group col-md-3">
-														<em for="inputEmail4">#{occLabels.$label_occ_health_conditions}</em>
-														<h:inputText value="#{occurrencesBean2.data.saude}"
-															id="health" name="health" onclick="validatorJs();"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}" />
-													</div>
-												</div>
-
-
-
-												<!-- Alert data, inicio e fim-->
-
-												<!-- Final alert -->
-
-
-												<div class="form-row justify-content-center">
-													<!-- KM -->
-													<div class="form-group col-md-2">
-														<em for="inputAddress">#{occLabels.occ_register_table_km}</em>
-														<h:inputText value="#{occurrencesBean2.data.kilometer}"
-															disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign" pt:placeholder="0+020"
-															id="eventoKm" name="eventoKm" />
-													</div>
-													<!-- RODOVIA -->
-													<div class="form-group col-md-5">
-														<em for="inputAddress2">#{occLabels.occ_register_rodovia}</em>
-														<h:selectOneMenu value="#{occurrencesBean2.data.highway}"
-															id="eventoRodovia" name="eventoRodovia"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<f:selectItems value="#{occurrencesBean2.rodovias}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- ESTADO -->
-													<div class="form-group col-md-5">
-														<em for="inputCity">#{occLabels.occ_register_Estado}</em>
-														<h:inputHidden
-															value="#{occurrencesBean2.data.local_state}"
-															id="eventoEstado" name="eventoEstado"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}" />
-														<h:inputText value="#{occurrencesBean2.data.local_state}"
-															id="eventoEstado1" name="eventoEstado1"
-															class="form-control inputDesign" disabled="true" />
-														<span style="display: none;" class="errorInputs"
-															id="eventoState"> #{occLabels.occ_error_input}</span>
-													</div>
-													<!-- SENTIDO -->
-
-													<!-- FAIXA -->
-													<div class="form-group col-md-4">
-														<em for="inputAddress2">#{occLabels.occ_register_faixa}</em>
-														<h:selectOneMenu value="#{occurrencesBean2.data.lane}"
-															id="eventoFaixa" name="eventoFaixa"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<f:selectItems value="#{occurrencesBean2.faixas}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- OBSERVACAO -->
-													<div class="form-group col-md-5">
-														<em for="inputAddress">#{occLabels.occ_register_outros_eventos}</em>
-														<h:inputText value="#{occurrencesBean2.data.others}"
-															id="outrosEventos" name="outrosEventos"
-															pt:placeholder="..." class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}" />
-													</div>
-												</div>
-
-												<!-- ALert Detalhes -->
-
-												<!-- FInal alert detalhes -->
-												<div class="form-row justify-content-center">
-													<!-- CODICAO LOCAL -->
-													<div class="form-group col-md-4">
-														<em for="inputCity">#{occLabels.occ_register_cond_local}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.local_condition}"
-															id="condLocal" name="condLocal"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<f:selectItems
-																value="#{occurrencesBean2.condicao_locais}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- CODICAO TRAFEGO -->
-													<div class="form-group col-md-4">
-														<em for="inputAddress2">#{occLabels.occ_register_cond_trafego}</em>
-														<h:selectOneMenu value="#{occurrencesBean2.data.traffic}"
-															id="condTrafego" name="condTrafego"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<f:selectItems
-																value="#{occurrencesBean2.condicao_de_trafegos}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- CARACTERISTICAS -->
-													<div class="form-group col-md-4">
-														<em for="inputCity">#{occLabels.occ_register_caracteristica}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.characteristic}"
-															id="detalCaract" name="detalCaract"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<f:selectItems
-																value="#{occurrencesBean2.caracteristica_da_secoes}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- INTERFERENCIA FAIZA -->
-													<div class="form-group col-md-4">
-														<em for="inputAddress">#{occLabels.occ_register_interf_faixa}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.interference}"
-															id="interFaixa" name="interFaixa"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<f:selectItems
-																value="#{occurrencesBean2.interferencia_da_faixas}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- SINALICAO -->
-													<div class="form-group col-md-4">
-														<em for="inputAddress2">#{occLabels.occ_register_sinalizacao}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.signaling}"
-															id="sinalizacao" name="sinalizacao"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<f:selectItems value="#{occurrencesBean2.sinalizacoes}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- SITUACAO CONDUTOR -->
-													<div class="form-group col-md-4">
-														<em for="inputCity">#{occLabels.occ_register_situacao_condutor}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.conductor_condition}"
-															id="situacCond" name="situacCond"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<f:selectItems
-																value="#{occurrencesBean2.estado_condutores}" />
-														</h:selectOneMenu>
-													</div>
-
-												</div>
-
-
-
-
-
-												<div class="alert alert-dark confAlert" role="alert">
-													<h5 class="text-center confTextAlert">#{occLabels.occ_titulo_danos}</h5>
-												</div>
-												<!-- FInal alert Danos -->
-												<div class="form-row">
-													<!-- TIPO DANO -->
-													<div class="form-group col-md-3">
-														<em for="inputEmail4">#{occLabels.occ_register_tipo_dano}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.damage_type_damage}"
-															name="danoTipo" id="danoTipo"
-															disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<!-- falta alterar parametro -->
-															<f:selectItems value="#{occurrencesBean2.damageType}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- GRAVIDADE DANO -->
-													<div class="form-group col-md-3">
-														<em for="inputEmail4">#{occLabels.occ_register_gravidade}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.damage_gravity}"
-															name="danoUnidade" id="danoGravidade"
-															disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<!-- falta alterar parametro -->
-															<f:selectItems value="#{occurrencesBean2.damage_gravity}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- UNIDADE  -->
-													<div class="form-group col-md-3">
-														<em for="inputEmail4">#{occLabels.occ_damage_unity}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.damageUnity}"
-															name="unityDamage" id="unityDamage"
-															disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<!-- falta alterar parametro -->
-															<f:selectItems value="#{occurrencesBean2.damageUnity}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- QUANTIDADE -->
-													<div class="form-group col-md-3">
-														<em for="inputAddress">#{occLabels.occ_damage_amount}</em>
-														<h:inputText
-															value="#{occurrencesBean2.data.damage_amount}"
-															id="damageAmount" name="damageAmount"
-															pt:placeholder="#{occLabels.occ_damage_amount}"
-															class="form-control inputDesign"
-															disabled="#{occurrencesBean2.fields}" />
-													</div>
-													<hr></hr>
-													<!-- INICIO DESCRICAO PRINCIPAL E INTERNA -->
-
-
-
-													<!-- FINAL DESCRICAO PRINCIPAL E INTERNA -->
-												</div>
-
-												<div class="alert alert-dark confAlert" role="alert">
-													<h5 class="text-center confTextAlert">#{occLabels.occ_titulo_envolvidos}</h5>
-												</div>
-												<!-- FInal alert Envolvidos -->
-												<div class="form-row">
-													<!-- TIPO -->
-													<div class="form-group col-md-12">
-														<em for="inputEmail4">#{occLabels.occ_register_table_type}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.involved_type}"
-															disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign" id="envolvTipo"
-															name="envolvTipo">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<!-- falta alterar parametro -->
-															<f:selectItems value="#{occurrencesBean2.involvedType}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- INICIO TEXTAREA PRINCIPAL E INTERNA -->
-
-
-
-													<!-- FINAL TEXTAREA PRINCIPAL E INTERNA -->
-												</div>
-												<div class="alert alert-dark confAlert" role="alert">
-													<h5 class="text-center confTextAlert">#{occLabels.occ_acoes_acoes}</h5>
-												</div>
-												<div class="form-row">
-													<!-- ACAO TIPO -->
-													<div class="form-group col-md-6">
-														<em for="inputEmail4">#{occLabels.occ_register_table_type}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.action_type}"
-															name="acaoTipo" id="acaoTipo"
-															disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<!-- falta alterar parametro -->
-															<f:selectItems value="#{occurrencesBean2.actions}" />
-														</h:selectOneMenu>
-													</div>
-													<!-- ACAO STATUS -->
-													<div class="form-group col-md-6">
-														<em for="inputEmail4">#{occLabels.occ_register_table_action_state}</em>
-														<h:selectOneMenu
-															value="#{occurrencesBean2.data.statusAction}"
-															name="acaoStatus" id="acaoStatus"
-															disabled="#{occurrencesBean2.fields}"
-															class="form-control inputDesign">
-															<f:selectItem itemLabel="select" itemValue="" />
-															<!-- falta alterar parametro -->
-															<f:selectItems value="#{occurrencesBean2.actionState}" />
-														</h:selectOneMenu>
-													</div>
-
-
-													<hr></hr>
-													<!-- ACAO DESCRICAO PRINCIPAL E INTERNA -->
-													<div class="btn-group btn-group-sm" role="group"
-														aria-label="Basic example">
-
-														<h:commandButton type="button" id="actionDescr1"
-															class="btn" style="background-color: blue; border: 0;"
-															value="#{occLabels.occ_descript_action1}"
-															onclick="hiddenActionDescription2();"
-															disabled="#{occurrencesBean2.fields}" />
-														<h:commandButton type="button" id="actionDescr2"
-															class="btn btn-primary"
-															value="#{occLabels.occ_descript_action2}"
-															onclick="hiddenActionDescription1();"
-															disabled="#{occurrencesBean2.fields}" />
-
-													</div>
-													<div class="form-group col-md-12" id="acaoDescr1">
-														<em for="inputAddress">#{occLabels.occ_descript_action1}</em>
-														<h:inputTextarea disabled="#{occurrencesBean2.fields}"
-															name="acaoDescr" id="acaoDescr"
-															class="form-control textareaDesign"
-															value="#{occurrencesBean2.data.action_description}"
-															rows="4"
-															pt:placeholder="#{occLabels.occ_descript_action1}" />
-													</div>
-													<div class="form-group col-md-12" style="display: none;"
-														id="acaoDescrOtro1">
-														<em for="inputAddress">#{occLabels.occ_descript_action2}</em>
-														<h:inputTextarea disabled="#{occurrencesBean2.fields}"
-															name="acaoDescrOtro" id="acaoDescrOtro"
-															class="form-control textareaDesign"
-															value="#{occurrencesBean2.data.actionInter}" rows="4"
-															pt:placeholder="#{occLabels.occ_descript_action2}" />
-													</div>
-													<!-- FINAL ACAO DESCRICAO PRINCIPAL E INTERNA -->
-												</div>
-
-												<div>
-													<!-- ALert Anexos -->
-													<div class="alert alert-dark confAlert" role="alert">
-														<h5 class="text-center confTextAlert">#{occLabels.occ_btn_arquivo_add}</h5>
-													</div>
-													<!-- FInal alert Anexos -->
-
-													<!-- input file save -->
-													<div id="uploadFile1" class="form-row"
-														style="display: none;">
-														<div class="form-group col-md-12 field" align="left">
-															<h:inputFile id="myFile" value="#{occurrencesBean2.file}"
-																a:multiple="true" disabled="#{occurrencesBean2.fields}" />
-															<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p>
-															<br></br>
-															<p class="validatorFile" id="errorFileSize">#{occLabels.size_file}</p>
-														</div>
-														<!-- BTN UPLOAD FILE -->
-														<div class="col-md-12">
-															<h:commandButton class="btn btnConf" id="btnUpload"
-																value="#{occLabels.occ_uploadFile}"
-																action="#{occurrencesBean2.uploadFile}"
-																disabled="#{occurrencesBean2.fields}"
-																onclick="validatorFile();" />
-														</div>
-													</div>
-													<!-- End input file save -->
-
-													<!-- input file alterar -->
-													<div class="form-row" id="listDateFile"
-														style="display: none;">
-														<div class="form-group col-md-9 field" align="left">
-															<h:inputFile value="#{occurrencesBean2.file2}"
-																id="myFile2" a:multiple="true"
-																disabled="#{occurrencesBean2.fields}" />
-															<p class="validatorFile" id="errorFile2">#{occLabels.campo_obrigatorio}</p>
-															<br></br>
-															<p class="validatorFile" id="errorFileSize2">#{occLabels.size_file}</p>
-
-														</div>
-														<!-- BTN UPDATE FILE -->
-														<div class="col-md-3">
-															<h:commandButton class="btn btnConf" id="btnUpdate"
-																onclick="validatorFile2();"
-																value="#{occLabels.occ_uploadFile}"
-																action="#{occurrencesBean2.updateFile}"
-																disabled="#{occurrencesBean2.fields}" />
-														</div>
-													</div>
-
-													<!-- final edição imagem -->
-													<!-- file total -->
-													<div class="alert alert-dark confAlert" id="fileTotal"
-														role="alert">
-														<h5 class="text-center confTextAlert">#{occLabels.occ_list_files}
-															(#{occurrencesBean2.total})</h5>
-													</div>
-
-													<div class="listarFiles" id="listFiles">
-														<div class="col-md-12">
-															<!-- Array arquivos na pasta -->
-															<c:forEach items="#{occurrencesBean2.listarFile}"
-																var="item" id="listandoFile" varStatus="loop">
-																<div class="row">
-																	<div class="col-md-12">
-																		<div class="row">
-
-																			<!-- name file -->
-																			<div class="col-md-8 text-center">
-																				<span>#{occLabels.occ_name_file} </span>
-																				<p class="text-center">#{item}</p>
-																			</div>
-
-																			<!-- btn delete -->
-																			<div class="col-md-2">
-
-																				<span>#{occLabels.occ_delete}</span>
-
-																				<div class="dropdown">
-
-																					<button class=" dropdown-toggle" type="button"
-																						id="dropdownMenuButton" data-toggle="dropdown"
-																						aria-expanded="false">
-
-																						<i class="far fa-trash-alt"></i>
-
-																					</button>
-
-																					<ul class="dropdown-menu"
-																						aria-labelledby="dropdownMenuButton">
-																						<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-
-																						<li><h:commandLink
-																								action="#{occurrencesBean2.deleteFile(item)}"
-																								class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
-																					</ul>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-																<hr></hr>
-															</c:forEach>
-														</div>
-														<!-- List file update -->
-														<div class="col-md-12">
-															<!-- Array arquivos na pasta -->
-															<c:forEach id="listUpdate"
-																items="#{occurrencesBean2.listUpdate}" var="item"
-																varStatus="loop">
-																<div class="row">
-																	<div class="col-md-12">
-																		<div class="row">
-
-																			<!-- name file -->
-																			<div class="col-md-7 text-center">
-																				<span>#{occLabels.occ_name_file} </span>
-																				<p class="text-center">#{item}</p>
-																			</div>
-
-																			<!-- btn delete -->
-																			<div class="col-md-1" id="updateDeleteIcon">
-																				<span>#{occLabels.occ_delete}</span>
-																				<div class="dropdown">
-																					<button class=" dropdown-toggle" type="button"
-																						id="dropdownMenuButton" data-toggle="dropdown"
-																						aria-expanded="false">
-																						<i class="far fa-trash-alt"></i>
-																					</button>
-																					<ul class="dropdown-menu"
-																						aria-labelledby="dropdownMenuButton">
-																						<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-																						<li><h:commandLink
-																								disabled="#{occurrencesBean2.fields}"
-																								action="#{occurrencesBean2.deleteFileUpdate(item)}"
-																								class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
-																					</ul>
-																				</div>
-																			</div>
-																			<!-- download -->
-																			<div class="col-md-1">
-																				<span>#{occLabels.occ_download}</span>
-																				<div class="dropdown">
-																					<button class="dropdown-toggle" type="button"
-																						id="dropdownMenuButton" data-toggle="dropdown"
-																						aria-expanded="false">
-																						<i class="fas fa-cloud-download-alt iconFile"
-																							data-toggle="tooltip" data-bs-placement="right"
-																							title="Download"></i>
-																					</button>
-																					<ul class="dropdown-menu"
-																						aria-labelledby="dropdownMenuButton">
-																						<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-																						<li><h:commandLink class="dropdown-item"
-																								action="#{occurrencesBean2.downloadUpdate(item)}">#{occLabels.occ_yes}</h:commandLink></li>
-																					</ul>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-																<hr></hr>
-															</c:forEach>
-														</div>
-														<!-- List files click table -->
-														<div class="col-md-12" id="listUpdateFileT"
-															style="display: none;">
-															<!-- Array arquivos na pasta -->
-															<c:forEach items="#{occurrencesBean2.tableFile}"
-																var="item" varStatus="loop">
-																<div class="row">
-																	<div class="col-md-12">
-																		<div class="row">
-																			<div class="col-md-7 text-center">
-																				<span>#{occLabels.occ_name_file} </span>
-																				<p class="text-center">#{item}</p>
-																			</div>
-
-																			<!-- download -->
-																			<div class="col-md-1">
-																				<span>#{occLabels.occ_download}</span>
-																				<div class="dropdown">
-																					<button class="dropdown-toggle" type="button"
-																						id="dropdownMenuButton" data-toggle="dropdown"
-																						aria-expanded="false">
-																						<i class="fas fa-cloud-download-alt iconFile"
-																							data-toggle="tooltip" data-bs-placement="right"
-																							title="Download"></i>
-																					</button>
-																					<ul class="dropdown-menu"
-																						aria-labelledby="dropdownMenuButton">
-																						<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-																						<li><h:commandLink class="dropdown-item"
-																								action="#{occurrencesBean2.downloadUpdateTable(item)}">#{occLabels.occ_yes}</h:commandLink></li>
-																					</ul>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-																<hr></hr>
-															</c:forEach>
-														</div>
-													</div>
-													<!-- FInal alert -->
-												</div>
-
-											</div>
-
-										</h:form>
-										<h:form id="enable">
-											<h:commandButton id="btn-enable-user" value="loop"
-												style="display: none;" type="buttom">
-												<f:ajax execute="@form"
-													listener="#{occurrencesBean2.enableUser}"></f:ajax>
-											</h:commandButton>
-										</h:form>
-									</div>
-
-								</div>
-							</div>
-						</div>
-
-
-
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--  Termin Aqui --> </section>
-		<!-- Final do conteudo do site -->
-		<!-- Script -->
-		<h:outputScript name="occ.js" library="js/occ" />
-		<h:outputScript name="controller_occ.js" library="js/occ" />
-		<h:outputScript name="class_occ.js" library="js/occ" />
-		<h:outputScript name="controller.js" library="js/occ/tuxpan-report" />
-		<h:outputScript name="datepicker.js" library="js/datepicker" />
-		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
-		<h:outputScript name="jquery.validate.min.js"
-			library="js/jquery-validation" />
-		<h:outputScript name="additional-methods.min.js"
-			library="js/jquery-validation" />
-		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
-		<script>
-			//Inicio dos comandos JavaScript
-			//getFilename();
-
-			myFunction();// ADD ARQUIVOS
-			myFunction2();//myFunction2();
-			tabelaReal(); //Função da tabela de seleção [Editar]
-			tableBloqueada(); //Função Tabela Oculta [Desabilita o editar]
-			selecaoTable(); //Função que pega o id da tabela e coloca nos inputs[]
-		</script>
-	</ui:define>
+                                <!-- diferents pdf -->
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <!-- PDF occ-->
+                                    <h:commandLink style="color: gray;" id="occpdf" class="dropdown-item" action="#{occurrencesBean2.getRowValue}" value="Ocorrencia ">
+                                        <f:setPropertyActionListener value="#{data.data_number}" target="#{occurrencesBean2.rowkey}" />
+                                        <f:ajax execute="@form" render=":btn-edit-report :downloadpdf" />
+                                    </h:commandLink>
+                                    <h:commandLink style="color: gray;" id="sinOcc" class="dropdown-item" action="#{occurrencesBean2.getRowValue}" value="Sinistro">
+                                        <f:setPropertyActionListener value="#{data.data_number}" target="#{occurrencesBean2.rowkey}" />
+                                        <f:ajax execute="@form" render=":btn-edit-report :downloadpdf" />
+                                    </h:commandLink>
+                                </div>
+                            </div>
+                        </h:form>
+                    </h:column>
+                </h:dataTable>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  					Nuevo Registro
+				</button>
+            </div>
+        </div>
+        <!-- MODAL  -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tituloModal">Ocorrencias</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- START INPUTS -->
+                        <h:form prependId="false" id="form-inputs">
+                            <div class="row">
+                                <div class="col-2"><span>Nº</span>
+                                    <h:inputText disabled="true" name="id_occ" id="id_occ" class="form-control" />
+                                </div>
+                                <div class="col-4"><span>Plaza de Cobro</span>
+                                    <h:inputText name="plaza_cobro" id="plaza_cobro" class="form-control" />
+                                </div>
+                                <div class="col-4"><span>Folio Secuencial</span>
+                                    <h:inputText name="folio_secuencial" id="folio_secuencial" class="form-control" />
+                                </div>
+                                <div class="col-4"><span>Reporte</span>
+                                    <h:inputText name="reporte" id="reporte" class="form-control" />
+                                </div>
+                                <div class="col-4"><span>Siniestro</span>
+                                    <h:inputText name="siniestro" id="siniestro" class="form-control" />
+                                </div>
+                                <div class="col-4"><span>Fecha</span>
+                                    <h:inputText name="fecha" id="fecha" class="form-control" />
+                                </div>
+                                <div class="col-4"><span>Hora</span>
+                                    <h:inputText name="hora" id="hora" class="form-control" />
+                                </div>
+                                <div class="col-4"><span>Dirección Y/O Trayectoria</span>
+                                    <h:inputText name="direccion_tray" id="direccion_tray" class="form-control" />
+                                </div>
+                                <div class="col-4"><span>KM de Registro</span>
+                                    <h:inputText name="km_reg" id="km_reg" class="form-control" />
+                                </div>
+                                <div class="col-4"><span>KM Inicial</span>
+                                    <h:inputText name="km_inicial" id="km_inicial" class="form-control" />
+                                </div>
+                                <div class="col-4"><span>KM Final</span>
+                                    <h:inputText name="km_final" id="km_final" class="form-control" />
+                                </div>
+                                <div class="col-4"><span>Póliza Por Afectar</span>
+                                    <h:inputText name="poliza_afectar" id="poliza_afectar" class="form-control" />
+                                </div>
+                                <div class="col-4"><span>Hora de Registro Cabina</span>
+                                    <h:inputText name="hora_reg_cabina" id="hora_reg_cabina" class="form-control" />
+                                </div>
+                                <div class="col-4"><span>Hora de Arribo de Ajustador</span>
+                                    <h:inputText name="hora_ajustador" id="hora_ajustador" class="form-control" />
+                                </div>
+                            </div>
+                            
+                            <div class="row" id="vehInv_append">
+                            	<div class="col-12 text-center">
+                                    <hr></hr>
+                                    <p>Vehiculos Involucrados</p>
+                                    <hr></hr>
+                                </div>
+                                <div class="col-5">
+                                    <div class="input-group has-validation">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Tipo de Vehículo</span>
+                                        </div>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Nº Ejes</span>
+                                        </div>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <a id="btn_append"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+									  	<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+									  	<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+										</svg>
+									</a>
+                                </div>                               
+                            </div>
+                            <div class="row">
+                            	<div class="col-1 addNum">
+                                	<span>Num.</span>
+                                	<h:inputText value="" id="num_veh" name="num_veh"/>
+                                </div>
+                                 <div class="col-1 addMarca">
+                                	<span>Marca</span>
+                                	<h:inputText value="" id="marca_veh" name="marca_veh"/>
+                                </div>
+                                 <div class="col-1 addTipo">
+                                	<span>Tipo</span>
+                                	<h:inputText value="" id="tipo_veh" name="tipo_veh"/>
+                                </div>
+                                 <div class="col-1 addModelo">
+                                	<span>Modelo</span>
+                                	<h:inputText value="" id="modelo_veh" name="modelo_veh"/>
+                                </div>
+                                 <div class="col-1 addCor">
+                                	<span>Color</span>
+                                	<h:inputText value="" id="cor_veh" name="cor_veh"/>
+                                </div>
+                                 <div class="col-1 addPlaca">
+                                	<span>Placa/Estado</span>
+                                	<h:inputText value="" id="placa_veh" name="placa_veh"/>
+                                </div>
+                                 <div class="col-1 addTel">
+                                	<span>Teléfono</span>
+                                	<h:inputText value="" id="tel_veh" name="tel_veh"/>
+                                </div>
+                                <div class="col-1">
+                                    <a id="btn_append_veh"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+									  	<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+									  	<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+										</svg>
+									</a>
+                                </div>   
+                            </div>
+                        </h:form>
+                        <!-- END INPUTS -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Script -->
+        <h:outputScript name="controller.js" library="js/occ/tuxpan-report" />
+        <h:outputScript name="datepicker.js" library="js/datepicker" />
+        <h:outputScript name="locales-datepicker.js" library="js/datepicker" />
+        <h:outputScript name="jquery.validate.min.js" library="js/jquery-validation" />
+        <h:outputScript name="additional-methods.min.js" library="js/jquery-validation" />
+        <h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
+        <script>
+            //Inicio dos comandos JavaScript
+            //getFilename();
+
+            myFunction(); // ADD ARQUIVOS
+            myFunction2(); //myFunction2();
+            tabelaReal(); //Função da tabela de seleção [Editar]
+            tableBloqueada(); //Função Tabela Oculta [Desabilita o editar]
+            selecaoTable(); //Função que pega o id da tabela e coloca nos inputs[]
+        </script>
+    </ui:define>
 </ui:composition>
