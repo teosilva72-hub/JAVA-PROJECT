@@ -28,7 +28,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s', satLabels.global_date_column, 1, 2))}" />
 		<f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
 			
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y %H:%i:%s`); ROUND(AVG(IFNULL(IF(q.direction = `N` OR `L`, ABS(TIMESTAMPDIFF(SECOND, IFNULL(@data_b1, data), @data_b1 := data)), 0), 0)), 2);  ROUND(AVG(IFNULL(IF(q.direction = `S` OR `O`, ABS(TIMESTAMPDIFF(SECOND, IFNULL(@data_b2, data), @data_b2 := data)), 0), 0)), 2)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y %H:%i:%s`); ROUND(AVG(IF(q.direction = `N` OR `L`, ABS(TIMESTAMPDIFF(SECOND, IFNULL(@data_b1, data), @data_b1 := data)), NULL)), 2);  ROUND(AVG(IF(q.direction = `S` OR `O`, ABS(TIMESTAMPDIFF(SECOND, IFNULL(@data_b2, data), @data_b2 := data)), NULL)), 2)')}" />
 		<!-- <f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('@data_b; FORMAT(data, `dd/MM/yyyy`); CAST($period as TIME); ABS(DATEDIFF(SECOND, @data_b, @data_b := @data_a))')}" /> -->
 
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON q.equip_id = siteID AND q.lane = A.lane')}" />

@@ -4,7 +4,8 @@ html, body {
 	height: 100%;
 }
 
-#new_occ {
-	margin-top: 15px;
+.btn-modal {
+	margin-top: 10px !important;
 	width: 100%;
+	margin: 5px;
 }
