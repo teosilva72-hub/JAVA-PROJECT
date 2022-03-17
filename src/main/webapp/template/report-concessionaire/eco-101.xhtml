@@ -52,6 +52,19 @@
 	</li>
 				<!---->
 
+				
+						
+						<!-- MANUTENCAO -->
+	
+						<li class="nav-item">
+							<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/maintenance/sat_maintenance.xhtml?faces-redirect=true')}" value="">
+							<i class="fas fa-th icon"></i>
+							<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_maintenance}</span>
+							</h:commandLink>
+						</li>
+																		  
+						<!---->
+
 				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
    
                    <!-- REPORTS MENU -->
@@ -124,6 +137,18 @@
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 						<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_classes}</span>
 					</h:commandLink></li>
+					
+				<!---->
+
+				<!-- Tipo por classes2 -->
+
+				<li class="nav-item"><h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/reports/sat/eco101/class/class2.xhtml')}"
+						value="">
+						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+						<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_classes} - Distribuição Horária</span>
+					</h:commandLink></li>
+
 				<!---->
 				
 				<!-- Velocidade -->
@@ -143,4 +168,4 @@
 
    </h:body>
 
-</html>
+</html>				
