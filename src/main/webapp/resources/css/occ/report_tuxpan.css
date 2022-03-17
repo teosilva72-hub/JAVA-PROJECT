@@ -9,3 +9,17 @@ html, body {
 	width: 100%;
 	margin: 5px;
 }
+a#btn_append_veh {
+    position: relative;
+    top: 25px;
+}
+a.deleteTipoVeh {
+    display: block;
+    position: relative;
+    margin: 15px;
+    right: 15px;
+}
+a#btn_veh_ocup {
+    position: relative;
+    top: 25px;
+}
