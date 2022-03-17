@@ -60,6 +60,7 @@ public class UserAccountBean implements Serializable {
 		// --------------------------------------------------------------------------------------------	
 		
 		private UserAccount user;
+		private int id;
 		
 		LocaleUtil localeEmail, localeUsers;					
 		
@@ -70,15 +71,8 @@ public class UserAccountBean implements Serializable {
 		DataModel<UserAccount> userDataModel;
 	
 		private ArrayList<UserAccount> usuarios;
-		private ArrayList<UserAccount> usersList;	
-									
-		public DataModel<UserAccount> getUserDataModel() {
-			return userDataModel;
-		}
-
-		public void setUserDataModel(DataModel<UserAccount> userDataModel) {
-			this.userDataModel = userDataModel;
-		}
+		private ArrayList<UserAccount> usersList;				
+		
 
 		public UserAccount getUser() {
 			return user;
@@ -86,6 +80,22 @@ public class UserAccountBean implements Serializable {
 		
 		public void setUser(UserAccount user) {
 			this.user = user;
+		}
+				
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int id) {
+			this.id = id;
+		}
+
+		public DataModel<UserAccount> getUserDataModel() {
+			return userDataModel;
+		}
+
+		public void setUserDataModel(DataModel<UserAccount> userDataModel) {
+			this.userDataModel = userDataModel;
 		}
 						
 		public ArrayList<UserAccount> getUsersList() {
@@ -270,7 +280,7 @@ public class UserAccountBean implements Serializable {
           */
 		public String usuarioInfoToUp() {
 
-			String parametro = user.getSendParametro();			
+			String parametro = String.valueOf(id);		
 											
 			try {				
 			
@@ -323,8 +333,8 @@ public class UserAccountBean implements Serializable {
 				
 				dao = new UserAccountDAO();
 				user = new UserAccount();
-				
-				response = dao.deletarRegistro(user.getSendParametro());
+								
+				response = dao.deletarRegistro(String.valueOf(getId()));
 								
 				if(response) {
 										
@@ -335,6 +345,8 @@ public class UserAccountBean implements Serializable {
 					
 					  SessionUtil.executeScript("showSuccessMessage();");	
 					  SessionUtil.executeScript("hideSuccessMessage();");	
+					  
+					  removeDelValue();
 										
 				} 
 				
@@ -540,14 +552,10 @@ public class UserAccountBean implements Serializable {
 		 * @version 1.0
 		 * @since 1.0 
 		 */
-		 public void getRowValue() {
-			 
-		     UserAccount user = new UserAccount();
-						 
-			 user = userDataModel.getRowData(); // There it is.
-			 
-			 user.setRowkey(String.valueOf(user.getUser_id()));
-			 			 
+		 public void getRowValue() {			 
+		   			 
+			 SessionUtil.setParam("deleteValue", getId()); // ID para exclusao (variável de sessao)
+						 			 
 			 SessionUtil.updateElement("dialog-form:modal-text");   
 			 			 
 		 }
@@ -581,5 +589,21 @@ public class UserAccountBean implements Serializable {
         }
         
      // ------------------------------------------------------------------------------------------------------- // 
+        
+        /**
+    	 * Método para remover o atributo "deleteValue" da sessão
+    	 * 
+    	 * @author Wellington 17/03/2022
+    	 * @version 1.0
+    	 * @since 1.0	
+    	 * @see https://docs.oracle.com/javaee/7/api/javax/faces/context/ExternalContext.html
+    	 */
+    	
+    	public void removeDelValue() {
+    		
+    		SessionUtil.remove("deleteValue"); // Remover variável da sessão
+    		
+    	}
+
 
 }

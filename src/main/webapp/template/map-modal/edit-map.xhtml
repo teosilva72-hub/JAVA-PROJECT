@@ -30,8 +30,8 @@
 					<div class="form-group select-field-half"><!-- SELECT DIV -->
 						<span><i class="fas fa-hdd"></i></span>	<!-- SPAN ICON -->
 						   <span for="equips-edit" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION -->							   
-								<select name="equips-edit" id="equips-edit" size="1" disabled="disabled">
-						  		  <option value="">#{mapLabels.$label_map_option_select_type_equipments}</option>
+								<select name="equips-edit" id="equips-edit" size="1" disabled="true">
+						  		  <option value="" >#{mapLabels.$label_map_option_select_type_equipments}</option>
 					    		    <ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
 	  			 					  <option value="#{eqp.value}">#{eqp.label}</option>
 		       		 			   </ui:repeat>

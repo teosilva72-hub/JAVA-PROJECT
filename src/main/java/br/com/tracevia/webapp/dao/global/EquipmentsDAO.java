@@ -743,7 +743,7 @@ public class EquipmentsDAO {
 
 
 	// --------------------------------------------------------------------------------------------------------------
-
+	
 	/**
 	 * M�todo para obter informa��o de um equipamento espec�fico
 	 * 

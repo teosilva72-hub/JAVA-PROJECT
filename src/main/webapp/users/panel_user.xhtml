@@ -112,7 +112,7 @@
 											value="">
 											<span><i class="fas fa-user-edit edit-icon"></i></span>
 											<f:setPropertyActionListener value="#{user.user_id}"
-												target="#{userAccount.user.sendParametro}" />
+												target="#{userAccount.id}" />
 										</h:commandLink>
 									</h:form>
 								</div>
@@ -121,7 +121,7 @@
 										<h:commandLink action="#{userAccount.getRowValue}" value="">
 											<span><i class="fas fa-trash-alt trash-alt-icon"></i></span>
 											<f:setPropertyActionListener
-												target="#{userAccount.user.sendParametro}"
+												target="#{userAccount.id}"
 												value="#{user.user_id}" />
 											<f:passThroughAttribute name="data-toggle" value="modal" />
 											<f:passThroughAttribute name="data-target"
@@ -152,16 +152,18 @@
 						</div>
 						<div class="modal-body">
 						    <p class="text-center"><b style="color:black;">#{usersLabels.user_delete_modal_body} : </b>
-						   <b style='color: red;'> <h:outputText id="modal-text" value="#{userAccount.user.rowkey} ?" /> </b></p> 	
+						   <b style='color: red;'> <h:outputText id="modal-text" value="#{userAccount.id} ?" /> </b></p> 						   	
 						</div>
 						<div class="modal-footer">
 							<div class="submit-modal">
 								<h:commandButton id="submitBtn"
 									value="#{usersLabels.user_delete_modal_btn_yes}"
-									class="btn btn-dark" action="#{userAccount.excluirUsuario}" />
+									class="btn btn-dark" action="#{userAccount.excluirUsuario}" >
+									<f:setPropertyActionListener value="#{deleteValue}" target="#{userAccount.id}"/> <!-- ENVIAR VALOR DE DELEÇÃO PARA O BACKING BEAN -->
+								</h:commandButton>
 							</div>
-							<div class="cancel-modal">
-								<button type="button" class="btn btn-dark" data-dismiss="modal">#{usersLabels.user_delete_modal_btn_no}</button>
+							<div class="cancel-modal">								
+								<h:commandButton value="#{usersLabels.user_delete_modal_btn_no}" class="btn btn-secondary" p:data-dismiss="modal" action="#{alunoController.removeDelValue}" /> <!-- DISMISS BUTTON -->
 							</div>
 						</div>
 					</div>
