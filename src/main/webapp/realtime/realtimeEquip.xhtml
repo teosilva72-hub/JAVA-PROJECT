@@ -5,6 +5,8 @@
     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
     xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui">
+    
+    <f:view locale="#{language.locale}">
 
     <c:forEach items="#{listEquips.equips}" var="loadItem"> 
 
@@ -523,9 +525,9 @@
 
         </ui:fragment>
         
-    </c:forEach>	
+    </c:forEach>
     
-     <!-- ============================================================================================================================= -->
+      <!-- ============================================================================================================================= -->
 	  
 	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
 		 	 	 	
@@ -539,5 +541,8 @@
 		 </form> <!-- FORM VALIDATION END -->
 		 
 	  <!-- ============================================================================================================================= -->
-					
+    
+    
+    </f:view>	    
+   			
 </ui:composition>
