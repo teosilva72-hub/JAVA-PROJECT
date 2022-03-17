@@ -19,9 +19,7 @@
     <ui:define name="default-content">
 
         <div class="row">
-            <div class="col-2">
-
-            </div>
+            <div class="col-2"></div>
             <div class="col-8">
                 <h:dataTable id="occurrence-table" var="data" disabled="true" value="#{occurrencesBean2.occurrences}" class="text-center" styleClass="table table-sm custom-table table-striped table-dark table-hover" cellspacing="0" width="100%" headerClass="custom-table-header"
                     columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn, text-center justify-content-center">
@@ -95,14 +93,12 @@
             </div>
             <div class="row">
                 <div class="col-3">
-                    <button type="button" class="btn btn-dark btn-modal" data-toggle="modal" data-target="#modalOcc">
-  					Nuevo Ocurrencia
-				</button>
+                    <button type="button" class="btn btn-dark btn-modal" data-toggle="modal" data-target="#modalOcc">Nuevo
+						Ocurrencia</button>
                 </div>
                 <div class="col-3">
-                    <button type="button" class="btn btn-warning btn-modal" data-toggle="modal" data-target="#modalSin">
-  					Nuevo Siniestro
-				</button>
+                    <button type="button" class="btn btn-warning btn-modal" data-toggle="modal" data-target="#modalSin">Nuevo
+						Siniestro</button>
                 </div>
             </div>
         </div>
@@ -113,62 +109,137 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="staticBackdropLabel">Siniestro</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+							<span aria-hidden="true">&times;</span>
+						</button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                        	<div class="col-12"><hr></hr><p class="text-center">Reporte Preliminar de Siniestro</p><hr></hr></div>
-                        	<div class="col-1"><span>Num.</span><h:inputText class="form-control" disabled="true"/></div>
-                        	<div class="col-3"><span>Siniestro</span><h:inputText class="form-control"/></div>
-                        	<div class="col-3"><span>Hora</span><h:inputText class="form-control"/></div>
-                        	<div class="col-3"><span>Fecha</span><h:inputText class="form-control"/></div>
-                        	<div class="col-3"><span>Póliza Aplixada</span><h:inputText class="form-control"/></div>
-                        	<div class="col-3"><span>Ocupantes</span><h:inputText class="form-control"/></div>
-                        	<div class="col-3"><span>Vehículo</span><h:inputText class="form-control"/></div>
-                        	<div class="col-3"><span>Folio RSA</span><h:inputText class="form-control"/></div>
-                        	<div class="col-3"><span>Lesionados</span><h:inputText class="form-control"/></div>
-                        	<div class="col-3"><span>Muertos</span><h:inputText class="form-control"/></div>
-                        	<div class="col-3"><span>KM</span><h:inputText class="form-control"/></div>
-                        	<div class="col-3"><span>Sentido</span><h:inputText class="form-control"/></div>
-                        	<div class="col-3"><span>Causas</span><h:inputText class="form-control"/></div>
-                        	<div class="col-12"><hr></hr><p class="text-center">Daños en Infraestructura</p><hr></hr></div>
-                        	
-                        	<div class="col-4"></div>
-                        	<div class="col-4">Si/No</div>
-                        	<div class="col-4">Observaciones</div>
-                        	
-                        	<div class="col-4">Defensa Metálica</div>
-                        	<div class="col-4"><h:inputText name="def_met" id="def_met" class="form-control" /></div>
-                        	<div class="col-4"><h:inputText name="def_met_obs" id="def_met_obs" class="form-control" /></div>
-                        	
-                        	<div class="col-4">Señalamiento</div>
-                        	<div class="col-4"><h:inputText name="senal" id="senal" class="form-control" /></div>
-                        	<div class="col-4"><h:inputText name="senal_obs" id="senal_obs" class="form-control" /></div>
-                        	
-                        	<div class="col-4">Daño en Pavimento</div>
-                        	<div class="col-4"><h:inputText name="pavim" id="pavim" class="form-control" /></div>
-                        	<div class="col-4"><h:inputText name="pavim_obs" id="pavim_obs" class="form-control" /></div>
-                        	
-                        	<div class="col-4">Daños en Cortes Terraplenas</div>
-                        	<div class="col-4"><h:inputText name="terrapl" id="terrapl" class="form-control" /></div>
-                        	<div class="col-4"><h:inputText name="terrapl_obs" id="terrapl_obs" class="form-control" /></div>
-                        	
-                        	<div class="col-4">Daño en Obra Complementaria</div>
-                        	<div class="col-4"><h:inputText name="comple" id="comple" class="form-control" /></div>
-                        	<div class="col-4"><h:inputText name="comple_obs" id="comple_obs" class="form-control" /></div>
-                        	
-                        	<div class="col-4">Daño en Plazas de Cobro</div>
-                        	<div class="col-4"><h:inputText name="plaza" id="plaza" class="form-control" /></div>
-                        	<div class="col-4"><h:inputText name="plaza_obs" id="plaza_obs" class="form-control" /></div>
-                        	
-                        	<div class="col-4">Otros</div>
-                        	<div class="col-4"><h:inputText name="otros" id="otros" class="form-control" /></div>
-                        	<div class="col-4"><h:inputText name="otros_obs" id="otros_obs" class="form-control" /></div>
-                        	
-                        	
-                        
-                        	
+                            <div class="col-12">
+                                <hr></hr>
+                                <p class="text-center">Reporte Preliminar de Siniestro</p>
+                                <hr></hr>
+                            </div>
+                            <div class="col-1">
+                                <span>Num.</span>
+                                <h:inputText class="form-control" disabled="true" />
+                            </div>
+                            <div class="col-3">
+                                <span>Siniestro</span>
+                                <h:inputText class="form-control" />
+                            </div>
+                            <div class="col-3">
+                                <span>Hora</span>
+                                <h:inputText class="form-control" />
+                            </div>
+                            <div class="col-3">
+                                <span>Fecha</span>
+                                <h:inputText class="form-control" />
+                            </div>
+                            <div class="col-3">
+                                <span>Póliza Aplixada</span>
+                                <h:inputText class="form-control" />
+                            </div>
+                            <div class="col-3">
+                                <span>Ocupantes</span>
+                                <h:inputText class="form-control" />
+                            </div>
+                            <div class="col-3">
+                                <span>Vehículo</span>
+                                <h:inputText class="form-control" />
+                            </div>
+                            <div class="col-3">
+                                <span>Folio RSA</span>
+                                <h:inputText class="form-control" />
+                            </div>
+                            <div class="col-3">
+                                <span>Lesionados</span>
+                                <h:inputText class="form-control" />
+                            </div>
+                            <div class="col-3">
+                                <span>Muertos</span>
+                                <h:inputText class="form-control" />
+                            </div>
+                            <div class="col-3">
+                                <span>KM</span>
+                                <h:inputText class="form-control" />
+                            </div>
+                            <div class="col-3">
+                                <span>Sentido</span>
+                                <h:inputText class="form-control" />
+                            </div>
+                            <div class="col-3">
+                                <span>Causas</span>
+                                <h:inputText class="form-control" />
+                            </div>
+                            <div class="col-12">
+                                <hr></hr>
+                                <p class="text-center">Daños en Infraestructura</p>
+                                <hr></hr>
+                            </div>
+
+                            <div class="col-4"></div>
+                            <div class="col-4">Si/No</div>
+                            <div class="col-4">Observaciones</div>
+
+                            <div class="col-4">Defensa Metálica</div>
+                            <div class="col-4">
+                                <h:inputText name="def_met" id="def_met" class="form-control" />
+                            </div>
+                            <div class="col-4">
+                                <h:inputText name="def_met_obs" id="def_met_obs" class="form-control" />
+                            </div>
+
+                            <div class="col-4">Señalamiento</div>
+                            <div class="col-4">
+                                <h:inputText name="senal" id="senal" class="form-control" />
+                            </div>
+                            <div class="col-4">
+                                <h:inputText name="senal_obs" id="senal_obs" class="form-control" />
+                            </div>
+
+                            <div class="col-4">Daño en Pavimento</div>
+                            <div class="col-4">
+                                <h:inputText name="pavim" id="pavim" class="form-control" />
+                            </div>
+                            <div class="col-4">
+                                <h:inputText name="pavim_obs" id="pavim_obs" class="form-control" />
+                            </div>
+
+                            <div class="col-4">Daños en Cortes Terraplenas</div>
+                            <div class="col-4">
+                                <h:inputText name="terrapl" id="terrapl" class="form-control" />
+                            </div>
+                            <div class="col-4">
+                                <h:inputText name="terrapl_obs" id="terrapl_obs" class="form-control" />
+                            </div>
+
+                            <div class="col-4">Daño en Obra Complementaria</div>
+                            <div class="col-4">
+                                <h:inputText name="comple" id="comple" class="form-control" />
+                            </div>
+                            <div class="col-4">
+                                <h:inputText name="comple_obs" id="comple_obs" class="form-control" />
+                            </div>
+
+                            <div class="col-4">Daño en Plazas de Cobro</div>
+                            <div class="col-4">
+                                <h:inputText name="plaza" id="plaza" class="form-control" />
+                            </div>
+                            <div class="col-4">
+                                <h:inputText name="plaza_obs" id="plaza_obs" class="form-control" />
+                            </div>
+
+                            <div class="col-4">Otros</div>
+                            <div class="col-4">
+                                <h:inputText name="otros" id="otros" class="form-control" />
+                            </div>
+                            <div class="col-4">
+                                <h:inputText name="otros_obs" id="otros_obs" class="form-control" />
+                            </div>
+
+
+
+
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -192,46 +263,60 @@
                         <!-- START INPUTS -->
                         <h:form prependId="false" id="form-inputs">
                             <div class="row">
-                                <div class="col-2"><span>Nº</span>
+                                <div class="col-2">
+                                    <span>Nº</span>
                                     <h:inputText disabled="true" name="id_occ" id="id_occ" class="form-control" />
                                 </div>
-                                <div class="col-4"><span>Plaza de Cobro</span>
+                                <div class="col-4">
+                                    <span>Plaza de Cobro</span>
                                     <h:inputText name="plaza_cobro" id="plaza_cobro" class="form-control" />
                                 </div>
-                                <div class="col-4"><span>Folio Secuencial</span>
+                                <div class="col-4">
+                                    <span>Folio Secuencial</span>
                                     <h:inputText name="folio_secuencial" id="folio_secuencial" class="form-control" />
                                 </div>
-                                <div class="col-4"><span>Reporte</span>
+                                <div class="col-4">
+                                    <span>Reporte</span>
                                     <h:inputText name="reporte" id="reporte" class="form-control" />
                                 </div>
-                                <div class="col-4"><span>Siniestro</span>
+                                <div class="col-4">
+                                    <span>Siniestro</span>
                                     <h:inputText name="siniestro" id="siniestro" class="form-control" />
                                 </div>
-                                <div class="col-4"><span>Fecha</span>
+                                <div class="col-4">
+                                    <span>Fecha</span>
                                     <h:inputText name="fecha" id="fecha" class="form-control" />
                                 </div>
-                                <div class="col-4"><span>Hora</span>
+                                <div class="col-4">
+                                    <span>Hora</span>
                                     <h:inputText name="hora" id="hora" class="form-control" />
                                 </div>
-                                <div class="col-4"><span>Dirección Y/O Trayectoria</span>
+                                <div class="col-4">
+                                    <span>Dirección Y/O Trayectoria</span>
                                     <h:inputText name="direccion_tray" id="direccion_tray" class="form-control" />
                                 </div>
-                                <div class="col-4"><span>KM de Registro</span>
+                                <div class="col-4">
+                                    <span>KM de Registro</span>
                                     <h:inputText name="km_reg" id="km_reg" class="form-control" />
                                 </div>
-                                <div class="col-4"><span>KM Inicial</span>
+                                <div class="col-4">
+                                    <span>KM Inicial</span>
                                     <h:inputText name="km_inicial" id="km_inicial" class="form-control" />
                                 </div>
-                                <div class="col-4"><span>KM Final</span>
+                                <div class="col-4">
+                                    <span>KM Final</span>
                                     <h:inputText name="km_final" id="km_final" class="form-control" />
                                 </div>
-                                <div class="col-4"><span>Póliza Por Afectar</span>
+                                <div class="col-4">
+                                    <span>Póliza Por Afectar</span>
                                     <h:inputText name="poliza_afectar" id="poliza_afectar" class="form-control" />
                                 </div>
-                                <div class="col-4"><span>Hora de Registro Cabina</span>
+                                <div class="col-4">
+                                    <span>Hora de Registro Cabina</span>
                                     <h:inputText name="hora_reg_cabina" id="hora_reg_cabina" class="form-control" />
                                 </div>
-                                <div class="col-4"><span>Hora de Arribo de Ajustador</span>
+                                <div class="col-4">
+                                    <span>Hora de Arribo de Ajustador</span>
                                     <h:inputText name="hora_ajustador" id="hora_ajustador" class="form-control" />
                                 </div>
                             </div>
@@ -259,49 +344,57 @@
                                         </div>
                                     </div>
                                     <div class="col-2">
-                                        <a id="btn_append"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-									  	<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-									  	<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-										</svg>
-									</a>
+                                        <a id="btn_append"><svg xmlns="http://www.w3.org/2000/svg"
+												width="16" height="16" fill="currentColor"
+												class="bi bi-plus-circle" viewBox="0 0 16 16"> <path
+												d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+											<path
+												d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+											</svg> </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" id="tiposVeh">
-                                <div class="col-1 addNum">
-                                    <span>Num.</span>
-                                    <h:inputText value="" id="num_veh" name="num_veh" class="form-control" />
-                                </div>
-                                <div class="col-1 addMarca">
-                                    <span>Marca</span>
-                                    <h:inputText value="" id="marca_veh" name="marca_veh" class="form-control" />
-                                </div>
-                                <div class="col-1 addTipo">
-                                    <span>Tipo</span>
-                                    <h:inputText value="" id="tipo_veh" name="tipo_veh" class="form-control" />
-                                </div>
-                                <div class="col-2 addModelo">
-                                    <span>Modelo</span>
-                                    <h:inputText value="" id="modelo_veh" name="modelo_veh" class="form-control" />
-                                </div>
-                                <div class="col-2 addCor">
-                                    <span>Color</span>
-                                    <h:inputText value="" id="cor_veh" name="cor_veh" class="form-control" />
-                                </div>
-                                <div class="col-2 addPlaca">
-                                    <span>Placa/Estado</span>
-                                    <h:inputText value="" id="placa_veh" name="placa_veh" class="form-control" />
-                                </div>
-                                <div class="col-2 addTel">
-                                    <span>Teléfono</span>
-                                    <h:inputText value="" id="tel_veh" name="tel_veh" class="form-control" />
-                                </div>
-                                <div class="col-1">
-                                    <a id="btn_append_veh"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-									  	<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-									  	<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-										</svg>
-									</a>
+                            <div>
+                                <div class="row" id="tiposVeh">
+                                	<div class="col-12"><hr></hr></div>
+                                    <div class="col-1 addNum">
+                                        <span>Num.</span>
+                                        <h:inputText value="" id="num_veh" name="num_veh" class="form-control" />
+                                    </div>
+                                    <div class="col-1 addMarca">
+                                        <span>Marca</span>
+                                        <h:inputText value="" id="marca_veh" name="marca_veh" class="form-control" />
+                                    </div>
+                                    <div class="col-1 addTipo">
+                                        <span>Tipo</span>
+                                        <h:inputText value="" id="tipo_veh" name="tipo_veh" class="form-control" />
+                                    </div>
+                                    <div class="col-2 addModelo">
+                                        <span>Modelo</span>
+                                        <h:inputText value="" id="modelo_veh" name="modelo_veh" class="form-control" />
+                                    </div>
+                                    <div class="col-2 addCor">
+                                        <span>Color</span>
+                                        <h:inputText value="" id="cor_veh" name="cor_veh" class="form-control" />
+                                    </div>
+                                    <div class="col-2 addPlaca">
+                                        <span>Placa/Estado</span>
+                                        <h:inputText value="" id="placa_veh" name="placa_veh" class="form-control" />
+                                    </div>
+                                    <div class="col-2 addTel">
+                                        <span>Teléfono</span>
+                                        <h:inputText value="" id="tel_veh" name="tel_veh" class="form-control" />
+                                    </div>
+                                    <div class="col-1">
+                                        <a id="btn_append_veh"><svg
+												xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+												fill="currentColor" class="bi bi-plus-circle"
+												viewBox="0 0 16 16"> <path
+												d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+											<path
+												d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+											</svg> </a>
+                                    </div>
                                 </div>
                             </div>
                             <div>
@@ -309,6 +402,53 @@
                                     <div class="col-12">
                                         <hr></hr>
                                         <p class="text-center">Datos de Personas</p>
+                                        <hr></hr>
+                                    </div>
+                                    <div class="col-1">
+                                        <span>Num</span>
+                                    </div>
+                                    <div class="col-4">
+                                        <span>Nombre del Conductor</span>
+                                    </div>
+                                    <div class="col-2">
+                                        <span>Edad</span>
+                                    </div>
+                                    <div class="col-3">
+                                        <span>Condiciones de Salud</span>
+                                    </div>
+                                    <div class="col-1">
+                                        <a id="btn_append_person"><svg
+												xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+												fill="currentColor" class="bi bi-plus-circle"
+												viewBox="0 0 16 16"> <path
+												d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+											<path
+												d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+											</svg> </a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row container-fluid" id="datos_person">
+                                        <div class="col-1">
+                                            <h:inputText value="" name="id_person" class="form-control" />
+                                        </div>
+                                        <div class="col-4">
+                                            <h:inputText value="" name="nombre_person" class="form-control" />
+                                        </div>
+                                        <div class="col-2">
+                                            <h:inputText value="" name="edad_person" class="form-control" />
+                                        </div>
+                                        <div class="col-4">
+                                            <h:inputText value="" name="codiciones_person" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <hr></hr>
+                                        <p class="text-center">Motivo del Accidente</p>
                                         <hr></hr>
                                     </div>
                                     <div class="col-12">
@@ -328,7 +468,8 @@
                                                 <span class="input-group-text">B</span>
                                             </div>
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text">Trabajos de Conservación</span>
+                                                <span class="input-group-text">Trabajos de
+													Conservación</span>
                                             </div>
                                             <input type="text" class="form-control" />
                                         </div>
@@ -403,14 +544,6 @@
         <h:outputScript name="additional-methods.min.js" library="js/jquery-validation" />
         <h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
         <script>
-            //Inicio dos comandos JavaScript
-            //getFilename();
-
-            myFunction(); // ADD ARQUIVOS
-            myFunction2(); //myFunction2();
-            tabelaReal(); //Função da tabela de seleção [Editar]
-            tableBloqueada(); //Função Tabela Oculta [Desabilita o editar]
-            selecaoTable(); //Função que pega o id da tabela e coloca nos inputs[]
         </script>
     </ui:define>
 </ui:composition>
