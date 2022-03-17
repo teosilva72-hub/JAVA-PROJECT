@@ -155,10 +155,12 @@ $(function () {
 	})
 
 	$('[id$="btn-edit"]').click(function btnEdit() {
+					
 		setTimeout(() => {
-
-			var equipsSEL = document.getElementById("equips-edit");
-			var selectVAL = equipsSEL.options[equipsSEL.selectedIndex].value;
+			
+			let equipsSEL = document.getElementById("equips-edit");
+			let selectVAL = equipsSEL.options[equipsSEL.selectedIndex].value;			
+									
 			if (selectVAL == 9) {
 				$('.satInputs-edit').show(); // DIV FAIXAS 1	
 				$('.dmsHidden-edit').hide();
@@ -166,6 +168,7 @@ $(function () {
 				$('.speedHidden-edit').hide();
 				$('.meteoHidden-edit').hide();
 				$('.sosInputs-edit').hide(); 				
+				
 				$("#lanes-edit").change(
 					function () {
 						var satLanes = document.getElementById("lanes-edit");
@@ -269,18 +272,17 @@ $(function () {
 				$('.meteoHidden-edit').hide();			
 			}
 
-		}, 100)
+		}, 300)
 	});
 
-
-	//Scroll Zoom Map Full
+	// Scroll Zoom Map Full
 	$('[scroll-zoom]').each(function () {
 		let map = $(this)
 		ScrollZoom(map)
 		mapMove(map)
 	})
 	barResize()
-	//Scroll Zoom Map Full END
+	// Scroll Zoom Map Full END
 
 	$(".overflow").css("height", $(this).height() - 125)
 	$('#mapDivide').css('height', area)
@@ -496,14 +498,9 @@ function posEquip(equip) {
 		updateLine(equip);
 
 	if (equip.attr("class").includes('equip-box-sat')) {
-			let sat_status = equip.attr('status')
 			let sat_name = equip.attr('id')
-			let interval = Number(equip.attr('status-period'))
-			let fluxo1 = equip.find('[id^=img1FluxoTab]')
-			let fluxo2 = fluxo1.next()
-			let spd1 = Number(equip.find('#spd1').text())
-			let spd2 = Number(equip.find('#spd2').text())
-
+			let interval = Number(equip.attr('status-period'))		
+		
 		//Green Color > indica que o equipamento está conectado
 		if (interval == 15 || interval == 30) {
 			equip.find("[id^=satName]").css({

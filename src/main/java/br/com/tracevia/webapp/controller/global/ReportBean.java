@@ -29,6 +29,7 @@ import br.com.tracevia.webapp.dao.global.ReportDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.global.ReportSelection;
 import br.com.tracevia.webapp.model.sat.SatTableHeader;
@@ -61,7 +62,7 @@ public class ReportBean {
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
 	public boolean 	isSat = false, haveTotal, multiSheet = true, equipSheetName = false, directionsOnSheet = false, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false,
-			groupId = false,  limitColumn = false, hasDivision = false, additionalTitleName = false, multiChart = false, extraPeriod = false;
+			groupId = false,  limitColumn = false, dynamicColumns = false, totalColumn = false, hasDivision = false, additionalTitleName = false, multiChart = false, extraPeriod = false;
 		
 	public String totalType = "standard";
 	public String module = "default";
@@ -97,6 +98,9 @@ public class ReportBean {
 
 	List<? extends Equipments> listEquips;  
 	
+	@ManagedProperty("#{listEquips}")
+	private ListEquipments equips;
+
 	@ManagedProperty("#{language}")
 	private LanguageBean language;
 				
@@ -108,6 +112,14 @@ public class ReportBean {
 
 	public void setLanguage(LanguageBean language) {
 		this.language = language;
+	}
+	
+	public ListEquipments getEquips() {
+		return equips;
+	}
+
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
 	}
 		
 	public ReportSelection getSelect() {
@@ -370,6 +382,11 @@ public class ReportBean {
 		this.totalType = totalType;
 	}
 	
+	public void defineDynamicColumns(boolean dynamicColumns, boolean totalColumn) {
+		this.dynamicColumns = dynamicColumns;
+		this.totalColumn = totalColumn;
+	}
+	
 	public void defineClassSublHeader(String classSubHeader) {
 		this.classSubHeader = classSubHeader;
 	}
@@ -607,16 +624,16 @@ public class ReportBean {
 		List<String> parametersMS = new ArrayList<>();
 		List<String> select = new ArrayList<>();
 
-		for (String column : searchParameters) {
+		for (String column : searchParameters) {			
 			if (column.contains("$custom")) {
 				Pattern pattern = Pattern.compile("^\\w+");
 				Matcher alias = pattern.matcher(column.split("@")[1]);
 				if (alias.find())
 					if (listArgs.containsKey(alias.group(0))) {
-						List<String> values = listArgs.get(alias.group(0));
+						List<String> values = listArgs.get(alias.group(0));												
 						for (String arg : values) {
 								String columns_replace = column.replace(String.format("$custom@%s", alias.group(0)), arg);
-	
+																
 							parameters.add(String.format("%s", columns_replace));
 						}
 					}
@@ -630,7 +647,7 @@ public class ReportBean {
 				Matcher alias = pattern.matcher(column.split("@")[1]);
 				if (alias.find())
 					if (listArgs.containsKey(alias.group(0))) {
-						List<String> values = listArgs.get(alias.group(0));
+						List<String> values = listArgs.get(alias.group(0));					
 						for (String arg : values) {
 							String columns_replace = column.replace(String.format("$custom@%s", alias.group(0)), arg);
 	
@@ -665,18 +682,121 @@ public class ReportBean {
 		 searchParameters = parameters;					
 		 searchParametersMS = parametersMS;					
 	  }
+	
+	public void orderColumns(Map<String, String> map, Map<String, String[]> mapArray) throws Exception {
+		
+		map = SessionUtil.getRequestParameterMap();
+		mapArray = SessionUtil.getRequestParameterValuesMap();
+		
+		List<String> equipments = new ArrayList<String>();
+		
+		for (Pair<String[], List<String[]>> search : filterSearch) {			
+			if (search.left[2].equals("multiple")) {
+				String[] filterArray = mapArray.get(String.format("%s-filter", search.left[1]).replaceAll(" ", ""));
+								
+				if (filterArray != null) {						
+					for (String f : filterArray) { // HERE					
+																																		
+						if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO"))														
+							equipments.add(f);
+						
+				}	
+			  }
+			} else {
+				
+				String f = map.get(String.format("%s-filter", search.left[1]).replaceAll(" ", ""));
+																								
+				if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO"))														
+					 equipments.add(f);									
+			}						
+			
+			// ---------------------------------------------------------------------
+			
+		}						
+				// Table Fields
+		
+				report = new ReportDAO(columnsName);
+				List<String> parameters = new ArrayList<>();
+				List<String> parametersMS = new ArrayList<>();
+				List<String> aux = new ArrayList<String>();	
+																			
+				// -----------------------------------------------------
+								
+				if(equipments.size() > 0) { // CASO ESSA LISTA NÂO FOR VAZIA
+														
+				 if(!searchParameters.isEmpty()) {
+				
+					for(int i = 0; i < equips.getSatList().size(); i++)
+						  aux.add(String.valueOf(equips.getSatList().get(i).getEquip_id()));
+																	    			
+					      aux.removeAll(equipments);														
+					  				     											
+					      for (String column : searchParameters) {
+					    	  
+					    	  parameters.add(column);
+					    	  				
+					    	  if(column.contains("NOME_ESTACAO =")){
+					    		  
+					    		for (String value : aux) {					    	 
+								
+								if(column.contains(value)) {													 
+									 parameters.remove(column);	
+									 
+									}								
+				    			 }					    		    
+					    	  } 					    	 
+					       }			      
+				 		}
+				      
+				 if(!searchParametersMS.isEmpty()) {
+				
+					 for(int i = 0; i < equips.getSatList().size(); i++)
+						  aux.add(String.valueOf(equips.getSatList().get(i).getEquip_id()));
+																	    			
+					      aux.removeAll(equipments);														
+					  				     											
+					      for (String column : searchParametersMS) {
+					    	  
+					    	  parameters.add(column);
+					    	  				
+					    	  if(column.contains("NOME_ESTACAO =")){
+					    		  
+					    		for (String value : aux) {					    	 
+								
+								if(column.contains(value)) {													 
+									 parameters.remove(column);	
+									 
+									}								
+				    			 }					    		    
+					    	  }					    	 
+					       }     
+				 		}
+				 
+				 searchParameters = parameters;					
+				 searchParametersMS = parametersMS;	
+				 
+				}			
+             }
 
 	 // CAMPOS
 	
 	  public void createFields() throws Exception {
-									
+											
 		int count = 0;
 		boolean setPeriod = false;
 		
 		Map<String, String> map = SessionUtil.getRequestParameterMap();
 		Map<String, String[]> mapArray = SessionUtil.getRequestParameterValuesMap();
+		List<String> listAux = new ArrayList<String>();
 		
-		String[] columns = mapArray.get("allColumns");
+		String[] columns = null;
+		
+		if(dynamicColumns)
+			orderColumns(map, mapArray);
+						
+		if(!dynamicColumns)
+			columns = mapArray.get("allColumns");		
+		
 		List<String> columnsTemp = columns != null ? Arrays.asList(columns) : searchParameters;
 		String selectedPeriod = (String) map.get("date-period");
 		usePeriod = selectedPeriod;
@@ -700,7 +820,7 @@ public class ReportBean {
 		
 		List<String> equipIDs = new ArrayList<String>();
 		List<String> directions = new ArrayList<String>();
-		
+			
 		String selectedLane = "";
 		
 		if (!searchParametersMS.isEmpty())
@@ -861,7 +981,7 @@ public class ReportBean {
 					if (search.left[0].equals(idTable))
 						 idSearch.add(f);
 										
-					if(search.left[0].equals("siteID"))														
+					if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO"))														
 						 equipIDs.add(f);
 					
 					if(search.left[0].equals("NOME_FAIXA") || search.left[0].equals("lane")) {
@@ -869,6 +989,35 @@ public class ReportBean {
 						selectedLane = f;							
 					}										
 				}
+				
+				// ---------------------------------------------------------------------
+				
+				// FILTER EQUIPS COLUMN
+				
+				if(dynamicColumns) {
+					
+					EquipmentsDAO dao = new EquipmentsDAO();					
+					String[] equip_selected = null;
+										
+					if(equipIDs.size() > 0) {
+						
+					equip_selected = dao.equipmentsName(module, equipIDs);
+					List<String> list = Arrays.asList(equip_selected);
+					
+					List<String>aux = new ArrayList<String>();	
+					
+					
+					for(int i = 0; i < equips.getSatList().size(); i++)
+						  aux.add(equips.getSatList().get(i).getNome());							
+				
+					      aux.removeAll(list);
+																		
+						  columnsInUse.removeAll(aux);
+						  
+					}															
+				}			
+				
+				// ---------------------------------------------------------------------
 
 				if (count == 0 && !filter.isEmpty()) {
 					query += " WHERE";
@@ -931,9 +1080,7 @@ public class ReportBean {
 			}
 				
 			// ----------------------------------------------------------------------
-			
-			// System.out.println(query);
-			  
+									  
 		    // Table Fields
 			report.getReport(query, queryMS, idTable, isDivision() ? division : null);
 		    boolean hasValue = true;
@@ -956,6 +1103,8 @@ public class ReportBean {
 			}					
 						
 			// -------------------------------------------------------------------------------------
+			
+			// System.out.println(query);
 		
 			// TABLE DINAMIC HEADER
 			

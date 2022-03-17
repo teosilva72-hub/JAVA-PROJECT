@@ -129,8 +129,9 @@ $(function () {
 	$('[id$="btn-edit"]').click(function btnEdit() {
 		setTimeout(() => {
 
-			var equipsSEL = document.getElementById("equips-edit");
-			var selectVAL = equipsSEL.options[equipsSEL.selectedIndex].value;
+			let equipsSEL = document.getElementById("equips-edit");
+			let selectVAL = equipsSEL.options[equipsSEL.selectedIndex].value;
+			
 			if (selectVAL == 9) {
 				$('.satInputs-edit').show(); // DIV FAIXAS 1	
 				$('.dmsHidden-edit').hide();
@@ -241,7 +242,7 @@ $(function () {
 				$('.meteoHidden-edit').hide();			
 			}
 
-		}, 100)
+		}, 300)
 	});
  
 	$(".overflow").css("height", $(this).height() - 125)

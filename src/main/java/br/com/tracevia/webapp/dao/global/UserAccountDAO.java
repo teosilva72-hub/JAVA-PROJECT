@@ -17,7 +17,6 @@ import br.com.tracevia.webapp.util.LogUtils;
 public class UserAccountDAO {
 
 	SQL_Tracevia conn = new SQL_Tracevia();
-	private int id;
 	
 	// --------------------------------------------------------------------------------------------
 	
@@ -72,9 +71,9 @@ public class UserAccountDAO {
 		try {
 			
 			String sql = "INSERT INTO users_register (user_id, date_register, creation_username, name, job_position, email, username, password)"
-					+ " values  ( (SELECT Max(user_id) as usr FROM users_register as maxId) + 1, ?, ?, ?, ?, ?, ?, ?)";
+					+ " values  ((SELECT IFNULL(Max(user_id), 0) AS id FROM users_register as maxId) + 1, ?, ?, ?, ?, ?, ?, ?)";
 
-			String sql2 = "INSERT INTO users_permission_user (user_id, permission_id, status) values  ( ?, ?, ?)";
+			String sql2 = "INSERT INTO users_permission_user (user_id, permission_id, status) values  ((SELECT Max(user_id) AS id FROM users_register as maxId), ?, ?)";
 
 			conn.start(1);
 
@@ -101,10 +100,9 @@ public class UserAccountDAO {
 
 			if (success > 0) {
 
-				conn.prepare(sql2);
-				conn.setInt(1, id);
-				conn.setInt(2, user.getPermission_id());
-				conn.setBoolean(3, user.isActiveStatus());
+				conn.prepare(sql2);			
+				conn.setInt(1, user.getPermission_id());
+				conn.setBoolean(2, user.isActiveStatus());
 
 				long sucess2 = conn.executeUpdate();
 
