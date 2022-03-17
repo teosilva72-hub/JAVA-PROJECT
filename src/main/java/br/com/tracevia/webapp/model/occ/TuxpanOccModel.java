@@ -1,5 +1,7 @@
 package br.com.tracevia.webapp.model.occ;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class TuxpanOccModel{
 	
@@ -17,8 +19,8 @@ public class TuxpanOccModel{
 	private String poliza;
 	private String fecha_cab;
 	private String hora_ajust;
-	private String[] tipo_veh_inv;
-	private String[] num_eje_veh_inv;
+	private List<String> tipo_veh_inv = new ArrayList<>();
+	private List<String> num_eje_veh_inv = new ArrayList<>();
 	private String[] num_tp_veh;
 	private String[] marca_tp_veh;
 	private String[] tipo_tp_veh;
@@ -49,16 +51,18 @@ public class TuxpanOccModel{
 	private String dano_plz_cobro;
 	private String otros_sin;
 	private String[] obs_sin;
+	private String lesionados;
+	private String mortos;
 	
 	public TuxpanOccModel(String id, String plz_cobro, String folio_sec, String reporte, String siniestro,
 			String fecha, String hora, String direccion, String km_reg, String km_inicial, String km_final,
-			String poliza, String fecha_cab, String hora_ajust, String[] tipo_veh_inv, String[] num_eje_veh_inv,
+			String poliza, String fecha_cab, String hora_ajust, List<String> tipo_veh_inv, List<String> num_eje_veh_inv,
 			String[] num_tp_veh, String[] marca_tp_veh, String[] tipo_tp_veh, String[] model_tp_veh, String[] color,
 			String[] placa_estado, String[] tel, String[] id_person, String[] nombre, String[] edad, String[] condiciones,
 			String semoviente, String trab_conserv, String lluvia_granizo, String neblina, String vandalismo,
 			String otro, String obs_occ, String[] ocupantes_sin, String[] veh_sin, String causas_sin, String def_metal,
 			String senal, String dano_pav, String danos_cort_trr, String danos_obr_compl, String dano_plz_cobro,
-			String otros_sin, String[] obs_sin) {
+			String otros_sin, String[] obs_sin, String lesionados, String mortos) {
 		
 		this.id = id;
 		this.plz_cobro = plz_cobro;
@@ -73,7 +77,7 @@ public class TuxpanOccModel{
 		this.poliza = poliza;
 		this.fecha_cab = fecha_cab;
 		this.hora_ajust = hora_ajust;
-		this.tipo_veh_inv = tipo_tp_veh;
+		this.tipo_veh_inv = tipo_veh_inv;
 		this.num_eje_veh_inv = num_eje_veh_inv;
 		this.num_tp_veh = num_tp_veh;
 		this.marca_tp_veh = marca_tp_veh;
@@ -103,9 +107,24 @@ public class TuxpanOccModel{
 		this.danos_obr_compl = danos_obr_compl;
 		this.dano_plz_cobro = dano_plz_cobro;
 		this.otros_sin = otros_sin;
+		this.lesionados = lesionados;
+		this.mortos = mortos;
 		
 	}
 	public TuxpanOccModel(){}
+	
+	public String getLesionados() {
+		return lesionados;
+	}
+	public void setLesionados(String lesionados) {
+		this.lesionados = lesionados;
+	}
+	public String getMortos() {
+		return mortos;
+	}
+	public void setMortos(String mortos) {
+		this.mortos = mortos;
+	}
 	public String getId() {
 		return id;
 	}
@@ -190,17 +209,17 @@ public class TuxpanOccModel{
 	public void setHora_ajust(String hora_ajust) {
 		this.hora_ajust = hora_ajust;
 	}
-	public String[] getTipo_veh_inv() {
+	public List<String> getTipo_veh_inv() {
 		return tipo_veh_inv;
 	}
-	public void setTipo_veh_inv(String[] tipo_veh_inv) {
-		this.tipo_veh_inv = tipo_veh_inv;
+	public void setTipo_veh_inv(String tipo_veh_inv) {
+		 this.tipo_veh_inv.add(tipo_veh_inv);
 	}
-	public String[] getNum_eje_veh_inv() {
+	public List<String> getNum_eje_veh_inv() {
 		return num_eje_veh_inv;
 	}
-	public void setNum_eje_veh_inv(String[] num_eje_veh_inv) {
-		this.num_eje_veh_inv = num_eje_veh_inv;
+	public void setNum_eje_veh_inv(String num_eje_veh_inv) {
+		this.num_eje_veh_inv.add(num_eje_veh_inv);
 	}
 	public String[] getNum_tp_veh() {
 		return num_tp_veh;

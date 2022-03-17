@@ -19,3 +19,7 @@ a.deleteTipoVeh {
     margin: 15px;
     right: 15px;
 }
+a#btn_veh_ocup {
+    position: relative;
+    top: 25px;
+}
