@@ -531,28 +531,28 @@ function posEquip(equip) {
 			if (spd1 > 0 && spd1 < 31) {
 				fluxo1.css({
 					animation: 'myMove 150s linear infinite', 'animation-direction': "reverse"
-				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir1_red.png')
+				}).attr('src', '/resources/images/linear-map/service-level/congested/congested_dir1.webp')
 				
 				fluxo1.attr('title', sentido1+' / '+congested);
 			}
 			else if (spd1 > 30 && spd1 < 61) {
 				fluxo1.css({
 					animation: 'myMove 60s linear infinite', 'animation-direction': "reverse"
-				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir1_orange.png')
+				}).attr('src', '/resources/images/linear-map/service-level/moderate/moderate_dir1.webp')
 				
 				fluxo1.attr('title', sentido1+' / '+moderate);
 			}
 			else if (spd1 > 60) {
 				fluxo1.css({
 					animation: 'myMove 20s linear infinite', 'animation-direction': "reverse"
-				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir1_green.png')
+				}).attr('src', '/resources/images/linear-map/service-level/free/free_dir1.webp')
 				
 				fluxo1.attr('title', sentido1+' / '+free);
 			}
 		}
 		else {
 			
-			fluxo1.attr('src', '/resources/images/realTimeInterface/serviceLevel_dir1_gray.png')
+			fluxo1.attr('src', '/resources/images/linear-map/service-level/none/none_dir1.webp')
 			fluxo1.attr('title', sentido1+' / '+none);
 		}
 
@@ -561,28 +561,28 @@ function posEquip(equip) {
 			if (spd2 > 0 && spd2 < 31) {
 				fluxo2.css({
 					animation: 'myMove 150s linear infinite'
-				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir2_red.png')
+				}).attr('src', '/resources/images/linear-map/service-level/congested/congested_dir2.webp')
 				
 				fluxo2.attr('title', sentido2+' / '+congested);
 			}
 			else if (spd2 > 30 && spd2 < 61) {
 				fluxo2.css({
 					animation: 'myMove 60s linear infinite'
-				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir2_orange.png')
+				}).attr('src', '/resources/images/linear-map/service-level/moderate/moderate_dir2.webp')
 				
 				fluxo2.attr('title', sentido2+' / '+moderate);
 			}
 			else if (spd2 > 60) {
 				fluxo2.css({
 					animation: 'myMove 20s linear infinite'
-				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir2_green.png')
+				}).attr('src', '/resources/images/linear-map/service-level/free/free_dir2.webp')
 				
 				fluxo2.attr('title', sentido2+' / '+free);
 			}
 		}
 		else {
 			
-			fluxo2.attr('src', '/resources/images/realTimeInterface/serviceLevel_dir2_gray.png')
+			fluxo2.attr('src', '/resources/images/linear-map/service-level/none/none_dir2.webp')
 			fluxo2.attr('title', sentido2+' / '+none);
 		}
 	}
