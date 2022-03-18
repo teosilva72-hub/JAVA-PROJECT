@@ -21,27 +21,22 @@ public class TuxpanOcc{
 	public void init() {
 		data = new TuxpanOccModel();
 	}
-	public void saveOcc() {
-		
+	public boolean saveOcc() {
+		boolean checked = false;
 		TuxpanDAO dao = new TuxpanDAO();
-		System.out.println(data.getPlz_cobro());
-		System.out.println(data.getFolio_sec());
-		System.out.println(data.getReporte());
-		System.out.println(data.getSiniestro());
-		System.out.println(data.getFecha());
-		System.out.println(data.getHora());
-
 		try {
-			
-			dao.registerOcc(data);
-			
-			
-			
+			String check = dao.registerOcc(data);
+			if(check.equals("null")) {
+				checked = false;
+				System.out.println(checked);
+			}else {
+				checked = true;
+				System.out.println(checked);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	
+		return checked;
+	}	
 }
