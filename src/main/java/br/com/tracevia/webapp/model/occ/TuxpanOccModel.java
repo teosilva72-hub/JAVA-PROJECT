@@ -19,19 +19,19 @@ public class TuxpanOccModel{
 	private String poliza;
 	private String fecha_cab;
 	private String hora_ajust;
-	private List<String> tipo_veh_inv = new ArrayList<>();
-	private List<String> num_eje_veh_inv = new ArrayList<>();
-	private String[] num_tp_veh;
-	private String[] marca_tp_veh;
-	private String[] tipo_tp_veh;
-	private String[] model_tp_veh;
-	private String[] color;
-	private String[] placa_estado;
-	private String[] tel;
-	private String[] id_person;
-	private String[] nombre;
-	private String[] edad;
-	private String[] condiciones;
+	private String tipo_veh_inv;
+	private String num_eje_veh_inv;
+	private String num_tp_veh;
+	private String marca_tp_veh;
+	private String tipo_tp_veh;
+	private String model_tp_veh;
+	private String color;
+	private String placa_estado;
+	private String tel;
+	private String id_person;
+	private String nombre;
+	private String edad;
+	private String condiciones;
 	private String semoviente;
 	private String trab_conserv;
 	private String lluvia_granizo;
@@ -40,8 +40,8 @@ public class TuxpanOccModel{
 	private String otro;
 	private String obs_occ;
 	//siniestro
-	private String[] ocupantes_sin;
-	private String[] veh_sin;
+	private String ocupantes_sin;
+	private String veh_sin;
 	private String causas_sin;
 	private String def_metal;
 	private String senal;
@@ -50,17 +50,17 @@ public class TuxpanOccModel{
 	private String danos_obr_compl;
 	private String dano_plz_cobro;
 	private String otros_sin;
-	private String[] obs_sin;
+	private String obs_sin;
 	private String lesionados;
 	private String mortos;
 	
 	public TuxpanOccModel(String id, String plz_cobro, String folio_sec, String reporte, String siniestro,
 			String fecha, String hora, String direccion, String km_reg, String km_inicial, String km_final,
-			String poliza, String fecha_cab, String hora_ajust, List<String> tipo_veh_inv, List<String> num_eje_veh_inv,
-			String[] num_tp_veh, String[] marca_tp_veh, String[] tipo_tp_veh, String[] model_tp_veh, String[] color,
-			String[] placa_estado, String[] tel, String[] id_person, String[] nombre, String[] edad, String[] condiciones,
+			String poliza, String fecha_cab, String hora_ajust, String tipo_veh_inv, String num_eje_veh_inv,
+			String num_tp_veh, String marca_tp_veh, String tipo_tp_veh, String model_tp_veh, String color,
+			String placa_estado, String tel, String id_person, String nombre, String edad, String condiciones,
 			String semoviente, String trab_conserv, String lluvia_granizo, String neblina, String vandalismo,
-			String otro, String obs_occ, String[] ocupantes_sin, String[] veh_sin, String causas_sin, String def_metal,
+			String otro, String obs_occ, String ocupantes_sin, String veh_sin, String causas_sin, String def_metal,
 			String senal, String dano_pav, String danos_cort_trr, String danos_obr_compl, String dano_plz_cobro,
 			String otros_sin, String[] obs_sin, String lesionados, String mortos) {
 		
@@ -112,19 +112,6 @@ public class TuxpanOccModel{
 		
 	}
 	public TuxpanOccModel(){}
-	
-	public String getLesionados() {
-		return lesionados;
-	}
-	public void setLesionados(String lesionados) {
-		this.lesionados = lesionados;
-	}
-	public String getMortos() {
-		return mortos;
-	}
-	public void setMortos(String mortos) {
-		this.mortos = mortos;
-	}
 	public String getId() {
 		return id;
 	}
@@ -209,82 +196,82 @@ public class TuxpanOccModel{
 	public void setHora_ajust(String hora_ajust) {
 		this.hora_ajust = hora_ajust;
 	}
-	public List<String> getTipo_veh_inv() {
+	public String getTipo_veh_inv() {
 		return tipo_veh_inv;
 	}
 	public void setTipo_veh_inv(String tipo_veh_inv) {
-		 this.tipo_veh_inv.add(tipo_veh_inv);
+		this.tipo_veh_inv = tipo_veh_inv;
 	}
-	public List<String> getNum_eje_veh_inv() {
+	public String getNum_eje_veh_inv() {
 		return num_eje_veh_inv;
 	}
 	public void setNum_eje_veh_inv(String num_eje_veh_inv) {
-		this.num_eje_veh_inv.add(num_eje_veh_inv);
+		this.num_eje_veh_inv = num_eje_veh_inv;
 	}
-	public String[] getNum_tp_veh() {
+	public String getNum_tp_veh() {
 		return num_tp_veh;
 	}
-	public void setNum_tp_veh(String[] num_tp_veh) {
+	public void setNum_tp_veh(String num_tp_veh) {
 		this.num_tp_veh = num_tp_veh;
 	}
-	public String[] getMarca_tp_veh() {
+	public String getMarca_tp_veh() {
 		return marca_tp_veh;
 	}
-	public void setMarca_tp_veh(String[] marca_tp_veh) {
+	public void setMarca_tp_veh(String marca_tp_veh) {
 		this.marca_tp_veh = marca_tp_veh;
 	}
-	public String[] getTipo_tp_veh() {
+	public String getTipo_tp_veh() {
 		return tipo_tp_veh;
 	}
-	public void setTipo_tp_veh(String[] tipo_tp_veh) {
+	public void setTipo_tp_veh(String tipo_tp_veh) {
 		this.tipo_tp_veh = tipo_tp_veh;
 	}
-	public String[] getModel_tp_veh() {
+	public String getModel_tp_veh() {
 		return model_tp_veh;
 	}
-	public void setModel_tp_veh(String[] model_tp_veh) {
+	public void setModel_tp_veh(String model_tp_veh) {
 		this.model_tp_veh = model_tp_veh;
 	}
-	public String[] getColor() {
+	public String getColor() {
 		return color;
 	}
-	public void setColor(String[] color) {
+	public void setColor(String color) {
 		this.color = color;
 	}
-	public String[] getPlaca_estado() {
+	public String getPlaca_estado() {
 		return placa_estado;
 	}
-	public void setPlaca_estado(String[] placa_estado) {
+	public void setPlaca_estado(String placa_estado) {
 		this.placa_estado = placa_estado;
 	}
-	public String[] getTel() {
+	public String getTel() {
 		return tel;
 	}
-	public void setTel(String[] tel) {
+	public void setTel(String tel) {
 		this.tel = tel;
 	}
-	public String[] getId_person() {
+	public String getId_person() {
 		return id_person;
 	}
-	public void setId_person(String[] id_person) {
+	public void setId_person(String id_person) {
 		this.id_person = id_person;
 	}
-	public String[] getNombre() {
+	public String getNombre() {
 		return nombre;
 	}
-	public void setNombre(String[] nombre) {
+	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String[] getEdad() {
+	public String getEdad() {
 		return edad;
 	}
-	public void setEdad(String[] edad) {
+	public void setEdad(String edad) {
 		this.edad = edad;
 	}
-	public String[] getCondiciones() {
+	public String getCondiciones() {
 		return condiciones;
 	}
-	public void setCondiciones(String[] condiciones) {
+	public void setCondiciones(String condiciones) {
 		this.condiciones = condiciones;
 	}
 	public String getSemoviente() {
@@ -329,16 +316,16 @@ public class TuxpanOccModel{
 	public void setObs_occ(String obs_occ) {
 		this.obs_occ = obs_occ;
 	}
-	public String[] getOcupantes_sin() {
+	public String getOcupantes_sin() {
 		return ocupantes_sin;
 	}
-	public void setOcupantes_sin(String[] ocupantes_sin) {
+	public void setOcupantes_sin(String ocupantes_sin) {
 		this.ocupantes_sin = ocupantes_sin;
 	}
-	public String[] getVeh_sin() {
+	public String getVeh_sin() {
 		return veh_sin;
 	}
-	public void setVeh_sin(String[] veh_sin) {
+	public void setVeh_sin(String veh_sin) {
 		this.veh_sin = veh_sin;
 	}
 	public String getCausas_sin() {
@@ -389,11 +376,25 @@ public class TuxpanOccModel{
 	public void setOtros_sin(String otros_sin) {
 		this.otros_sin = otros_sin;
 	}
-	public String[] getObs_sin() {
+	public String getObs_sin() {
 		return obs_sin;
 	}
-	public void setObs_sin(String[] obs_sin) {
+	public void setObs_sin(String obs_sin) {
 		this.obs_sin = obs_sin;
 	}
+	public String getLesionados() {
+		return lesionados;
+	}
+	public void setLesionados(String lesionados) {
+		this.lesionados = lesionados;
+	}
+	public String getMortos() {
+		return mortos;
+	}
+	public void setMortos(String mortos) {
+		this.mortos = mortos;
+	}
+	
+
 		
 }

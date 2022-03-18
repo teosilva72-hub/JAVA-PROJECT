@@ -5,7 +5,19 @@ $(init => {
 	datos_person()
 	$('#add_append_sin').append(btn_sin)
 	veh_ocup_sin()
+	clickSave()
 })
+function clickSave(){
+	$('#occSave').click(e => {
+		getTipoVeh()
+		getVehInv()
+		getPerson()
+		setTimeout(f =>{
+			$('#saveOcc').click()
+		},200)
+		
+	})
+}
 let btn_sin = $(`
 	<div class="col-2">
 	<a id="btn_veh_ocup"><svg xmlns="http://www.w3.org/2000/svg"
@@ -16,13 +28,23 @@ let btn_sin = $(`
 `)
 let vehInv = 'vehInv'
 let result = 0;
+function changeFilds(){
+	
+}
 function getVehInv(){
 	let dados = []
-	let input = $('#vehInv_append input')
+	let input = $('#vehInv_append .tipo_veh_inv')
 	for(var i = 0; i < input.length; i++){
-		dados[i] = input.get(i).value
-		
+		dados[i] = input.get(i).value	
 	}
+	$('#tipo_veh_inv').val(dados)
+	//
+	input = $('#vehInv_append .ejes')
+	for(var i = 0; i < input.length; i++){
+		dados[i] = input.get(i).value	
+	}
+	$('#num_eje_veh_inv').val(dados)
+	//
 	return dados
 }
 function getVehOcup(){
@@ -36,20 +58,77 @@ function getVehOcup(){
 }
 function getTipoVeh(){
 	let dados = []
-	let input = $('#tiposVeh input')
+	let input = $('#tiposVeh .num_')
 	for(var i = 0; i < input.length; i++){
 		dados[i] = input.get(i).value
-		
 	}
+	$('#num_veh').val(dados)
+	//
+	input = $('#tiposVeh .marca_')
+	for(var i = 0; i < input.length; i++){
+		dados[i] = input.get(i).value
+	}
+	$('#marca_veh').val(dados)
+	//
+	input = $('#tiposVeh .tipo_')
+	for(var i = 0; i < input.length; i++){
+		dados[i] = input.get(i).value
+	}
+	$('#tipo_veh').val(dados)
+	//
+	input = $('#tiposVeh .modelo_')
+	for(var i = 0; i < input.length; i++){
+		dados[i] = input.get(i).value
+	}
+	$('#modelo_veh').val(dados)
+	//
+	input = $('#tiposVeh .color_')
+	for(var i = 0; i < input.length; i++){
+		dados[i] = input.get(i).value
+	}
+	$('#cor_veh').val(dados)
+	//
+	input = $('#tiposVeh .placa_')
+	for(var i = 0; i < input.length; i++){
+		dados[i] = input.get(i).value
+	}
+	$('#placa_veh').val(dados)
+	
+	//
+	input = $('#tiposVeh .tel_')
+	for(var i = 0; i < input.length; i++){
+		dados[i] = input.get(i).value
+	}
+	$('#tel_veh').val(dados)
+	//
 	return dados
 }
 function getPerson(){
 let dados = []
-	let input = $('#datos_person input')
+	let input = $('#datos_person .id_person')
 	for(var i = 0; i < input.length; i++){
 		dados[i] = input.get(i).value
-		
 	}
+	$('#id_person').val(dados)
+	//
+	input = $('#datos_person .nombre_person')
+	for(var i = 0; i < input.length; i++){
+		dados[i] = input.get(i).value
+	}
+	$('#nombre_person').val(dados)
+	//
+	input = $('#datos_person .edad_person')
+	for(var i = 0; i < input.length; i++){
+		dados[i] = input.get(i).value
+	}
+	$('#edad_person').val(dados)
+	//
+	input = $('#datos_person .cond_person')
+	for(var i = 0; i < input.length; i++){
+		dados[i] = input.get(i).value
+	}
+	$('#condiciones_person').val(dados)
+	//
 	return dados
 
 }
@@ -66,7 +145,7 @@ function veh_ocup_sin(){
             	<input type="text" value="" class="form-control" />
             </div>
             <div class="col-5 ${veh_ocup}${result}">
-            	<input type="text" value="" name="nombre_person" class="form-control" />
+            	<input type="text" value=""  class="form-control" />
             </div>
             <div class="col-2 removeVehOcup ${veh_ocup}${result}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16"><path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/></svg></div>					
 		`)
@@ -84,16 +163,16 @@ function datos_person(){
         }
         let cols = $(`
 			<div class="col-1 ${person}${result}">
-            	<input type="text" value="" name="id_person" class="form-control" />
+            	<input type="text" value="" class="form-control id_person" />
             </div>
             <div class="col-4 ${person}${result}">
-            	<input type="text" value="" name="nombre_person" class="form-control" />
+            	<input type="text" value="" class="form-control nombre_person" />
             </div>
             <div class="col-2 ${person}${result}">
-            	<input type="text" value="" name="edad_person" class="form-control" />
+            	<input type="text" value="" class="form-control edad_person" />
             </div>
             <div class="col-4 ${person}${result}">
-            	<input type="text" value="" name="codiciones_person" class="form-control" />
+            	<input type="text" value="" class="form-control cond_person" />
             </div>
             <div class="col-1 removeDatos ${person}${result}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16"><path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/></svg></div>					
 		`)
@@ -117,7 +196,7 @@ function vehInvAppend() {
 					<div class="input-group-prepend">
 						<span class="input-group-text">Tipo de Vehículo</span>
 					</div>
-					<input type="text" class="form-control " />							
+					<input type="text" class="form-control tipo_veh_inv" />							
 				</div>
 			</div>
 			<div class="col-5 ${vehInv}${result}">
@@ -125,7 +204,7 @@ function vehInvAppend() {
 					<div class="input-group-prepend">
 						<span class="input-group-text">Nº Ejes</span>
 					</div>
-					<input type="text" class="form-control" />							
+					<input type="text" class="form-control ejes" />							
 				</div>
 			</div>
             <div class="col-2 removeVEH ${vehInv}${result}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16"><path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/></svg></div>					
@@ -147,25 +226,25 @@ function addTipo() {
 
         let tipoVeh = $(`
             <div class="col-1 addNum ${tipo}${result}">
-            <input type="text" value=""  name="num_veh" class="form-control" />
+            <input type="text" value="" class="form-control num_" />
             </div>
             <div class="col-1 addMarca ${tipo}${result}">
-            <input type="text" value="" iname="marca_veh" class="form-control" />
+            <input type="text" value="" class="form-control marca_" />
             </div>
             <div class="col-1 addTipo ${tipo}${result}">
-            <input type="text" value=""  name="tipo_veh" class="form-control" />
+            <input type="text" value="" class="form-control tipo_" />
             </div>
             <div class="col-2 addModelo ${tipo}${result}">
-            <input type="text" value=""  name="modelo_veh" class="form-control" />
+            <input type="text" value="" class="form-control modelo_" />
             </div>
             <div class="col-2 addCor ${tipo}${result}">
-            <input type="text" value=""  name="cor_veh" class="form-control" />
+            <input type="text" value="" class="form-control color_" />
             </div>
             <div class="col-2 addPlaca ${tipo}${result}">
-            <input type="text" value=""  name="placa_veh" class="form-control" />
+            <input type="text" value=""  class="form-control placa_" />
             </div>
             <div class="col-2 addTel ${tipo}${result}">
-            <input type="text" value=""  name="tel_veh" class="form-control" />
+            <input type="text" value="" class="form-control tel_" />
             </div>
             <div class="col-1 removeTVEH ${tipo}${result}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16"><path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/></svg></div>					
 
@@ -178,8 +257,7 @@ function addTipo() {
 }
 
 function table() {
-    $(document).ready(function() {
-        $('#occurrence-table').DataTable({
+        let table = $('#occurrence-table').DataTable({
             language: {
                 "search": "",
                 searchPlaceholder: "Search"
@@ -192,5 +270,7 @@ function table() {
             "bInfo": false,
             fixedColumns: true
         })
-    });
+$('#occurrence-table tbody').on( 'click', 'tr', function () {
+   var event = $(table.row( this ).data()[0]).text();
+	console.log(event)})
 }
