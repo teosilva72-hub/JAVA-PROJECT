@@ -89,6 +89,22 @@ const onEventMapFunction = data => {
 }
 
 const setInfoEquip = () => {
+	
+	// Tooltips and Popovers use our built-in sanitizer to sanitize options which accept HTML.
+	// The default whiteList value is the following:
+	
+	let defaultWhiteList = $.fn.tooltip.Constructor.Default.whiteList
+	
+		defaultWhiteList.table = [];
+	    defaultWhiteList.tr = [];
+	    defaultWhiteList.td = [];
+	    defaultWhiteList.th = [];
+	    defaultWhiteList.div = [];
+	    defaultWhiteList.tbody = [];
+	    defaultWhiteList.thead = [];
+		defaultWhiteList.th = ['colspan', 'rowspan', 'scope'];
+		defaultWhiteList.td = ['colspan', 'rowspan', 'scope'];
+
 	$('[data-toggle="popover"]').popover({
 		html: true,
 		trigger: 'hover',
@@ -100,6 +116,14 @@ const setInfoEquip = () => {
 			var title = $(this).attr("data-popover-content");
 			return $(title).children(".popover-header").html();
 		}
+	});
+	$('[data-toggle=popover-d]').popover({
+		html: true,
+		trigger: 'hover',		
+		template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body p-0"></div></div>',
+		content: function () {
+			return $('.popover-d').parent().html();
+		},
 	});
 }
 
