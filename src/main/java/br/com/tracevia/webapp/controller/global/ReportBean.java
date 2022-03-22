@@ -1104,7 +1104,7 @@ public class ReportBean {
 						
 			// -------------------------------------------------------------------------------------
 			
-			// System.out.println(query);
+			 System.out.println(query);
 		
 			// TABLE DINAMIC HEADER
 			
