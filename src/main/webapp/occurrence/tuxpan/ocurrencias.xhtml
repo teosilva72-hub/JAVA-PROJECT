@@ -31,6 +31,7 @@
 		<div class="row">
 			<div class="col-2"></div>
 			<div class="col-8">
+			<h:form prependId="false" id="list-table">
 				<h:dataTable id="occurrence-table" var="date" disabled="true"
 					value="#{OccController.listar}" class="text-center"
 					styleClass="table table-sm custom-table table-striped table-dark table-hover"
@@ -120,6 +121,7 @@
 						</h:form>
 					</h:column>
 				</h:dataTable>
+				</h:form>
 			</div>
 			<div class="row">
 				<div class="col-3">
@@ -681,10 +683,15 @@
 							<h:inputHidden name="codiciones_person" id="condiciones_person"
 								class="form-control" value="#{OccController.data.condiciones}" />
 
-							<!-- save occ -->
+							<!-- BTN SAVE OCC -->
 							<h:commandButton type="button" style="display:none;"
 								class="btn btn-primary" value="Salvar" id="saveOcc">
 								<f:ajax execute="@form" listener="#{OccController.saveOcc}" />
+							</h:commandButton>
+							<!-- BTN LISTAR OCC -->
+							<h:commandButton type="button" style="display:none;"
+								class="btn btn-primary" value="Salvar" id="list_occ">
+								<f:ajax execute="@form" render=":list-table :form_occ" listener="#{OccController.listTable}" />
 							</h:commandButton>
 						</h:form>
 						<!-- END INPUTS -->

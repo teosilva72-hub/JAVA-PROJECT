@@ -6,6 +6,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 
+import org.primefaces.context.RequestContext;
+
 import br.com.tracevia.webapp.dao.occ.TuxpanDAO;
 import br.com.tracevia.webapp.model.occ.TuxpanOccModel;
 
@@ -33,6 +35,8 @@ public class TuxpanOcc{
 				//message error
 			}else {
 				//message success
+				listTable();
+				//RequestContext.getCurrentInstance().execute("listOcc()");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -42,6 +46,15 @@ public class TuxpanOcc{
 	}	
 	public boolean listTable() {
 		boolean check = false;
+		try {
+			listar = dao.listarOcorrencias();
+			if(listar.size() != 0) {
+				check = true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return check;
 	}
