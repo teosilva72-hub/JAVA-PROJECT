@@ -14,9 +14,18 @@ function clickSave(){
 		getPerson()
 		setTimeout(f =>{
 			$('#saveOcc').click()
+					
 		},200)
-		
 	})
+}
+function listOcc(){
+	$('#list_occ').click()
+		setTimeout(f => {
+			table()
+		},100)
+}
+function listTable(){
+	$('#list_occ').click()
 }
 let btn_sin = $(`
 	<div class="col-2">
@@ -264,7 +273,7 @@ function table() {
             },
             "select": false,
             "Width": true,
-            // "scrollY": "55vh",
+            "scrollY": "55vh",
             "scrollCollapse": false,
             "paging": false,
             "bInfo": false,
