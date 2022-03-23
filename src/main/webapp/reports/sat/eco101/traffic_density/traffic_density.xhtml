@@ -22,9 +22,10 @@
 	    <f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.setExtraPeriod(true)}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.additionalTitleName(true)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv v')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.traffic_density))}" />
@@ -32,6 +33,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; ROUND(SUM(1) * ((4 * AVG(speed) / 60) / 1000) / $extraPeriod, 2)')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(DateTime, `dd/MM/yyyy`); CAST($period as TIME); ROUND(SUM(1) * ((4 * AVG(speed) / 60) / 1000) / $extraPeriod, 2) as d')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions f ON f.equip_id = siteID AND f.lane = v.lane')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
@@ -41,9 +43,10 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', false, true)}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('lane', reportsLabels.reports_select_lanes, 'filter_lane.id_lane|id_lane', false, true)}" />	
-		
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('f.lane', reportsLabels.reports_select_lanes, 'filter_lane.id_lane|id_lane', true, true)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('f.direction', 'Sentidos', 'filter_directions.direction' , true, true)}" />
+
     </f:metadata>
 	
 	<!---->

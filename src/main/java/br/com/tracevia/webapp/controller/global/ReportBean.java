@@ -1054,7 +1054,7 @@ public class ReportBean {
 				if (queryMS != null)
 					queryMS += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", groupMS, extraGroup, orderDate != null ? orderDate + ", " : "", orderMS);
 			} else if (orderDate != null) {
-				String o = String.format(" ORDER BY %s ASC", orderDate);
+				String o = String.format("%s ORDER BY %s ASC", extraGroup.isEmpty() ? "" : " GROUP BY " + extraGroup.substring(2), orderDate);
 				query += o;
 				if (queryMS != null)
 					queryMS += o;
@@ -1264,13 +1264,7 @@ public class ReportBean {
 				if (dateReport.after(calendar.getTime()) && fill > 0) {
 					step = calendar.getTime();
 
-					String f = formatter.format(step);
-					if (sep) {
-						String[] split = f.split(" ");
-						model[col[0]] = split[0];
-						model[col[1]] = split[1];
-					} else
-						model[col[0]] = f;
+					setDateInterval(step, sep, model, col, formatter, interval);
 				
 					for (; fill < amnt; fill++) {
 						model[sep ? 2 : 1] = tempEquips.remove(0);
@@ -1284,24 +1278,10 @@ public class ReportBean {
 				
 				step = calendar.getTime();
 
-				String f = formatter.format(step);
-				if (sep) {
-					String[] split = f.split(" ");
-					model[col[0]] = split[0];
-					model[col[1]] = split[1];
-				} else
-					model[col[0]] = f;
+				setDateInterval(step, sep, model, col, formatter, interval);
+
 				while (step.before(dateReport) && step.before(date[1])) {
-					f = formatter.format(step);
-					if (sep) {
-						String[] split = f.split(" ");	
-						
-						model[col[0]] = split[0];
-						model[col[1]] = split[1];
-											
-					} else						
-											
-						model[col[0]] = f;
+					setDateInterval(step, sep, model, col, formatter, interval);
 					
 					if (amnt == 0)
 						newList.add(model.clone());
@@ -1316,6 +1296,8 @@ public class ReportBean {
 										
 				}
 
+				if (sep && interval == Calendar.DAY_OF_MONTH)
+					lines[col[1]] = "24H";
 				newList.add(lines);
 				tempEquips.remove(lines[sep ? 2 : 1]);
 				fill++;
@@ -1339,23 +1321,15 @@ public class ReportBean {
 			step = calendar.getTime();
 	
 			while (step.before(date[1])) {
-				String f = formatter.format(step);				
-				if (sep) {
-					String[] split = f.split(" ");
-					model[col[0]] = split[0];
-					model[col[1]] = split[1];				
-					
-				} else
-									
-					model[col[0]] = f;
+				setDateInterval(step, sep, model, col, formatter, interval);
 				
-					if (amnt == 0)
-						newList.add(model.clone());
+				if (amnt == 0)
+					newList.add(model.clone());
 
-					for (int i = 0; i < amnt; i++) {
-						model[sep ? 2 : 1] = equips.get(i);
-						newList.add(model.clone());
-					}
+				for (int i = 0; i < amnt; i++) {
+					model[sep ? 2 : 1] = equips.get(i);
+					newList.add(model.clone());
+				}
 			
 				calendar.add(interval, Integer.parseInt(period[0]));
 				step = calendar.getTime();
@@ -1407,6 +1381,19 @@ public class ReportBean {
 		
 		return hasLine;
 		
+	}
+
+	private void setDateInterval(Date step, boolean sep, String[] model, int[] col, SimpleDateFormat formatter, int interval) {
+		String f = formatter.format(step);
+		if (sep) {
+			String[] split = f.split(" ");
+			model[col[0]] = split[0];
+			if (interval == Calendar.DAY_OF_MONTH)
+				model[col[1]] = "24H";
+			else
+				model[col[1]] = split[1];
+		} else
+			model[col[0]] = f;
 	}
 		
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------	
@@ -1685,7 +1672,7 @@ public class ReportBean {
 	    	Date d;
 	    	
 	    	if (sep) 
-	    		d = formatter.parse(String.format("%s %s", sa[col[0]], sa[col[1]]));	    
+	    		d = formatter.parse(String.format("%s %s", sa[col[0]], sa[col[1]] == "24H" ? "00:00:00" : sa[col[1]] ));	    
 	    	
 	    	else d = formatter.parse(sa[col[0]]);
 	    	
