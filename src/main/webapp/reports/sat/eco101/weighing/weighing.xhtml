@@ -16,7 +16,7 @@
 
 		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.via_paulista_axle_weight_file_name)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.via_paulista_axle_weight_title)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('VIA PAULISTA')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECO 101')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />	
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('false')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
@@ -24,23 +24,29 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s',
-		satLabels.global_date_column, satLabels.global_interval_column, satLabels.class_light_vehicles_column, satLabels.class_heavy_vehicles_2_axles, satLabels.class_heavy_vehicles_3_axles,
-		satLabels.class_heavy_vehicles_4_axles, satLabels.class_heavy_vehicles_5_axles, satLabels.class_heavy_vehicles_6_axles, satLabels.class_heavy_vehicles_7_axles,
-		satLabels.class_heavy_vehicles_8_axles, satLabels.class_heavy_vehicles_9_axles))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, 1, 2, 2A, 3, 4, 4A, 5, 6, 6A, 7, 8, 9, 10, 11, E9, E10, 0, Total',
+		satLabels.global_date_column, satLabels.global_interval_column))}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; ROUND(AVG(IF(classe = `1` OR (axlNumber &lt; 10) OR classe= `9` OR classe = `2N` OR classe = `3` OR (classe = `5` AND gross &lt;= 3650), gross, NULL )), 0); 
-		ROUND(AVG(IF(classe = `2` OR classe = `2A`, gross, NULL )), 0); ROUND(AVG(IF(classe = `4` OR classe = `4A` OR classe = `3N`, gross, NULL )), 0);
-		ROUND(AVG(IF(classe = `6` OR classe = `4N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `7` OR classe = `5N`, gross, NULL )), 0);
-		ROUND(AVG(IF(classe = `8` OR classe = `6N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `10` OR classe = `7N`, gross, NULL )), 0);
-		ROUND(AVG(IF(classe = `11` OR classe = `8N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `E9` OR classe = `9N` OR (classe=`UC` AND axlNumber = 9), gross, NULL )), 0)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd;
+		SUM(IF(classe = `1`, gross, NULL));
+		SUM(IF(classe = `2`, gross, NULL));
+		SUM(IF(classe = `2A`, gross, NULL ));
+		SUM(IF(classe = `3`, gross, NULL )); 
+		SUM(IF(classe = `4`, gross, NULL )); 
+		SUM(IF(classe = `4A`, gross, NULL )); 
+		SUM(IF(classe = `5`, gross, NULL )); 
+		SUM(IF(classe = `6`, gross, NULL));
+		SUM(IF(classe = `6N`, gross, NULL ));
+		SUM(IF(classe = `7`, gross, NULL )); 
+		SUM(IF(classe = `8`, gross, NULL));
+		SUM(IF(classe = `9`, gross, NULL )); 
+		SUM(IF(classe = `10`, gross, NULL )); 
+		SUM(IF(classe = `11`, gross, NULL));
+		SUM(IF(classe = `E9`, gross, NULL )); 
+		SUM(IF(classe = `9N`, gross, NULL )); 
+		SUM(IF(classe = `UC`, gross, NULL ));
+		SUM(gross)')}" />
 
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(DateTime, `dd/MM/yyyy`); CAST($period as TIME);
-		ROUND(AVG(CASE WHEN TrafficClassID = `17` OR (NumberAxles &lt; 10) OR TrafficClassID= `28` OR TrafficClassID = `33` OR TrafficClassID = `20` OR (TrafficClassID = `23` AND (AxlesWeight01 + AxlesWeight02 + AxlesWeight03 + AxlesWeight04 + AxlesWeight05 + AxlesWeight06 + AxlesWeight07 + AxlesWeight08 + AxlesWeight09 + AxlesWeight10 + AxlesWeight11 + AxlesWeight12 + AxlesWeight13 + AxlesWeight14 + AxlesWeight15 + AxlesWeight16 + AxlesWeight17 + AxlesWeight18 + AxlesWeight19 + AxlesWeight20 + AxlesWeight21 + AxlesWeight22 + AxlesWeight23 + AxlesWeight24 + AxlesWeight25) &lt;= 3650) THEN (AxlesWeight01 + AxlesWeight02 + AxlesWeight03 + AxlesWeight04 + AxlesWeight05 + AxlesWeight06 + AxlesWeight07 + AxlesWeight08 + AxlesWeight09 + AxlesWeight10 + AxlesWeight11 + AxlesWeight12 + AxlesWeight13 + AxlesWeight14 + AxlesWeight15 + AxlesWeight16 + AxlesWeight17 + AxlesWeight18 + AxlesWeight19 + AxlesWeight20 + AxlesWeight21 + AxlesWeight22 + AxlesWeight23 + AxlesWeight24 + AxlesWeight25) ELSE NULL END), 0) as leve; 
-		ROUND(AVG(CASE WHEN TrafficClassID = `18` OR TrafficClassID = `19` THEN (AxlesWeight01 + AxlesWeight02 + AxlesWeight03 + AxlesWeight04 + AxlesWeight05 + AxlesWeight06 + AxlesWeight07 + AxlesWeight08 + AxlesWeight09 + AxlesWeight10 + AxlesWeight11 + AxlesWeight12 + AxlesWeight13 + AxlesWeight14 + AxlesWeight15 + AxlesWeight16 + AxlesWeight17 + AxlesWeight18 + AxlesWeight19 + AxlesWeight20 + AxlesWeight21 + AxlesWeight22 + AxlesWeight23 + AxlesWeight24 + AxlesWeight25) ELSE NULL END), 0) as a2; ROUND(AVG(CASE WHEN TrafficClassID = `21` OR TrafficClassID = `22` THEN (AxlesWeight01 + AxlesWeight02 + AxlesWeight03 + AxlesWeight04 + AxlesWeight05 + AxlesWeight06 + AxlesWeight07 + AxlesWeight08 + AxlesWeight09 + AxlesWeight10 + AxlesWeight11 + AxlesWeight12 + AxlesWeight13 + AxlesWeight14 + AxlesWeight15 + AxlesWeight16 + AxlesWeight17 + AxlesWeight18 + AxlesWeight19 + AxlesWeight20 + AxlesWeight21 + AxlesWeight22 + AxlesWeight23 + AxlesWeight24 + AxlesWeight25) ELSE NULL END), 0) as a3;
-		ROUND(AVG(CASE WHEN TrafficClassID = `24` THEN (AxlesWeight01 + AxlesWeight02 + AxlesWeight03 + AxlesWeight04 + AxlesWeight05 + AxlesWeight06 + AxlesWeight07 + AxlesWeight08 + AxlesWeight09 + AxlesWeight10 + AxlesWeight11 + AxlesWeight12 + AxlesWeight13 + AxlesWeight14 + AxlesWeight15 + AxlesWeight16 + AxlesWeight17 + AxlesWeight18 + AxlesWeight19 + AxlesWeight20 + AxlesWeight21 + AxlesWeight22 + AxlesWeight23 + AxlesWeight24 + AxlesWeight25) ELSE NULL END), 0) as a4; ROUND(AVG(CASE WHEN TrafficClassID = `26` THEN (AxlesWeight01 + AxlesWeight02 + AxlesWeight03 + AxlesWeight04 + AxlesWeight05 + AxlesWeight06 + AxlesWeight07 + AxlesWeight08 + AxlesWeight09 + AxlesWeight10 + AxlesWeight11 + AxlesWeight12 + AxlesWeight13 + AxlesWeight14 + AxlesWeight15 + AxlesWeight16 + AxlesWeight17 + AxlesWeight18 + AxlesWeight19 + AxlesWeight20 + AxlesWeight21 + AxlesWeight22 + AxlesWeight23 + AxlesWeight24 + AxlesWeight25) ELSE NULL END), 0) as a5;
-		ROUND(AVG(CASE WHEN TrafficClassID = `27` THEN (AxlesWeight01 + AxlesWeight02 + AxlesWeight03 + AxlesWeight04 + AxlesWeight05 + AxlesWeight06 + AxlesWeight07 + AxlesWeight08 + AxlesWeight09 + AxlesWeight10 + AxlesWeight11 + AxlesWeight12 + AxlesWeight13 + AxlesWeight14 + AxlesWeight15 + AxlesWeight16 + AxlesWeight17 + AxlesWeight18 + AxlesWeight19 + AxlesWeight20 + AxlesWeight21 + AxlesWeight22 + AxlesWeight23 + AxlesWeight24 + AxlesWeight25) ELSE NULL END), 0) as a6; ROUND(AVG(CASE WHEN TrafficClassID = `29` THEN (AxlesWeight01 + AxlesWeight02 + AxlesWeight03 + AxlesWeight04 + AxlesWeight05 + AxlesWeight06 + AxlesWeight07 + AxlesWeight08 + AxlesWeight09 + AxlesWeight10 + AxlesWeight11 + AxlesWeight12 + AxlesWeight13 + AxlesWeight14 + AxlesWeight15 + AxlesWeight16 + AxlesWeight17 + AxlesWeight18 + AxlesWeight19 + AxlesWeight20 + AxlesWeight21 + AxlesWeight22 + AxlesWeight23 + AxlesWeight24 + AxlesWeight25) ELSE NULL END), 0) as a7;
-		ROUND(AVG(CASE WHEN TrafficClassID = `30` THEN (AxlesWeight01 + AxlesWeight02 + AxlesWeight03 + AxlesWeight04 + AxlesWeight05 + AxlesWeight06 + AxlesWeight07 + AxlesWeight08 + AxlesWeight09 + AxlesWeight10 + AxlesWeight11 + AxlesWeight12 + AxlesWeight13 + AxlesWeight14 + AxlesWeight15 + AxlesWeight16 + AxlesWeight17 + AxlesWeight18 + AxlesWeight19 + AxlesWeight20 + AxlesWeight21 + AxlesWeight22 + AxlesWeight23 + AxlesWeight24 + AxlesWeight25) ELSE NULL END), 0) as a8; ROUND(AVG(CASE WHEN TrafficClassID = `31` OR (TrafficClassID=`33` AND NumberAxles = 9) THEN (AxlesWeight01 + AxlesWeight02 + AxlesWeight03 + AxlesWeight04 + AxlesWeight05 + AxlesWeight06 + AxlesWeight07 + AxlesWeight08 + AxlesWeight09 + AxlesWeight10 + AxlesWeight11 + AxlesWeight12 + AxlesWeight13 + AxlesWeight14 + AxlesWeight15 + AxlesWeight16 + AxlesWeight17 + AxlesWeight18 + AxlesWeight19 + AxlesWeight20 + AxlesWeight21 + AxlesWeight22 + AxlesWeight23 + AxlesWeight24 + AxlesWeight25) ELSE NULL END), 0) as a9')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 

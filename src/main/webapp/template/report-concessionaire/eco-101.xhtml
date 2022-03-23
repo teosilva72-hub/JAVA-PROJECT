@@ -78,6 +78,12 @@
 				<!-- CONTAGEM VEICULAR -->
 
 				<li class="nav-item"><h:commandLink class="nav-link"
+					action="#{navigationController.redirectToURL('/reports/sat/eco101/vehicle_count.xhtml')}" value="">
+					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+					<span class="text-sub-item">Contagem de Veículos</span>
+				</h:commandLink></li>
+
+				<li class="nav-item"><h:commandLink class="nav-link"
 						action="#{navigationController.redirectToURL('/reports/sat/eco101/traffic_density/traffic_density.xhtml')}" value="">
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 						<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_traffic_density}</span>
@@ -138,17 +144,6 @@
 						<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_classes}</span>
 					</h:commandLink></li>
 					
-				<!---->
-
-				<!-- Tipo por classes2 -->
-
-				<li class="nav-item"><h:commandLink class="nav-link"
-						action="#{navigationController.redirectToURL('/reports/sat/eco101/class/class2.xhtml')}"
-						value="">
-						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-						<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_classes} - Distribuição Horária</span>
-					</h:commandLink></li>
-
 				<!---->
 				
 				<!-- Velocidade -->
