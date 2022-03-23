@@ -398,108 +398,108 @@
 	                             <table class="m-0 popover-d table table-bordered text-center">								 									  
 									  <thead class="thead-dark">
 									   <tr>
-									      <th scope="col" colspan="8" >Major 1</th>									      
+									      <th scope="col" colspan="8" > #{item.nome} &nbsp;:&nbsp;  #{satMapsView.satListValues.get(loop.index).currentDatetime} </th>									      
 									    </tr>
 									    <tr>
-									      <th scope="col" rowspan="2" class="align-middle">Sentido</th>
-									      <th scope="col" rowspan="2" class="align-middle"> Veículo</th>
-									      <th scope="col" colspan="2">Volume / Hora</th>
-									      <th scope="col" colspan="1">Projeção</th>
-									      <th scope="col" colspan="3">5 Minutos</th>
+									      <th scope="col" rowspan="2" class="align-middle" > #{mapLabels.$label_map_sat_additional_info_direction} </th>
+									      <th scope="col" rowspan="2" class="align-middle" > #{mapLabels.$label_map_sat_additional_info_vehicle} </th>
+									      <th scope="col" colspan="2" class="align-middle" > #{mapLabels.$label_map_sat_additional_info_volume_hour} </th>
+									      <th scope="col" colspan="1" class="align-middle" > #{mapLabels.$label_map_sat_additional_info_projection} </th>
+									      <th scope="col" colspan="3" class="align-middle" > #{periodsLabels.period_15_minutes} </th>
 									    </tr>
 									    <tr>
-									      <th scope="col" >03/01/2022 15:00</th>
-									      <th scope="col" >10/01/2022 14:00</th>
-									      <th scope="col" >10/01/2022 15:00</th>
-									      <th scope="col" >Volume</th>
-									      <th scope="col" >Vel. Média (km/h)</th>
-									      <th scope="col" >(%) Taxa de Ocupação </th>
+									      <th scope="col" class="align-middle" > #{satMapsView.satListValues.get(loop.index).sevenDaysDatetime} </th>
+									      <th scope="col" class="align-middle" > #{satMapsView.satListValues.get(loop.index).lastOneDatetime} </th>
+									      <th scope="col" class="align-middle" > #{satMapsView.satListValues.get(loop.index).projectionDatetime} </th>
+									      <th scope="col" class="align-middle" > #{mapLabels.$label_map_sat_additional_info_volume} </th>
+									      <th scope="col" class="align-middle" > #{mapLabels.$label_map_sat_additional_speed_avg} </th>
+									      <th scope="col" class="align-middle" > #{mapLabels.$label_map_sat_additional_info_occupancy_rate} </th>
 									    </tr>
 									  </thead>
 									  <tbody class="bg-white">
 									    <tr>
 									      <th rowspan="4" scope="row" class="bg-dark text-white text-center border border-secondary align-middle" >
-									      	 Norte
+									      	  #{item.sentido1}	
 									      </th>
-									      <th scope="row" class="bg-dark text-white border-secondary" >Passeio</th>
+									      <th scope="row" class="bg-dark text-white border-secondary" >#{mapLabels.$label_map_sat_additional_info_light}</th>
 									      <td>data3</td>
 									      <td>data4</td>									      
 									      <td>data1</td>
-									      <td>data2</td>
-									      <td>data3</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).autosVolumeS1}</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).autosVelMedS1}</td>
 									      <td> - </td>
 									    </tr>
 									    <tr>									      
-									      <th scope="row" class="bg-dark text-white border-secondary" >Comercial</th>
+									      <th scope="row" class="bg-dark text-white border-secondary" >#{mapLabels.$label_map_sat_additional_info_comm}</th>
 									      <td>data2</td>
 									      <td>data3</td>
 									      <td>data4</td>									      
-									      <td>data1</td>
-									      <td>data2</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).comVolumeS1}</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).comVelMedS1}</td>
 									      <td> - </td>									      
 									    </tr>
 									     <tr>
-									      <th scope="row" class="bg-dark text-white border-secondary" >Moto</th>									    
+									      <th scope="row" class="bg-dark text-white border-secondary" >#{mapLabels.$label_map_sat_additional_info_motorcycle}</th>									    
 									      <td>data2</td>
 									      <td>data3</td>
 									      <td>data4</td>									      
-									      <td>data1</td>
-									      <td>data2</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).motoVolumeS1}</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).motoVelMedS1}</td>
 									      <td> - </td>									      
 									    </tr>
 									     <tr>
-									      <th scope="row" class="bg-dark text-white border-secondary" >Total</th>
+									      <th scope="row" class="bg-dark text-white border-secondary" >#{mapLabels.$label_map_sat_additional_info_total}</th>
 									      <td>data2</td>
 									      <td>data3</td>
 									      <td>data4</td>									      
-									      <td>data1</td>
-									      <td>data2</td>
-									      <th scope="row">data3</th>								      
+									      <td>#{satMapsView.satListValues.get(loop.index).totalVolumeS1}</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).totalVelMedS1}</td>
+									      <th>#{satMapsView.satListValues.get(loop.index).occupancyRateS1}</th>								      
 									    </tr>
 									    
 									    <!---->
 									    
 									     <tr>
 									      <th rowspan="4" scope="row" class="bg-dark text-white border-secondary align-middle" >
-									     	 Sul									      
+									     	 #{item.sentido2}									      
 									      </th>
-									      <th scope="row" class="bg-dark text-white border-secondary" >Passeio</th>
+									      <th scope="row" class="bg-dark text-white border-secondary" >#{mapLabels.$label_map_sat_additional_info_light}</th>
 									      <td>data3</td>
 									      <td>data4</td>									      
 									      <td>data1</td>
-									      <td>data2</td>
-									      <td>data3</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).autosVolumeS2}</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).autosVelMedS2}</td>
 									      <td> - </td>
 									    </tr>
 									    <tr>									      
-									      <th scope="row" class="bg-dark text-white border-secondary" >Comercial</th>
+									      <th scope="row" class="bg-dark text-white border-secondary" >#{mapLabels.$label_map_sat_additional_info_comm}</th>
 									      <td>data2</td>
 									      <td>data3</td>
 									      <td>data4</td>									      
-									      <td>data1</td>
-									      <td>data2</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).comVolumeS2}</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).comVelMedS2}</td>
 									      <td> - </td>									      
 									    </tr>
 									     <tr>
-									      <th scope="row" class="bg-dark text-white border-secondary" >Moto</th>									    
+									      <th scope="row" class="bg-dark text-white border-secondary" >#{mapLabels.$label_map_sat_additional_info_motorcycle}</th>									    
 									      <td>data2</td>
 									      <td>data3</td>
 									      <td>data4</td>									      
-									      <td>data1</td>
-									      <td>data2</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).motoVolumeS2}</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).motoVelMedS2}</td>
 									      <td> - </td>									      
 									    </tr>
 									     <tr>
-									      <th scope="row" class="bg-dark text-white border-secondary" >Total</th>
+									      <th scope="row" class="bg-dark text-white border-secondary" >#{mapLabels.$label_map_sat_additional_info_total}</th>
 									      <td>data2</td>
 									      <td>data3</td>
 									      <td>data4</td>									      
-									      <td>data1</td>
-									      <td>data2</td>
-									      <th scope="row">data3</th>										      
-									    </tr>									    									    									    									    
+									      <td>#{satMapsView.satListValues.get(loop.index).totalVolumeS2}</td>
+									      <td>#{satMapsView.satListValues.get(loop.index).totalVelMedS2}</td>
+									      <th>#{satMapsView.satListValues.get(loop.index).occupancyRateS2}</th>								      
+									    </tr>									    			    									    									    									    
 									  </tbody>
-									</table>             
+									</table> 
 								                           
                            </div>
                          </div>
