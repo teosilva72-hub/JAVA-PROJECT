@@ -22,6 +22,7 @@
 	    <f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.setExtraPeriod(true)}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.additionalTitleName(true)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
 	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv v')}" />

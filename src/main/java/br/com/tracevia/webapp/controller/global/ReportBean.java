@@ -1054,7 +1054,7 @@ public class ReportBean {
 				if (queryMS != null)
 					queryMS += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", groupMS, extraGroup, orderDate != null ? orderDate + ", " : "", orderMS);
 			} else if (orderDate != null) {
-				String o = String.format(" ORDER BY %s ASC", orderDate);
+				String o = String.format("%s ORDER BY %s ASC", extraGroup.isEmpty() ? "" : " GROUP BY " + extraGroup.substring(2), orderDate);
 				query += o;
 				if (queryMS != null)
 					queryMS += o;
