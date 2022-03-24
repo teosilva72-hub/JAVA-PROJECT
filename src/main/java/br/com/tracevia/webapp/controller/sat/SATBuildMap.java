@@ -48,7 +48,7 @@ public class SATBuildMap {
 	public void initalize() {
 
 		BuildSAT();
-
+	
 	}
 
 	public void BuildSAT() {
@@ -100,10 +100,15 @@ public class SATBuildMap {
 
 								satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
 								satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
+								satListObj.setCurrentDatetime(satListValuesAux.get(r).getCurrentDatetime());
+								satListObj.setSevenDaysDatetime(satListValuesAux.get(r).getSevenDaysDatetime());
+								satListObj.setLastOneDatetime(satListValuesAux.get(r).getLastOneDatetime());
+								satListObj.setProjectionDatetime(satListValuesAux.get(r).getProjectionDatetime());				
 								satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 								satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
 								satListObj.setVelocidadeS1(satListValuesAux.get(r).getVelocidadeS1());
 								satListObj.setVelocidadeS2(satListValuesAux.get(r).getVelocidadeS2());
+							
 								satListObj.setStatusInterval(15);
 								
 								satListValues.add(satListObj);
@@ -174,7 +179,7 @@ public class SATBuildMap {
 
 										satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
 										satListObj1.setLastPackage(lastRegisters(equips.getSatList().get(s).getEquip_id())[0]);
-										satListObj1.setLastRegister(lastRegisters(equips.getSatList().get(s).getEquip_id())[1]);								
+										satListObj1.setLastRegister(lastRegisters(equips.getSatList().get(s).getEquip_id())[1]);										
 										satListObj1.setQuantidadeS1(0);
 										satListObj1.setQuantidadeS2(0);
 										satListObj1.setVelocidadeS1(0);
@@ -217,6 +222,10 @@ public class SATBuildMap {
 
 									satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
 									satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
+									satListObj.setCurrentDatetime(satListValuesAux.get(r).getCurrentDatetime());
+									satListObj.setSevenDaysDatetime(satListValuesAux.get(r).getSevenDaysDatetime());
+									satListObj.setLastOneDatetime(satListValuesAux.get(r).getLastOneDatetime());
+									satListObj.setProjectionDatetime(satListValuesAux.get(r).getProjectionDatetime());	
 									satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 									satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
 									satListObj.setVelocidadeS1(satListValuesAux.get(r).getVelocidadeS1());
@@ -318,6 +327,10 @@ public class SATBuildMap {
 
 										satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
 										satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
+										satListObj.setCurrentDatetime(satListValuesAux.get(r).getCurrentDatetime());
+										satListObj.setSevenDaysDatetime(satListValuesAux.get(r).getSevenDaysDatetime());
+										satListObj.setLastOneDatetime(satListValuesAux.get(r).getLastOneDatetime());
+										satListObj.setProjectionDatetime(satListValuesAux.get(r).getProjectionDatetime());	
 										satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 										satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
 										satListObj.setVelocidadeS1(satListValuesAux.get(r).getVelocidadeS1());
@@ -402,6 +415,10 @@ public class SATBuildMap {
 
 											satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
 											satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
+											satListObj.setCurrentDatetime(satListValuesAux.get(r).getCurrentDatetime());
+											satListObj.setSevenDaysDatetime(satListValuesAux.get(r).getSevenDaysDatetime());
+											satListObj.setLastOneDatetime(satListValuesAux.get(r).getLastOneDatetime());
+											satListObj.setProjectionDatetime(satListValuesAux.get(r).getProjectionDatetime());	
 											satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 											satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
 											satListObj.setVelocidadeS1(satListValuesAux.get(r).getVelocidadeS1());
