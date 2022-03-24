@@ -38,6 +38,13 @@ public class DataSatDAO {
 			"END 'PACOTE_HORA', " +
 			"CASE WHEN DATEDIFF(NOW(), @dat :=(SELECT MAX(data) FROM tb_vbv WHERE siteID IN(eq.equip_id))) > 0 THEN date_format(@dat, '%d/%m/%y %H:%i') ELSE date_format(@dat, '%H:%i') END 'DADO_HORA', " +
 
+			"CASE WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%d/%m/%y   %H:%i -'),DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 14 MINUTE), ' %H:%i')) " +
+			"ELSE CONCAT(DATE_FORMAT(d.DATA_HORA, '%d/%m/%y  %H:%i -'), DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 15 MINUTE), ' %H:%i')) END 'MAJOR_HEADER', " +
+						
+			"DATE_FORMAT(DATE_ADD(DATE_SUB(d.DATA_HORA, INTERVAL 7 DAY), INTERVAL 1 HOUR), '%d/%m/%y  %H:00') '7_DAYS_HEADER', " +
+			"DATE_FORMAT(DATE_SUB(d.DATA_HORA, INTERVAL 1 HOUR), '%d/%m/%y  %H:00') 'LAST_HOUR_HEADER', " +
+			"DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 1 HOUR), '%d/%m/%y  %H:00') 'PROJECTION_HEADER', " +
+			
 			"SUM(CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4 AND d.NOME_FAIXA < 5) OR (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND d.NOME_FAIXA < 4) OR (eq.dir_lane1 = eq.dir_lane2 AND d.NOME_FAIXA < 3) OR (d.NOME_FAIXA = 1) THEN d.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_S1', " +
 			"SUM(CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4 AND d.NOME_FAIXA < 5) OR (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND d.NOME_FAIXA < 4) OR (eq.dir_lane1 = eq.dir_lane2 AND d.NOME_FAIXA < 3) OR (d.NOME_FAIXA = 1) THEN (d.VOLUME_COM + d.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_S1', " +
 			"SUM(CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4 AND d.NOME_FAIXA < 5) OR (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND d.NOME_FAIXA < 4) OR (eq.dir_lane1 = eq.dir_lane2 AND d.NOME_FAIXA < 3) OR (d.NOME_FAIXA = 1) THEN d.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_S1', " +
@@ -91,11 +98,15 @@ public class DataSatDAO {
 
 					sat.setEquip_id(rs.getInt("ESTACAO"));
 					sat.setLastPackage(rs.getString("PACOTE_HORA"));
-					sat.setLastRegister(rs.getString("DADO_HORA"));				
+					sat.setLastRegister(rs.getString("DADO_HORA"));						
 					sat.setQuantidadeS1(rs.getInt("VOLUME_TOTAL_S1"));						
 					sat.setVelocidadeS1(rs.getInt("VEL_MEDIA_TOTAL_S1"));
 					sat.setQuantidadeS2(rs.getInt("VOLUME_TOTAL_S2"));
 					sat.setVelocidadeS2(rs.getInt("VEL_MEDIA_TOTAL_S2"));
+					sat.setCurrentDatetime(rs.getString("MAJOR_HEADER"));
+					sat.setSevenDaysDatetime(rs.getString("7_DAYS_HEADER"));
+					sat.setLastOneDatetime(rs.getString("LAST_HOUR_HEADER"));
+					sat.setProjectionDatetime(rs.getString("PROJECTION_HEADER"));					
 					sat.setAutosVolumeS1(rs.getInt("VOLUME_AUTO_S1"));
 					sat.setComVolumeS1(rs.getInt("VOLUME_COM_S1"));
 					sat.setMotoVolumeS1(rs.getInt("VOLUME_MOTO_S1"));
@@ -104,7 +115,7 @@ public class DataSatDAO {
 					sat.setComVelMedS1(rs.getInt("VEL_MEDIA_COM_S1"));
 					sat.setMotoVelMedS1(rs.getInt("VEL_MEDIA_MOTO_S1"));
 					sat.setTotalVelMedS1(rs.getInt("VEL_MEDIA_TOTAL_S1"));					
-					sat.setOccupationRateS1((rs.getDouble("TAXA_OCUPACAO_S1")));
+					sat.setOccupancyRateS1((rs.getDouble("TAXA_OCUPACAO_S1")));
 					sat.setAutosVolumeS2(rs.getInt("VOLUME_AUTO_S2"));
 					sat.setComVolumeS2(rs.getInt("VOLUME_COM_S2"));
 					sat.setMotoVolumeS2(rs.getInt("VOLUME_MOTO_S2"));
@@ -113,7 +124,7 @@ public class DataSatDAO {
 					sat.setComVelMedS2(rs.getInt("VEL_MEDIA_COM_S2"));
 					sat.setMotoVelMedS2(rs.getInt("VEL_MEDIA_MOTO_S2"));
 					sat.setTotalVelMedS2(rs.getInt("VEL_MEDIA_TOTAL_S2"));
-					sat.setOccupationRateS2((rs.getDouble("TAXA_OCUPACAO_S2")));
+					sat.setOccupancyRateS2((rs.getDouble("TAXA_OCUPACAO_S2")));
 																															
 					list.add(sat);
 				}
