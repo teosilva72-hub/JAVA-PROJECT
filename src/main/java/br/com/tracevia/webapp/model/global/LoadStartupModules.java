@@ -10,9 +10,9 @@ import br.com.tracevia.webapp.dao.global.ModulesDAO;
 public class LoadStartupModules {  
 	
 	private List<Modules> modules; 
-	private boolean en_cftv, en_colas, en_comms, en_dai, en_ocr, en_meteo, en_occ, en_dms, en_sat, en_sos, en_speed, en_videowall, en_wim;
+	private boolean en_cftv, en_colas, en_comms, en_dai, en_ocr, en_meteo, en_occ, en_dms, en_sat, en_sos, en_speed, en_videowall, en_wim, en_hit;
 	private double voltage_cftv, voltage_colas, voltage_comms, voltage_dai, voltage_ocr, voltage_meteo, voltage_dms, voltage_sat, 
-	voltage_sos, voltage_speed, voltage_videowall, voltage_wim;
+	voltage_sos, voltage_speed, voltage_videowall, voltage_wim, voltage_hit;
 	
 	public List<Modules> getModules() {
 		return modules;
@@ -125,6 +125,14 @@ public class LoadStartupModules {
 	public void setEn_wim(boolean en_wim) {
 		this.en_wim = en_wim;
 	}
+	
+	public boolean isEn_hit() {
+		return en_hit;
+	}
+
+	public void setEn_hit(boolean en_hit) {
+		this.en_hit = en_hit;
+	}
 
 	public double getVoltage_cftv() {
 		return voltage_cftv;
@@ -221,6 +229,14 @@ public class LoadStartupModules {
 	public void setVoltage_wim(double voltage_wim) {
 		this.voltage_wim = voltage_wim;
 	}
+		
+	public double getVoltage_hit() {
+		return voltage_hit;
+	}
+
+	public void setVoltage_hit(double voltage_hit) {
+		this.voltage_hit = voltage_hit;
+	}
 
 	/**
 	  * M�todo inicializar componentes de visualiza��o
@@ -246,6 +262,7 @@ public class LoadStartupModules {
 			en_speed = false;			
 			en_videowall = false;
 			en_wim = false;	
+			en_hit = false;
 									
 			//Lista com m�dulos ativos
 			listViewModules();
@@ -332,6 +349,10 @@ public class LoadStartupModules {
 		   }else if(mod.getModule().equals(ModulesEnum.WIM.getModule()) && mod.isEnabled())	{			
 				en_wim = mod.isEnabled();
 				voltage_wim = mod.getBattery_voltage();
+				
+		   }else if(mod.getModule().equals(ModulesEnum.HIT.getModule()) && mod.isEnabled())	{			
+				en_hit = mod.isEnabled();
+				voltage_hit = mod.getBattery_voltage();
 		   }
 		}	
 	}

@@ -25,8 +25,10 @@
         <c:if test="#{ METEO }">
             <h:outputStylesheet name="layoutMETEO.css" library="css/meteo" />
         </c:if>
+        
         <h:outputStylesheet name="cftv.css" library="css/map" />
         <h:outputStylesheet name="map.css" library="css/map" />
+        <h:outputStylesheet name="layoutHit.css" library="css/hit" />
         <h:outputStylesheet library="css/validation" name="validation-style.css" />
 
         <!-- Script -->
@@ -497,6 +499,9 @@
 
         <h:outputScript name="gps.js" library="js/gps" />
         <h:outputScript name="map.js" library="js/map" />
+        <h:outputScript name="controllerHIT.js" library="js/hit" />
+        
+        
 
         <ui:fragment rendered="#{ CFTV }">
             <h:outputScript library="js/map/" name="mapCftcv.js" />

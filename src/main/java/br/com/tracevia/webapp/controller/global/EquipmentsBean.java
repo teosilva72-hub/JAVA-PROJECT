@@ -347,7 +347,7 @@ public class EquipmentsBean implements Serializable {
 		}
 		
 		// -----------------------------------------------------------------------------------------------------------------
-				
+			System.out.println(dataSource.getTable());	
 		checked =  equipDAO.checkExists(dataSource.getEquipId(), dataSource.getTable()); // CHECK IF ID ALREADY EXISTS
 
 			if(checked)
@@ -740,6 +740,7 @@ public class EquipmentsBean implements Serializable {
 		case 10: table="sos"    ; break;
 		case 11: table="speed"  ; break;
 		case 12: table="wim"    ; break;
+		case 16: table="hit"; break;
 		
 		}
 
@@ -776,6 +777,7 @@ public class EquipmentsBean implements Serializable {
 		case "speed": table="speed"   ; break;
 		case "sv": table="sv"         ; break;
 		case "wim": table="wim"       ; break;
+		case "hit": table="hit"; break;
 		}
 
 		return table;
@@ -810,6 +812,7 @@ public class EquipmentsBean implements Serializable {
 		case "sos": moduleId = 10  ; break;
 		case "speed": moduleId = 11 ; break;	
 		case "wim" : moduleId = 12 ; break;
+		case "hit" : moduleId = 16 ; break;
 		}
 
 		return moduleId;
@@ -842,6 +845,7 @@ public class EquipmentsBean implements Serializable {
 				case "sos": type = ModulesEnum.SOS.getModule(); break;
 				case "speed": type = ModulesEnum.SPEED.getModule(); break;
 				case "wim": type = ModulesEnum.WIM.getModule(); break;
+				case "hit": type = ModulesEnum.HIT.getModule(); break;
 	
 			}
 
