@@ -1183,6 +1183,25 @@ public class ReportBean {
 		}
 		
 	}	   
+	   
+	   public void downloadPDF() {
+		   
+		   DateTimeApplication dta = new DateTimeApplication();
+		   
+		   model = (ExcelTemplate) SessionUtil.getExternalContext().getSessionMap().get("xlsModel");
+		   
+		   String file = fileName+"_"+dta.currentDateToExcelFile();
+		   
+		   try {
+			   
+			   model.downloadToPDF(file);
+			   
+		   } catch (IOException e) {	
+			   
+			   e.printStackTrace();
+		   }
+		   
+	   }	   
 
 	public boolean setIntervalDate(Date[] date, String column, String[] period, String modulo, List<String> equips) throws ParseException {
 			
