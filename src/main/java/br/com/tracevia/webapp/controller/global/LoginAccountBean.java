@@ -276,6 +276,7 @@ public class LoginAccountBean {
 														
 					if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()) ||
 						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire())||
+						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Eco101.getConcessionaire())||
 						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.tester.getConcessionaire()) ||
 						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.AlternativasViales.getConcessionaire()))
 					    
