@@ -18,7 +18,11 @@
 		<!-- Style -->
 		<h:outputStylesheet library="css/datatables/custom"
 			name="table-style.css" />
+		<h:outputStylesheet name="cftv.css" library="css/map" />
+		<h:outputStylesheet name="map.css" library="css/map" />
+		<h:outputStylesheet name="layoutDMS.css" library="css/dms" />
 		<h:outputStylesheet library="css/hit" name="layoutHit.css" />
+		<h:outputStylesheet library="css/hit" name="hit.css" />
 		<h:outputStylesheet library="css/global" name="global.css" />
 		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
 		<h:outputStylesheet library="css/commom" name="commons.css" />
@@ -27,40 +31,216 @@
 	</ui:define>
 	<ui:define name="default-content">
 
-			<div class="row">
-				<div class="col-1"></div>
-				<div class="col-5">
-					<h:form prependId="false" id="list-table">
-						<h:dataTable id="occurrence-table" var="date" disabled="true"
-							value="#{HitController.listar}" class="text-center"
-							styleClass="table table-sm custom-table table-striped table-dark table-hover"
-							cellspacing="0" width="100%" headerClass="custom-table-header"
-							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn, text-center justify-content-center">
+		<div class="row">
+			<div class="col-1"></div>
+			<div class="col-5 text-center">
+				<h:form prependId="false" id="list-table">
+					<h:dataTable id="table-hit" var="date" disabled="true"
+						value="#{HitController.listar}" class="text-center"
+						styleClass="table table-sm custom-table table-striped table-dark table-hover"
+						cellspacing="0" width="100%" headerClass="custom-table-header"
+						columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn, text-center justify-content-center">
 
-							<h:column>
-								<f:facet name="header">#{occLabels.occ_list_table_id}</f:facet>
-								<h:outputText value="#{date.equipId}" class="text-center"
-									style="font-size: 12px; " />
-							</h:column>
+						<h:column>
+							<f:facet name="header">#{occLabels.occ_list_table_id}</f:facet>
+							<h:outputText value="#{date.equipId}" class="text-center"
+								style="font-size: 12px; " />
+						</h:column>
 
-							<h:column>
-								<f:facet name="header">Equipo</f:facet>
-								<h:outputText value="#{date.equipName}" style="font-size: 12px;" />
-							</h:column>
+						<h:column>
+							<f:facet name="header">Equipo</f:facet>
+							<h:outputText value="#{date.equipName}" style="font-size: 12px;" />
+						</h:column>
 
-							<h:column>
-								<f:facet name="header">KM</f:facet>
-								<h:outputText value="#{date.km}" style="font-size: 12px;" />
-							</h:column>
+						<h:column>
+							<f:facet name="header">KM</f:facet>
+							<h:outputText value="#{date.km}" style="font-size: 12px;" />
+						</h:column>
 
-							
-						</h:dataTable>
+
+					</h:dataTable>
+				</h:form>
+				<h:form prependId="false" id="getEquip">
+					<h:inputHidden value="#{HitController.id}" id="tableId" />
+					<h:commandButton style="display:none;" id="setId">
+						<f:ajax execute="@form" render=":getEquip :galibo :inputs_msg"
+							listener="#{HitController.equipHit}" />
+					</h:commandButton>
+				</h:form>
+			</div>
+			<div class="col-5">
+
+				<div class="row" id="append_col">
+					<!-- init card -->
+					<h:form prependId="false" id="galibo">
+						<div class="col-5">
+							<div class="card bg-dark contet_card equip-box hit_equips_card">
+								<span class="equip_name">Equipo:
+									#{HitController.hit.equip_type}</span>
+								<hr></hr>
+								<div class="row">
+
+									<div class="col-6">
+										<svg width="8" height="8" fill="orange"
+											class="bi bi-circle-fill hitCircleOne" viewBox="0 0 16 16">
+										<circle cx="8" cy="8" r="8" /> </svg>
+									</div>
+									<div class="col-6">
+										<svg width="8" height="8" fill="orange"
+											class="bi bi-circle-fill hitCircleTwo" viewBox="0 0 16 16">
+										<circle cx="8" cy="8" r="8" /> </svg>
+									</div>
+								</div>
+
+
+								<div id="child-msg" class="col-auto msg-pos">
+									<div id="Hitmessage" class="hit table-message">
+										<div class="row message_#{item.table_id}#{item.equip_id}"
+											msg="" id="msg_one">
+											<div class="col-1 px-0 border-table">
+												<span id="box-0" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="box-1" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="box-2" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="box-3" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="box-4" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="box-5" style=""></span>
+											</div>
+
+										</div>
+										<div class="row message2" msg="" id="msg_two">
+											<div class="col-1 px-0 border-table">
+												<span id="Msg_0" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="Msg_1" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="Msg_2" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="Msg_3" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="Msg_4" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="Msg_5" style=""></span>
+											</div>
+
+										</div>
+										<div class="row bottom message3" msg="" id="msg_three">
+											<div class="col-1 px-0 border-table">
+												<span id="msg_0" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="msg_1" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="msg_2" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="msg_3" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="msg_4" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="msg_5" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="msg_6" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="msg_7" style=""></span>
+											</div>
+											<div class="col-1 px-0 border-table">
+												<span id="msg_8" style=""></span>
+											</div>
+
+										</div>
+										<div id="hitMIMG">
+											<svg fill="currentColor" class="bi bi-arrow-down-left"
+												viewBox="0 0 16 16"> <path fill-rule="evenodd"
+												d="M2 13.5a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 0-1H3.707L13.854 2.854a.5.5 0 0 0-.708-.708L3 12.293V7.5a.5.5 0 0 0-1 0v6z" />
+											</svg>
+											<div class="row bottom quadIm" msg="">
+												<div class="col-1 px-0 border-table hitQuad">
+													<span id="box-25" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table hitQuad">
+													<span id="box-25" style=""></span>
+												</div>
+											</div>
+											<div class="row bottom quadIm" msg="">
+												<div class="col-1 px-0 border-table hitQuad">
+													<span id="box-25" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table hitQuad">
+													<span id="box-25" style=""></span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</h:form>
-				</div>
-				<div class="col-6">
-					<div class="row" id="append_col"></div>
+					<!-- end card -->
+					<!-- init cards option -->
+					<div class="col-6">
+						<h:form prependId="false" id="inputs_msg">
+							<div class="card bg-dark card_opt">
+								<div class="card-body">
+									<h5 class="card-title text-center title_opt">Opciones</h5>
+									<hr></hr>
+									<div class="row">
+										<div class="col-12">
+											<span class="msg_span">Mensaje 1</span><input type="text"
+												class="form-control input_msg"
+												value="#{HitController.hit.msg1}" />
+										</div>
+										<div class="col-12">
+											<span class="msg_span">mensaje 2</span><input type="text"
+												class="form-control input_msg"
+												value="#{HitController.hit.msg2}" />
+										</div>
+										<div class="col-12">
+											<span class="msg_span">mensaje 3</span><input type="text"
+												class="form-control input_msg"
+												value="#{HitController.hit.msg3}" />
+										</div>
+										<div class="col-12">
+											<span class="msg_span">Símbolo</span>
+											<h:selectOneMenu value="#{HitController.hit.img}"
+												class="form-control inputDesign" id="simbol"
+												name="simbol">
+												<f:selectItem itemLabel="Seleccionar" itemValue=""/>
+												<f:selectItem itemLabel="↖" itemValue="1"/>
+												<f:selectItem itemLabel="↗" itemValue="2"/>
+												<f:selectItem itemLabel="↘" itemValue="3"/>
+												<f:selectItem itemLabel="↙" itemValue="4"/>
+											</h:selectOneMenu>
+											
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</h:form>
+					</div>
 				</div>
 			</div>
+		</div>
 
 		<!-- Final do conteudo do site -->
 		<!-- Script -->

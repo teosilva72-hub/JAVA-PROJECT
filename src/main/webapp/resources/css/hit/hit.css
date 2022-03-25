@@ -1,0 +1,94 @@
+.contet_card {
+    width: 12.5rem;
+    height: 11.5rem;
+    position: relative;
+    top: 45px;
+}
+.msg-pos {
+    position: absolute;
+    right: unset;
+    bottom: unset;
+    top: 35px;
+}
+#Hitmessage {
+    width: 12.375rem;
+    font-size: 6pt;
+    color: yellow;
+    text-transform: uppercase;
+    position: relative;
+    top: 5px;
+    left: 5px;
+}
+#Hitmessage {
+    width: 12.375rem;
+    font-size: 11pt;
+    color: yellow;
+    text-align: center;
+    text-transform: uppercase !important;
+}
+div#msg_one, div#msg_two {
+    position: relative;
+    left: 35px;
+}
+#msg_one > .border-table {
+    height: 25px;
+}
+#msg_two > .border-table {
+    height: 25px;
+}
+#msg_three > .border-table {
+    height: 25px;
+}
+svg.bi.bi-circle-fill.hitCircleTwo {
+    position: relative;
+    z-index: 1;
+    left: 55px;
+    bottom: 5px;
+}
+svg.bi.bi-circle-fill.hitCircleOne {
+    position: relative;
+    left: 15px;
+    bottom: 5px;
+}
+.row.bottom.quadIm {
+    position: relative;
+    left: 74px;
+    bottom: 8px;
+    width: 12.375rem;
+    height: 15px;
+}
+.col-1.px-0.border-table.hitQuad {
+    height: 15px;
+}
+svg.bi.bi-arrow-down-left {
+    position: relative;
+    left: -23px !important;
+    top: 19px;
+    font-weight: bold;
+    width: 30px;
+    height: 24px;
+    z-index: 1;
+}
+.card.bg-dark.card_opt {
+    position: relative;
+    top: 45px;
+}
+h5.card-title.text-center.title_opt {
+    font-weight: 900;
+    color: white;
+}
+span.msg_span {
+    text-align: center;
+    color: white;
+}
+input.form-control.input_msg {
+    height: 25px;
+    text-align: center;
+    color: black;
+    font-weight: 500;
+}
+span.equip_name {
+    text-align: center;
+    color: white;
+    font-weight: 400;
+}
