@@ -558,7 +558,7 @@
 
                                         <div id="child-msg" class="col-auto msg-pos">
                                             <div id="Hitmessage" class="hit table-message">
-                                                <div class="row message1" msg="" id="msg_one">
+                                                <div class="row message_#{item.table_id}#{item.equip_id}" msg="" id="msg_one">
                                                     <div class="col-1 px-0 border-table">
                                                         <span id="box-1" style="">E</span>
                                                     </div>
@@ -581,52 +581,52 @@
                                                 </div>
                                                 <div class="row message2" msg="" id="msg_two">
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-13" style="">A</span>
+                                                        <span id="box-7" style="">A</span>
                                                     </div>
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-14" style="">L</span>
+                                                        <span id="box-8" style="">L</span>
                                                     </div>
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-15" style="">T</span>
+                                                        <span id="box-9" style="">T</span>
                                                     </div>
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-16" style="">U</span>
+                                                        <span id="box-10" style="">U</span>
                                                     </div>
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-17" style="">R</span>
+                                                        <span id="box-11" style="">R</span>
                                                     </div>
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-18" style="">A</span>
+                                                        <span id="box-12" style="">A</span>
                                                     </div>
 
                                                 </div>
                                                 <div class="row bottom message3" msg="" id="msg_three">
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-25" style="">D</span>
+                                                        <span id="box-13" style="">D</span>
                                                     </div>
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-26" style="">E</span>
+                                                        <span id="box-14" style="">E</span>
                                                     </div>
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-27" style="">T</span>
+                                                        <span id="box-15" style="">T</span>
                                                     </div>
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-28" style="">E</span>
+                                                        <span id="box-16" style="">E</span>
                                                     </div>
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-29" style="">N</span>
+                                                        <span id="box-17" style="">N</span>
                                                     </div>
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-30" style="">G</span>
+                                                        <span id="box-18" style="">G</span>
                                                     </div>
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-31" style="">A</span>
+                                                        <span id="box-19" style="">A</span>
                                                     </div>
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-32" style="">S</span>
+                                                        <span id="box-20" style="">S</span>
                                                     </div>
                                                     <div class="col-1 px-0 border-table">
-                                                        <span id="box-33" style="">E</span>
+                                                        <span id="box-21" style="">E</span>
                                                     </div>
 
                                                 </div>
@@ -660,8 +660,9 @@
                                             <!-- HEADER -->
                                             <p class="col-auto mb-0 pr-1 equip-label">#{item.nome}</p>
                                             <p class="col-12 mb-0 equip-label">KM #{item.km}</p>
-                                            <span id="#{item.table_id}#{item.equip_id}Status1" class="equip-status hitStatus"></span>
+                                            
                                         </div>
+                                        <span id="#{item.table_id}#{item.equip_id}Status1" class="equip-status hitStatus"></span>
                                     </div>
                                     <!-- START INFO -->
                                     <div id="pop#{item.table_id}#{item.equip_id}" style="display: none;">

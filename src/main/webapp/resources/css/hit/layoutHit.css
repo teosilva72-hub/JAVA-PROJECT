@@ -1,3 +1,4 @@
+/*STYLE MAP*/
 .contet_card {
 	height: 4.625rem;
 }
@@ -59,7 +60,15 @@ svg.bi.bi-circle-fill.hitCircleOne {
     position: relative;
     left: 3px;
 }
-.hitDescr {
-    position: relative;
-    top: 52px;
+.hitDescr{
+	position: relative;
+    top: 50px;
+    right: 5px;
 }
+.hitStatus{
+	    position: relative;
+    top: 80px;
+    left: 72px;
+    width: max-content;
+}
+/*END STYLE MAP*/
