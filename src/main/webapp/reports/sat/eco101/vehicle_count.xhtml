@@ -25,11 +25,10 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv v')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('Subtrecho, Equipamento, KM, Nº Faixas, Sentido, Ano, Mês, %s, %s, 1, 2, 2A, 3, 4, 4A, 5, 6, 6A, 7, 8, 9, 10, 11, E9, E10, 0, Total',
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('Equipamento, KM, Nº Faixas, Sentido, Ano, Mês, %s, %s, 1, 2, 2A, 3, 4, 4A, 5, 6, 6A, 7, 8, 9, 10, 11, E9, E10, 0, Total',
 		satLabels.global_date_column, satLabels.global_interval_column))}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('
-		`-`;
 		s.name;
 		km;
 		number_lanes;
