@@ -1071,12 +1071,20 @@ public class ReportBean {
 			
 			if(extraPeriod) {
 				
-				String extraPeriodValue = "1";
+				Double extraPeriodValue = Double.parseDouble(period[0]);
 				
-				if(period[1].toUpperCase().equals("DAY"))
-					extraPeriodValue = "24";
+				switch (period[1].toUpperCase()) {
+					case "DAY":
+						extraPeriodValue *= 24;
+						break;
+					case "MINUTE":						
+						extraPeriodValue /= 60;
+						break;
+					default:
+						break;
+				}
 							
-				query = query.replace("$extraPeriod", extraPeriodValue);
+				query = query.replace("$extraPeriod", extraPeriodValue.toString());
 			}
 				
 			// ----------------------------------------------------------------------
