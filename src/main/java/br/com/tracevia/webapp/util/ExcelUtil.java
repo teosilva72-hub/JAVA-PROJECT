@@ -1,15 +1,13 @@
 package br.com.tracevia.webapp.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
-
-import javax.faces.context.FacesContext;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -25,7 +23,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.util.IOUtils;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFPicture;
@@ -921,49 +918,19 @@ public class ExcelUtil {
 	// ----------------------------------------------------------------------------------------------------------------
 	// DOWNLOAD FILE
 	// ----------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * Método para realizar o download de um arquivo Excel
-	 * @author Wellington 13/10/2021
-	 * @version 1.0
-	 * @since 1.0 
-	 * @param workbook - objeto de representação de alto nível de uma pasta de trabalho do Excel	
-	 * @param fileName - nome do arquivo
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFWorkbook.html
-	 */
-	public void donwloadExcelFile(XSSFWorkbook workbook, String fileName) throws IOException {
-
-		SessionUtil.getExternalContext().setResponseContentType("application/vnd.ms-excel");
-		SessionUtil.getExternalContext().setResponseHeader("Content-Disposition","attachment; filename=\""+fileName+".xlsx\"");
-
-		OutputStream responseOutputStream = SessionUtil.getExternalContext().getResponseOutputStream();     
-
-		workbook.write(responseOutputStream);
-		SessionUtil.getFacesContext().responseComplete();   
-
-	}
-
-	// ----------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * Método para realizar o download de um arquivo Excel
-	 * @author Wellington 13/10/2021
-	 * @version 1.0
-	 * @since 1.0 
-	 * @param workbook - objeto de representação de alto nível de uma pasta de trabalho do Excel	
-	 * @param fileName - nome do arquivo
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/streaming/SXSSFWorkbook.html
-	 */
-	public void donwloadExcelFile(SXSSFWorkbook workbook, String fileName) throws IOException {
-
-		SessionUtil.getExternalContext().setResponseContentType("application/vnd.ms-excel");
-		SessionUtil.getExternalContext().setResponseHeader("Content-Disposition","attachment; filename=\""+fileName+".xlsx\"");
-
-		OutputStream responseOutputStream = SessionUtil.getExternalContext().getResponseOutputStream();             
-
-		workbook.write(responseOutputStream);
-		SessionUtil.getFacesContext().responseComplete();    			
-
+	
+	public InputStream getOutput(Workbook workbook) throws IOException {
+		InputStream input;
+		ByteArrayOutputStream output = new ByteArrayOutputStream();  
+		try {
+			workbook.write(output);
+			input = new ByteArrayInputStream(output.toByteArray());
+		} finally {
+			output.close();			
+		}
+		
+		return input;
+		
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -987,6 +954,18 @@ public class ExcelUtil {
 		workbook.write(responseOutputStream);
 		SessionUtil.getFacesContext().responseComplete();     
 
+	}
+	
+	public void donwloadPDFFile(ByteArrayOutputStream file, String fileName) throws IOException {
+		
+		SessionUtil.getExternalContext().setResponseContentType("application/pdf");
+		SessionUtil.getExternalContext().setResponseHeader("Content-Disposition","attachment; filename=\""+fileName+".pdf\"");
+		
+		OutputStream responseOutputStream = SessionUtil.getExternalContext().getResponseOutputStream();     
+		
+		file.writeTo(responseOutputStream);
+		SessionUtil.getFacesContext().responseComplete();     
+		
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------

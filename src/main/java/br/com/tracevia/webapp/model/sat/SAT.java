@@ -50,8 +50,8 @@ public class SAT extends Equipments {
 	private int totalProjection1hS2;
 	private int totalVolumeS2;
 	private int totalVelMedS2;	
-	private double occupationRateS1;
-	private double occupationRateS2;
+	private double occupancyRateS1;	
+	private double occupancyRateS2; 
 	private String faixa1;
 	private String faixa2;
 	private String faixa3;
@@ -69,8 +69,11 @@ public class SAT extends Equipments {
 	private String posicao_nivel_servico;
 	private String lastRegister;
 	private String lastPackage;	
-			
-	
+	private String sevenDaysDatetime;
+	private String lastOneDatetime;
+	private String projectionDatetime;
+	private String currentDatetime;
+				
 
 	public SAT(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
@@ -85,11 +88,11 @@ public class SAT extends Equipments {
 			int motoProjection1hS1, int motoVolumeS1, int motoVelMedS1, int moto7days1hS2, int motoCurrent1hS2,
 			int motoProjection1hS2, int motoVolumeS2, int motoVelMedS2, int total7days1hS1, int totalCurrent1hS1,
 			int totalProjection1hS1, int totalVolumeS1, int totalVelMedS1, int total7days1hS2, int totalCurrent1hS2,
-			int totalProjection1hS2, int totalVolumeS2, int totalVelMedS2, double occupationRateS1,
-			double occupationRateS2, String faixa1, String faixa2, String faixa3, String faixa4, String faixa5,
+			int totalProjection1hS2, int totalVolumeS2, int totalVelMedS2, double occupancyRateS1,
+			double occupancyRateS2, String faixa1, String faixa2, String faixa3, String faixa4, String faixa5,
 			String faixa6, String faixa7, String faixa8, String qtdeFaixas, String sentidos, String sentido1,
 			String sentido2, String sentido1Abbr, String sentido2Abbr, String posicao_nivel_servico,
-			String lastRegister, String lastPackage) {
+			String lastRegister, String lastPackage, String sevenDaysDatetime, String lastOneDatetime, String projectionDatetime, String currentDatetime) {
 		
 		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
 				nome, estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
@@ -141,8 +144,8 @@ public class SAT extends Equipments {
 		this.totalProjection1hS2 = totalProjection1hS2;
 		this.totalVolumeS2 = totalVolumeS2;
 		this.totalVelMedS2 = totalVelMedS2;
-		this.occupationRateS1 = occupationRateS1;
-		this.occupationRateS2 = occupationRateS2;
+		this.occupancyRateS1 = occupancyRateS1;
+		this.occupancyRateS2 = occupancyRateS2;
 		this.faixa1 = faixa1;
 		this.faixa2 = faixa2;
 		this.faixa3 = faixa3;
@@ -160,6 +163,10 @@ public class SAT extends Equipments {
 		this.posicao_nivel_servico = posicao_nivel_servico;
 		this.lastRegister = lastRegister;
 		this.lastPackage = lastPackage;
+		this.sevenDaysDatetime = sevenDaysDatetime;
+		this.lastOneDatetime = lastOneDatetime;
+		this.projectionDatetime = projectionDatetime;
+		this.currentDatetime = currentDatetime;
 	}
 
 	public SAT() {
@@ -534,20 +541,20 @@ public class SAT extends Equipments {
 		this.totalVelMedS2 = totalVelMedS2;
 	}
 
-	public double getOccupationRateS1() {
-		return occupationRateS1;
+	public double getOccupancyRateS1() {
+		return occupancyRateS1;
 	}
 
-	public void setOccupationRateS1(double occupation_rate_s1) {
-		this.occupationRateS1 = occupation_rate_s1;
+	public void setOccupancyRateS1(double occupancyRateS1) {
+		this.occupancyRateS1 = occupancyRateS1;
 	}
 
-	public double getOccupationRateS2() {
-		return occupationRateS2;
+	public double getOccupancyRateS2() {
+		return occupancyRateS2;
 	}
 
-	public void setOccupationRateS2(double occupationRateS2) {
-		this.occupationRateS2 = occupationRateS2;
+	public void setOccupancyRateS2(double occupancyRateS2) {
+		this.occupancyRateS2 = occupancyRateS2;
 	}
 
 	public String getFaixa1() {
@@ -686,4 +693,37 @@ public class SAT extends Equipments {
 		this.lastPackage = lastPackage;
 	}
 
+	public String getSevenDaysDatetime() {
+		return sevenDaysDatetime;
+	}
+
+	public void setSevenDaysDatetime(String sevenDaysDatetime) {
+		this.sevenDaysDatetime = sevenDaysDatetime;
+	}
+
+	public String getLastOneDatetime() {
+		return lastOneDatetime;
+	}
+
+	public void setLastOneDatetime(String lastOneDatetime) {
+		this.lastOneDatetime = lastOneDatetime;
+	}
+
+	public String getProjectionDatetime() {
+		return projectionDatetime;
+	}
+
+	public void setProjectionDatetime(String projectionDatetime) {
+		this.projectionDatetime = projectionDatetime;
+	}
+
+	public String getCurrentDatetime() {
+		return currentDatetime;
+	}
+
+	public void setCurrentDatetime(String currentDatetime) {
+		this.currentDatetime = currentDatetime;
+	}
+		
+	
 }

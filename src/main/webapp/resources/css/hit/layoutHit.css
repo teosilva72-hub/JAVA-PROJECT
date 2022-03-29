@@ -1,0 +1,74 @@
+/*STYLE MAP*/
+.contet_card {
+	height: 4.625rem;
+}
+#Hitmessage {
+width: 3.375rem;
+    font-size: 6pt;
+    color: yellow;
+    text-transform: uppercase;
+    position: relative;
+    top: 5px;
+    left: 5px;
+}
+div#msg_one,  div#msg_two{
+    position: relative;
+    left: 15px;
+}
+#msg_one > .border-table{
+	    height: 0.7625rem;
+}
+#msg_two > .border-table{
+	    height: 0.7625rem;
+}
+#msg_three > .border-table{
+	    height: 0.7625rem;
+}
+svg.bi.bi-circle-fill.hitCircleTwo {
+    position: relative;
+    z-index: 1;
+    left: 9px;
+}
+svg.bi.bi-arrow-down-left {
+        position: relative;
+    left: 15px;
+    top: 10px;
+    font-weight: 900;
+    width: 15px;
+    height: 15px;
+    z-index: 1;
+}
+div#msg_three {
+    position: relative;
+    left: 5px;
+}
+.row.bottom.quadIm {
+    position: relative;
+    left: 25px;
+    bottom: 8px;
+    width: 8.55rem;
+    height: 10px;
+}
+.col-1.px-0.border-table.hitQuad {
+    height: 10px;
+}
+a.generic-info-bagde.hitPOP {
+    /* position: relative; */
+    margin-top: 58px;
+}
+svg.bi.bi-circle-fill.hitCircleOne {
+    position: relative;
+    left: 3px;
+}
+.hitDescr{
+	position: relative;
+    top: 50px;
+    right: 5px;
+}
+.hitStatus{
+	    position: relative;
+    top: 80px;
+    left: 72px;
+    width: max-content;
+}
+/*END STYLE MAP*/

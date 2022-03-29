@@ -21,18 +21,18 @@ public class DataSatDAO {
 		List<SAT> list = new ArrayList<SAT>();
 		DateTimeApplication dta = new DateTimeApplication();
 		
-		int limit = equips.getSatList().size();
+			int limit = equips.getSatList().size();
 									
-		String currentDate = null;
+			String currentDate = null;
 			
-		Calendar calendar = Calendar.getInstance();	
-		int minute = calendar.get(Calendar.MINUTE);
+			Calendar calendar = Calendar.getInstance();	
+			int minute = calendar.get(Calendar.MINUTE);
 		
-		String hourDatetime = dta.getDataIntervalHour(calendar);
+			String hourDatetime = dta.getDataIntervalHour(calendar);
 				
-		// Obter datas formatadas para os dados
-		currentDate = dta.getDataInterval15Min(calendar, minute);
-							
+			// Obter datas formatadas para os dados
+			currentDate = dta.getDataInterval15Min(calendar, minute);							
+
 			String select = "SELECT d.NOME_ESTACAO AS ESTACAO, CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE CASE WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), " + 
 			"DATE_FORMAT(DATE_ADD(d.DATA_HORA ,INTERVAL 14 MINUTE), ' %H:%i')) ELSE CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 15 MINUTE), ' %H:%i')) END END 'PACOTE_HORA', " +
 			"CASE WHEN DATEDIFF(NOW(), md.maxDate) > 0 THEN date_format(md.maxDate, '%d/%m/%y %H:%i') ELSE date_format(md.maxDate, '%H:%i') END 'DADO_HORA', " +
@@ -236,11 +236,15 @@ public class DataSatDAO {
 
 					sat.setEquip_id(rs.getInt("ESTACAO"));
 					sat.setLastPackage(rs.getString("PACOTE_HORA"));
-					sat.setLastRegister(rs.getString("DADO_HORA"));				
+					sat.setLastRegister(rs.getString("DADO_HORA"));						
 					sat.setQuantidadeS1(rs.getInt("VOLUME_TOTAL_S1"));						
 					sat.setVelocidadeS1(rs.getInt("VEL_MEDIA_TOTAL_S1"));
 					sat.setQuantidadeS2(rs.getInt("VOLUME_TOTAL_S2"));
 					sat.setVelocidadeS2(rs.getInt("VEL_MEDIA_TOTAL_S2"));
+					sat.setCurrentDatetime(rs.getString("MAJOR_HEADER"));
+					sat.setSevenDaysDatetime(rs.getString("7_DAYS_HEADER"));
+					sat.setLastOneDatetime(rs.getString("LAST_HOUR_HEADER"));
+					sat.setProjectionDatetime(rs.getString("PROJECTION_HEADER"));					
 					sat.setAutosVolumeS1(rs.getInt("VOLUME_AUTO_S1"));
 					sat.setComVolumeS1(rs.getInt("VOLUME_COM_S1"));
 					sat.setMotoVolumeS1(rs.getInt("VOLUME_MOTO_S1"));
@@ -249,7 +253,7 @@ public class DataSatDAO {
 					sat.setComVelMedS1(rs.getInt("VEL_MEDIA_COM_S1"));
 					sat.setMotoVelMedS1(rs.getInt("VEL_MEDIA_MOTO_S1"));
 					sat.setTotalVelMedS1(rs.getInt("VEL_MEDIA_TOTAL_S1"));					
-					sat.setOccupationRateS1((rs.getDouble("TAXA_OCUPACAO_S1")));
+					sat.setOccupancyRateS1((rs.getDouble("TAXA_OCUPACAO_S1")));
 					sat.setAutosVolumeS2(rs.getInt("VOLUME_AUTO_S2"));
 					sat.setComVolumeS2(rs.getInt("VOLUME_COM_S2"));
 					sat.setMotoVolumeS2(rs.getInt("VOLUME_MOTO_S2"));
@@ -258,7 +262,7 @@ public class DataSatDAO {
 					sat.setComVelMedS2(rs.getInt("VEL_MEDIA_COM_S2"));
 					sat.setMotoVelMedS2(rs.getInt("VEL_MEDIA_MOTO_S2"));
 					sat.setTotalVelMedS2(rs.getInt("VEL_MEDIA_TOTAL_S2"));
-					sat.setOccupationRateS2((rs.getDouble("TAXA_OCUPACAO_S2")));
+					sat.setOccupancyRateS2((rs.getDouble("TAXA_OCUPACAO_S2")));
 																															
 					list.add(sat);
 				}

@@ -14,54 +14,63 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.via_paulista_class_file_name)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.via_paulista_class_title)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('VIA PAULISTA')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.via_paulista_axle_weight_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.via_paulista_axle_weight_title)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECO 101')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />	
-		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.via_paulista_class_file_name)}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.via_paulista_class_title)}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('false')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.defineClassSublHeader('light-heavy')}" />
 	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv v')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" escape="false" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s',
-		satLabels.global_date_column, satLabels.global_interval_column, satLabels.class_motorcycles_column, satLabels.class_light_column, satLabels.class_semi_trailer_column, satLabels.class_trailer_column,
-		satLabels.number_of_axles_2_column, satLabels.number_of_axles_3_column, satLabels.number_of_axles_4_column, satLabels.number_of_axles_5_column, satLabels.number_of_axles_6_column, satLabels.number_of_axles_7_column,
-		satLabels.number_of_axles_8_column, satLabels.number_of_axles_9_column, satLabels.number_of_axles_10_column, satLabels.global_total_vehicles_column))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('Equipamento, KM, Nº Faixas, Sentido, Ano, Mês, %s, %s, 1, 2, 2A, 3, 4, 4A, 5, 6, 6A, 7, 8, 9, 10, 11, E9, E10, 0, Total',
+		satLabels.global_date_column, satLabels.global_interval_column))}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(classe = `9`); SUM(IF(classe = `1` OR (classe = `UC` AND axlNumber &lt; 10) OR classe = `2N`, 1, 0 )); 
-        SUM(classe = `3`); SUM(classe = `5`); SUM(IF(classe = `2` OR classe = `2A`, 1, 0)); SUM(IF(classe = `4` OR classe = `4A` OR classe = `3N`, 1, 0 ));
-		SUM(IF(classe = `6` OR classe = `4N`, 1, 0)); SUM(IF(classe = `7` OR classe = `5N`, 1, 0 ));
-		SUM(IF(classe = `8` OR classe = `6N`, 1, 0)); SUM(IF(classe = `10` OR classe = `7N`, 1, 0 ));
-		SUM(IF(classe = `11` OR classe = `8N`, 1, 0)); SUM(IF(classe = `E9` OR classe = `9N` OR (classe=`UC` AND axlNumber = 9), 1, 0));
-		SUM(IF(classe = `10N` OR (classe=`UC` AND axlNumber &gt;= 10), 1, 0)); SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('
+		s.name;
+		km;
+		number_lanes;
+		GROUP_CONCAT(distinct f.direction);
+		DATE_FORMAT(data, `%Y`);
+		DATE_FORMAT(data, `%m`);
+		DATE_FORMAT(data, `%d/%m/%Y`) as sd;
+		TIME($period)@sd;
+		SUM(IF(classe = `1`, 1, 0));
+		SUM(IF(classe = `2`, 1, 0));
+		SUM(IF(classe = `2A`, 1, 0 ));
+		SUM(IF(classe = `3`, 1, 0 )); 
+		SUM(IF(classe = `4`, 1, 0 )); 
+		SUM(IF(classe = `4A`, 1, 0 )); 
+		SUM(IF(classe = `5`, 1, 0 )); 
+		SUM(IF(classe = `6`, 1, 0));
+		SUM(IF(classe = `6N`, 1, 0 ));
+		SUM(IF(classe = `7`, 1, 0 )); 
+		SUM(IF(classe = `8`, 1, 0));
+		SUM(IF(classe = `9`, 1, 0 )); 
+		SUM(IF(classe = `10`, 1, 0 )); 
+		SUM(IF(classe = `11`, 1, 0));
+		SUM(IF(classe = `E9`, 1, 0 )); 
+		SUM(IF(classe = `9N`, 1, 0 )); 
+		SUM(IF(classe = `UC`, 1, 0 ));
+		SUM(1)')}" />
 
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(DateTime, `dd/MM/yyyy`); CAST($period as TIME);
-		SUM(CASE WHEN TrafficClassID = `28` THEN 1 ELSE 0 END); SUM(CASE WHEN TrafficClassID = `17` OR (TrafficClassID = `33` AND NumberAxles &lt; 10) THEN 1 ELSE 0  END); 
-        SUM(CASE WHEN TrafficClassID = `20` THEN 1 ELSE 0 END); SUM(CASE WHEN TrafficClassID = `23` THEN 1 ELSE 0 END); SUM(CASE WHEN TrafficClassID = `18` OR TrafficClassID = `19` THEN 1 ELSE 0 END); SUM(CASE WHEN TrafficClassID = `21` OR TrafficClassID = `22` THEN 1 ELSE 0 END);
-		SUM(CASE WHEN TrafficClassID = `24` THEN 1 ELSE 0 END); SUM(CASE WHEN TrafficClassID = `26` THEN 1 ELSE 0 END);
-		SUM(CASE WHEN TrafficClassID = `27` THEN 1 ELSE 0 END); SUM(CASE WHEN TrafficClassID = `29` THEN 1 ELSE 0 END);
-		SUM(CASE WHEN TrafficClassID = `30` THEN 1 ELSE 0 END); SUM(CASE WHEN TrafficClassID = `31` OR (TrafficClassID=`33` AND NumberAxles = 9) THEN 1 ELSE 0 END);
-		SUM(CASE WHEN TrafficClassID = `32` OR (TrafficClassID=`33` AND NumberAxles &gt;= 10) THEN 1 ELSE 0 END); SUM(1)')}" />
-
-		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = v.lane')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions f ON f.equip_id = siteID AND f.lane = v.lane INNER JOIN sat_equipment s ON s.equip_id = siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
-		
+
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
-		<!-- <f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions, direction, direction')}" /> -->
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('7@8')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_weighing.id_weighing|name' , true, true)}" />
 
     </f:metadata>
 	
@@ -91,8 +100,6 @@
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
 		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
 		<h:outputScript library="js/alert" name="alerts.js" />	<!-- ENABLE ALERTS -->
-		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
-	 	<h:outputScript library="js/charts" name="chart.js" />
 	
 	   <!---->
 	
@@ -110,18 +117,18 @@
 	    
 	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
 	       <!----> 		
-	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	
-	         
-	          <!-- ALERT MESSAGE -->
+	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
+	        
+	         <!-- ALERT MESSAGE -->
 	 
-	          <ui:include src="/template/alerts/alerts.xhtml" />
+	         <ui:include src="/template/alerts/alerts.xhtml" />
              
        <!-- ============================================================================================================================= -->
            
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="#{satLabels.via_paulista_class_title}" /> <!-- NAME LABEL -->
+	       <h:outputText value="Contagem de Veículos" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 
@@ -132,52 +139,18 @@
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
 	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
-		width="100%" headerClass="custom-table-header"> <!-- DATATABALE JSF -->
-		
-	  <f:facet name="header"> <!-- Header -->
-	 
-	  <!-- First Level -->
-	         
-      <tr>
-        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(0)}</th>
-        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(1)}</th>
-        <th colspan="4" class="custom-table-header" >#{satLabels.class_light_vehicles_column}</th> <!-- SUB HEADER -->
-        <th colspan="9" class="custom-table-header" >#{satLabels.class_heavy_vehicles_column}</th> <!-- SUB HEADER -->        
-        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(15)}</th> 
-      </tr>
-      
-      <!-- Second Level -->
-      
-      <tr>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(2)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(3)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(4)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(5)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(6)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(7)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(8)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(9)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(10)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(11)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(12)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(13)}</th>
-        <th class="custom-table-header" >#{reportBean.columnsInUse.get(14)}</th>
-      </tr>
-      
-     </f:facet> <!---->	
-     
-     <!---->		
-	
+		width="100%" headerClass="custom-table-header">
+		<!-- DATATABALE JSF -->
 		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->
-				<!-- <f:facet name="header">#{header}</f:facet> --> <!-- HEADER -->
+				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->
 				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
 			</h:column> <!-- COLUMN END -->
 		</c:forEach> <!-- LOOP TAG END -->
 	</h:dataTable> <!-- DATATABALE JSF END -->
 	<!---->
-   </h:form><!-- FORM TABLE END-->
+</h:form><!-- FORM TABLE END-->
 	 
 	  <!-- ============================================================================================================================= -->
 	 
@@ -189,12 +162,7 @@
 		
 	  </div><!-- TABLE CONTAINER DIV CONTENT END -->   
 	  
-	  <!-- ============================================================================================================================= -->
-	  
-	    <!-- CHART CONTAINER -->  
-	  
-	    <ui:include src="/template/chart/chart_template.xhtml" />
-	
+	  <!-- DIV DE ESTRUTURA DA TABELA -->   
 		
 	  <!-- ============================================================================================================================= -->
 	  
@@ -227,9 +195,9 @@
 	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
 		 	 	 	
 		 <form name="validation"> <!-- FORM VALIDATION  -->
-		 		 		  
+			   	 	
 		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
-		
+		 
 		 </form> <!-- FORM VALIDATION END -->
 		 
 	  <!-- ============================================================================================================================= -->

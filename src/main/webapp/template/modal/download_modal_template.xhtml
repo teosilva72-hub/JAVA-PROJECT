@@ -42,6 +42,13 @@
 						     p:data-toggle="modal" p:data-target="#modalDownload"
 						     action="#{reportBean.download}"
 						     class="btn btn-dark form-draw-button" /> <!-- DOWNLOAD BUTTON -->
+						     
+						    <!-- DOWNLOAD BUTTON -->						    
+						   <h:commandButton p:onclose="download"
+						     value="#{reportsLabels.reports_modal_alert_btn_yes} (PDF)"
+						     p:data-toggle="modal" p:data-target="#modalDownload"
+						     action="#{reportBean.downloadPDF}"
+						     class="btn btn-dark form-draw-button" /> <!-- DOWNLOAD PDF BUTTON -->
 								
 						  <!---->
 								
