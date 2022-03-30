@@ -1234,6 +1234,12 @@ public class EquipmentsDAO {
 				+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
 				+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, equip_ip) "
 				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		
+		//HIT INSERT  QUERY
+		String insertHit = "INSERT INTO hit_equipment (equip_id, creation_date, creation_username, name, city, road, km, "
+				+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
+				+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, equip_ip) "
+				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		// NOTIFICATION STATUS TABLE INSERT QUERY
 		String queryNotification = "INSERT INTO notifications_status (equip_id, equip_type, equip_ip, equip_name, equip_km) "
@@ -1271,6 +1277,9 @@ public class EquipmentsDAO {
 				break;
 			case "speed":
 				insert = insertSpeed;
+				break;
+			case "hit":
+				insert = insertHit;
 				break;
 
 			default:
@@ -1592,6 +1601,8 @@ public class EquipmentsDAO {
 				+ ", latitude, longitude, direction, equip_ip_indicator, equip_ip_radar FROM speed_equipment WHERE equip_id = ? ";
 		String selectWim = "SELECT equip_id, name, city, road, km, " + widthOption
 				+ ", latitude, longitude, direction, equip_ip FROM wim_equipment WHERE equip_id = ? ";
+		String selectHit = "SELECT equip_id, name, city, road, km, " + widthOption
+				+ ", latitude, longitude, direction, equip_ip FROM hit_equipment WHERE equip_id = ? ";
 
 		// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1626,6 +1637,9 @@ public class EquipmentsDAO {
 				break;
 			case "wim":
 				select = selectWim;
+				break;
+			case "hit":
+				select = selectHit;
 				break;
 
 		}
@@ -1801,6 +1815,9 @@ public class EquipmentsDAO {
 				+ " = ? WHERE equip_id = ? ";
 		String updateWim = "UPDATE wim_equipment SET " + posXOption + " = ?, " + posYOption
 				+ " = ? WHERE equip_id = ? ";
+		String updateHit = "UPDATE hit_equipment SET " + posXOption + " = ?, " + posYOption
+				+ " = ? WHERE equip_id = ? ";
+		
 
 		// ---------------------------------------------------------------------------------------------------------------------
 
@@ -1835,6 +1852,9 @@ public class EquipmentsDAO {
 				break;
 			case "wim":
 				update = updateWim;
+				break;
+			case "hit":
+				update = updateHit;
 				break;
 
 		}
@@ -1950,6 +1970,8 @@ public class EquipmentsDAO {
 				+ widthOption + " = ?, equip_ip_indicator = ?, equip_ip_radar = ? WHERE equip_id = ? ";
 		String updateWimLinear = "UPDATE wim_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "
 				+ widthOption + " = ?, equip_ip = ? WHERE equip_id = ? ";
+		String updateHitLinear = "UPDATE hit_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "
+				+ widthOption + " = ?, equip_ip = ? WHERE equip_id = ? ";
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1978,6 +2000,9 @@ public class EquipmentsDAO {
 				+ " = ?, latitude = ?, longitude = ?, equip_ip_indicator = ?, equip_ip_radar = ? WHERE equip_id = ? ";
 		String updateWimMap = "UPDATE wim_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "
 				+ widthOption + " = ?, latitude = ?, longitude = ?, equip_ip = ? WHERE equip_id = ? ";
+		String updateHitMap = "UPDATE hit_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "
+				+ widthOption + " = ?, latitude = ?, longitude = ?, equip_ip = ? WHERE equip_id = ? ";
+		
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2072,7 +2097,14 @@ public class EquipmentsDAO {
 				else
 					update = updateWimMap;
 				break;
-
+				
+			case "hit":
+				
+				if(updateView.equals("linear"))
+					update = updateHitLinear;
+				else
+					update = updateHitMap;
+				break;
 		}
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
@@ -2333,6 +2365,7 @@ public class EquipmentsDAO {
 		String deleteSos = "DELETE FROM sos_equipment WHERE equip_id = ? ";
 		String deleteSpeed = "DELETE FROM speed_equipment WHERE equip_id = ? ";
 		String deleteWim = "DELETE FROM wim_equipment WHERE equip_id = ? ";
+		String deleteHit = "DELETE FROM hit_equipment WHERE equip_id = ? ";
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -2367,6 +2400,9 @@ public class EquipmentsDAO {
 				break;
 			case "wim":
 				delete = deleteWim;
+				break;
+			case "hit":
+				delete = deleteHit;
 				break;
 
 		}

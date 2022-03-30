@@ -407,7 +407,7 @@ public class Equipments {
 
  		return lista;
  	}
-
+ 	 
 
 }
 	

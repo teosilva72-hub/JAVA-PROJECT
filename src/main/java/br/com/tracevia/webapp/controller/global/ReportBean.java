@@ -1071,12 +1071,20 @@ public class ReportBean {
 			
 			if(extraPeriod) {
 				
-				String extraPeriodValue = "1";
+				Double extraPeriodValue = Double.parseDouble(period[0]);
 				
-				if(period[1].toUpperCase().equals("DAY"))
-					extraPeriodValue = "24";
+				switch (period[1].toUpperCase()) {
+					case "DAY":
+						extraPeriodValue *= 24;
+						break;
+					case "MINUTE":						
+						extraPeriodValue /= 60;
+						break;
+					default:
+						break;
+				}
 							
-				query = query.replace("$extraPeriod", extraPeriodValue);
+				query = query.replace("$extraPeriod", extraPeriodValue.toString());
 			}
 				
 			// ----------------------------------------------------------------------
@@ -1183,6 +1191,25 @@ public class ReportBean {
 		}
 		
 	}	   
+	   
+	   public void downloadPDF() {
+		   
+		   DateTimeApplication dta = new DateTimeApplication();
+		   
+		   model = (ExcelTemplate) SessionUtil.getExternalContext().getSessionMap().get("xlsModel");
+		   
+		   String file = fileName+"_"+dta.currentDateToExcelFile();
+		   
+		   try {
+			   
+			   model.downloadToPDF(file);
+			   
+		   } catch (IOException e) {	
+			   
+			   e.printStackTrace();
+		   }
+		   
+	   }	   
 
 	public boolean setIntervalDate(Date[] date, String column, String[] period, String modulo, List<String> equips) throws ParseException {
 			

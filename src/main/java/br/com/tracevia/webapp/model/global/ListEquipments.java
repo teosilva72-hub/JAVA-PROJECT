@@ -14,6 +14,7 @@ import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.comms.COMMS;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.dms.DMS;
+import br.com.tracevia.webapp.model.hit.HIT;
 import br.com.tracevia.webapp.model.meteo.Meteo;
 import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.model.sat.SAT;
@@ -40,6 +41,7 @@ public class ListEquipments {
 	List<? extends Equipments> sosList; 
 	List<? extends Equipments> svList; 
 	List<? extends Equipments> wimList; 
+	List<? extends Equipments> hitList; 
 	
 	LocaleUtil localeMessage, localeLabel;
 	
@@ -109,6 +111,10 @@ public class ListEquipments {
 
 	public List<? extends Equipments> getWimList() {
 		return wimList;
+	}
+	
+	public List<? extends Equipments> getHitList() {
+		return hitList;
 	}
 	
 	@PostConstruct
@@ -202,6 +208,7 @@ public class ListEquipments {
 				SOS sos = new SOS();
 				Speed speed =  new Speed();			
 				WIM wim =  new WIM();
+				HIT hit = new HIT();
 
 				UserAccount actual_login = login.getLogin();
 				LoadStartupModules load = login.getLoad();
@@ -283,6 +290,13 @@ public class ListEquipments {
 					equips.add(new listEquips("wim", load.isEn_wim(), wimList, load.getVoltage_wim()));
 				
 					}
+					
+					if(load.isEn_hit()) {
+						
+						hitList = hit.listEquipments("hit", permission_id)	;
+						equips.add(new listEquips("hit", load.isEn_hit(), hitList, load.getVoltage_hit()));
+					
+						}
 					
             }catch(IndexOutOfBoundsException ex) {
             	

@@ -14,7 +14,8 @@ public enum ModulesEnum {
 	SOS("SOS"),
 	SPEED("SPEED"),
 	VIDEOWALL("VIDEOWALL"),
-	WIM("WIM");
+	WIM("WIM"),
+	HIT("HIT");
 		
 	 private String module; 	 
 	 

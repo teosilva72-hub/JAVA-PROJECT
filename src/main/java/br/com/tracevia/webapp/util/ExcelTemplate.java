@@ -1,6 +1,8 @@
 package br.com.tracevia.webapp.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.groupdocs.conversion.Converter;
+import com.groupdocs.conversion.options.convert.PdfConvertOptions;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
@@ -759,6 +763,21 @@ public class ExcelTemplate {
 
 		utilSheet.donwloadExcelFile(workbook, fileName);
 
+	}
+	
+	public void downloadToPDF(String fileName) throws IOException {
+		InputStream input = utilSheet.getOutput(workbook);
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		try {
+			Converter converter = new Converter(input);
+			converter.convert(output, new PdfConvertOptions());
+			utilSheet.donwloadPDFFile(output, fileName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			output.close();
+			input.close();			
+		}
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
