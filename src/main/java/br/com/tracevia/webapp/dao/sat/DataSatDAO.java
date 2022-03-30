@@ -23,14 +23,17 @@ public class DataSatDAO {
 		
 		int limit = equips.getSatList().size();
 									
-		String currentDate = null;
+		String currentDate = null, currentHourTime = null;
 			
 		Calendar calendar = Calendar.getInstance();	
 		int minute = calendar.get(Calendar.MINUTE);
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		
 		// Obter datas formatadas para os dados
 		currentDate = dta.getDataInterval15Min(calendar, minute);
-							
+		
+		currentHourTime = dta.getCurrentHour(calendar);
+									
 		String select = "SELECT d.NOME_ESTACAO AS ESTACAO, " +
 			"CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE " + 			
 			"CASE WHEN " +
@@ -40,10 +43,7 @@ public class DataSatDAO {
 
 			"CASE WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%d/%m/%y   %H:%i -'),DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 14 MINUTE), ' %H:%i')) " +
 			"ELSE CONCAT(DATE_FORMAT(d.DATA_HORA, '%d/%m/%y  %H:%i -'), DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 15 MINUTE), ' %H:%i')) END 'MAJOR_HEADER', " +
-						
-			"DATE_FORMAT(DATE_ADD(DATE_SUB(d.DATA_HORA, INTERVAL 7 DAY), INTERVAL 1 HOUR), '%d/%m/%y  %H:00') '7_DAYS_HEADER', " +
-			"DATE_FORMAT(DATE_SUB(d.DATA_HORA, INTERVAL 1 HOUR), '%d/%m/%y  %H:00') 'LAST_HOUR_HEADER', " +
-			"DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 1 HOUR), '%d/%m/%y  %H:00') 'PROJECTION_HEADER', " +
+												
 			
 			"SUM(CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4 AND d.NOME_FAIXA < 5) OR (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND d.NOME_FAIXA < 4) OR (eq.dir_lane1 = eq.dir_lane2 AND d.NOME_FAIXA < 3) OR (d.NOME_FAIXA = 1) THEN d.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_S1', " +
 			"SUM(CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4 AND d.NOME_FAIXA < 5) OR (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND d.NOME_FAIXA < 4) OR (eq.dir_lane1 = eq.dir_lane2 AND d.NOME_FAIXA < 3) OR (d.NOME_FAIXA = 1) THEN (d.VOLUME_COM + d.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_S1', " +
@@ -89,7 +89,7 @@ public class DataSatDAO {
 			
 			MapResult result = conn.executeQuery();
 			
-		// System.out.println("ORIGIN: "+select);		 	
+		 System.out.println("ORIGIN: "+select);		 	
 			
 			if (result.hasNext()) {
 				for (RowResult rs : result) {
