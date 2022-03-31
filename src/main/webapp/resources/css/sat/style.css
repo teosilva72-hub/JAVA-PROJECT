@@ -42,14 +42,26 @@ body, html {
 	border: solid black 1px;
 	width: 100%;
 	height: 100%;
+	display: grid;
 }/*coluna dos minutos*/
 .row-ll{
 	margin-left: 0px;
 }/*contento 0 15 30 e 45 min*/
+.bg-table-dark {
+	background-color: black;
+	height: 4.65em;
+}
+.ll-offset{
+    background: black;
+    font-size: 9px;
+    height: 100%;
+	color: white;
+    width: 100%;
+}
 .ll{
 	width: 100%;
 	background: red;
-	height: 8px;
+	height: 100%;
 	border: solid black 1px;
 }/*minutos offline*/
 .ll.online {
@@ -58,8 +70,9 @@ body, html {
 .ll.warning {
 	background: yellow;
 }/*últimas 8 horas*/
-.ll.none {
+.none[row] {
 	background: #4D4D3D;
+	display: none !important;
 }/*não tem faixa*/
 .btnSat{
 	margin-top: 20px;
