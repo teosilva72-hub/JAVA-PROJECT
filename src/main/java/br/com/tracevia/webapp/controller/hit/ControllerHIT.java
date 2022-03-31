@@ -62,7 +62,8 @@ public class ControllerHIT {
 				hitDao = new HitDAO();
 				try {
 					hit = hitDao.listMsg(id);
-					RequestContext.getCurrentInstance().execute(String.format("dadosTable('%s','%s','%s','%s','%s')", hit.getMsg1(), hit.getMsg2(), hit.getMsg3(),hit.getImg(), hit.getEquip_type()));
+					RequestContext.getCurrentInstance().execute(String.format("dadosTable('%s','%s','%s','%s')", hit.getMsg1(), hit.getMsg2(), hit.getMsg3(), hit.getEquip_type()));
+					RequestContext.getCurrentInstance().execute(String.format("iconHit('%s')", hit.getImg()));
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

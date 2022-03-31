@@ -69,6 +69,33 @@ svg.bi.bi-arrow-down-left {
     height: 24px;
     z-index: 1;
 }
+svg.bi.bi-arrow-down-right {
+    position: relative;
+    left: -23px !important;
+    top: 19px;
+    font-weight: bold;
+    width: 30px;
+    height: 24px;
+    z-index: 1;
+}
+svg.bi.bi-arrow-up-right {
+    position: relative;
+    left: -23px !important;
+    top: 19px;
+    font-weight: bold;
+    width: 30px;
+    height: 24px;
+    z-index: 1;
+}
+svg.bi.bi-arrow-up-left {
+    position: relative;
+    left: -23px !important;
+    top: 19px;
+    font-weight: bold;
+    width: 30px;
+    height: 24px;
+    z-index: 1;
+}
 .card.bg-dark.card_opt {
     position: relative;
     top: 45px;

@@ -476,7 +476,57 @@ public class DateTimeApplication {
 	}
 	
 	// ---------------------------------------------------------------------------------------------------------------------
+	
+	public String getDataIntervalHour(Calendar calendar) {
 
+		String hourDatetime = null;
+
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		
+		//Data Atual
+		hourDatetime = year + "-" + getMonthFormatted(month) + "-" + day + " " + hour + ":00:00";
+			
+		return hourDatetime;
+
+	}
+	
+	// ---------------------------------------------------------------------------------------------------------------------
+	 
+	public String getMonthFormatted(int month) {
+
+			String zero = "0";
+				
+			switch(month){
+				
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+			case 10:
+			case 11: 
+				
+				if(month < 10)	
+					return zero.concat(String.valueOf(month + 1));
+				else return String.valueOf(month + 1); 		
+				
+			}
+		
+		return null;
+		
+	}
+	
+	// ---------------------------------------------------------------------------------------------------------------------
+
+	
 	public Integer periodsRange(String period) {
 
 		int range = 0;
