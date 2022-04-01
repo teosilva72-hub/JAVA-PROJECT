@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.controller.sat;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -98,18 +99,7 @@ public class SATBuildMap {
 							// COMPARA IDS ENTRE AS LISTAS
 							if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
-								satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
-								satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
-								satListObj.setCurrentDatetime(satListValuesAux.get(r).getCurrentDatetime());
-								satListObj.setSevenDaysDatetime(satListValuesAux.get(r).getSevenDaysDatetime());
-								satListObj.setLastOneDatetime(satListValuesAux.get(r).getLastOneDatetime());
-								satListObj.setProjectionDatetime(satListValuesAux.get(r).getProjectionDatetime());				
-								satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
-								satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
-								satListObj.setVelocidadeS1(satListValuesAux.get(r).getVelocidadeS1());
-								satListObj.setVelocidadeS2(satListValuesAux.get(r).getVelocidadeS2());
-							
-								satListObj.setStatusInterval(15);
+								satListObj = popDataSat(satListValuesAux, r, 15); // RECEIVE OBJECT
 								
 								satListValues.add(satListObj);
 								satListValuesAux.remove(r);
@@ -129,8 +119,7 @@ public class SATBuildMap {
 						if (pass) {
 
 							// BUSCA DADOS DOS ULTIMAS 30 MINUTOS
-							satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),
-									"MINUTE", 30);
+							satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),"MINUTE", 30);
 							satListObj.setStatusInterval(30);
 
 							// SE HOUVER DADOS PREENCHE NA LISTA
@@ -160,8 +149,7 @@ public class SATBuildMap {
 								} else {
 
 									// BUSCA DADOS DAS ULTIMAS 06 HORAS
-									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),
-										"HOUR", 6);
+									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),"HOUR", 6);
 									satListObj.setStatusInterval(6);
 
 									// SE HOUVER DADOS PREENCHE NA LISTA
@@ -175,17 +163,10 @@ public class SATBuildMap {
 
 									} else {
 
-										SAT satListObj1 = new SAT();
-
-										satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
-										satListObj1.setLastPackage(lastRegisters(equips.getSatList().get(s).getEquip_id())[0]);
-										satListObj1.setLastRegister(lastRegisters(equips.getSatList().get(s).getEquip_id())[1]);										
-										satListObj1.setQuantidadeS1(0);
-										satListObj1.setQuantidadeS2(0);
-										satListObj1.setVelocidadeS1(0);
-										satListObj1.setVelocidadeS2(0);
-										satListObj1.setStatusInterval(0);
-
+										SAT satListObj1 = new SAT(); 
+										
+										satListObj = popNoDataSat(equips.getSatList().get(s).getEquip_id()); // RECEIVE OBJECT
+																		
 										satListValues.add(satListObj1);
 
 										if (listStatus.get(s).isOnlineStatus())
@@ -220,18 +201,8 @@ public class SATBuildMap {
 								// COMPARA IDS ENTRE AS LISTAS
 								if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
-									satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
-									satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
-									satListObj.setCurrentDatetime(satListValuesAux.get(r).getCurrentDatetime());
-									satListObj.setSevenDaysDatetime(satListValuesAux.get(r).getSevenDaysDatetime());
-									satListObj.setLastOneDatetime(satListValuesAux.get(r).getLastOneDatetime());
-									satListObj.setProjectionDatetime(satListValuesAux.get(r).getProjectionDatetime());	
-									satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
-									satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
-									satListObj.setVelocidadeS1(satListValuesAux.get(r).getVelocidadeS1());
-									satListObj.setVelocidadeS2(satListValuesAux.get(r).getVelocidadeS2());
-									satListObj.setStatusInterval(30);
-
+									satListObj = popDataSat(satListValuesAux, r, 30); // RECEIVE OBJECT																							
+								
 									satListValues.add(satListObj);
 									satListValuesAux.remove(r);
 									pass = false;
@@ -251,8 +222,7 @@ public class SATBuildMap {
 							if (pass) {
 
 								// BUSCA DADOS DAS ULTIMAS 03 HORAS
-								satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),
-									"HOUR", 3);
+								satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),"HOUR", 3);
 								satListObj.setStatusInterval(3);
 
 								// SE HOUVER DADOS PREENCHE NA LISTA
@@ -270,7 +240,7 @@ public class SATBuildMap {
 									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),
 										"HOUR", 6);
 									satListObj.setStatusInterval(6);
-
+									
 									// SE HOUVER DADOS PREENCHE NA LISTA
 									if (satListObj.getEquip_id() != 0) {
 										satListValues.add(satListObj);
@@ -283,15 +253,8 @@ public class SATBuildMap {
 									} else {
 
 										SAT satListObj1 = new SAT();
-
-										satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
-										satListObj1.setLastPackage(lastRegisters(equips.getSatList().get(s).getEquip_id())[0]);
-										satListObj1.setLastRegister(lastRegisters(equips.getSatList().get(s).getEquip_id())[1]);									
-										satListObj1.setQuantidadeS1(0);
-										satListObj1.setQuantidadeS2(0);
-										satListObj1.setVelocidadeS1(0);
-										satListObj1.setVelocidadeS2(0);
-										satListObj1.setStatusInterval(0);
+									
+										satListObj = popNoDataSat(equips.getSatList().get(s).getEquip_id()); // RECEIVE OBJECT
 
 										satListValues.add(satListObj1);
 
@@ -325,17 +288,7 @@ public class SATBuildMap {
 									if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s)
 											.getEquip_id()) {
 
-										satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
-										satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
-										satListObj.setCurrentDatetime(satListValuesAux.get(r).getCurrentDatetime());
-										satListObj.setSevenDaysDatetime(satListValuesAux.get(r).getSevenDaysDatetime());
-										satListObj.setLastOneDatetime(satListValuesAux.get(r).getLastOneDatetime());
-										satListObj.setProjectionDatetime(satListValuesAux.get(r).getProjectionDatetime());	
-										satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
-										satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
-										satListObj.setVelocidadeS1(satListValuesAux.get(r).getVelocidadeS1());
-										satListObj.setVelocidadeS2(satListValuesAux.get(r).getVelocidadeS2());
-										satListObj.setStatusInterval(3);
+										satListObj = popDataSat(satListValuesAux, r, 3); // RECEIVE OBJECT	
 
 										satListValues.add(satListObj);
 										satListValuesAux.remove(r);
@@ -356,8 +309,7 @@ public class SATBuildMap {
 								if (pass) {
 
 									// BUSCA DADOS DAS ULTIMAS 06 HORAS
-									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),
-										"HOUR", 6);
+									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),"HOUR", 6);
 									satListObj.setStatusInterval(6);
 
 									// SE HOUVER DADOS PREENCHE NA LISTA
@@ -373,15 +325,10 @@ public class SATBuildMap {
 
 										SAT satListObj1 = new SAT();
 
-										satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
-										satListObj1.setLastPackage(lastRegisters(equips.getSatList().get(s).getEquip_id())[0]);
-										satListObj1.setLastRegister(lastRegisters(equips.getSatList().get(s).getEquip_id())[1]);										
-										satListObj1.setQuantidadeS1(0);
-										satListObj1.setQuantidadeS2(0);
-										satListObj1.setVelocidadeS1(0);
-										satListObj1.setVelocidadeS2(0);
-										satListObj1.setStatusInterval(0);
-
+										satListObj = popNoDataSat(equips.getSatList().get(s).getEquip_id()); // RECEIVE OBJECT
+										
+										System.out.println("PCKG: "+satListObj.getLastPackage());
+										
 										satListValues.add(satListObj1);
 
 										if (listStatus.get(s).isOnlineStatus())
@@ -413,17 +360,7 @@ public class SATBuildMap {
 										if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s)
 												.getEquip_id()) {
 
-											satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
-											satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
-											satListObj.setCurrentDatetime(satListValuesAux.get(r).getCurrentDatetime());
-											satListObj.setSevenDaysDatetime(satListValuesAux.get(r).getSevenDaysDatetime());
-											satListObj.setLastOneDatetime(satListValuesAux.get(r).getLastOneDatetime());
-											satListObj.setProjectionDatetime(satListValuesAux.get(r).getProjectionDatetime());	
-											satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
-											satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
-											satListObj.setVelocidadeS1(satListValuesAux.get(r).getVelocidadeS1());
-											satListObj.setVelocidadeS2(satListValuesAux.get(r).getVelocidadeS2());
-											satListObj.setStatusInterval(6);
+											satListObj = popDataSat(satListValuesAux, r, 6); // RECEIVE OBJECT	
 
 											satListValues.add(satListObj);
 											satListValuesAux.remove(r);
@@ -445,15 +382,7 @@ public class SATBuildMap {
 
 										SAT satListObj1 = new SAT();
 
-										satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
-										satListObj1.setLastPackage(lastRegisters(equips.getSatList().get(s).getEquip_id())[0]);
-										satListObj1.setLastRegister(lastRegisters(equips.getSatList().get(s).getEquip_id())[1]);										
-										satListObj1.setQuantidadeS1(0);
-										satListObj1.setQuantidadeS2(0);
-										satListObj1.setVelocidadeS1(0);
-										satListObj1.setVelocidadeS2(0);
-										satListObj1.setStatusInterval(0);
-
+										satListObj = popNoDataSat(equips.getSatList().get(s).getEquip_id()); // RECEIVE OBJECT
 										satListValues.add(satListObj1);
 
 										if (listStatus.get(s).isOnlineStatus())
@@ -491,11 +420,18 @@ public class SATBuildMap {
 
 		DateTimeApplication dt = new DateTimeApplication();
 		NotificationsBean not = new NotificationsBean();
-
+			
+		String current = dt.showInterval15Min();
+		String lastSevenDays = dt.showIntervalHour(true, false);
+		String lastHour = dt.showIntervalHour(false, true);
+		String projection = dt.showIntervalHour(false, false);
+		
 		for (int i = 0; i < satList.size(); i++) {
 
 			SAT sat = new SAT();
-
+			
+			// PRIMARY INFO
+			
 			sat.setEquip_id(satList.get(i).getEquip_id());	
 			sat.setLastPackage(lastRegisters(satList.get(i).getEquip_id())[0]);		
 			sat.setLastRegister(lastRegisters(satList.get(i).getEquip_id())[1]);		
@@ -503,6 +439,95 @@ public class SATBuildMap {
 			sat.setVelocidadeS1(0);
 			sat.setQuantidadeS2(0);
 			sat.setVelocidadeS2(0);
+			sat.setStatusInterval(0);									
+			
+			// -------------------------------
+			// TABLE INFO
+			// -------------------------------
+			
+			// TABLE HEADERS 
+			
+			sat.setCurrentDatetime(current);
+			sat.setSevenDaysDatetime(lastSevenDays);
+			sat.setLastOneDatetime(lastHour);
+			sat.setProjectionDatetime(projection);																														
+		
+			// -------------------------------
+			// DIRECTION S1
+			// -------------------------------
+			
+			// LAST 7 DAYS AND HOUR
+			
+			sat.setAutos7days1hS1(0);
+			sat.setCom7days1hS1(0);
+			sat.setMoto7days1hS1(0);
+			sat.setTotal7days1hS1(0);
+			
+			// CURRENT LAST HOUR
+			
+			sat.setAutosCurrent1hS1(0);
+			sat.setComCurrent1hS1(0);
+			sat.setMotoCurrent1hS1(0);
+			sat.setTotalCurrent1hS1(0);
+			
+			// PROJECTION 
+			
+			sat.setAutosProjection1hS1(0);
+			sat.setComProjection1hS1(0);
+			sat.setMotoProjection1hS1(0);
+			sat.setTotalProjection1hS1(0);
+			
+			// CURRENT STATE
+								
+			sat.setAutosVolumeS1(0);
+			sat.setComVolumeS1(0);
+			sat.setMotoVolumeS1(0);
+			sat.setTotalVolumeS1(0);
+			sat.setAutosVelMedS1(0);
+			sat.setComVelMedS1(0);
+			sat.setMotoVelMedS1(0);
+			sat.setTotalVelMedS1(0);					
+			sat.setOccupancyRateS1(0);
+			
+			// -------------------------------
+			// DIRECTION S2
+			// -------------------------------
+			
+			// LAST 7 DAYS AND HOUR
+			
+			sat.setAutos7days1hS2(0);
+			sat.setCom7days1hS2(0);
+			sat.setMoto7days1hS2(0);
+			sat.setTotal7days1hS2(0);
+			
+			// CURRENT LAST HOUR
+			
+			sat.setAutosCurrent1hS2(0);
+			sat.setComCurrent1hS2(0);
+			sat.setMotoCurrent1hS2(0);
+			sat.setTotalCurrent1hS2(0);
+			
+			// PROJECTION 
+			
+			sat.setAutosProjection1hS2(0);
+			sat.setComProjection1hS2(0);
+			sat.setMotoProjection1hS2(0);
+			sat.setTotalProjection1hS2(0);
+			
+			// CURRENT STATE
+													
+			sat.setAutosVolumeS2(0);
+			sat.setComVolumeS2(0);
+			sat.setMotoVolumeS2(0);
+			sat.setTotalVolumeS2(0);
+			sat.setAutosVelMedS2(0);
+			sat.setComVelMedS2(0);
+			sat.setMotoVelMedS2(0);
+			sat.setTotalVelMedS2(0);
+			sat.setOccupancyRateS2(0.00);	
+			
+			// STATUS INTERVAL 
+			
 			sat.setStatusInterval(0);
 
 			satListValues.add(sat);
@@ -522,14 +547,8 @@ public class SATBuildMap {
 
 		try {
 
-			result = dao.lastRegisters(equipId);
-			
-			// CHECK IF EXIST DATA
-			for (int i=0; i<result.length; i++) {
-				  if (result[i] == null) 
-					  result[i] = "00:00";				  
-			}
-			
+			result = dao.lastRegisters(equipId);			
+						
 		 // ----------------------------------------------
 											
 		} catch (Exception e) {
@@ -542,5 +561,228 @@ public class SATBuildMap {
 	}
 
 	// ----------------------------------------------------------------------------------------------------
-
+	
+	public SAT popDataSat(List<SAT> mySatList, int index, int statusInteindexval) {
+				
+		SAT sat = new SAT();
+		
+		// PRIMARY INFO
+					
+		sat.setLastPackage(mySatList.get(index).getLastPackage() != null ?  mySatList.get(index).getLastPackage() : "00:00");
+		sat.setLastRegister(mySatList.get(index).getLastRegister() != null ? mySatList.get(index).getLastRegister() : "00:00");
+		sat.setQuantidadeS1(mySatList.get(index).getQuantidadeS1());
+		sat.setQuantidadeS2(mySatList.get(index).getQuantidadeS2());
+		sat.setVelocidadeS1(mySatList.get(index).getVelocidadeS1());
+		sat.setVelocidadeS2(mySatList.get(index).getVelocidadeS2());
+		
+		// -------------------------------
+		// TABLE INFO
+		// -------------------------------
+		
+		// TABLE HEADERS 
+		
+		sat.setCurrentDatetime(mySatList.get(index).getCurrentDatetime());
+		sat.setSevenDaysDatetime(mySatList.get(index).getSevenDaysDatetime());
+		sat.setLastOneDatetime(mySatList.get(index).getLastOneDatetime());
+		sat.setProjectionDatetime(mySatList.get(index).getProjectionDatetime());																														
+	
+		// -------------------------------
+		// DIRECTION S1
+		// -------------------------------
+		
+		// LAST 7 DAYS AND HOUR
+		
+		sat.setAutos7days1hS1(mySatList.get(index).getAutos7days1hS1());
+		sat.setCom7days1hS1(mySatList.get(index).getCom7days1hS1());
+		sat.setMoto7days1hS1(mySatList.get(index).getMoto7days1hS1());
+		sat.setTotal7days1hS1(mySatList.get(index).getTotal7days1hS1());
+		
+		// CURRENT LAST HOUR
+		
+		sat.setAutosCurrent1hS1(mySatList.get(index).getAutosCurrent1hS1());
+		sat.setComCurrent1hS1(mySatList.get(index).getComCurrent1hS1());
+		sat.setMotoCurrent1hS1(mySatList.get(index).getMotoCurrent1hS1());
+		sat.setTotalCurrent1hS1(mySatList.get(index).getTotalCurrent1hS1());
+		
+		// PROJECTION 
+		
+		sat.setAutosProjection1hS1(mySatList.get(index).getAutosProjection1hS1());
+		sat.setComProjection1hS1(mySatList.get(index).getComProjection1hS1());
+		sat.setMotoProjection1hS1(mySatList.get(index).getMotoProjection1hS1());
+		sat.setTotalProjection1hS1(mySatList.get(index).getTotalProjection1hS1());
+		
+		// CURRENT STATE
+							
+		sat.setAutosVolumeS1(mySatList.get(index).getAutosVolumeS1());
+		sat.setComVolumeS1(mySatList.get(index).getComVolumeS1());
+		sat.setMotoVolumeS1(mySatList.get(index).getMotoVolumeS1());
+		sat.setTotalVolumeS1(mySatList.get(index).getTotalVolumeS1());
+		sat.setAutosVelMedS1(mySatList.get(index).getAutosVelMedS1());
+		sat.setComVelMedS1(mySatList.get(index).getComVelMedS1());
+		sat.setMotoVelMedS1(mySatList.get(index).getMotoVelMedS1());
+		sat.setTotalVelMedS1(mySatList.get(index).getTotalVelMedS1());					
+		sat.setOccupancyRateS1(mySatList.get(index).getOccupancyRateS1());
+		
+		// -------------------------------
+		// DIRECTION S2
+		// -------------------------------
+		
+		// LAST 7 DAYS AND HOUR
+		
+		sat.setAutos7days1hS2(mySatList.get(index).getAutos7days1hS2());
+		sat.setCom7days1hS2(mySatList.get(index).getCom7days1hS2());
+		sat.setMoto7days1hS2(mySatList.get(index).getMoto7days1hS2());
+		sat.setTotal7days1hS2(mySatList.get(index).getTotal7days1hS2());
+		
+		// CURRENT LAST HOUR
+		
+		sat.setAutosCurrent1hS2(mySatList.get(index).getAutosCurrent1hS2());
+		sat.setComCurrent1hS2(mySatList.get(index).getComCurrent1hS2());
+		sat.setMotoCurrent1hS2(mySatList.get(index).getMotoCurrent1hS2());
+		sat.setTotalCurrent1hS2(mySatList.get(index).getTotalCurrent1hS2());
+		
+		// PROJECTION 
+		
+		sat.setAutosProjection1hS2(mySatList.get(index).getAutosProjection1hS2());
+		sat.setComProjection1hS2(mySatList.get(index).getComProjection1hS2());
+		sat.setMotoProjection1hS2(mySatList.get(index).getMotoProjection1hS2());
+		sat.setTotalProjection1hS2(mySatList.get(index).getTotalProjection1hS2());
+		
+		// CURRENT STATE
+												
+		sat.setAutosVolumeS2(mySatList.get(index).getAutosVolumeS2());
+		sat.setComVolumeS2(mySatList.get(index).getComVolumeS2());
+		sat.setMotoVolumeS2(mySatList.get(index).getMotoVolumeS2());
+		sat.setTotalVolumeS2(mySatList.get(index).getTotalVolumeS2());
+		sat.setAutosVelMedS2(mySatList.get(index).getAutosVelMedS2());
+		sat.setComVelMedS2(mySatList.get(index).getComVelMedS2());
+		sat.setMotoVelMedS2(mySatList.get(index).getMotoVelMedS2());
+		sat.setTotalVelMedS2(mySatList.get(index).getTotalVelMedS2());
+		sat.setOccupancyRateS2(mySatList.get(index).getOccupancyRateS2());	
+		
+		// STATUS INTERVAL 
+		
+		sat.setStatusInterval(statusInteindexval);
+					
+		return sat; // ADD TO MAIN LIST
+									
+	}
+	
+	// ----------------------------------------------------------------------------------------------------
+	
+	public SAT popNoDataSat(int equipId) {
+		
+		DateTimeApplication dt = new DateTimeApplication();
+		
+		String current = dt.showInterval15Min();
+		String lastSevenDays = dt.showIntervalHour(true, false);
+		String lastHour = dt.showIntervalHour(false, true);
+		String projection = dt.showIntervalHour(false, false);
+					
+		SAT sat = new SAT();
+				
+		sat.setEquip_id(equipId);	
+		sat.setLastPackage("RUIZ"); 		
+	//	sat.setLastRegister("00:00");		
+		sat.setQuantidadeS1(0);
+		sat.setVelocidadeS1(0);
+		sat.setQuantidadeS2(0);
+		sat.setVelocidadeS2(0);
+		
+		// PRIMARY INFO
+					
+		// -------------------------------
+		// TABLE INFO
+		// -------------------------------
+		
+		// TABLE HEADERS 
+		
+		sat.setCurrentDatetime(current);
+		sat.setSevenDaysDatetime(lastSevenDays);
+		sat.setLastOneDatetime(lastHour);
+		sat.setProjectionDatetime(projection);																														
+	
+		// -------------------------------
+		// DIRECTION S1
+		// -------------------------------
+		
+		// LAST 7 DAYS AND HOUR
+		
+		sat.setAutos7days1hS1(0);
+		sat.setCom7days1hS1(0);
+		sat.setMoto7days1hS1(0);
+		sat.setTotal7days1hS1(0);
+		
+		// CURRENT LAST HOUR
+		
+		sat.setAutosCurrent1hS1(0);
+		sat.setComCurrent1hS1(0);
+		sat.setMotoCurrent1hS1(0);
+		sat.setTotalCurrent1hS1(0);
+		
+		// PROJECTION 
+		
+		sat.setAutosProjection1hS1(0);
+		sat.setComProjection1hS1(0);
+		sat.setMotoProjection1hS1(0);
+		sat.setTotalProjection1hS1(0);
+		
+		// CURRENT STATE
+							
+		sat.setAutosVolumeS1(0);
+		sat.setComVolumeS1(0);
+		sat.setMotoVolumeS1(0);
+		sat.setTotalVolumeS1(0);
+		sat.setAutosVelMedS1(0);
+		sat.setComVelMedS1(0);
+		sat.setMotoVelMedS1(0);
+		sat.setTotalVelMedS1(0);					
+		sat.setOccupancyRateS1(0.00);
+		
+		// -------------------------------
+		// DIRECTION S2
+		// -------------------------------
+		
+		// LAST 7 DAYS AND HOUR
+		
+		sat.setAutos7days1hS2(0);
+		sat.setCom7days1hS2(0);
+		sat.setMoto7days1hS2(0);
+		sat.setTotal7days1hS2(0);
+		
+		// CURRENT LAST HOUR
+		
+		sat.setAutosCurrent1hS2(0);
+		sat.setComCurrent1hS2(0);
+		sat.setMotoCurrent1hS2(0);
+		sat.setTotalCurrent1hS2(0);
+		
+		// PROJECTION 
+		
+		sat.setAutosProjection1hS2(0);
+		sat.setComProjection1hS2(0);
+		sat.setMotoProjection1hS2(0);
+		sat.setTotalProjection1hS2(0);
+		
+		// CURRENT STATE
+												
+		sat.setAutosVolumeS2(0);
+		sat.setComVolumeS2(0);
+		sat.setMotoVolumeS2(0);
+		sat.setTotalVolumeS2(0);
+		sat.setAutosVelMedS2(0);
+		sat.setComVelMedS2(0);
+		sat.setMotoVelMedS2(0);
+		sat.setTotalVelMedS2(0);
+		sat.setOccupancyRateS2(0.00);	
+		
+		// STATUS INTERVAL 
+		
+		sat.setStatusInterval(0);
+					
+		return sat; // ADD TO MAIN LIST
+									
+	}
+	
+	// ----------------------------------------------------------------------------------------------------
 }

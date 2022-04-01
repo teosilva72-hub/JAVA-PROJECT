@@ -30,7 +30,7 @@
 		satLabels.vehicle_length_5_10_m, satLabels.vehicle_length_10_15_m, satLabels.vehicle_length_15_20_m, satLabels.vehicle_length_20_m, satLabels.vehicle_length_0_5_m, 
 		satLabels.vehicle_length_5_10_m, satLabels.vehicle_length_10_15_m, satLabels.vehicle_length_15_20_m, satLabels.vehicle_length_20_m))}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; GROUP_CONCAT(distinct e.name); SUM((s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`N`, `L`)); 
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; e.name; SUM((s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`N`, `L`)); 
 		SUM((s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 2000) AND f.direction IN(`N`, `L`)); 
 		SUM((s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`S`, `O`)); SUM((s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`S`, `O`)); 
 		SUM((s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`S`, `O`)); SUM((s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`S`, `O`)); SUM((s.lenght &gt;= 2000) AND f.direction IN(`S`, `O`));')}" />
@@ -42,6 +42,8 @@
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions f ON f.equip_id = siteID AND f.lane = s.lane INNER JOIN sat_equipment e ON e.equip_id = siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('e.name')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setOrderDate('e.name')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />

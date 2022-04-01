@@ -59,6 +59,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions f ON f.equip_id = siteID AND f.lane = v.lane INNER JOIN sat_equipment s ON s.equip_id = siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
+		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('s.name')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
