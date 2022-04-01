@@ -109,6 +109,7 @@
 					<div class="contendo">
 						<!-- inicio do contendo -->
 						<div class="d-flex">
+							<div class="number"></div>
 							<!--  inicio da linha das horas -->
 							<div class="number" id="h0">#{maintenanceSatView.hours[0]}</div>
 							<!-- horas-->
@@ -163,7 +164,45 @@
 					
 						
 						<!-- final da linha das horas -->
-						<div class="d-flex">
+						<div class="d-flex bg-table-dark">
+							<div class="l">
+								<div class="d-flex" row="0">
+									<!-- row 1 -->
+									<div class="ll-offset">#{MaintenanceStatus.isOnline() ? 'ON' : 'OFF'}</div>
+								</div>
+								<div class="d-flex" row="1">
+									<!-- row 1 -->
+									<div class="ll-offset">FX01#{ item.faixa1.isEmpty() ? '' : ''.format('%s', item.faixa1.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="2">
+									<!-- row 1 -->
+									<div class="ll-offset">FX02#{ item.faixa2.isEmpty() ? '' : ''.format('%s', item.faixa2.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="3">
+									<!-- row 1 -->
+									<div class="ll-offset">FX03#{ item.faixa3.isEmpty() ? '' : ''.format('%s', item.faixa3.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="4">
+									<!-- row 1 -->
+									<div class="ll-offset">FX04#{ item.faixa4.isEmpty() ? '' : ''.format('%s', item.faixa4.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="5">
+									<!-- row 1 -->
+									<div class="ll-offset">FX05#{ item.faixa5.isEmpty() ? '' : ''.format('%s', item.faixa5.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="6">
+									<!-- row 1 -->
+									<div class="ll-offset">FX06#{ item.faixa6.isEmpty() ? '' : ''.format('%s', item.faixa6.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="7">
+									<!-- row 1 -->
+									<div class="ll-offset">FX07#{ item.faixa7.isEmpty() ? '' : ''.format('%s', item.faixa7.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="8">
+									<!-- row 1 -->
+									<div class="ll-offset">FX08#{ item.faixa8.isEmpty() ? '' : ''.format('%s', item.faixa8.substring(0, 1)) }</div>
+								</div>
+							</div>
 							<c:forEach var="value" begin="0" end="23"> 							
 								<div class="l" col="#{maintenanceSatView.hours[value]}">
 									<!-- inicio da sat -->							
@@ -280,6 +319,7 @@
 						</div>
 						
 						<div class="d-flex">
+							<div class="number"></div>
 							<!-- horas parte inferior do sat -->
 							<div class="number" id="h0">#{maintenanceSatView.hours[0]}</div>
 							<!-- horas-->

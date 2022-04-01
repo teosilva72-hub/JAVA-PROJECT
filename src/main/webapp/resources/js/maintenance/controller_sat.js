@@ -103,7 +103,7 @@ function quantFaixas(sat, faixas) {
     let query = "";
     for (let i = 8; i > faixas; i--)
         query += `[row="${i}"]`;
-    sat.find(query.replaceAll("][", "],[")).children().addClass("none");
+    sat.find(query.replaceAll("][", "],[")).addClass("none");
 }
 
 //$("#sat2 [col=13] [row=5] [id=30]").addClass("online") //add info sat
