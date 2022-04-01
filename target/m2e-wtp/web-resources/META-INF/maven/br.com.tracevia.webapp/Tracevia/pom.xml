@@ -7,6 +7,14 @@
   <name>Tracevia</name>
   <description>System Integration</description>
   
+   <repositories>
+       <repository>
+			<id>GroupDocsJavaAPI</id>
+			<name>GroupDocs Java API</name>
+			<url>http://repository.groupdocs.com/repo/</url>
+		</repository>
+</repositories>
+  
   <dependencies>
   
      <!-- Spring Dependencies -->  
@@ -195,6 +203,12 @@
     <artifactId>gson</artifactId>
     <version>2.8.5</version>
    </dependency>
+        
+	   <dependency>
+	        <groupId>com.groupdocs</groupId>
+	        <artifactId>groupdocs-conversion</artifactId>
+	        <version>21.10</version> 
+		</dependency>
                         
  <!-- Project JARs Dependencies -->
                 
