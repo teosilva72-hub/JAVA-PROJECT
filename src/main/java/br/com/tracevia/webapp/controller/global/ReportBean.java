@@ -921,6 +921,10 @@ public class ReportBean {
 					dateProcess = new Date[] { start, end };
 				}
 				if (!dateStart.isEmpty() || !dateEnd.isEmpty()) {
+					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+					SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+					Date start = format.parse(dateStart);
+					Date end = format.parse(dateEnd);
 					
 					if (count == 0) {
 						query += " WHERE";
@@ -928,7 +932,7 @@ public class ReportBean {
 							queryMS += " WHERE";
 					}
 
-					query += String.format("%s DATE(%s) BETWEEN STR_TO_DATE('%s', '%%d/%%m/%%Y') AND STR_TO_DATE('%s', '%%d/%%m/%%Y')", count > 0 ? " AND" : "", search[0], dateStart, dateEnd);
+					query += String.format("%s %s BETWEEN '%s' AND '%s'", count > 0 ? " AND" : "", search[0], format2.format(start), String.format("%s 23:59:59", format2.format(end)));
 					
 					if (queryMS != null)
 						queryMS += String.format("%s %s BETWEEN CONVERT(DATE, '%s', 103) AND DATEADD(DAY, 1, CONVERT(DATE, '%s', 103))", count > 0 ? " AND" : "", search[0], dateStart, dateEnd);
