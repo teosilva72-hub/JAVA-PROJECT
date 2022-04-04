@@ -34,6 +34,7 @@ import org.apache.poi.ss.util.PropertyTemplate;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.controller.global.LanguageBean;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
@@ -124,9 +125,7 @@ public class FluxoPeriodoBean implements Serializable {
 	private SXSSFSheet sheet;
 	private SXSSFRow rowDados;
 	private PropertyTemplate propertyTemplate;
-	
-	FluxoPeriodo per;
-	
+			
 	DateTimeApplication dta;
 	TranslationMethods tm;
 
@@ -183,10 +182,7 @@ public class FluxoPeriodoBean implements Serializable {
 	String[] intervalo,interInicio, interFim, separador, data, horaIntervalo, hora, sheetName;
 
 	long start, end, elapsed;
-
-	boolean pause;
-	
-	
+		
 	@ManagedProperty("#{listEquips}")
 	private ListEquipments listEquips;
 				
@@ -641,11 +637,11 @@ public class FluxoPeriodoBean implements Serializable {
 	
 	  public void processInformations() throws Exception {
 				  
-		  dta = new DateTimeApplication();	   
-		  tm = new TranslationMethods();
+	   dta = new DateTimeApplication();	   
+	   tm = new TranslationMethods();
 	  
 	   equipDao = new EquipmentsDAO();
-	  
+	   		  
 	   //FIELDS EXTERNOS ARMAZENADOS NA REQUISIO
 	   build.fields = (String[]) SessionUtil.getParam("fields");
 	   build.fieldObjectValues =  (String[]) SessionUtil.getParam("fieldsObject");
@@ -663,38 +659,43 @@ public class FluxoPeriodoBean implements Serializable {
 		 sheetName = new String[equips.length];
 		 
 		 fileName = localeSat.getStringKey("via_paulista_flow_per_period_file_name")+"_"+tm.periodName(period)+"_"+tm.MonthAbbreviation(month)+"_"+tm.yearAbbreviation(year);
+		 
+		 
+	    List<SAT> satList= new ArrayList<SAT>();	
+		satList = equipDao.ListSATinfoHeader(equips);
 		 				 
 		 //--- Initializing --- //
 				 			
 		 step = 0;
 		 	message(step);	// START DELAY 3 SEC	
-				 		
-		 step = 1; //
+		 	
+	 	 step = 1; //
 		 	message(step);	// CREATE SHEETS MESSAGE
-		  
+				 
 		 for(indice=0; indice < equips.length; indice++) 	 
-			   createSheets(indice, Integer.parseInt(equips[indice])); 	
-						   		       		
+			   createSheets(indice, Integer.parseInt(equips[indice]), satList); 	
+		 								   		       		
          step = 2;
          	message(step);	 // CREATE SHEETS ENDED MESSAGE
-       		 
+                		 
 		 instaciarProcessaDados(dta);	 
 		 
 		 for(indice=0; indice < equips.length; indice++) {				 
-									
-				sat = new SAT();		
-				sat = equipDao.headerInfoSAT(equips[indice]);	
-																						 
+																																		 
 				 step = 3;
-				 	message(step);	// DATA PROCESS MESSAGE			 		
-											
-			 processaDados(indice, equips[indice], dta, sat);
-			 
-			 			
+				 	message(step);	// DATA PROCESS MESSAGE		
+				 	
+				 delay(3000); // PAUSE
+				 	
+				 step = 7;	
+				 	message(step);				 				
+			 											
+				 processaDados(indice, equips[indice], dta, satList);
+				 			 			 			
 				 if(indice == (equips.length-1)) {
 				 
 					     step = 4;
-					     	message(step);	// PROCESS DATA ENDED				 
+					     	message(step);	// PROCESS DATA ENDED						     	
 				  }			
 		   	}
 		 
@@ -724,7 +725,7 @@ public class FluxoPeriodoBean implements Serializable {
 	  		
 	@SuppressWarnings("deprecation")
 	public void preencherDadosExcel(SXSSFWorkbook workbook, PropertyTemplate propertyTemplate, int indice, String sheetName, int tam) throws IOException {    	 
-
+		
 		SXSSFSheet sheet = null;
 		
 		int i, idx, rowIndex; // Variáveis para criar o excel	
@@ -1395,7 +1396,9 @@ public class FluxoPeriodoBean implements Serializable {
 		difference = (days * indice);		
 
 		return difference;
-	}		
+	}	
+	
+	// ---------------------------------------------------------------------------------
 
 	/** Método para limpar listas e variáveis de caixas de seleção
 	 * @throws Exception
@@ -1413,9 +1416,7 @@ public class FluxoPeriodoBean implements Serializable {
 		columns = build.drawTable(build.fields, build.fieldObjectValues);
 				
 	// ---------------------------------------------------------------------------------
-					
-		sat = new SAT();
-		
+				
 		build.excelBool = true;
 		build.clearBool = true;
 		build.closeBool = true;
@@ -1439,6 +1440,25 @@ public class FluxoPeriodoBean implements Serializable {
 
 		} catch (NullPointerException e) {	}
 		
+	}
+	
+	// ---------------------------------------------------------------------------------
+	
+	/** Método para limpar listas e variáveis de caixas de seleção
+	 * @throws Exception
+	 * @return void */
+
+	public void resetStepView() throws Exception {
+	
+		build.closeBool = true;
+			
+		setDisplayMessage("");	
+		
+		step = 0;
+		
+		updateForm(); // UPDATE FORM MESSAGE
+		updateCloseButton(); // UPDATE CLOSE BUTTON
+						
 	}
 	
 	// ---------------------------------------------------------------------------------
@@ -2074,18 +2094,15 @@ public class FluxoPeriodoBean implements Serializable {
 
 	}
 
-	public void createSheets(int sheetIndex, int equip) throws Exception {
+	public void createSheets(int sheetIndex, int equip, List<SAT> satList) throws Exception {
 		
-		initializeSentidoExcel(equip);  
-						
-		sat = new SAT();		
-		sat = equipDao.headerInfoSAT(equips[sheetIndex]);	
+		initializeSentidoExcel(equip); 				
 													
-		sheetName[sheetIndex] = sat.getNome();								
+		sheetName[sheetIndex] = satList.get(sheetIndex).getNome();								
 		sheet = workbook.createSheet(sheetName[sheetIndex]); // Criar nova folha para o arquivo	
 		rowDados = new SXSSFRow(sheet);
 				
-		sentidoExcelHeader(sheetIndex, sat.getFaixa1());		
+		sentidoExcelHeader(sheetIndex, satList.get(sheetIndex).getFaixa1());		
 		createExcelSheet(sheet, propertyTemplate, sheetIndex);
 		
 	}
@@ -2134,45 +2151,50 @@ public class FluxoPeriodoBean implements Serializable {
 					else displayMessage +="\n"+localeSat.getStringKey("$label_period_flow_message_created_sheet");
 							
 						updateForm(); // UPDATE MODAL FORM VIEW	   
-				 	
+						delay(3000); // DELAY TO EXECUTE
 				}
 		
 		   if(step == 3) {		   
 			    displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_process_sheets")+" "+sheetName[indice]+" ...";
-			    	updateForm(); // UPDATE MODAL FORM VIEW		     
+			    	updateForm(); // UPDATE MODAL FORM VIEW				    	
 			    
 		   	}
 							
 	        if(step == 4) {
 	        	
 	        	if(equips.length > 1)        	
-	        	    	displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_end_process_sheets");        	
+	        	     displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_end_process_sheets");        	
 	        		        		        	
-	        				updateForm(); // UPDATE MODAL FORM VIEW
+	        		  updateForm(); // UPDATE MODAL FORM VIEW
 	        	 	
 	        	}
 					   
 	        if(step == 5) {        	
-	   				displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_ending_process_sheet");
-	   			                  				
-	   					updateForm(); // UPDATE MODAL FORM VIEW   				
+	   				displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_ending_process_sheet");	   			                  				
+	   				  updateForm(); // UPDATE MODAL FORM VIEW   				
 	        	}
    		        
 	        if(step == 6) {
 	        		displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_ended_process_sheet"); 
-	        	    	SessionUtil.executeScript("PF('poll').stop()");    // STOP POLL EXECUTE   
-	        	    	 //System.out.println("Stopped!");
-	        	    	
+	        		updateForm(); // UPDATE MODAL FORM VIEW  
+	        	    SessionUtil.executeScript("PF('poll').stop();");   
+	        	    // System.out.println("Stopped!");	        	    	
 	         } 	
+	        
+	        if(step == 7) {
+	        	displayMessage += "";
+	        	updateForm(); 
+	        	
+	        }
 	        
 		 }
    
-	public void processaDados(int sheetIndex, String equip, DateTimeApplication dta, SAT sat) throws Exception {	
+	public void processaDados(int sheetIndex, String equip, DateTimeApplication dta, List<SAT> satList) throws Exception {	
 													
 		try {						
 		
-			 //System.out.println("-----------------");
-			  //System.out.println("Entrando no Loop ...");
+			// System.out.println("-----------------");
+			 // System.out.println("Entrando no Loop ...");
 
 				if(last_index != sheetIndex) // Enquanto não é o ultimo index incrementa essa formula
 					pos += ((daysInMonth - 1) * tam);	
@@ -2215,10 +2237,14 @@ public class FluxoPeriodoBean implements Serializable {
 											 
 				index = increment * sheetIndex;					
 						
-				equipamentoHeader(index, incEquip, tamanho, sat.getNome(), sat.getKm(), sat.getEstrada(), sat.getFaixa1()); //Preenche nome do equipamento na tabela 
+				equipamentoHeader(index, incEquip, tamanho, satList.get(sheetIndex).getNome(), satList.get(sheetIndex).getKm(), satList.get(sheetIndex).getEstrada(), satList.get(sheetIndex).getFaixa1()); //Preenche nome do equipamento na tabela 
 			
-				sentidoHeader(index, tamanho, sat.getFaixa1()); // Preencher sentido na DataTable
-																
+				sentidoHeader(index, tamanho, satList.get(sheetIndex).getFaixa1()); // Preencher sentido na DataTable	
+				
+				SAT sat = new SAT();
+				
+				sat = satList.get(sheetIndex);
+				
 				lista = dao.getVehicles(startDate, endDate, equip, period, sat);									
 								
 				if(!lista.isEmpty()) {
@@ -2360,11 +2386,14 @@ public class FluxoPeriodoBean implements Serializable {
 
 				} else  pos += tam;
 								
-				preencherDadosExcel(workbook, propertyTemplate, sheetIndex, sheetName[sheetIndex], tam);						
-		   
+				preencherDadosExcel(workbook, propertyTemplate, sheetIndex, sheetName[sheetIndex], tam);
+			   
 		}catch(Exception ex) {
 			ex.printStackTrace();
-		}		
+		}			
+	
+		 // System.out.println("Saindo do Loop ...");
+		 // System.out.println("-----------------");
 	  }
 	
 	public void populateTable() throws Exception {
@@ -2400,14 +2429,13 @@ public class FluxoPeriodoBean implements Serializable {
 	     
 	     public void instaciarProcessaDados(DateTimeApplication dta) throws Exception {
 	    	 
-	    	 lista = new ArrayList<FluxoPeriodo>();	
-
-				per = new FluxoPeriodo();
-				dao = new FluxoPeriodoDAO();				
-			
+	    	 	lista = new ArrayList<FluxoPeriodo>();		    	 
+	    	 	dao = new FluxoPeriodoDAO();
+				
 				//mes = dta.selectedMonth(month);
 				int mth = Integer.parseInt(month);
 				int yr = Integer.parseInt(year);
+				int endHour = 23, endMin = 59, endSec = 59;
 								
 				monthABR = tm.MonthAbbreviation(month); 
 				yearABR = tm.yearAbbreviation(year); 
@@ -2418,7 +2446,7 @@ public class FluxoPeriodoBean implements Serializable {
 				int diaInicial = 1;
 				
 				startDate = dta.createData(diaInicial, mth, yr);
-				endDate = dta.createData(daysInMonth, mth, yr);
+				endDate = dta.createDateTime(daysInMonth, mth, yr, endHour, endMin, endSec);
 							
 				tam = dta.periodsRange(period);
 				
@@ -2433,7 +2461,6 @@ public class FluxoPeriodoBean implements Serializable {
 				initVariables(tamanho); 
 				initializeSentidoExcel(equips.length);
 				
-
 				dtInicio = startDate;			
 				data_anterior = startDate;
 				equip_anterior = Integer.parseInt(equips[0]);
@@ -2445,8 +2472,8 @@ public class FluxoPeriodoBean implements Serializable {
 				minuto = 0; 
 				interResp = 0; 
 				last_index = 0;	
-				index = 0;							
-				
+				index = 0;	
+						
 	       }
 	     	     	     
 	     public void equipamentoHeader(int indice, int increment, int tamanho, String sat, String km, String road, String faixa1) {

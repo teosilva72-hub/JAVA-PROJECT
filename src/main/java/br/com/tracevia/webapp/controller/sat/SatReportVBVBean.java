@@ -40,12 +40,14 @@ public class SatReportVBVBean {
 	private VehicleByVehicle veh;	
 	private ReportBuild build;
 	
+	private boolean file = true;
+	
 	BufferedWriter writer;  
 	ByteArrayOutputStream byteWriter; 
 	
 	LocaleUtil locale;
 	
-	String equip, month, name, year; // FIELDS
+	String equip, month, monthName, name, year; // FIELDS
 		
 	// --------------------------------------------------------------------------------------------------------------
 	
@@ -124,6 +126,22 @@ public class SatReportVBVBean {
 		this.year = year;
 	}
 	
+	public boolean isFile() {
+		return file;
+	}
+
+	public void setFile(boolean file) {
+		this.file = file;
+	}
+	
+	public String getMonthName() {
+		return monthName;
+	}
+
+	public void setMonthName(String monthName) {
+		this.monthName = monthName;
+	}
+
 	@PostConstruct
 	public void initializer() {
 		
@@ -160,9 +178,9 @@ public class SatReportVBVBean {
 	// -----------------------------------------------------------------------------------------------------------------------------------------------------     
 		
 	 public void getTextFile() {
-		 
+		 		 		 
 		 TranslationMethods tm = new TranslationMethods(); // Translation Methods
-		 		 
+		 		 		 
 		 try {
 			 
 		 	DateTimeApplication dta = new DateTimeApplication();
@@ -170,13 +188,17 @@ public class SatReportVBVBean {
 		 	 List<VehicleByVehicle> list = new ArrayList<VehicleByVehicle>();
 			  
 			  VehicleByVehicleDAO dao = new VehicleByVehicleDAO();
+			  EquipmentsDAO equipDAO = new EquipmentsDAO();
 			 			 
 				 Map<String, String> parameterMap = SessionUtil.getRequestParameterMap();
 				
 				 equip = parameterMap.get("equip"); // EQUIP	 
 				 month = parameterMap.get("month"); // MONTH				
 				 year = parameterMap.get("year"); // YEAR
-								 
+				 
+				 int strHour = 0, strMin = 0, strSec = 0;
+				 int endHour = 23, endMin = 59, endSec = 59;
+				 
 				 int yr = Integer.parseInt(year);
 				 int mth = Integer.parseInt(month);
 				 
@@ -187,11 +209,13 @@ public class SatReportVBVBean {
 							
 				 try {
 					 
-					 String startDate = dta.createDate(diaInicial, mth, yr);
-					 String endDate = dta.createDate(daysInMonth, mth, yr);
+					 String startDate = dta.createDateTime(diaInicial, mth, yr, strHour, strMin, strSec);
+					 String endDate = dta.createDateTime(daysInMonth, mth, yr, endHour, endMin, endSec);
+					 
+					 name = equipDAO.equipmentName("sat", equip);
 					 
 					 list = dao.getVehicles(startDate, endDate, equip);
-				
+					 					 				
 						if(!list.isEmpty()) {
 							
 							//long begin = System.currentTimeMillis();
@@ -234,25 +258,28 @@ public class SatReportVBVBean {
 							
 							writer.flush();			
 							writer.close();
-							
-							build.textBool = false;
-							
-							// SEND TO FRONT END							
-							 name = list.get(0).getName();
-							 month = tm.monthComparison(Integer.parseInt(month));
-							 
-							 SessionUtil.executeScript("$('#label').removeClass('d-none')"); // SHOW LABEL
-																													
+																					
+							// SEND TO FRONT END								
+							 monthName = tm.monthComparison(Integer.parseInt(month));	
+							 																																											
 							 SessionUtil.getExternalContext().getSessionMap().put("name_", name); 	
-							 SessionUtil.getExternalContext().getSessionMap().put("month_", month); 	
+							 SessionUtil.getExternalContext().getSessionMap().put("month_", month); 						
 							 SessionUtil.getExternalContext().getSessionMap().put("year_", year); 	
-							 SessionUtil.getExternalContext().getSessionMap().put("bytes", byteWriter.toByteArray()); 	
-													
+							 SessionUtil.getExternalContext().getSessionMap().put("bytes", byteWriter.toByteArray()); 
+							 
+							 build.textBool = false;
+							 
+							 SessionUtil.executeScript("$('#label').removeClass('d-none'); $('#label').html('<strong>"+name+"</strong> "+monthName+" "+year+"');");
+													 							 													
 							//long end = System.currentTimeMillis();
 							//System.out.println("Tempo de gravação: " + (end - begin));
 														
 							} else SessionUtil.executeScript("alertOptions('#info', '"+locale.getStringKey("$message_reports_record_not_found")+"');");
-							
+						
+							// AFTER SUBMIT CLEAN FIELDS					
+							SessionUtil.executeScript("$('#equip').val(''); $('span[for=equip]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+							SessionUtil.executeScript("$('#month').val(''); $('span[for=month]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+							SessionUtil.executeScript("$('#year').val(''); $('span[for=year]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
 						
 	    } catch (ParseException e) {		 
 		    e.printStackTrace();
@@ -266,7 +293,7 @@ public class SatReportVBVBean {
 	 public void downloadFile() throws Exception {
 		 		 	
 		 	String name = (String) SessionUtil.getExternalContext().getSessionMap().get("name_");
-		 	String month = (String) SessionUtil.getExternalContext().getSessionMap().get("month_");
+		 	String month = (String) SessionUtil.getExternalContext().getSessionMap().get("month_");		
 		    String year = (String) SessionUtil.getExternalContext().getSessionMap().get("year_");
 		 	byte[] bytes = (byte[]) SessionUtil.getExternalContext().getSessionMap().get("bytes");
 		 
@@ -277,9 +304,9 @@ public class SatReportVBVBean {
 	 // -----------------------------------------------------------------------------------------------------------------------------------------------------   
 	 
 	 public void resetForm() {
-		 
+		 			 
 		 SessionUtil.getExternalContext().getSessionMap().remove("name_"); 	
-		 SessionUtil.getExternalContext().getSessionMap().remove("month_"); 	
+		 SessionUtil.getExternalContext().getSessionMap().remove("month_");	
 		 SessionUtil.getExternalContext().getSessionMap().remove("year_");
 		 SessionUtil.getExternalContext().getSessionMap().remove("bytes");
 		 
@@ -290,11 +317,13 @@ public class SatReportVBVBean {
 		 equip = null;
 		 name = null;
 		 month = null;
+		 monthName = null;
 		 year = null;
 		 		 
 		 build.textBool = true;
 		 		 
-		 SessionUtil.executeScript("$('#label').addClass('d-none')");
+		 SessionUtil.executeScript("$('#label').addClass('d-none');('#label').html('');");		
+		 
 	 }
 	 
 	 // -----------------------------------------------------------------------------------------------------------------------------------------------------  
