@@ -28,7 +28,6 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; s.name; SUM(speed &lt; 50); SUM(speed &gt;= 50 AND speed &lt; 70); SUM(speed &gt;= 70 AND speed &lt; 90); SUM(speed &gt;= 90 AND speed &lt; 120); SUM(speed &gt;= 120 AND speed &lt; 150); SUM(speed &gt;= 150); SUM(1)')}" />
 	   	<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_equipment s ON equip_id = siteID')}" />
 	   
-	    <f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
