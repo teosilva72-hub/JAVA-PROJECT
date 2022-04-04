@@ -34,7 +34,6 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(classe = `9`); SUM(IF(classe = `1` OR (classe = `0` AND lenght &lt;= 650)  OR classe = `2N`, 1, 0 )); 
         SUM(IF(classe = `2` OR classe = `3`, 1, 0 )); SUM(classe = `8`); SUM(classe = `2A`); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv_ll.lane')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />

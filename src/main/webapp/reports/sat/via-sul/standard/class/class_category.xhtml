@@ -44,7 +44,6 @@
 		SUM(classe = `13`); SUM(classe = `14`); SUM(classe = `15`); SUM(classe = `16`); SUM(classe = `17`); SUM(1)')}" />				
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv_ccr.lane')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />	

@@ -32,7 +32,6 @@
 		satLabels.counting_lane_l3, satLabels.counting_lane_l4, satLabels.counting_lane_l5, satLabels.counting_lane_l6, satLabels.counting_lane_l7, satLabels.counting_lane_l8, satLabels.global_total_vehicles_column))}" />
 	
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(lane = 1); SUM(lane = 2); SUM(lane = 3); SUM(lane = 4); SUM(lane = 5); SUM(lane = 6); SUM(lane = 7); SUM(lane = 8); SUM(1)')}" /> 
-	    <f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
