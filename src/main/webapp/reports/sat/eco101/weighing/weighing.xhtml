@@ -14,62 +14,50 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.via_paulista_axle_weight_file_name)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.via_paulista_axle_weight_title)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.via_paulista_speed_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.via_paulista_speed_title)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECO 101')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />	
-		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('false')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.via_paulista_speed_file_name)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.via_paulista_speed_title)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv v')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, Equipamento, 1, 2, 2A, 3, 4, 4A, 5, 6, 6A, 7, 8, 9, 10, 11, E9, E10, 0, Total',
-		satLabels.global_date_column, satLabels.global_interval_column))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, Equipamento, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.speed_20_km, satLabels.speed_20_40_km, satLabels.speed_40_60_km, satLabels.speed_60_80_km, satLabels.speed_over_80_km, satLabels.global_total_vehicles_column))}" />
+	   
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; s.name; SUM(speed &lt; 20); SUM(speed &gt;= 20 AND speed &lt; 40); SUM(speed &gt;= 40 AND speed &lt; 60); SUM(speed &gt;= 60 AND speed &lt; 80); SUM(speed &gt;= 80); SUM(1)')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd;
-		s.name;
-		SUM(IF(classe = `1`, gross, NULL));
-		SUM(IF(classe = `2`, gross, NULL));
-		SUM(IF(classe = `2A`, gross, NULL ));
-		SUM(IF(classe = `3`, gross, NULL )); 
-		SUM(IF(classe = `4`, gross, NULL )); 
-		SUM(IF(classe = `4A`, gross, NULL )); 
-		SUM(IF(classe = `5`, gross, NULL )); 
-		SUM(IF(classe = `6`, gross, NULL));
-		SUM(IF(classe = `6N`, gross, NULL ));
-		SUM(IF(classe = `7`, gross, NULL )); 
-		SUM(IF(classe = `8`, gross, NULL));
-		SUM(IF(classe = `9`, gross, NULL )); 
-		SUM(IF(classe = `10`, gross, NULL )); 
-		SUM(IF(classe = `11`, gross, NULL));
-		SUM(IF(classe = `E9`, gross, NULL )); 
-		SUM(IF(classe = `9N`, gross, NULL )); 
-		SUM(IF(classe = `UC`, gross, NULL ));
-		SUM(gross)')}" />
-		
-		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_equipment s ON s.equip_id = siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON q.equip_id = siteID AND q.lane = v.lane INNER JOIN sat_equipment s ON s.equip_id = siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('s.name')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setOrderDate('s.name, data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
+
+
+		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
+		<!-- <f:viewAction onPostback="true" action="#{reportBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" /> -->
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
+		<!-- <f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" /> -->
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
+		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions q, q.direction, direction')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_weighing.id_weighing|name' , true, true)}" />
-
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_vehicles, 'filter_vehicles.id_vehicle|name' , true, true)}" />
+			               
     </f:metadata>
 	
 	<!---->
@@ -98,6 +86,8 @@
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
 		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
 		<h:outputScript library="js/alert" name="alerts.js" />	<!-- ENABLE ALERTS -->
+		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
+	 	<h:outputScript library="js/charts" name="chart.js" />
 	
 	   <!---->
 	
@@ -126,7 +116,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="#{satLabels.via_paulista_axle_weight_title}" /> <!-- NAME LABEL -->
+	       <h:outputText value="#{satLabels.via_paulista_speed_title}" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 
@@ -160,13 +150,18 @@
 		
 	  </div><!-- TABLE CONTAINER DIV CONTENT END -->   
 	  
-	  <!-- DIV DE ESTRUTURA DA TABELA -->   
+	  <!-- ============================================================================================================================= -->
+	  
+	    <!-- CHART CONTAINER -->  
+	  
+	    <ui:include src="/template/chart/chart_template.xhtml" />
+	  
 		
 	  <!-- ============================================================================================================================= -->
 	  
 	     <!-- SUBMIT MODAL TEMPLATE: REALIZAR O PREENCHIMENTO DO FORMULÁRIO -->
 	   
-	      <ui:include src="/template/modal/submit_modal_template.xhtml" />
+	     <ui:include src="/template/modal/submit_modal_template.xhtml" />
 	        
       <!-- ============================================================================================================================= -->
              
@@ -193,9 +188,9 @@
 	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
 		 	 	 	
 		 <form name="validation"> <!-- FORM VALIDATION  -->
-			   	 	
+		 		   	 	
 		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
-		 
+			 
 		 </form> <!-- FORM VALIDATION END -->
 		 
 	  <!-- ============================================================================================================================= -->
