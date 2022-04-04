@@ -25,10 +25,11 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, 1, 2, 2A, 3, 4, 4A, 5, 6, 6A, 7, 8, 9, 10, 11, E9, E10, 0, Total',
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, Equipamento, 1, 2, 2A, 3, 4, 4A, 5, 6, 6A, 7, 8, 9, 10, 11, E9, E10, 0, Total',
 		satLabels.global_date_column, satLabels.global_interval_column))}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd;
+		s.name;
 		SUM(IF(classe = `1`, gross, NULL));
 		SUM(IF(classe = `2`, gross, NULL));
 		SUM(IF(classe = `2A`, gross, NULL ));
@@ -47,9 +48,11 @@
 		SUM(IF(classe = `9N`, gross, NULL )); 
 		SUM(IF(classe = `UC`, gross, NULL ));
 		SUM(gross)')}" />
-
 		
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_equipment s ON s.equip_id = siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('s.name')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setOrderDate('s.name, data')}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
