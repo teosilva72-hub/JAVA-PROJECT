@@ -330,8 +330,8 @@ public class DateTimeApplication {
 
 		else calendar.set(Calendar.MINUTE, 45);
 
-		calendar.add(Calendar.MINUTE, -1);				
-		calendar.add(Calendar.SECOND, 59);	
+			calendar.add(Calendar.MINUTE, -1);				
+			calendar.add(Calendar.SECOND, 59);	
 
 		//Data Atual com subtracao de minuto e segundo
 		currentDateSub = dtFormatter.format(calendar.getTime());	
@@ -494,7 +494,75 @@ public class DateTimeApplication {
 	}
 	
 	// ---------------------------------------------------------------------------------------------------------------------
+	
+		public String showIntervalHour(boolean lastSevenDays, boolean lastHour) {
+
+			String datetime = null;
+			
+			Calendar calendar = Calendar.getInstance();
+			
+			dtFormatter = new SimpleDateFormat(DATE_TIME_FORMAT_STANDARD_VIEW);
+
+			if(lastHour)
+				calendar.add(Calendar.HOUR_OF_DAY, -1); 
+			
+			if(lastSevenDays)
+				calendar.add(Calendar.DAY_OF_MONTH, -7);
+			
+			int year = calendar.get(Calendar.YEAR);
+			int month = calendar.get(Calendar.MONTH);
+			int day = calendar.get(Calendar.DAY_OF_MONTH);
+			int hour = calendar.get(Calendar.HOUR_OF_DAY);
+			
+			datetime = year + "-" + getMonthFormatted(month) + "-" + day + " " + hour + ":00:00";
+						
+			try {
+				
+				datetime = dateTimeFormat(datetime);
+				
+			} catch (ParseException e) {				
+				e.printStackTrace();
+			}
+							
+			return datetime;
+
+		}
+	
+	// ---------------------------------------------------------------------------------------------------------------------
 	 
+		public String showInterval15Min() {
+			
+			Calendar calendar = Calendar.getInstance();
+			
+			int minute = calendar.get(Calendar.MINUTE);
+
+			dtFormatter = new SimpleDateFormat(DATE_TIME_FORMAT_STANDARD_VIEW);
+
+			String currentDate = null;
+
+			//formatar os minutos para que nao ocorra inconsistencias
+			if(minute >= 0 && minute < 15)
+				calendar.set(Calendar.MINUTE, 0);
+
+			else if(minute >= 15 && minute < 30)
+				calendar.set(Calendar.MINUTE, 15);
+
+			else if(minute >= 30 && minute < 45)
+				calendar.set(Calendar.MINUTE, 30);
+
+			else calendar.set(Calendar.MINUTE, 45);
+
+			calendar.set(Calendar.SECOND, 0);
+
+			//Data Atual
+			currentDate = dtFormatter.format(calendar.getTime());
+
+			return currentDate;
+
+		}
+
+	// ---------------------------------------------------------------------------------------------------------------------
+		
 	public String getMonthFormatted(int month) {
 
 			String zero = "0";
@@ -2387,6 +2455,17 @@ public class DateTimeApplication {
 			String createdDate = format.format(date);
 			
 			return createdDate;		   
+	}
+	 
+	 public String createDateTime(int day, int month, int year, int hour, int minute, int second) throws ParseException {
+		    
+		   	String newDate = year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;
+		    
+		    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date date = format.parse(newDate);	   
+			String createdDatetime = format.format(date);
+			
+			return createdDatetime;		   
 	}
 	 
 	// ------------------------------------------------------------------------------------------------------

@@ -44,16 +44,14 @@ public class VehicleByVehicleDAO {
 	public List<VehicleByVehicle> getVehicles(String startDate, String endDate, String equipId) {
 
 		List<VehicleByVehicle> list = new ArrayList<VehicleByVehicle>();
-				
+					
 		String query = " ";
-		
-		query = "SELECT eq.name, t.siteID, t.seqG, t.seqN, t.data, t.classe, t.axlNumber, t.axl1W, t.axl2W, t.axl3W, t.axl4W, "
-				+ "t.axl5W, t.axl6W, t.axl7W, t.axl8W, t.axl9W, t.axl2D, t.axl3D, t.axl4D, t.axl5D, "
-				+ "t.axl6D, t.axl7D, t.axl8D, t.axl9D, t.gross, t.temperature, t.speed, t.lane FROM tb_vbv t " //INDEX(data_siteID) "
-				+ "INNER JOIN sat_equipment eq ON eq.equip_id = t.siteID "
-				+ "WHERE DATE(t.data) BETWEEN ? AND ? AND t.siteID = ? "
-				+ "ORDER BY t.data ASC";
-		
+					
+		query = "SELECT siteID, seqG, seqN, data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, " +
+				"axl5W, axl6W, axl7W, axl8W, axl9W, axl2D, axl3D, axl4D, axl5D, " +
+				"axl6D, axl7D, axl8D, axl9D, gross, temperature, speed, lane FROM tb_vbv " +				
+				"WHERE data BETWEEN ? AND ? AND siteID = ? ";
+						
 		try {						
 			
 			conn.start(1);
@@ -62,9 +60,7 @@ public class VehicleByVehicleDAO {
 			conn.setString(1, startDate);
 			conn.setString(2, endDate);
 			conn.setString(3, equipId);
-			
-			//System.out.println(startDate+"\n"+endDate+"\n"+equipId);
-							
+										
 			MapResult result = conn.executeQuery();
 			
 			//System.out.println(query);
@@ -73,18 +69,17 @@ public class VehicleByVehicleDAO {
 				for (RowResult rs : result) {
 
 					VehicleByVehicle vbv = new VehicleByVehicle(); // instânciar objeto
-
-					vbv.setName(rs.getString(1));
-					vbv.setSiteID(rs.getInt(2));
 					
-					vbv.setSeqG(rs.getInt(3));
-					vbv.setSeqN(rs.getInt(4));
+					vbv.setSiteID(rs.getInt(1));
 					
-					vbv.setDateTime(rs.getString(5));	
+					vbv.setSeqG(rs.getInt(2));
+					vbv.setSeqN(rs.getInt(3));
+					
+					vbv.setDateTime(rs.getString(4));	
 					
 					// ------------------------------------
 
-					String classe = rs.getString(6); // CLASS
+					String classe = rs.getString(5); // CLASS
 					
 					if (classe == null)
 						vbv.setClassVBV("UC");						
@@ -93,7 +88,7 @@ public class VehicleByVehicleDAO {
 					
 					// ------------------------------------
 
-					int axle = rs.getInt(7); // AXLE NUMBER
+					int axle = rs.getInt(6); // AXLE NUMBER
 					
 					if (axle == 0 || axle == 1)
 						vbv.setAxlNumber(2); // Caso 0 ou 1 recebe 2
@@ -102,27 +97,27 @@ public class VehicleByVehicleDAO {
 					
 					// ------------------------------------
 					
-					 vbv.setAxl1W(rs.getInt(8));
-					 vbv.setAxl2W(rs.getInt(9));
-					 vbv.setAxl3W(rs.getInt(10));
-					 vbv.setAxl4W(rs.getInt(11));
-					 vbv.setAxl5W(rs.getInt(12));
-					 vbv.setAxl6W(rs.getInt(13));
-					 vbv.setAxl7W(rs.getInt(14));
-					 vbv.setAxl8W(rs.getInt(15));
-					 vbv.setAxl9W(rs.getInt(16));					 
-					 vbv.setAxl2D(rs.getInt(17));
-					 vbv.setAxl3D(rs.getInt(18));
-					 vbv.setAxl4D(rs.getInt(19));
-					 vbv.setAxl5D(rs.getInt(20));
-					 vbv.setAxl6D(rs.getInt(21));
-					 vbv.setAxl7D(rs.getInt(22));
-					 vbv.setAxl8D(rs.getInt(23));
-					 vbv.setAxl9D(rs.getInt(24));					 											
-					 vbv.setGross(rs.getInt(25));
-					 vbv.setTemperature(rs.getInt(26));
-					 vbv.setSpeed(rs.getInt(27));
-					 vbv.setLane(rs.getInt(28));
+					 vbv.setAxl1W(rs.getInt(7));
+					 vbv.setAxl2W(rs.getInt(8));
+					 vbv.setAxl3W(rs.getInt(9));
+					 vbv.setAxl4W(rs.getInt(10));
+					 vbv.setAxl5W(rs.getInt(11));
+					 vbv.setAxl6W(rs.getInt(12));
+					 vbv.setAxl7W(rs.getInt(13));
+					 vbv.setAxl8W(rs.getInt(14));
+					 vbv.setAxl9W(rs.getInt(15));					 
+					 vbv.setAxl2D(rs.getInt(16));
+					 vbv.setAxl3D(rs.getInt(17));
+					 vbv.setAxl4D(rs.getInt(18));
+					 vbv.setAxl5D(rs.getInt(19));
+					 vbv.setAxl6D(rs.getInt(20));
+					 vbv.setAxl7D(rs.getInt(21));
+					 vbv.setAxl8D(rs.getInt(22));
+					 vbv.setAxl9D(rs.getInt(23));					 											
+					 vbv.setGross(rs.getInt(24));
+					 vbv.setTemperature(rs.getInt(25));
+					 vbv.setSpeed(rs.getInt(26));
+					 vbv.setLane(rs.getInt(27));
 
 					 list.add(vbv); // adiciona na Lista
 				}

@@ -274,7 +274,8 @@ public class FluxoMensalBean {
 			 year = parameterMap.get("year"); // YEAR
 							 
 		 int yr = Integer.parseInt(year);
-		 int mth = Integer.parseInt(month);
+		 int mth = Integer.parseInt(month);		 
+		 int endHour = 23, endMin = 59, endSec = 59;
 		 
 		 YearMonth yearMonthObject = YearMonth.of(yr, mth);
 		 daysInMonth = yearMonthObject.lengthOfMonth();		
@@ -283,11 +284,11 @@ public class FluxoMensalBean {
 		 		 
 		 length = (daysInMonth * 96); 
 		 minLen = (daysInMonth * 24); 
-			 
-		try {						
+		
+		try {				
 		
 		 String startDate = dta.createDate(diaInicial, mth, yr);
-		 String endDate = dta.createDate(daysInMonth, mth, yr);
+		 String endDate = dta.createDateTime(daysInMonth, mth, yr, endHour, endMin, endSec);
 		 String startDateAux = startDate;
 					 
 		initVariables(length, minLen); 	      
@@ -311,7 +312,7 @@ public class FluxoMensalBean {
 		firstLane = sat.getFaixa1();
 		numberLanes = sat.getNumFaixas();		
 		
-		lista = dao.getVehicles(startDate, endDate, equip, firstLane);
+		lista = dao.getVehicles(startDate, endDate, equip, firstLane, numberLanes);
 																		
 		if (!lista.isEmpty()) {
 

@@ -7,16 +7,13 @@ import br.com.tracevia.webapp.cfg.tables.ViaPaulistaTables;
 import br.com.tracevia.webapp.cfg.tables.ViaSulTables;
 import br.com.tracevia.webapp.classes.AlternativasViales;
 import br.com.tracevia.webapp.classes.Ausn;
-import br.com.tracevia.webapp.classes.BahiaNorte;
-import br.com.tracevia.webapp.classes.EcoviasAraguaia;
 import br.com.tracevia.webapp.classes.CardelPozaRica;
 import br.com.tracevia.webapp.classes.Eco101;
-import br.com.tracevia.webapp.classes.LitoralSul;
+import br.com.tracevia.webapp.classes.EcoviasAraguaia;
 import br.com.tracevia.webapp.classes.Tracevia;
 import br.com.tracevia.webapp.classes.Tuxpan;
 import br.com.tracevia.webapp.classes.ViaAmericas;
 import br.com.tracevia.webapp.classes.ViaPaulista;
-import br.com.tracevia.webapp.classes.ViaRondon;
 import br.com.tracevia.webapp.classes.ViaSul;
 
 /**

@@ -30,7 +30,7 @@ public class SAT extends Equipments {
 	private int comProjection1hS2;
 	private int comVolumeS2;
 	private int comVelMedS2;
-	private int motodays1hS1;	
+	private int moto7days1hS1;	
 	private int motoCurrent1hS1;
 	private int motoProjection1hS1;
 	private int motoVolumeS1;
@@ -84,7 +84,7 @@ public class SAT extends Equipments {
 			int autosProjection1hS1, int autosVolumeS1, int autosVelMedS1, int autos7days1hS2, int autosCurrent1hS2,
 			int autosProjection1hS2, int autosVolumeS2, int autosVelMedS2, int com7days1hS1, int comCurrent1hS1,
 			int comProjection1hS1, int comVolumeS1, int comVelMedS1, int com7days1hS2, int comCurrent1hS2,
-			int comProjection1hS2, int comVolumeS2, int comVelMedS2, int motodays1hS1, int motoCurrent1hS1,
+			int comProjection1hS2, int comVolumeS2, int comVelMedS2, int moto7days1hS1, int motoCurrent1hS1,
 			int motoProjection1hS1, int motoVolumeS1, int motoVelMedS1, int moto7days1hS2, int motoCurrent1hS2,
 			int motoProjection1hS2, int motoVolumeS2, int motoVelMedS2, int total7days1hS1, int totalCurrent1hS1,
 			int totalProjection1hS1, int totalVolumeS1, int totalVelMedS1, int total7days1hS2, int totalCurrent1hS2,
@@ -124,7 +124,7 @@ public class SAT extends Equipments {
 		this.comProjection1hS2 = comProjection1hS2;
 		this.comVolumeS2 = comVolumeS2;
 		this.comVelMedS2 = comVelMedS2;
-		this.motodays1hS1 = motodays1hS1;
+		this.moto7days1hS1 = moto7days1hS1;
 		this.motoCurrent1hS1 = motoCurrent1hS1;
 		this.motoProjection1hS1 = motoProjection1hS1;
 		this.motoVolumeS1 = motoVolumeS1;
@@ -381,12 +381,12 @@ public class SAT extends Equipments {
 		this.comVelMedS2 = comVelMedS2;
 	}
 
-	public int getMotodays1hS1() {
-		return motodays1hS1;
+	public int getMoto7days1hS1() {
+		return moto7days1hS1;
 	}
 
-	public void setMotodays1hS1(int motodays1hS1) {
-		this.motodays1hS1 = motodays1hS1;
+	public void setMoto7days1hS1(int moto7days1hS1) {
+		this.moto7days1hS1 = moto7days1hS1;
 	}
 
 	public int getMotoCurrent1hS1() {

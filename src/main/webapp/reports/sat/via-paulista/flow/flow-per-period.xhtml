@@ -385,7 +385,7 @@
 							
 						<div class="modal-body">														               
 				             			         				                        
-				             <h:inputTextarea id="display" value="#{fluxoPeriodo.displayMessage}" style="width: 100%; outline: 0;" rows= "15" cols="50" readonly="true" /> 
+				             <h:inputTextarea id="display" value="#{fluxoPeriodo.displayMessage}" style="width: 100%; outline: 0;" rows= "15" cols="50"  /> 
 				             									  					             				          														
 						</div>
 						
@@ -394,8 +394,8 @@
 						<div class="modal-footer">
 														
 							<h:commandButton id="dismiss-modal"
-								value="#{reportsLabels.reports_modal_alert_btn_no}" disabled="#{fluxoPeriodo.build.closeBool}"
-								class="btn btn-dark form-draw-button">
+								value="#{reportsLabels.reports_modal_alert_btn_exit}" disabled="#{fluxoPeriodo.build.closeBool}"
+								class="btn btn-dark form-draw-button" onclick="PF('poll').stop();" action="#{fluxoPeriodo.resetStepView}">
 								<f:passThroughAttribute name="data-dismiss" value="modal" />
 								<f:ajax execute="@form" render="@none" />
 							</h:commandButton>
