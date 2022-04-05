@@ -5,6 +5,8 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.groupdocs.conversion.internal.c.a.pd.internal.imaging.system.Threading.Thread;
+
 import br.com.tracevia.webapp.log.SystemLog;
 import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
 import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
@@ -54,21 +56,22 @@ public class FluxoPeriodoDAO {
 						
 		setDirections(sat.getFaixa1()); // DEFINE DIRECTIONS FIRST
 
-		String select = "CREATE TEMPORARY TABLE IF NOT EXISTS equip SELECT s.equip_id, CASE WHEN (s.dir_lane1 = s.dir_lane2 AND s.dir_lane1 = s.dir_lane3 AND s.dir_lane1 = s.dir_lane4) THEN 5" +
-							"WHEN (s.dir_lane1 = s.dir_lane2 AND s.dir_lane1 = s.dir_lane3) THEN 4" +
-							"WHEN (s.dir_lane1 = s.dir_lane2) THEN 3" +
-							"ELSE 2 END 'sentido' FROM sat_equipment s;\n"; // initialize variable						
+		String temp = "CREATE TEMPORARY TABLE IF NOT EXISTS test_wim.equip as SELECT s.equip_id, CASE WHEN (s.dir_lane1 = s.dir_lane2 AND s.dir_lane1 = s.dir_lane3 AND s.dir_lane1 = s.dir_lane4) THEN 5 " +
+							"WHEN (s.dir_lane1 = s.dir_lane2 AND s.dir_lane1 = s.dir_lane3) THEN 4 " +
+							"WHEN (s.dir_lane1 = s.dir_lane2) THEN 3 " +
+							"ELSE 2 END 'sentido' FROM sat_equipment s;"; // initialize variable		
+		String select = "";
 							
 		if(period.equals("15 minutes"))			
-			   select = "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS SD, " + 	
+			   select += "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS SD, " + 	
 					    "DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(data) - TIME_TO_SEC(data)%(15*60))),'%H:%i') AS INTERVALS, ";				
 				
 		if(period.equals("01 hour"))			
-			   select = "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS SD, " + 					
+			   select += "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS SD, " + 					
 					    "DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(data) - TIME_TO_SEC(data)%(60*60))),'%H:00') AS INTERVALS, ";		
 				
 		if(period.equals("24 hours"))			
-			   select = "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS SD, ' ---- ' AS  INTERVALS, ";			
+			   select += "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS SD, ' ---- ' AS  INTERVALS, ";			
 				
 		// -------------------------------------------------------------------------------------------------------------------------------------
 							
@@ -177,6 +180,9 @@ public class FluxoPeriodoDAO {
 		
 			conn.start(1);
 			
+			conn.prepare(temp);
+			conn.executeUpdate();
+			
 			conn.prepare_my(select);
 			conn.prepare_ms(select
 				.replace("DATE_FORMAT", "FORMAT")
@@ -220,25 +226,25 @@ public class FluxoPeriodoDAO {
 							pe.setSpeedMotoS2(rs.getInt("AVG_SPEED_MOTO_S2"));
 							pe.setSpeedTotalS2(rs.getInt("AVG_SPEED_TOTAL_S2"));
 							
-							pe.setSpeed50thAutoS1(rs.getInt("MED_SPEED_50_AUTO_S1"));
-							pe.setSpeed50thComS1(rs.getInt("MED_SPEED_50_COM_S1"));
-							pe.setSpeed50thMotoS1(rs.getInt("MED_SPEED_50_MOTO_S1"));
-							pe.setSpeed50thTotalS1(rs.getInt("MED_SPEED_50_TOTAL_S1"));
+							pe.setSpeed50thAutoS1(rs.getInt("AVG_SPEED_50_AUTO_S1"));
+							pe.setSpeed50thComS1(rs.getInt("AVG_SPEED_50_COM_S1"));
+							pe.setSpeed50thMotoS1(rs.getInt("AVG_SPEED_50_MOTO_S1"));
+							pe.setSpeed50thTotalS1(rs.getInt("AVG_SPEED_50_TOTAL_S1"));
 							
-							pe.setSpeed50thAutoS2(rs.getInt("MED_SPEED_50_AUTO_S2"));
-							pe.setSpeed50thComS2(rs.getInt("MED_SPEED_50_COM_S2"));
-							pe.setSpeed50thMotoS2(rs.getInt("MED_SPEED_50_MOTO_S2"));
-							pe.setSpeed50thTotalS2(rs.getInt("MED_SPEED_50_TOTAL_S2"));
+							pe.setSpeed50thAutoS2(rs.getInt("AVG_SPEED_50_AUTO_S2"));
+							pe.setSpeed50thComS2(rs.getInt("AVG_SPEED_50_COM_S2"));
+							pe.setSpeed50thMotoS2(rs.getInt("AVG_SPEED_50_MOTO_S2"));
+							pe.setSpeed50thTotalS2(rs.getInt("AVG_SPEED_50_TOTAL_S2"));
 							
-							pe.setSpeed85thAutoS1(rs.getInt("MED_SPEED_85_AUTO_S1"));
-							pe.setSpeed85thComS1(rs.getInt("MED_SPEED_85_COM_S1"));
-							pe.setSpeed85thMotoS1(rs.getInt("MED_SPEED_85_MOTO_S1"));
-							pe.setSpeed85thTotalS1(rs.getInt("MED_SPEED_85_TOTAL_S1"));
+							pe.setSpeed85thAutoS1(rs.getInt("AVG_SPEED_85_AUTO_S1"));
+							pe.setSpeed85thComS1(rs.getInt("AVG_SPEED_85_COM_S1"));
+							pe.setSpeed85thMotoS1(rs.getInt("AVG_SPEED_85_MOTO_S1"));
+							pe.setSpeed85thTotalS1(rs.getInt("AVG_SPEED_85_TOTAL_S1"));
 							
-							pe.setSpeed85thAutoS2(rs.getInt("MED_SPEED_85_AUTO_S2"));
-							pe.setSpeed85thComS2(rs.getInt("MED_SPEED_85_COM_S2"));
-							pe.setSpeed85thMotoS2(rs.getInt("MED_SPEED_85_MOTO_S2"));
-							pe.setSpeed85thTotalS2(rs.getInt("MED_SPEED_85_TOTAL_S2"));
+							pe.setSpeed85thAutoS2(rs.getInt("AVG_SPEED_85_AUTO_S2"));
+							pe.setSpeed85thComS2(rs.getInt("AVG_SPEED_85_COM_S2"));
+							pe.setSpeed85thMotoS2(rs.getInt("AVG_SPEED_85_MOTO_S2"));
+							pe.setSpeed85thTotalS2(rs.getInt("AVG_SPEED_85_TOTAL_S2"));
 							
 							pe.setSpeedMaxAutoS1(rs.getInt("MAX_SPEED_AUTO_S1"));
 							pe.setSpeedMaxComS1(rs.getInt("MAX_SPEED_COM_S1"));
