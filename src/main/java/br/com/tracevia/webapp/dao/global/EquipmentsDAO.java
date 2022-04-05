@@ -897,6 +897,8 @@ public class EquipmentsDAO {
 
 			conn.prepare(sql);
 			MapResult result = conn.executeQuery();
+			
+			//System.out.println(sql);
 
 			if (result != null) {
 				for (RowResult rs : result) {
@@ -933,6 +935,94 @@ public class EquipmentsDAO {
 			conn.close();
 		}
 		return sat;
+	}
+
+	// --------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para obter informação de um equipamento específico
+	 * 
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0
+	 * @param equip_id - Equipamento ID
+	 * @param module   - Módulo
+	 * @return Equipments - Objeto com informações do tipo Equipments
+	 */
+
+	public List<SAT> ListSATinfoHeader(String[] equipId) {
+
+		TranslationMethods tm = new TranslationMethods();
+		
+		List<SAT> list = new ArrayList<SAT>();
+
+		String sql = "SELECT st.name, st.km, r.road_name, st.number_lanes, st.dir_lane1, st.dir_lane2, st.dir_lane3, st.dir_lane4, st.dir_lane5, st.dir_lane6, st.dir_lane7, st.dir_lane8  "
+				+ "FROM sat_equipment st "
+				+ "INNER JOIN concessionaire_roads r ON r.road_id = st.road "
+				+ "WHERE st.equip_id IN(";
+		
+		
+		      for(int e = 0; e < equipId.length; e++) {
+		    	  
+		    	  sql += equipId[e];
+		    	  
+		    	  if(e < equipId.length - 1) {
+		    		  sql +=", ";
+		    		  
+		    	  }	    	  
+		      }
+		
+		
+				sql += ") AND st.visible = 1";
+
+		try {
+			
+			conn.start(1);
+
+			conn.prepare(sql);
+			MapResult result = conn.executeQuery();
+			
+			//System.out.println(sql);
+
+			if (result != null) {
+				for (RowResult rs : result) {
+					
+					SAT sat = new SAT();
+
+					sat.setNome(rs.getString(1));
+					sat.setKm(rs.getString(2));
+					sat.setEstrada(rs.getString(3));
+					sat.setNumFaixas(rs.getInt(4));
+					sat.setFaixa1(rs.getString(5));
+					sat.setFaixa2(rs.getString(6));
+					sat.setFaixa3(rs.getString(7));
+					sat.setFaixa4(rs.getString(8));
+					sat.setFaixa5(rs.getString(9));
+					sat.setFaixa6(rs.getString(10));
+					sat.setFaixa7(rs.getString(11));
+					sat.setFaixa8(rs.getString(12));
+					sat.setSentido1(tm.directionTab(rs.getString(5)));
+					sat.setSentido2(tm.oppositeDirectionTab(rs.getString(5)));
+					sat.setSentido1Abbr(tm.directionAbbreviation(rs.getString(5)));
+					sat.setSentido2Abbr(tm.oppositeDirectionAbbreviation(rs.getString(5)));
+					
+					list.add(sat);
+
+				}
+			}
+
+		} catch (Exception sqle) {
+
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));
+
+			SystemLog.logErrorSQL(errorFolder.concat("error_sat_header"), EquipmentsDAO.class.getCanonicalName(),
+					sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
+
+		} finally {
+			conn.close();
+		}
+		return list;
 	}
 
 	// --------------------------------------------------------------------------------------------------------------

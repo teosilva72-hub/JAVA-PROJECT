@@ -22,14 +22,16 @@
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv v')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.weight_per_time_interval_quantity, satLabels.weight_per_time_interval_gross_weight))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, Equipamento, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.weight_per_time_interval_quantity, satLabels.weight_per_time_interval_gross_weight))}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(1); SUM(gross)')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(DateTime, `dd/MM/yyyy`); CAST($period as TIME); SUM(1) as `total`; SUM(AxlesWeight01 + AxlesWeight02 + AxlesWeight03 + AxlesWeight04 + AxlesWeight05 + AxlesWeight06 + AxlesWeight07 + AxlesWeight08 + AxlesWeight09 + AxlesWeight10 + AxlesWeight11 + AxlesWeight12 + AxlesWeight13 + AxlesWeight14 + AxlesWeight15 + AxlesWeight16 + AxlesWeight17 + AxlesWeight18 + AxlesWeight19 + AxlesWeight20 + AxlesWeight21 + AxlesWeight22 + AxlesWeight23 + AxlesWeight24 + AxlesWeight25) as `sum`')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; s.name; SUM(1); SUM(gross)')}" />
+		<!-- <f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(DateTime, `dd/MM/yyyy`); CAST($period as TIME); SUM(1) as `total`; SUM(AxlesWeight01 + AxlesWeight02 + AxlesWeight03 + AxlesWeight04 + AxlesWeight05 + AxlesWeight06 + AxlesWeight07 + AxlesWeight08 + AxlesWeight09 + AxlesWeight10 + AxlesWeight11 + AxlesWeight12 + AxlesWeight13 + AxlesWeight14 + AxlesWeight15 + AxlesWeight16 + AxlesWeight17 + AxlesWeight18 + AxlesWeight19 + AxlesWeight20 + AxlesWeight21 + AxlesWeight22 + AxlesWeight23 + AxlesWeight24 + AxlesWeight25) as `sum`')}" /> -->
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_equipment s ON s.equip_id = siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('s.name')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setOrderDate('s.name, v.data')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />

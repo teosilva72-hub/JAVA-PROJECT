@@ -33,7 +33,6 @@
 		SUM(IF(classe = `2` OR classe = `3` OR classe = `8` OR classe = `2A`, 1, 0)); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv_ll.lane')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />

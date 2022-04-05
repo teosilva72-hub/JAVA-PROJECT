@@ -2457,6 +2457,17 @@ public class DateTimeApplication {
 			return createdDate;		   
 	}
 	 
+	 public String createDateTime(int day, int month, int year, int hour, int minute, int second) throws ParseException {
+		    
+		   	String newDate = year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;
+		    
+		    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date date = format.parse(newDate);	   
+			String createdDatetime = format.format(date);
+			
+			return createdDatetime;		   
+	}
+	 
 	// ------------------------------------------------------------------------------------------------------
 	 
 	 public String[] preencherHora(int tamanho) {

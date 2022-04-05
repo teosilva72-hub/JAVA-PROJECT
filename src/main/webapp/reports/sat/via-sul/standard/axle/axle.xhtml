@@ -37,7 +37,6 @@
 		SUM(axlNumber = 5); SUM(axlNumber = 6); SUM(axlNumber = 7); SUM(axlNumber = 8); SUM(axlNumber = 9); SUM(axlNumber &gt;= 10); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv_ccr.lane')}" />
 			
-		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />

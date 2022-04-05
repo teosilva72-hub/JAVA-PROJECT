@@ -26,17 +26,18 @@
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	  	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv_ccr')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_dados15')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('NOME_ESTACAO')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.speed_50_km, satLabels.speed_50km_70km, satLabels.speed_70_km_90km, satLabels.speed_90_km_120km, satLabels.speed_120_150km, satLabels.speed_over_150km, satLabels.global_total_vehicles_column))}" />
+	
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(DATA_HORA, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(IF(VEL_MEDIA_TOTAL &lt; 50, VOLUME_TOTAL, 0)); SUM(IF(VEL_MEDIA_TOTAL &gt;= 50 AND VEL_MEDIA_TOTAL &lt; 70, VOLUME_TOTAL, 0)); 
+		SUM(IF(VEL_MEDIA_TOTAL &gt;= 70 AND VEL_MEDIA_TOTAL &lt; 90, VOLUME_TOTAL, 0)); SUM(IF(VEL_MEDIA_TOTAL &gt;= 90 AND VEL_MEDIA_TOTAL &lt; 120, VOLUME_TOTAL, 0)); SUM(IF(VEL_MEDIA_TOTAL &gt;= 120 AND VEL_MEDIA_TOTAL &lt; 150, VOLUME_TOTAL, 0));
+		SUM(IF(VEL_MEDIA_TOTAL &gt;= 150, VOLUME_TOTAL, 0)); SUM(VOLUME_TOTAL);')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(speed &lt; 50); SUM(speed &gt;= 50 AND speed &lt; 70); SUM(speed &gt;= 70 AND speed &lt; 90); SUM(speed &gt;= 90 AND speed &lt; 120); SUM(speed &gt;= 120 AND speed &lt; 150); SUM(speed &gt;= 150); SUM(1)')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv_ccr.lane')}" />
-			
-		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
-
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON q.equip_id = tb_dados15.NOME_ESTACAO AND q.lane = tb_dados15.NOME_FAIXA')}" />
+	   	<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
+	   	
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('DATA_HORA')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
@@ -45,13 +46,13 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
-		
-		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions, direction, direction')}" />
+				
+		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions q, q.direction, q.direction')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
-		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_vehicles, 'filter_vehicles.id_vehicle|name' , true, true)}" />
+					
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('DATA_HORA', reportsLabels.reports_select_date, true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('q.direction', reportsLabels.reports_select_directions, 'filter_directions.direction', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('NOME_ESTACAO', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
 		
     </f:metadata>
 	

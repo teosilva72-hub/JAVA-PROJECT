@@ -390,13 +390,10 @@ public class ExcelTemplate {
 
 			 // SENTIDO
 			 utilSheet.createCell(sheet, row, 10, columns - 1);
-			
-			if(equipId.size() == 1)		
-			    utilSheet.setCellValue(sheet, row, 10, columns - 1, tm.directions(satInfo.get(0).getSentidos()));
-			
-			else utilSheet.setCellValue(sheet, row, 10, columns - 1, satInfo.get(0).getSentidos());
-			
-			    utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 10, columns - 1);
+			 
+			 utilSheet.setCellValue(sheet, row, 10, columns - 1, tm.directions(satInfo.get(0).getSentidos()));
+						
+			 utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 10, columns - 1);
 								
 			}
 		}
@@ -611,12 +608,10 @@ public class ExcelTemplate {
 			 // SENTIDO
 			 utilSheet.createCell(sheet, row, 10, columns - 1);
 			
-			if(equipId.length() == 1)		
-			    utilSheet.setCellValue(sheet, row, 10, columns - 1, tm.directions(satInfo.get(0).getSentidos()));
-			
-			else utilSheet.setCellValue(sheet, row, 10, columns - 1, satInfo.get(0).getSentidos());
-			
-			    utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 10, columns - 1);
+		     utilSheet.setCellValue(sheet, row, 10, columns - 1, tm.directions(satInfo.get(0).getSentidos()));
+				
+		     utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 10, columns - 1);
+		     
 			}
 								
 		}
