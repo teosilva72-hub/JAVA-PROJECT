@@ -39,60 +39,7 @@
 	<!-- ============================================================================================================================= -->
 		  	
 	  <div class="table-container">   <!-- TABLE DIV CONTENT --> 		
-	     <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->
-	  		        
-        <!-- ALERT MESSAGE -->
-	 
-         <ui:include src="/template/alerts/alerts.xhtml" />
-             
-    <!-- ============================================================================================================================= -->
-                          
-	<!-- REPORTS LABEL INFORMATION --> 
-	 <div class="text-dark text-center font-weight-bold report-title" >
-	 <h:outputText value="#{satLabels.via_paulista_flow_per_period_title}" />
-	 <hr></hr>
-	 </div>
-	 
-	 <!-- TABLE -->
-	 
-	 <h:dataTable id="data-table" value="#{fluxoPeriodo.resultList}" var="periodFlow" autocomplete="off"				               
-     styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0" width="100%" 
-     headerClass="custom-table-header">	
-               
-     <f:facet name="header">          
-	      <tr>
-	        <th rowspan="2" class="custom-table-header" >#{fluxoPeriodo.columns.get(0).field}</th>
-	        <th rowspan="2" class="custom-table-header" >#{fluxoPeriodo.columns.get(1).field}</th>
-	        <th rowspan="2" class="custom-table-header" >#{fluxoPeriodo.columns.get(2).field}</th>
-	        <th colspan="6" class="custom-table-header" >#{satLabels.$labels_period_flow_info_direction1}</th> <!-- SUB HEADER -->
-	        <th colspan="6" class="custom-table-header" >#{satLabels.$labels_period_flow_info_direction2}</th> <!-- SUB HEADER -->
-	      </tr>
-      
-	      <tr>
-	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(3).field}</th>
-	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(4).field}</th>
-	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(5).field}</th>
-	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(6).field}</th>
-	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(7).field}</th>
-	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(8).field}</th>
-	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(9).field}</th>
-	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(10).field}</th>
-	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(11).field}</th>
-	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(12).field}</th>
-	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(13).field}</th>
-	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(14).field}</th>
-	      </tr>
-      
-    </f:facet>
-    
-     <c:forEach items="#{fluxoPeriodo.columns}" var="header" varStatus="loop">
-            <h:column>              
-              <h:outputText value="#{periodFlow[header.value]}" />
-            </h:column> 
-     </c:forEach>   
-  	 	
-    </h:dataTable> <!---->					
-	  </h:form> <!---->
+	     
     
         <!---->
 			
@@ -377,7 +324,7 @@
 		 
 			<div class="modal fade" id="modalInfo" tabindex="-1"
 				aria-labelledby="infoModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-					<div class="modal-dialog confirmation-modal">
+					<div class="modal-dialog">
 						<h:form class="modal-content" id="form-info">
 							<div class="modal-header text-center">
 								<h4 class="modal-title w-100 font-weight-bold" id="infoModalLabel">#{reportsLabels.reports_modal_alert_process_data_title}</h4>								
