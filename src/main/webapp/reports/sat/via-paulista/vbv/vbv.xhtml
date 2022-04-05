@@ -68,18 +68,18 @@
 	   		 </div>
 	   	</div>
 	   	
-	   	<!---->	  
+	   	<!---->
 	   	
-	   	<label id="label" class="text-dark d-none"></label>	<!-- EQUIP INFORMATION LABEL -->
+	   	<label id="label" class="text-dark d-none"><strong>#{vbvReportBean.name}</strong> #{vbvReportBean.month} #{vbvReportBean.year}</label>	<!-- EQUIP INFORMATION LABEL -->
 	   	
-	   	<!----> 
-	
+	   	<!---->
+	   						
 			<div class="container top-15-vh"> <!-- CONTAINER DIV -->	
-									
+			
 			 <!-- FORM --> 		
 
-		      <h:form name="vbv-form" id="vbv-form">	   
-														
+		      <h:form name="vbv-form" id="vbv-form">		          
+			
 				<div class="row justify-content-center">
 				
 				   <!-- EQUIPMENT -->
@@ -149,47 +149,38 @@
 			<!-- FOOTER BUTTONS -->
 			
 			<div class="row">
-			
-				<!-- SUBMIT BUTTON -->
+	
+				<h:commandButton value="#{reportsLabels.reports_form_btn_send}"
+					id="btn-send" action="#{vbvReportBean.getTextFile}"
+					class="btn btn-dark form-draw-button submit-btn" /> <!-- SEND -->
 				
-				<button type="button" id="btn-form-confirm" class="btn btn-dark form-draw-button submit-btn"
-					onclick="verif('#vbv-form', '[id$=btn-form-send]')" >
-					#{reportsLabels.reports_form_btn_send}
-				</button>
-					
-				<!---->
-
-				<h:commandButton value="#{reportsLabels.reports_form_btn_send}" class="d-none" id="btn-form-send">
-					<f:ajax execute="@form" render="label btnText" listener="#{vbvReportBean.getTextFile}"
-						onevent="onEventFunction" />
-				</h:commandButton>							
-								
                 <!---->
-                          
-               	<h:commandButton value="#{reportsLabels.reports_form_btn_reset}" id="btn-form-reset" class="btn btn-dark form-draw-button reset-btn ml-2"
-               	  onclick="$('#equip').val(''); $('#month').val(''); $('#year').val('')">
-					<f:ajax execute="@form" render="label btnText" listener="#{vbvReportBean.resetForm}" />																	
-				</h:commandButton><!-- BUTTON RESET -->
-										                
-                <!---->	             		
 						
+				<h:commandButton value="#{reportsLabels.reports_form_btn_reset}" action="#{vbvReportBean.resetForm}" immediate="true"
+					id="btn-reset" class="btn btn-dark form-draw-button ml-2 reset-btn">
+                   	  <f:ajax render="btnText" resetValues="true"/> <!-- RESET -->	
+                </h:commandButton>	
+             						
 			</div>
-			
-			    <div class="row justify-content-center" >     
-			      <div class="col-12">      	    
-				 	   <h:commandButton id="btnText" value="" class="fas fa-file-alt fa-2x txt" data-toggle="tooltip" disabled="#{vbvReportBean.build.textBool}"
-						  data-placement="bottom" title="#{reportsLabels.reports_btn_txt}" widgetVar="fileWgt">
-						  <f:passThroughAttribute name="data-toggle" value="modal" />
-						  <f:passThroughAttribute name="data-target" value="#modalDownload" />
-						  <f:ajax execute="@form" render="@none" />
-		  			  </h:commandButton>
-	  			 </div> 	  				   			
-		   	</div>	
+
+			<!---->
+									
+			<!-- BUTTON TXT -->
+							
+		   	<div class="row justify-content-center" >
+		       <div class="col-sm-12">
+			 	   <h:commandButton id="btnText" value="" class="fas fa-file-alt fa-2x txt" data-toggle="tooltip" disabled="#{vbvReportBean.build.textBool}"
+					  data-placement="bottom" title="#{reportsLabels.reports_btn_txt}" widgetVar="fileWgt">
+					  <f:passThroughAttribute name="data-toggle" value="modal" />
+					  <f:passThroughAttribute name="data-target" value="#modalDownload" />
+					  <f:ajax execute="@form" render="@none" />
+	  			  </h:commandButton>
+	   			</div>
+		   	</div>
 
 			<!---->
 			
-			</h:form><!-- FORM TABLE END-->
-							
+		</h:form><!-- FORM TABLE END-->
 		
 	<!-- ============================================================================================================================= -->		
 		

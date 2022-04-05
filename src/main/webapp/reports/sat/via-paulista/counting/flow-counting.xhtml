@@ -43,7 +43,7 @@
               
         SUM(1)')}" />
 				
-		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_dataDesc_siteID')}" />
+		<!-- <f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_dataDesc_siteID')}" /> -->
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions f ON f.equip_id = siteID AND f.lane = s.lane')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
