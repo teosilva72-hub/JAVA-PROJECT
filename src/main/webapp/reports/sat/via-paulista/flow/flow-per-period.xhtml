@@ -209,7 +209,7 @@
 						
 							<h:commandButton value="#{reportsLabels.reports_form_btn_send}" style="display: none"
 								id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions" onclick="isValidSubmit();" >
-								<f:ajax execute="@form" render="form-table form-btns form-info" listener="#{fluxoPeriodo.processInformations}" />
+								<f:ajax execute="@form" render="form-btns form-info" listener="#{fluxoPeriodo.processInformations}" />
 							</h:commandButton>
 							
 					        <!---->
