@@ -56,7 +56,7 @@ public class FluxoPeriodoDAO {
 						
 		setDirections(sat.getFaixa1()); // DEFINE DIRECTIONS FIRST
 
-		String temp = "CREATE TEMPORARY TABLE IF NOT EXISTS test_wim.equip as SELECT s.equip_id, CASE WHEN (s.dir_lane1 = s.dir_lane2 AND s.dir_lane1 = s.dir_lane3 AND s.dir_lane1 = s.dir_lane4) THEN 5 " +
+		String temp = "CREATE TEMPORARY TABLE IF NOT EXISTS equip as SELECT s.equip_id, CASE WHEN (s.dir_lane1 = s.dir_lane2 AND s.dir_lane1 = s.dir_lane3 AND s.dir_lane1 = s.dir_lane4) THEN 5 " +
 							"WHEN (s.dir_lane1 = s.dir_lane2 AND s.dir_lane1 = s.dir_lane3) THEN 4 " +
 							"WHEN (s.dir_lane1 = s.dir_lane2) THEN 3 " +
 							"ELSE 2 END 'sentido' FROM sat_equipment s;"; // initialize variable		

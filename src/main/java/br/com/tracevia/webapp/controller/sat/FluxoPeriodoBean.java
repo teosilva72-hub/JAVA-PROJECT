@@ -712,9 +712,7 @@ public class FluxoPeriodoBean implements Serializable {
 			updateCloseButton(); // UPDATE CLOSE BUTTON ON VIEW
 							
 			// REDRAW TABLE
-			columns = build.drawTable(build.fields, build.fieldObjectValues);
-					
-			downloadFile();										        
+			columns = build.drawTable(build.fields, build.fieldObjectValues);								        
 	    }	  
 	  
 	// -------------------------------------------------------------------------------------------------------------
