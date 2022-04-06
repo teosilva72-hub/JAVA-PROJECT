@@ -19,6 +19,7 @@ public class TuxpanOcc{
 		data = new TuxpanOccModel();
 		dao = new TuxpanDAO();
 		listar = new ArrayList<TuxpanOccModel>();
+		
 		try {
 			listar = dao.listarOcorrencias();
 		} catch (Exception e) {
@@ -26,14 +27,24 @@ public class TuxpanOcc{
 			e.printStackTrace();
 		}
 	}
+	public boolean update() {
+		boolean check = false;
+		System.out.println("atualizar");
+		dao = new TuxpanDAO();
+		try {
+			check = dao.update(data, idTable);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return check;
+	}
 	public boolean select() {
-		
 		boolean check = false;
 		dao = new TuxpanDAO();
-		
+		scriptsOcc();
 		try {
 			data = dao.select(idTable);
-			System.out.println("method select > "+idTable );
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -44,6 +55,7 @@ public class TuxpanOcc{
 	public boolean saveOcc() {
 		boolean check = false;
 		dao = new TuxpanDAO();
+		scriptsOcc();
 		try {
 			check = dao.registerOcc(data, typeReport);
 			if(check == false) {
@@ -51,8 +63,6 @@ public class TuxpanOcc{
 			}else {
 				//message success
 				listTable();
-				//init();
-				//RequestContext.getCurrentInstance().execute("listOcc()");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -74,6 +84,9 @@ public class TuxpanOcc{
 		}
 		
 		return check;
+	}
+	public void scriptsOcc() {
+		RequestContext.getCurrentInstance().execute("appendOcc()");
 	}
 	//variables
 	private String typeReport, idTable;

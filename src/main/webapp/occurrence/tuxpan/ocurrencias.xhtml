@@ -30,86 +30,82 @@
 
 		<div class="row">
 			<div class="col-2">
-			<div class="row">
-				<div class="col-12">
-					<button type="button" class="btn btn-dark btn-modal"
-						data-toggle="modal" data-target="#modalOcc" id="type_occ">Nuevo
-						Ocurrencia</button>
+				<div class="row">
+					<div class="col-12">
+						<button type="button" class="btn btn-dark btn-modal"
+							data-toggle="modal" data-target="#modalOcc" id="type_occ">Nuevo
+							Ocurrencia</button>
+					</div>
+					<div class="col-12">
+						<button type="button" class="btn btn-warning btn-modal"
+							data-toggle="modal" data-target="#modalSin" id="type_sin">Nuevo
+							Siniestro</button>
+					</div>
 				</div>
-				<div class="col-12">
-					<button type="button" class="btn btn-warning btn-modal"
-						data-toggle="modal" data-target="#modalSin" id="type_sin">Nuevo
-						Siniestro</button>
-				</div>
-			</div>
 			</div>
 			<div class="col-8">
-			<h:form prependId="false" id="list-table">
-				<h:dataTable id="occurrence-table" var="date" disabled="true"
-					value="#{OccController.listar}" class="text-center"
-					styleClass="table table-sm custom-table table-striped table-dark table-hover"
-					cellspacing="0" width="100%" headerClass="custom-table-header"
-					columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn, text-center justify-content-center">
+				<h:form prependId="false" id="list-table">
+					<h:dataTable id="occurrence-table" var="date" disabled="true"
+						value="#{OccController.listar}" class="text-center"
+						styleClass="table table-sm custom-table table-striped table-dark table-hover"
+						cellspacing="0" width="100%" headerClass="custom-table-header"
+						columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn, text-center justify-content-center">
 
-					<h:column>
-						<f:facet name="header">#{occLabels.occ_list_table_id}</f:facet>
-						<h:outputText value="#{date.id}" class="text-center"
-							style="font-size: 12px; " />
-					</h:column>
+						<h:column>
+							<f:facet name="header">#{occLabels.occ_list_table_id}</f:facet>
+							<h:outputText value="#{date.id}" class="text-center"
+								style="font-size: 12px; " />
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">Folio Secuencial</f:facet>
-						<h:outputText value="#{date.folio_sec}" style="font-size: 12px;" />
-					</h:column>
+						<h:column>
+							<f:facet name="header">Folio Secuencial</f:facet>
+							<h:outputText value="#{date.folio_sec}" style="font-size: 12px;" />
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">Reporte</f:facet>
-						<h:outputText value="#{date.reporte}" style="font-size: 12px;" />
-					</h:column>
+						<h:column>
+							<f:facet name="header">Reporte</f:facet>
+							<h:outputText value="#{date.reporte}" style="font-size: 12px;" />
+						</h:column>
 
-					<h:column>
-						<f:facet name="header">Siniestro</f:facet>
-						<h:outputText value="#{date.siniestro}" style="font-size: 12px;" />
-					</h:column>
+						<h:column>
+							<f:facet name="header">Siniestro</f:facet>
+							<h:outputText value="#{date.siniestro}" style="font-size: 12px;" />
+						</h:column>
 
-					<h:column>
-						<f:facet class="barraTable text-center" name="header">Fecha</f:facet>
-						<h:outputText value="#{date.fecha}"
-							style="font-size: 12px;" />
-					</h:column>
-					<h:column>
-						<f:facet class="barraTable text-center" name="header">Hora</f:facet>
-						<h:outputText value="#{date.hora}"
-							style="font-size: 12px;" />
-					</h:column>
-					<h:column>
+						<h:column>
+							<f:facet class="barraTable text-center" name="header">Fecha</f:facet>
+							<h:outputText value="#{date.fecha}" style="font-size: 12px;" />
+						</h:column>
+						<h:column>
+							<f:facet class="barraTable text-center" name="header">Hora</f:facet>
+							<h:outputText value="#{date.hora}" style="font-size: 12px;" />
+						</h:column>
+						<h:column>
 
-						<f:facet name="header">AÇÕES</f:facet>
-						<h:form prependId="false" id="btn-edit-report">
+							<f:facet name="header">AÇÕES</f:facet>
+							<h:form prependId="false" id="edit-form">
+								<h:inputHidden value="#{OccController.idTable}" name="idTable"
+									id="idTable" />
+								<div class="dropdown">
+									<!-- Edit -->
+									<h:commandLink id="editocc" action="#{OccController.select}">
+										<i class="fas fa-edit" style="color: gray;"></i>
+										<f:setPropertyActionListener value="#{date.id}"
+											target="#{OccController.idTable}" />
+										<f:passThroughAttribute name="data-toggle" value="modal" />
+										<f:passThroughAttribute name="data-target" value="#modalOcc" />
+										<f:ajax execute="@form" render=":form_occ :edit-form" />
+									</h:commandLink>
 
-							<div class="dropdown">
-								<!-- Edit -->
-								<h:commandLink id="editocc"
-									action="#{OccController.select}">
-									<i class="fas fa-edit" style="color: gray;"></i>
-									<f:setPropertyActionListener value="#{data.data_number}"
-										target="#{occurrencesBean2.rowkey}" />
-									<f:passThroughAttribute name="data-toggle" value="modal" />
-									<f:passThroughAttribute name="data-target"
-										value="#modalOcc" />
-									<f:ajax execute="@form"
-										render=":form-cadastro :btn-edit-report" />
-								</h:commandLink>
-								
-								
-							</div>
-						</h:form>
-					</h:column>
-				</h:dataTable>
+
+								</div>
+							</h:form>
+						</h:column>
+					</h:dataTable>
 				</h:form>
 			</div>
 		</div>
-		
+
 		<!-- Modal Sin-->
 		<div class="modal fade" id="modalSin" data-backdrop="static"
 			data-keyboard="false" tabindex="-1" aria-labelledby="modalSin"
@@ -615,7 +611,7 @@
 							</div>
 							<!-- INPUTS HIDDEN -->
 							<!-- VEH INV AND EJE -->
-							<h:inputHidden value="#{OccController.idTable}"/>
+							<h:inputHidden value="#{OccController.idTable}" />
 							<h:inputHidden class="form-control" name="tipo_veh_inv"
 								id="tipo_veh_inv" value="#{OccController.data.tipo_veh_inv}" />
 
@@ -657,18 +653,26 @@
 
 							<h:inputHidden name="codiciones_person" id="condiciones_person"
 								class="form-control" value="#{OccController.data.condiciones}" />
-							
-							<h:inputHidden name="type_report" id="type_report" value="#{OccController.typeReport}"></h:inputHidden>
+
+							<h:inputHidden name="type_report" id="type_report"
+								value="#{OccController.typeReport}"></h:inputHidden>
 
 							<!-- BTN SAVE OCC -->
 							<h:commandButton type="button" style="display:none;"
 								class="btn btn-primary" value="Salvar" id="saveOcc">
-								<f:ajax execute="@form" render=":list-table" listener="#{OccController.saveOcc}" />
+								<f:ajax execute="@form" render=":list-table :form_occ"
+									listener="#{OccController.saveOcc}" />
+							</h:commandButton>
+							<!-- update occ -->
+							<h:commandButton style="display:none;" id="OccUpdate">
+								<f:ajax execute="@form" render=":list-table :form_occ"
+								listener="#{OccController.update}"/>
 							</h:commandButton>
 							<!-- BTN LISTAR OCC -->
 							<h:commandButton type="button" style="display:none;"
 								class="btn btn-primary" value="Salvar" id="list_occ">
-								<f:ajax execute="@form" render=":list-table :form_occ" listener="#{OccController.listTable}" />
+								<f:ajax execute="@form" render=":list-table :form_occ"
+									listener="#{OccController.listTable}" />
 							</h:commandButton>
 						</h:form>
 						<!-- END INPUTS -->
@@ -678,13 +682,12 @@
 							data-dismiss="modal">Cancelar</button>
 						<button type="button" class="btn btn-secondary"
 							data-dismiss="modal" id="occSave">Salvar</button>
+						<button type="button" class="btn btn-secondary hidden"
+							data-dismiss="modal" id="updateOcc">Actualizar</button>
 					</div>
 				</div>
 			</div>
 		</div>
-		<h:form prependId="false" id="setOcc">
-
-		</h:form>
 		<!-- Script -->
 		<h:outputScript name="controller.js" library="js/occ/tuxpan-report" />
 		<h:outputScript name="datepicker.js" library="js/datepicker" />

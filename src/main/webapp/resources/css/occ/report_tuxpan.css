@@ -23,3 +23,6 @@ a#btn_veh_ocup {
     position: relative;
     top: 25px;
 }
+.hidden{
+	display: none;
+}
