@@ -685,8 +685,6 @@ public class FluxoPeriodoBean implements Serializable {
 				 step = 3;
 				 	message(step);	// DATA PROCESS MESSAGE		
 				 	
-				 delay(3000); // PAUSE
-				 	
 				 step = 7;	
 				 	message(step);				 				
 			 											
@@ -715,10 +713,8 @@ public class FluxoPeriodoBean implements Serializable {
 							
 			// REDRAW TABLE
 			columns = build.drawTable(build.fields, build.fieldObjectValues);
-			
-			//UPDATE TABLE JQUERY ON RELOAD PAGE
-			SessionUtil.executeScript("drawTable()");		
-															        
+					
+			downloadFile();										        
 	    }	  
 	  
 	// -------------------------------------------------------------------------------------------------------------
@@ -2127,8 +2123,7 @@ public class FluxoPeriodoBean implements Serializable {
 		
 	    // System.out.println("step by step");
 			
-		if(step == 0) 	
-			delay(3000);			
+		if(step == 0) 			
 					
 			if(step == 1) {
 				
@@ -2140,7 +2135,6 @@ public class FluxoPeriodoBean implements Serializable {
 								+ "\n"+localeSat.getStringKey("$label_period_flow_message_create_sheet");
 					
 					updateForm(); // UPDATE MODAL FORM VIEW
-						delay(3000); // DELAY TO EXECUTE
 				   											    
 				}
         				
@@ -2151,7 +2145,6 @@ public class FluxoPeriodoBean implements Serializable {
 					else displayMessage +="\n"+localeSat.getStringKey("$label_period_flow_message_created_sheet");
 							
 						updateForm(); // UPDATE MODAL FORM VIEW	   
-						delay(3000); // DELAY TO EXECUTE
 				}
 		
 		   if(step == 3) {		   
@@ -2416,16 +2409,7 @@ public class FluxoPeriodoBean implements Serializable {
 																														
 		               }	
 		
-				 }
-	
-	
-	 public void delay(int milissegundos) {
-	        try {	            
-	            Thread.sleep(milissegundos);
-	        } catch (InterruptedException e) {
-	            
-	        }
-	    }	     
+				 }     
 	     
 	     public void instaciarProcessaDados(DateTimeApplication dta) throws Exception {
 	    	 
