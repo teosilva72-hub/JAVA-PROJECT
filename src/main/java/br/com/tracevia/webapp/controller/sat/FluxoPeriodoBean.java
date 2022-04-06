@@ -34,7 +34,6 @@ import org.apache.poi.ss.util.PropertyTemplate;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.controller.global.LanguageBean;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
@@ -664,16 +663,13 @@ public class FluxoPeriodoBean implements Serializable {
 	    List<SAT> satList= new ArrayList<SAT>();	
 		satList = equipDao.ListSATinfoHeader(equips);
 		 				 
-		 //--- Initializing --- //
-				 			
-		 step = 0;
-		 	message(step);	// START DELAY 3 SEC	
-		 	
-	 	 step = 1; //
-		 	message(step);	// CREATE SHEETS MESSAGE
+		 //--- Initializing --- //				 				 	 	
 				 
 		 for(indice=0; indice < equips.length; indice++) 	 
-			   createSheets(indice, Integer.parseInt(equips[indice]), satList); 	
+			   createSheets(indice, Integer.parseInt(equips[indice]), satList); 
+		 
+		 step = 1; //
+		 	message(step);	// CREATE SHEETS MESSAGE
 		 								   		       		
          step = 2;
          	message(step);	 // CREATE SHEETS ENDED MESSAGE
@@ -703,14 +699,10 @@ public class FluxoPeriodoBean implements Serializable {
 		    step = 6;		   
 		    	message(step);	// PROCESS ENDED MESSAGE	
 				    	 									
-		    populateTable(); // POP DATATABLE
-		    
-			build.closeBool = false; // ALLOW CLOSE MODAL
-			build.excelBool = false; // ALLOW DOWNLOAD EXCEL FILE
-			build.clearBool = false; // ALLOW CLEAN TABLE
-			
-			updateCloseButton(); // UPDATE CLOSE BUTTON ON VIEW
-							
+		    //populateTable(); // POP DATATABLE
+		    			
+			build.excelBool = false; // ALLOW DOWNLOAD EXCEL FILE	
+													
 			// REDRAW TABLE
 			columns = build.drawTable(build.fields, build.fieldObjectValues);								        
 	    }	  
@@ -1425,6 +1417,7 @@ public class FluxoPeriodoBean implements Serializable {
 		step = 0;
 		
 		updateForm();
+		updateCloseButton(); // UPDATE CLOSE BUTTON
 		
 		try {
 
@@ -1445,20 +1438,23 @@ public class FluxoPeriodoBean implements Serializable {
 	public void resetStepView() throws Exception {
 	
 		build.closeBool = true;
+		build.excelBool = true;
 			
 		setDisplayMessage("");	
 		
 		step = 0;
 		
 		updateForm(); // UPDATE FORM MESSAGE
-		updateCloseButton(); // UPDATE CLOSE BUTTON
-						
+		//updateCloseButton(); // UPDATE CLOSE BUTTON
+		
+		SessionUtil.executeScript("$('#form').trigger('reset'); $(setTimeout(() => $('[multiple]').multiselect('selectAll', false).multiselect('updateButtonText'), 100));");
+								
 	}
 	
 	// ---------------------------------------------------------------------------------
 		
 	public void downloadFile() throws IOException {
-
+			
 		//System.out.println("Gerando arquivo para Donwload ... ");
 				
 		SessionUtil.getExternalContext().setResponseContentType("application/vnd.ms-excel");
@@ -1467,10 +1463,10 @@ public class FluxoPeriodoBean implements Serializable {
 	
 		OutputStream responseOutputStream = SessionUtil.getExternalContext().getResponseOutputStream(); 								
 		workbook.write(responseOutputStream);
-						
-		build.excelBool = true;
-			
+								
 		SessionUtil.getFacesContext().responseComplete(); 
+		responseOutputStream.close();
+										
 	}
 		
 	// ---------------------------------------------------------------------------------
@@ -2120,9 +2116,7 @@ public class FluxoPeriodoBean implements Serializable {
 	public void message(int step) { 
 		
 	    // System.out.println("step by step");
-			
-		if(step == 0) 			
-					
+						
 			if(step == 1) {
 				
 				if(equips.length > 1)    

@@ -32,7 +32,7 @@ var validation = document.forms.validation;
 	defineMultiselect('#equips', equipmentSelectMsg);
 		
 	//Validation Form			   
-	validationTemplate4("#report-form", requiredEquipmentsMsg, requiredPeriodMsg, requiredMonthMsg, requiredYearMsg);
+	validationTemplate4("#form", requiredEquipmentsMsg, requiredPeriodMsg, requiredMonthMsg, requiredYearMsg);
 		
 	validateInputFieldOnChange(); // Validate Input
     validateSelectFieldOnChange() // Validate Select
@@ -45,13 +45,13 @@ var validation = document.forms.validation;
     removeValidationIcon("reset-btn", 'periods');
     removeValidationIcon("reset-btn", 'month');
 	removeValidationIcon("reset-btn", 'year');
-
-	//Clean Form validation on close modal
-    cleanModalOnClose("#report-form", '#modalReportOptions');
-
+	
     //Reset validation form
     //click reset button action
-    resetFormValidation("#report-form", "reset-btn");
+    resetFormValidation("#form", "reset-btn");
+
+    let $textarea = $('#display');
+    $textarea.scrollTop($textarea[0].scrollHeight);
 
 });
 
@@ -70,7 +70,7 @@ var validation = document.forms.validation;
 
 function isValidSubmit(){
 	
-	valid = $("#report-form").validate();
+	valid = $("#form").validate();
 	
 	if(valid){
 		
