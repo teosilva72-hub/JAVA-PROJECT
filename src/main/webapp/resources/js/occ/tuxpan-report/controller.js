@@ -1,13 +1,28 @@
 $(init => {
     table()
-    vehInvAppend()
-    addTipo()
-	datos_person()
+    appendOcc()
 	$('#add_append_sin').append(btn_sin)
 	veh_ocup_sin()
 	clickSave()
 	getTypeReport()
+	hiddenBts()
 })
+function appendOcc(){
+	vehInvAppend()
+    addTipo()
+	datos_person()
+}
+function hiddenBts(){
+	$('[id$=editocc]').click(a=>{
+		$('#updateOcc').removeClass('hidden')
+		$('#occSave').addClass('hidden')
+	})
+}
+function clickUpdate(){
+	$('#updateOcc').click(a=>{
+		$('#OccUpdate').click()
+	})
+}
 function getTypeReport(){
 	$('#type_occ').click(a=>{
 		$('#type_report').val('1')
@@ -24,7 +39,7 @@ function clickSave(){
 		getPerson()
 		setTimeout(f =>{
 			$('#saveOcc').click()
-					
+			appendOcc()
 		},200)
 	})
 }
@@ -281,7 +296,7 @@ function table() {
                 "search": "",
                 searchPlaceholder: "Search"
             },
-            "select": false,
+            "select": true,
             "Width": true,
             "scrollY": "55vh",
             "scrollCollapse": false,
@@ -291,6 +306,6 @@ function table() {
         })
 $('#occurrence-table tbody').on( 'click', 'tr', function () {
    		var event = $(table.row( this ).data()[0]).text();
-   		$('#idTable').val(event)
+   		//$('[id$=idTable]').val(event)
 	})
 }
