@@ -341,10 +341,10 @@
 						<div class="modal-footer">
 														
 							<h:commandButton id="dismiss-modal"
-								value="#{reportsLabels.reports_modal_alert_btn_no}" disabled="#{fluxoPeriodo.build.closeBool}"
+								value="#{'Dowbload'}" disabled="#{fluxoPeriodo.build.closeBool}"
 								class="btn btn-dark form-draw-button">
 								<f:passThroughAttribute name="data-dismiss" value="modal" />
-								<f:ajax execute="@form" render="@none" />
+								<f:ajax execute="@form" render="@none" listener="#{fluxoPeriodo.downloadFile}"/>
 							</h:commandButton>
 							
 							<!---->
