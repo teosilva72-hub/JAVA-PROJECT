@@ -30,7 +30,7 @@ public class ControllerHIT {
 		@PostConstruct
 		public void init() {
 			hit = new HIT();
-			hit.setEquip_type("teste");
+			hit.setEquip_type("Galibo");
 			equipDAO = new EquipmentsDAO();
 			listHit();
 		}

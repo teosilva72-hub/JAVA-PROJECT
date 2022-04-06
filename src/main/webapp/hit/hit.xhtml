@@ -73,7 +73,7 @@
 				<div class="row" id="append_col">
 					<!-- init card -->
 					<h:form prependId="false" id="galibo">
-						<c:forEach begin="0" end="1" var="value" varStatus="loop">
+						<c:forEach begin="0" end="0" var="value" varStatus="loop">
 							<c:if test="value">alert</c:if>
 							<div class="col-5">
 								<div class="card bg-dark contet_card equip-box hit_equips_card">
@@ -206,17 +206,17 @@
 									<div class="row">
 										<div class="col-12">
 											<span class="msg_span">Mensaje 1</span><input type="text"
-												class="form-control input_msg"
+												class="form-control input_msg" id="input_one"
 												value="#{HitController.hit.msg1}" />
 										</div>
 										<div class="col-12">
 											<span class="msg_span">mensaje 2</span><input type="text"
-												class="form-control input_msg"
+												class="form-control input_msg" id="input_two"
 												value="#{HitController.hit.msg2}" />
 										</div>
 										<div class="col-12">
 											<span class="msg_span">mensaje 3</span><input type="text"
-												class="form-control input_msg"
+												class="form-control input_msg" id="input_three"
 												value="#{HitController.hit.msg3}" />
 										</div>
 										<div class="col-12">

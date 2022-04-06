@@ -6,7 +6,17 @@ $(init => {
 	$('#add_append_sin').append(btn_sin)
 	veh_ocup_sin()
 	clickSave()
+	getTypeReport()
 })
+function getTypeReport(){
+	$('#type_occ').click(a=>{
+		$('#type_report').val('1')
+	})
+	$('#type_sin').click(a=>{
+		$('#type_report').val('2')
+	})
+	
+}
 function clickSave(){
 	$('#occSave').click(e => {
 		getTipoVeh()
@@ -280,6 +290,7 @@ function table() {
             fixedColumns: true
         })
 $('#occurrence-table tbody').on( 'click', 'tr', function () {
-   var event = $(table.row( this ).data()[0]).text();
-	console.log(event)})
+   		var event = $(table.row( this ).data()[0]).text();
+   		$('#idTable').val(event)
+	})
 }
