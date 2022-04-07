@@ -1414,15 +1414,7 @@ public class FluxoPeriodoBean implements Serializable {
 		
 		step = 0;
 		
-		updateForm();
-		
-		try {
-
-			if (!resultList.isEmpty())
-				resultList.clear();
-			
-
-		} catch (NullPointerException e) {	}
+		updateForm();		
 		
 	}
 	
