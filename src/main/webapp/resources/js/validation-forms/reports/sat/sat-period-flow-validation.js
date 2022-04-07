@@ -49,10 +49,7 @@ var validation = document.forms.validation;
     //Reset validation form
     //click reset button action
     resetFormValidation("#form", "reset-btn");
-
-    let $textarea = $('#display');
-    $textarea.scrollTop($textarea[0].scrollHeight);
-
+   
 });
 
 // ---------------------------------------------------------------------
@@ -79,6 +76,25 @@ function isValidSubmit(){
 		console.log("executou");
 	}
 			
+}
+
+// ---------------------------------------------------------------------
+
+/** Set Scroll on bottom
+ *  
+ * @author Wellington da Silva : 2022-04-07
+ * @summary Method to set vertical scroll bar on bottom
+ * @since version 1.0
+ * @version 1.1 
+ * @description Set vertical scroll bar on bottom
+ * @copyright Tracevia S/A 2022 
+ * @returns {void}
+ *
+**/
+
+function scrollOnBottom(){
+	let $textArea = $('#display');
+	$textArea.scrollTop($textArea[0].scrollHeight);	
 }
 
 // ---------------------------------------------------------------------
