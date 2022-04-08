@@ -1937,6 +1937,7 @@ public class ExcelTemplate {
 		utilSheet.createRow(sheet, row, 1);
 		utilSheet.createRow(sheet, row, 2);
 		utilSheet.createCells(sheet, row, 0, len, 1, 2);
+		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, 0, len, 1, 2);
 		utilSheet.setCellValue(sheet, row, 1, 0, "Valores");
 
 		for (int i = 1; i < len; i += 2) {
@@ -1971,6 +1972,7 @@ public class ExcelTemplate {
 		
 		utilSheet.fileBodySimple(sheet, row, columns, newLine, startCol, endCol, dataStartRow); // PREENCHER DADOS
 		
+		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 		
 	}
 	
