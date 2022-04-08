@@ -201,21 +201,38 @@
 						
 						<div class="modal-footer">
 						
-						     <h:commandButton id="excel-act" value="Download File" disabled="#{fluxoPeriodo.build.excelBool}"
-							      class="btn btn-dark form-draw-button" data-toggle="tooltip" 
-							      data-placement="bottom" title="#{reportsLabels.reports_btn_excel}" widgetVar="excelWgt" 
-							      action="#{fluxoPeriodo.downloadFile}" onclick="$(this).addClass('ui-state-disabled'); $('#dismiss-modal').prop('disabled', false);" >	       					  	
+							<button type="button" id="activate-excel-act"
+								class="btn btn-dark form-modal-draw-button" disabled="true" onclick="$('#excel-act').click(); $('#activate-excel-act').prop('disabled', true); $('#activate-dismiss-modal').prop('disabled', false);"
+								data-toggle="tooltip" data-placement="bottom" title="#{reportsLabels.reports_modal_alert_btn_download_file}" >
+								<i class="fas fa-download"></i>
+								#{reportsLabels.reports_modal_alert_btn_excel}
+							</button>    							   									
+	       								
+	       					<!---->		
+						
+						     <h:commandButton id="excel-act" value="#{reportsLabels.reports_modal_alert_btn_excel}"
+							      class="btn btn-dark form-draw-button d-none" widgetVar="excelWgt" 
+							      action="#{fluxoPeriodo.downloadFile}" >	       					  	
 	       					</h:commandButton>
-	       																			
+	       					
+	       					<!---->	   
+	       					
+	       					<button type="reset" id="activate-dismiss-modal"
+								class="btn btn-dark form-modal-draw-button" disabled="true" onclick="$('#dismiss-modal').click(); $('#activate-dismiss-modal').prop('disabled', true);">
+								 <i class="fas fa-sign-out-alt"></i>
+								 #{reportsLabels.reports_modal_alert_btn_exit}
+							</button>    							   									
+	       								
+	       					<!---->		
+	       														
 							<h:commandButton id="dismiss-modal"	value="#{reportsLabels.reports_modal_alert_btn_exit}" 
-								class="btn btn-dark form-draw-button" disabled="#{fluxoPeriodo.build.closeBool}" 
-								onclick="" >
-								<f:passThroughAttribute name="data-dismiss" value="modal" />
-								<f:ajax execute="@form" render="@none" listener="#{fluxoPeriodo.resetStepView}" />
+								class="btn btn-dark form-draw-button d-none" action="#{fluxoPeriodo.resetStepView}"  >
+							    <f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
 							</h:commandButton>
 							
-							<!---->
-							
+							<!---->														
+										
 						</div>
 						
 						  <pf:poll autoStart="false" widgetVar="poll" interval="3" listener="#{fluxoPeriodo.message(fluxoPeriodo.step)}" update="display" async="true"  />  						  					

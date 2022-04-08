@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -176,7 +177,7 @@ public class ExcelTemplate {
 	// HEADER
 	// ----------------------------------------------------------------------------------------------------------------
 
-	public void excelFileHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
+	public void excelFileHeader(XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
 			String[] dates, String[] period, List<String> equipId, int dayIndex, boolean isMultiSheet, boolean isDirectionsOnSheet) {
 
 		DateTimeApplication dta = new DateTimeApplication();
@@ -407,7 +408,7 @@ public class ExcelTemplate {
 	// HEADER
 	// ----------------------------------------------------------------------------------------------------------------
 
-	public void excelFileHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
+	public void excelFileHeader(XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
 			String[] dates, String[] period, String equipId, int dayIndex, boolean isDirectionsOnSheet) {
 
 		DateTimeApplication dta = new DateTimeApplication();
@@ -760,19 +761,28 @@ public class ExcelTemplate {
 
 	}
 	
-	public void downloadToPDF(String fileName) throws IOException {
+	public ByteArrayOutputStream ToPDF() throws IOException {
 		InputStream input = utilSheet.getOutput(workbook);
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		try {
 			Converter converter = new Converter(input);
 			converter.convert(output, new PdfConvertOptions());
-			utilSheet.donwloadPDFFile(output, fileName);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			output.close();
 			input.close();			
 		}
+		return output;
+	}
+	
+	public void downloadToPDF(String fileName) throws IOException {
+		ByteArrayOutputStream output = ToPDF();
+		downloadToPDF(output, fileName);
+	}
+	
+	public void downloadToPDF(ByteArrayOutputStream output, String fileName) throws IOException {
+		utilSheet.donwloadPDFFile(output, fileName);
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -917,10 +927,10 @@ public class ExcelTemplate {
 				sheet = workbook.createSheet(sheetNames[op]); // CREATE SHEET NAMES								
 			
 				if(isEquipNameSheet) 
-					excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
+					excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
 							dates, period, equips.get(op), op, isDirectionsOnSheet);
 								
-					else excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
+					else excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
 							dates, period, equips, op, isMultiSheet, isDirectionsOnSheet);
 								
 		if(module.contentEquals("sat")) {
@@ -1375,11 +1385,11 @@ public class ExcelTemplate {
 			sheet = workbook.createSheet(sheetNames[op]); // CREATE SHEET NAMES
 		
 			if(isEquipNameSheet) 
-				excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
+				excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
 						dates, period, equips.get(op), op, isDirectionsOnSheet);
 			
 			
-				else excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
+				else excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
 						dates, period, equips, op, isMultiSheet, isDirectionsOnSheet);
 										  	
 		// -----------------------------------------------------
@@ -1854,6 +1864,204 @@ public class ExcelTemplate {
 		utilSheet.setCellsStyle(sheet, row, dateTimeStyle, 1, 1, dataStartRow, dataEndRow);		
 		utilSheet.setCellsStyle(sheet, row, bgColorBodyStyle1, 2, 4, dataStartRow, dataEndRow);
 		utilSheet.setCellsStyle(sheet, row, bgColorBodyStyle2, 5, 7, dataStartRow, dataEndRow);	
+		
+	}
+
+	public void generateVehicleCountEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
+
+		sheet = null;		
+		row = null;
+		
+		@SuppressWarnings("unchecked")
+		List<String>[] tempLine = new ArrayList[17];
+		String[] cat = new String[] {
+				"CAT1",
+				"CAT2",
+				"CAT2A",
+				"CAT3",
+				"CAT4",
+				"CAT4A",
+				"CAT5",
+				"CAT6",
+				"CAT6A",
+				"CAT7",
+				"CAT8",
+				"CAT9",
+				"CAT10",
+				"CAT11",
+				"CATE9",
+				"CATE10",
+				"CAT0"
+		};
+		for (int i = 0; i < tempLine.length; i++) {
+			List<String> t = new ArrayList<>();
+			t.add(cat[i]);
+			tempLine[i] = t;
+		};
+		List<String[]> newLine = new ArrayList<>();
+		
+		int dataStartRow = 14;
+		int dataEndRow = 0;
+		int startCol = 0;
+		int endCol = columns.size() - 1;
+		int len = lines.size() + 1;
+	
+		sheet = workbook.createSheet(sheetName);	
+				
+		dataEndRow = ((dataStartRow + lines.size()) - 1);
+		
+		excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, "sat", columns.size(), "Contagem de Veículo por Categoria",  
+				date, period, new ArrayList<>(), 0, false, true);
+		
+		// ------------------------------------------------------------------------------------------------------------
+		
+		// MESCLAR CÉLULAS
+
+		String[] mergeCells = new String[] {"A13:A14", String.format("%1$s13:%1$s14", (char)(len + 65))}; // Define Merge columns
+								
+		for(int i = 0; i < mergeCells.length; i++)
+			utilSheet.mergeCells(sheet, mergeCells[i]);
+						
+		// ------------------------------------------------------------------------------------------------------------
+		
+		// SECOND LEVEL COLUMNS 1
+		
+		utilSheet.createRow(sheet, row, 12);
+		utilSheet.createRow(sheet, row, 13);
+		utilSheet.createCells(sheet, row, 0, len, 12, 13);
+		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, 0, len, 12, 13);
+		utilSheet.setCellValue(sheet, row, 12, 0, "Valores");
+
+		for (int i = 1; i < len; i += 2) {
+			utilSheet.mergeCells(sheet, String.format("%s13:%s13", (char)(i + 65), (char)(i + 66)));
+			String[] line1 = lines.get(i - 1);
+			String[] line2 = lines.get(i);
+			utilSheet.setCellValue(sheet, row, 12, i, line1[0]);
+			utilSheet.setCellValue(sheet, row, 13, i, line1[1]);
+			utilSheet.setCellValue(sheet, row, 13, i + 1, line2[1]);
+			
+			for (int n = 0; n < tempLine.length; n++) {				
+				tempLine[n].add(line1[n + 2]);
+				tempLine[n].add(line2[n + 2]);
+			}
+		}
+		for (List<String> temp : tempLine) {
+			int sum = 0;
+			for (int s = 1; s < temp.size(); s++)
+				sum += Integer.parseInt(temp.get(s));
+			temp.add(String.valueOf(sum));
+			newLine.add(temp.toArray(String[]::new));
+		}
+		utilSheet.setCellValue(sheet, row, 12, len, "Total");
+			
+		// ------------------------------------------------------------------------------------------------------------
+
+		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow); // CRIAR LINHAS 
+		
+		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow); // CRIAR CÉLULAS
+		
+		utilSheet.fileBodySimple(sheet, row, columns, newLine, startCol, endCol, dataStartRow); // PREENCHER DADOS
+		
+		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow - 1);
+		
+	}
+	
+	public void generateVehicleCountCategoryEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
+		
+		sheet = null;		
+		row = null;
+		
+		@SuppressWarnings("unchecked")
+		List<String>[] tempLine = new ArrayList[17];
+		String[] cat = new String[] {
+				"CAT1",
+				"CAT2",
+				"CAT2A",
+				"CAT3",
+				"CAT4",
+				"CAT4A",
+				"CAT5",
+				"CAT6",
+				"CAT6A",
+				"CAT7",
+				"CAT8",
+				"CAT9",
+				"CAT10",
+				"CAT11",
+				"CATE9",
+				"CATE10",
+				"CAT0"
+		};
+		for (int i = 0; i < tempLine.length; i++) {
+			List<String> t = new ArrayList<>();
+			t.add(cat[i]);
+			tempLine[i] = t;
+		};
+		List<String[]> newLine = new ArrayList<>();
+		
+		int dataStartRow = 14;
+		int dataEndRow = 0;
+		int startCol = 0;
+		int endCol = columns.size() - 1;
+		int len = lines.size() + 1;
+		
+		sheet = workbook.createSheet(sheetName);	
+		
+		dataEndRow = ((dataStartRow + lines.size()) - 1);
+		
+		excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, "sat", columns.size(), "Contagem de Veículo por Categoria",  
+				date, period, new ArrayList<>(), 0, false, true);
+		
+		// ------------------------------------------------------------------------------------------------------------
+		
+		// MESCLAR CÉLULAS
+		
+		String[] mergeCells = new String[] {"A13:A14", String.format("%1$s13:%1$s14", (char)(len + 65))}; // Define Merge columns
+		
+		for(int i = 0; i < mergeCells.length; i++)
+			utilSheet.mergeCells(sheet, mergeCells[i]);
+		
+		// ------------------------------------------------------------------------------------------------------------
+		
+		// SECOND LEVEL COLUMNS 1
+		
+		utilSheet.createRow(sheet, row, 12);
+		utilSheet.createRow(sheet, row, 13);
+		utilSheet.createCells(sheet, row, 0, len, 12, 13);
+		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, 0, len, 12, 13);
+		utilSheet.setCellValue(sheet, row, 12, 0, "Valores");
+		
+		for (int i = 1; i < len; i += 2) {
+			utilSheet.mergeCells(sheet, String.format("%s13:%s13", (char)(i + 65), (char)(i + 66)));
+			String[] line1 = lines.get(i - 1);
+			String[] line2 = lines.get(i);
+			utilSheet.setCellValue(sheet, row, 12, i, line1[0]);
+			utilSheet.setCellValue(sheet, row, 13, i, line1[1]);
+			utilSheet.setCellValue(sheet, row, 13, i + 1, line2[1]);
+			
+			for (int n = 0; n < tempLine.length; n++) {				
+				tempLine[n].add(line1[n + 2]);
+				tempLine[n].add(line2[n + 2]);
+			}
+		}
+		for (List<String> temp : tempLine) {
+			int sum = 0;
+			for (int s = 1; s < temp.size(); s++)
+				sum += Integer.parseInt(temp.get(s));
+			temp.add(String.valueOf(sum));
+			newLine.add(temp.toArray(String[]::new));
+		}
+		utilSheet.setCellValue(sheet, row, 12, len, "Total");
+		
+		// ------------------------------------------------------------------------------------------------------------
+		
+		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow); // CRIAR LINHAS 
+		
+		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow); // CRIAR CÉLULAS
+		
+		utilSheet.fileBodySimple(sheet, row, columns, newLine, startCol, endCol, dataStartRow); // PREENCHER DADOS
+		
+		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow - 1);
 		
 	}
 	

@@ -16,7 +16,7 @@ public class SQL_Tracevia {
 	private interface SQL_Interface extends Library {
 	    Pointer start(int conn);
 	    void close(Pointer ptr);
-	    boolean is_connected(Pointer ptr);
+	    byte is_connected(Pointer ptr);
 	    void prepare(Pointer ptr, String query);
 	    void prepare_ms(Pointer ptr, String query);
 	    void prepare_my(Pointer ptr, String query);
@@ -55,7 +55,7 @@ public class SQL_Tracevia {
 	}
 
 	public boolean isConnected() {
-		return ptr_conn != null ? inner.is_connected(ptr_conn) : false;
+		return ptr_conn != null ? inner.is_connected(ptr_conn) > 0 : false;
 	}
 	
 	public void prepare(String query) {
