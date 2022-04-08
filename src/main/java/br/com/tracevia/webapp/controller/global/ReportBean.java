@@ -70,6 +70,7 @@ public class ReportBean {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	private String periodColumn;
+	private List<String> tempTable = new ArrayList<>();
 	private List<String[]> period = new ArrayList<>();
 	private String extraGroup = "";
 	private List<String> extraSelect;
@@ -81,6 +82,7 @@ public class ReportBean {
 	private String laneName = "";
 
 	private ExcelTemplate model;
+	private ExcelTemplate exclusiveModel;
 	private List<String> columnsInUse = new ArrayList<>(); 
 	private List<String> columnsHeader = new ArrayList<>(); 
 	private HashMap<String, Integer> moreInterval = new HashMap<>();
@@ -236,6 +238,10 @@ public class ReportBean {
 		List<String> searchParametersMS = Arrays.asList(parameter.replace("`", "'").split(";"));
 		
 		this.searchParametersMS = searchParametersMS;
+	}
+
+	public void setTempTable(String table) {
+		tempTable.add(table.replace("`", "'"));
 	}
 
 	public void setDateSearch(String dateSearch, String nameColumn) {
@@ -1094,7 +1100,7 @@ public class ReportBean {
 			// ----------------------------------------------------------------------
 									  
 		    // Table Fields
-			report.getReport(query, queryMS, idTable, isDivision() ? division : null);
+			report.getReport(query, queryMS, idTable, isDivision() ? division : null, tempTable);
 		    boolean hasValue = true;
 		   		  		   
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
@@ -1124,7 +1130,7 @@ public class ReportBean {
 				
 				if(module.equals("sat")) {
 					
-					if(specialName.equals("counting-flow"))
+					if(!specialName.isEmpty())
 						satTab.satHeaderInformation(module, equipIDs);
 				}
 			 }
@@ -1155,7 +1161,7 @@ public class ReportBean {
 				e.printStackTrace();
 			}
 		     
-		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model);  
+		    SessionUtil.getExternalContext().getSessionMap().put(fileName, model);  
 		    
 		    // ------------------------------------------------------------
 		    			
@@ -1174,46 +1180,36 @@ public class ReportBean {
 		 	    	      		    
 	      	    }		
 	        }
-	  
+
 	  // -------------------------------------------------------------------------------------------------------------------------------------------------
-	  			
-	   public void download() {
-		   
-		DateTimeApplication dta = new DateTimeApplication();
+
+	  	public void download() {
+
+			model = (ExcelTemplate) SessionUtil.getExternalContext().getSessionMap().get(fileName);
+			DateTimeApplication dta = new DateTimeApplication();
+			String file = fileName+"_"+dta.currentDateToExcelFile();
+
+			try {
+				model.download(file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			
-		model = (ExcelTemplate) SessionUtil.getExternalContext().getSessionMap().get("xlsModel");
-	
-		String file = fileName+"_"+dta.currentDateToExcelFile();
-					
-		try {
-			
-			model.download(file);
-			
-		} catch (IOException e) {	
-			
-			e.printStackTrace();
-		}
-		
-	}	   
+		}	   
 	   
-	   public void downloadPDF() {
-		   
-		   DateTimeApplication dta = new DateTimeApplication();
-		   
-		   model = (ExcelTemplate) SessionUtil.getExternalContext().getSessionMap().get("xlsModel");
-		   
-		   String file = fileName+"_"+dta.currentDateToExcelFile();
-		   
-		   try {
-			   
-			   model.downloadToPDF(file);
-			   
-		   } catch (IOException e) {	
-			   
-			   e.printStackTrace();
-		   }
-		   
-	   }	   
+		public void downloadPDF() {
+
+			model = (ExcelTemplate) SessionUtil.getExternalContext().getSessionMap().get(fileName);
+			DateTimeApplication dta = new DateTimeApplication();
+			String file = fileName+"_"+dta.currentDateToExcelFile();
+
+			try {
+				model.downloadToPDF(file);
+			} catch (IOException e) {	
+				e.printStackTrace();
+			}
+
+		}
 
 	public boolean setIntervalDate(Date[] date, String column, String[] period, String modulo, List<String> equips) throws ParseException {
 			
@@ -1721,14 +1717,19 @@ public class ReportBean {
 	    
 	// --------------------------------------------------------------------------------------------	
 	   
-	   public void generateSpecialFile(ExcelTemplate model, String name) throws Exception {
-		   		   
-		   switch(name) {
-		   			   
-		   	case "counting-flow":  model.generateCountFlow(columnsInUse, report.lines, sheetName, satTab);
-		   
-		   }
-	   }
+		public void generateSpecialFile(ExcelTemplate model, String name) throws Exception {
+				switch(name) {
+					case "counting-flow":
+						model.generateCountFlow(columnsInUse, report.lines, sheetName, satTab);
+						break;
+					case "vehicle-count-eco101":
+						model.generateVehicleCountCategoryEco101(columnsInUse, report.lines, sheetName, satTab);
+						break;
+					case "vehicle-count-category-eco101":
+						model.generateVehicleCountCategoryEco101(columnsInUse, report.lines, sheetName, satTab);
+						break;
+				}
+		}
 	   
 	// --------------------------------------------------------------------------------------------	
 	   

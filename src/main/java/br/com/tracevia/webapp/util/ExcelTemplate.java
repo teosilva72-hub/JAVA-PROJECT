@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -1854,6 +1855,122 @@ public class ExcelTemplate {
 		utilSheet.setCellsStyle(sheet, row, dateTimeStyle, 1, 1, dataStartRow, dataEndRow);		
 		utilSheet.setCellsStyle(sheet, row, bgColorBodyStyle1, 2, 4, dataStartRow, dataEndRow);
 		utilSheet.setCellsStyle(sheet, row, bgColorBodyStyle2, 5, 7, dataStartRow, dataEndRow);	
+		
+	}
+
+	public void generateVehicleCountCategoryEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info) throws Exception {
+
+		sheet = null;		
+		row = null;
+		
+		@SuppressWarnings("unchecked")
+		List<String>[] tempLine = new ArrayList[17];
+		String[] cat = new String[] {
+				"CAT1",
+				"CAT2",
+				"CAT2A",
+				"CAT3",
+				"CAT4",
+				"CAT4A",
+				"CAT5",
+				"CAT6",
+				"CAT6A",
+				"CAT7",
+				"CAT8",
+				"CAT9",
+				"CAT10",
+				"CAT11",
+				"CATE9",
+				"CATE10",
+				"CAT0"
+		};
+		for (int i = 0; i < tempLine.length; i++) {
+			List<String> t = new ArrayList<>();
+			t.add(cat[i]);
+			tempLine[i] = t;
+		};
+		List<String[]> newLine = new ArrayList<>();
+		
+		int dataStartRow = 3;
+		int dataEndRow = 0;
+		int startCol = 0;
+		int endCol = columns.size() - 1;
+		int len = lines.size() + 1;
+	
+		sheet = workbook.createSheet(sheetName);	
+				
+		dataEndRow = ((dataStartRow + lines.size()) - 1);
+		
+		// ------------------------------------------------------------------------------------------------------------
+		
+		// MESCLAR CÉLULAS
+
+		String[] mergeCells = new String[] {"A1:B1", "C1:I1", "A2:A3", String.format("%1$s2:%1$s3", (char)(len + 65))}; // Define Merge columns
+								
+		for(int i = 0; i < mergeCells.length; i++)
+			utilSheet.mergeCells(sheet, mergeCells[i]);
+		
+		// ------------------------------------------------------------------------------------------------------------
+		
+		    // SPECIFIC WIDTH COLUMNS 
+		
+			utilSheet.columnWidth(sheet, 0, 4000);
+			utilSheet.columnWidth(sheet, 1, 4000);
+			utilSheet.columnWidth(sheet, 8, 4000);				
+		
+		// ------------------------------------------------------------------------------------------------------------
+				
+		// FIRST LEVEL COLUMNS
+		
+		utilSheet.createRow(sheet, row, 0);
+		utilSheet.createCells(sheet, row, 0, 8, 0, 0);
+		utilSheet.setCellValue(sheet, row, 0, 0, "Teste");
+		utilSheet.setCellValue(sheet, row, 0, 2, "Contagem de Veículo por Categoria");
+		utilSheet.setHeight(sheet, 0, 700);
+		
+		utilSheet.setCellsStyle(sheet, row, bgColorHeaderStyle, 0, 8, 0, 0);
+						
+		// ------------------------------------------------------------------------------------------------------------
+		
+		// SECOND LEVEL COLUMNS 1
+		
+		utilSheet.createRow(sheet, row, 1);
+		utilSheet.createRow(sheet, row, 2);
+		utilSheet.createCells(sheet, row, 0, len, 1, 2);
+		utilSheet.setCellValue(sheet, row, 1, 0, "Valores");
+
+		for (int i = 1; i < len; i += 2) {
+			utilSheet.mergeCells(sheet, String.format("%s2:%s2", (char)(i + 65), (char)(i + 66)));
+			String[] line1 = lines.get(i - 1);
+			String[] line2 = lines.get(i);
+			utilSheet.setCellValue(sheet, row, 1, i, line1[0]);
+			utilSheet.setCellValue(sheet, row, 2, i, line1[1]);
+			utilSheet.setCellValue(sheet, row, 2, i + 1, line2[1]);
+			
+			for (int n = 0; n < tempLine.length; n++) {				
+				tempLine[n].add(line1[n + 2]);
+				tempLine[n].add(line2[n + 2]);
+			}
+		}
+		for (List<String> temp : tempLine) {
+			int sum = 0;
+			for (int s = 1; s < temp.size(); s++)
+				sum += Integer.parseInt(temp.get(s));
+			temp.add(String.valueOf(sum));
+			newLine.add(temp.toArray(String[]::new));
+		}
+		utilSheet.setCellValue(sheet, row, 1, len, "Total");	
+		
+		utilSheet.columnsWidthAuto(sheet, columns.size()); // COLUMNS SIZE AUTO
+			
+		// ------------------------------------------------------------------------------------------------------------
+
+		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow); // CRIAR LINHAS 
+		
+		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow); // CRIAR CÉLULAS
+		
+		utilSheet.fileBodySimple(sheet, row, columns, newLine, startCol, endCol, dataStartRow); // PREENCHER DADOS
+		
 		
 	}
 	

@@ -21,6 +21,8 @@
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('false')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.isSpecial(true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSpecialName('vehicle-count-category-eco101')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
@@ -52,7 +54,7 @@
 
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions f ON f.equip_id = siteID AND f.lane = v.lane INNER JOIN sat_equipment s ON s.equip_id = siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('s.name, f.direction')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setOrderDate('s.name')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setOrderDate('s.name, f.direction')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true)}" />

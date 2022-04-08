@@ -43,7 +43,7 @@ public class ReportDAO {
         
     }
 
-    public void getReport(String query, String forMS, String id, String[] division) throws Exception {
+    public void getReport(String query, String forMS, String id, String[] division, List<String> temp) throws Exception {
        
         int count = 0;
     	String newQuery = query;
@@ -72,6 +72,12 @@ public class ReportDAO {
                 if (!conn.start(count))
                     break;
         
+                // add pré stmt
+                for (String stmt : temp) {
+                    conn.prepare(stmt);
+                    conn.executeUpdate();
+                }
+
                 conn.prepare(newQuery);
                 if (newQueryMS != null)
                     conn.prepare_ms(newQueryMS);
