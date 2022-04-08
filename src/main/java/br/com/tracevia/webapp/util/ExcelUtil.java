@@ -567,7 +567,7 @@ public class ExcelUtil {
 	public void setCellsStyle(Sheet sheet, Row row, CellStyle style, int col1, int col2, int lin1, int lin2) {		
 
 		for (int lin = lin1; lin <= lin2; lin++) {  
-			for(int c=col1; c <= col2; c++) {		
+			for(int c=col1; c <= col2; c++) {
 				row = sheet.getRow(lin);		 
 				row.getCell(c).setCellStyle(style);		 	
 			}
