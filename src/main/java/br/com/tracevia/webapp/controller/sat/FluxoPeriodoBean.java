@@ -34,7 +34,6 @@ import org.apache.poi.ss.util.PropertyTemplate;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.controller.global.LanguageBean;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
@@ -585,11 +584,7 @@ public class FluxoPeriodoBean implements Serializable {
 		equipments = new ArrayList<SelectItem>();
 		months = new ArrayList<SelectItem>();
 		years = new ArrayList<SelectItem>();
-		
-		build.clearBool = true;
-		build.excelBool = true;
-		build.closeBool = true;
-		
+			
 		displayMessage = "";
 				
 		try {
@@ -635,13 +630,13 @@ public class FluxoPeriodoBean implements Serializable {
 	
 	// ----------------------------------------------------------------------------------------------------------------------------------------------------- 
 	
-	  public void processInformations() throws Exception {
-				  
+	  public void processInformations() throws Exception {		  
+					  
 	   dta = new DateTimeApplication();	   
 	   tm = new TranslationMethods();
 	  
 	   equipDao = new EquipmentsDAO();
-	   		  
+	   		   		  
 	   //FIELDS EXTERNOS ARMAZENADOS NA REQUISIO
 	   build.fields = (String[]) SessionUtil.getParam("fields");
 	   build.fieldObjectValues =  (String[]) SessionUtil.getParam("fieldsObject");
@@ -659,22 +654,18 @@ public class FluxoPeriodoBean implements Serializable {
 		 sheetName = new String[equips.length];
 		 
 		 fileName = localeSat.getStringKey("via_paulista_flow_per_period_file_name")+"_"+tm.periodName(period)+"_"+tm.MonthAbbreviation(month)+"_"+tm.yearAbbreviation(year);
-		 
-		 
+		 		 
 	    List<SAT> satList= new ArrayList<SAT>();	
-		satList = equipDao.ListSATinfoHeader(equips);
-		 				 
-		 //--- Initializing --- //
-				 			
-		 step = 0;
-		 	message(step);	// START DELAY 3 SEC	
-		 	
-	 	 step = 1; //
-		 	message(step);	// CREATE SHEETS MESSAGE
-				 
+		satList = equipDao.ListSATinfoHeader(equips);	
+		
+		  //--- Initializing --- //	
+		
+		  step = 1; //
+			  message(step);	// CREATE SHEETS MESSAGE
+					 
 		 for(indice=0; indice < equips.length; indice++) 	 
-			   createSheets(indice, Integer.parseInt(equips[indice]), satList); 	
-		 								   		       		
+			   createSheets(indice, Integer.parseInt(equips[indice]), satList); 
+		 		 								   		       		
          step = 2;
          	message(step);	 // CREATE SHEETS ENDED MESSAGE
                 		 
@@ -698,19 +689,22 @@ public class FluxoPeriodoBean implements Serializable {
 		   	}
 		 
 		    step = 5;
-		    	message(step);	// ENDING PROCESS MESSAGE	
+		    	message(step);	// ENDING PROCESS MESSAGE
+		    	
+		    	 step = 7;	
+				 	message(step);
 					 		   		   		    		    
 		    step = 6;		   
 		    	message(step);	// PROCESS ENDED MESSAGE	
-				    	 									
-		    populateTable(); // POP DATATABLE
-		    
-			build.closeBool = false; // ALLOW CLOSE MODAL
-			build.excelBool = false; // ALLOW DOWNLOAD EXCEL FILE
-			build.clearBool = false; // ALLOW CLEAN TABLE
-			
-			updateCloseButton(); // UPDATE CLOSE BUTTON ON VIEW
-							
+		    	
+		    	 step = 7;	
+				 	message(step);
+				 								    	 									
+		    //populateTable(); // POP DATATABLE
+					
+			// ACTIVATE EXCEL BUTTON
+			SessionUtil.executeScript("$('#activate-excel-act').prop('disabled', false);");
+																
 			// REDRAW TABLE
 			columns = build.drawTable(build.fields, build.fieldObjectValues);								        
 	    }	  
@@ -1411,10 +1405,6 @@ public class FluxoPeriodoBean implements Serializable {
 				
 	// ---------------------------------------------------------------------------------
 				
-		build.excelBool = true;
-		build.clearBool = true;
-		build.closeBool = true;
-		
 		workbook = null;
 			
 		setDaysInMonth(0);
@@ -1424,15 +1414,7 @@ public class FluxoPeriodoBean implements Serializable {
 		
 		step = 0;
 		
-		updateForm();
-		
-		try {
-
-			if (!resultList.isEmpty())
-				resultList.clear();
-			
-
-		} catch (NullPointerException e) {	}
+		updateForm();		
 		
 	}
 	
@@ -1443,22 +1425,29 @@ public class FluxoPeriodoBean implements Serializable {
 	 * @return void */
 
 	public void resetStepView() throws Exception {
-	
-		build.closeBool = true;
-			
-		setDisplayMessage("");	
-		
-		step = 0;
-		
-		updateForm(); // UPDATE FORM MESSAGE
-		updateCloseButton(); // UPDATE CLOSE BUTTON
+				
+		setDisplayMessage("");	// RESET MESSAGE
+					
+		// RESET TEXTAREA INFO
+		SessionUtil.executeScript("$('#display').val('');");
 						
+		//RESET FORM VALUES AND MULTISELECT
+		SessionUtil.executeScript("$('#form').trigger('reset'); $(setTimeout(() => $('[multiple]').multiselect('selectAll', false).multiselect('updateButtonText'), 100));");
+		
+		// AFTER SUBMIT CLEAN FIELDS ICON
+		SessionUtil.executeScript("$('#equips').val(''); $('span[for=equips]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+		SessionUtil.executeScript("$('#periods').val(''); $('span[for=periods]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+		SessionUtil.executeScript("$('#month').val(''); $('span[for=month]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+		SessionUtil.executeScript("$('#year').val(''); $('span[for=year]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+			
+		
+		
 	}
 	
 	// ---------------------------------------------------------------------------------
 		
 	public void downloadFile() throws IOException {
-
+			
 		//System.out.println("Gerando arquivo para Donwload ... ");
 				
 		SessionUtil.getExternalContext().setResponseContentType("application/vnd.ms-excel");
@@ -1467,10 +1456,10 @@ public class FluxoPeriodoBean implements Serializable {
 	
 		OutputStream responseOutputStream = SessionUtil.getExternalContext().getResponseOutputStream(); 								
 		workbook.write(responseOutputStream);
-						
-		build.excelBool = true;
-			
+								
 		SessionUtil.getFacesContext().responseComplete(); 
+		responseOutputStream.close();
+										
 	}
 		
 	// ---------------------------------------------------------------------------------
@@ -2109,20 +2098,12 @@ public class FluxoPeriodoBean implements Serializable {
 		
 		SessionUtil.getFacesContext().getPartialViewContext().getRenderIds().add("form-info:display");
 	    
-	}
-	
-	public void updateCloseButton() {
-		
-		SessionUtil.getFacesContext().getPartialViewContext().getRenderIds().add("form-info:dismiss-modal");
-		
-	}		
+	}	
 	
 	public void message(int step) { 
 		
 	    // System.out.println("step by step");
-			
-		if(step == 0) 			
-					
+						
 			if(step == 1) {
 				
 				if(equips.length > 1)    
@@ -2178,6 +2159,8 @@ public class FluxoPeriodoBean implements Serializable {
 	        	
 	        }
 	        
+	        if(step != 6)
+	        	SessionUtil.executeScript("scrollOnBottom();");  
 		 }
    
 	public void processaDados(int sheetIndex, String equip, DateTimeApplication dta, List<SAT> satList) throws Exception {	

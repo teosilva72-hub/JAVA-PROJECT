@@ -32,7 +32,7 @@ var validation = document.forms.validation;
 	defineMultiselect('#equips', equipmentSelectMsg);
 		
 	//Validation Form			   
-	validationTemplate4("#report-form", requiredEquipmentsMsg, requiredPeriodMsg, requiredMonthMsg, requiredYearMsg);
+	validationTemplate4("#form", requiredEquipmentsMsg, requiredPeriodMsg, requiredMonthMsg, requiredYearMsg);
 		
 	validateInputFieldOnChange(); // Validate Input
     validateSelectFieldOnChange() // Validate Select
@@ -45,14 +45,11 @@ var validation = document.forms.validation;
     removeValidationIcon("reset-btn", 'periods');
     removeValidationIcon("reset-btn", 'month');
 	removeValidationIcon("reset-btn", 'year');
-
-	//Clean Form validation on close modal
-    cleanModalOnClose("#report-form", '#modalReportOptions');
-
+	
     //Reset validation form
     //click reset button action
-    resetFormValidation("#report-form", "reset-btn");
-
+    resetFormValidation("#form", "reset-btn");
+   
 });
 
 // ---------------------------------------------------------------------
@@ -70,7 +67,7 @@ var validation = document.forms.validation;
 
 function isValidSubmit(){
 	
-	valid = $("#report-form").validate();
+	valid = $("#form").validate();
 	
 	if(valid){
 		
@@ -79,6 +76,25 @@ function isValidSubmit(){
 		console.log("executou");
 	}
 			
+}
+
+// ---------------------------------------------------------------------
+
+/** Set Scroll on bottom
+ *  
+ * @author Wellington da Silva : 2022-04-07
+ * @summary Method to set vertical scroll bar on bottom
+ * @since version 1.0
+ * @version 1.1 
+ * @description Set vertical scroll bar on bottom
+ * @copyright Tracevia S/A 2022 
+ * @returns {void}
+ *
+**/
+
+function scrollOnBottom(){
+	let $textArea = $('#display');
+	$textArea.scrollTop($textArea[0].scrollHeight);	
 }
 
 // ---------------------------------------------------------------------

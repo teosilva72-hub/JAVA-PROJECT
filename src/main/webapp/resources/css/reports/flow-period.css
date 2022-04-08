@@ -1,0 +1,23 @@
+/**
+* Tracevia App
+*
+* Layout do navbar component
+*
+* Esta folha de estilo é destinada ao uso
+* no relatório do VBV
+*
+* @project Tracevia App
+* @author Wellington
+* @date 06/04/2022
+* @version 1.0 
+* @since 1.0 
+* @package resources/css/reports/period-flow
+*/
+
+/* --------------------------------------------- */
+
+.submit-btn {
+	margin-left: 17%;	
+}
+
+/* --------------------------------------------- */
