@@ -1,0 +1,301 @@
+body {
+  overflow-y: hidden;
+  width: 100%;
+  height: 100% !important;
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* ::-webkit-scrollbar {
+  display: none;
+} */
+
+/*DIV DMS BOARD*/
+.dms-board {
+  border: none;
+  margin-top: 1.5%;
+}
+
+.equip-info.editing .picture-box {
+  cursor: pointer;
+}
+
+/*TABLES EQUIP PREVIEW*/
+.responsive {
+  height: 380px;
+}
+
+.confBtn {
+  margin-left: 20% !important;
+  height: 28px;
+  width: 60%;
+  font-size: 9pt !important;
+  margin-top: 10px !important;
+  text-align: center;
+}
+
+.jumbotron {
+  margin: 0 10px;
+  position: fixed;
+  padding-top: 1rem;
+  top: 75px;
+  bottom: 45px;
+  right: 5px;
+  left: 5px;
+}
+
+.message-title-div {
+  text-align: center;
+  color: #000;
+}
+
+.selectType {
+  text-align-last: center;
+  text-align: center;
+  padding: 0px;
+  border: solid 1px #767676;
+  border-radius: 25px;
+  background: white;
+}
+
+/*Font Size and Height - Inputs*/
+.input-group input {
+  font-size: 10px;
+}
+
+/*DIV OCULTA PARA LISTAS DE IMAGENS (SELECONELISTBOX)*/
+.picture-box.selected {
+  border-style: solid;
+  border-image: linear-gradient(to right, red, orange) 1;
+  border-width: 2px;
+}
+
+#list-images {
+  display: none;
+  width: fit-content;
+  overflow: auto;
+  height: auto;
+  position: relative;
+  top: 8px;
+}
+
+.listbox {
+  height: 210px;
+}
+
+#list-images div > img[id-img] {
+  cursor: pointer;
+}
+
+.btn-available {
+  background-color: #a8a8a8 !important;
+  color: black !important;
+}
+
+#table-edit,
+#table-create,
+#table-delete {
+  float: left;
+  margin-top: 0px;
+  border: none;
+}
+
+#table-edit {
+  margin-left: 10px;
+}
+
+#table-create,
+#table-delete {
+  margin-left: 8px;
+}
+
+.idColumn,
+.typeColumn,
+.nameColumn,
+.imageColumn .textColumn,
+.actionColumn {
+  vertical-align: middle !important;
+  text-transform: capitalize;
+}
+
+/*DATATABLE MESSAGES*/
+
+.tabelaDetails {
+  height: 100%;
+}
+
+.confInput {
+  margin-top: 10px;
+}
+
+.displayInput {
+  height: fit-content;
+}
+
+.conf2Btn {
+  margin-top: 10px !important;
+}
+
+.inputDesign {
+  text-align: center;
+  font-size: 9pt;
+  border: solid 1px #767676;
+  border-radius: 25px;
+  background: white;
+}
+
+.confInput .input-group * {
+  height: 25px;
+  font-size: 10px;
+  min-width: 60px;
+  display: block;
+}
+
+select {
+  text-align: center;
+}
+
+.inputDesign:focus {
+  border-bottom: 2px solid #1c86ee; /*#dc3545*/
+  box-shadow: 2px 2px 2px #1c86ee;
+}
+
+.iconeSpan {
+  margin-top: -3px;
+  position: absolute;
+  padding-left: 2%;
+  color: #292525;
+  height: 40px;
+  z-index: 999;
+}
+
+.edit-dms-page {
+  position: absolute;
+  top: 125px;
+  display: none;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.edit-dms-page.active {
+  display: block;
+}
+
+.edit-dms-page > div {
+  min-width: 300px;
+}
+
+.timerBtn {
+  padding: 0;
+}
+
+.page-button {
+  height: 15px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  font-size: 10px;
+}
+
+.bar-width {
+  width: 50px;
+}
+
+.check-timer {
+  border-bottom-left-radius: 0;
+}
+
+.text-timer {
+  padding-left: 3px;
+  border-bottom-right-radius: 0;
+}
+
+.bar-width .input-group-text {
+  padding: 5px;
+}
+
+.edit-field {
+  position: relative;
+  display: none;
+  top: 145px;
+}
+
+.edit-field.active {
+  display: flex;
+}
+
+th.pageTable2,
+th.pageTable3,
+th.pageTable4,
+th.pageTable5,
+td[class^="pageTable"] {
+  display: none;
+}
+
+td[class^="pageTable"].active {
+  display: revert;
+  animation-name: fade;
+  animation-duration: 1s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+}
+
+#tabelaReal {
+  text-align: center;
+}
+
+tbody tr {
+  cursor: pointer;
+}
+
+.dataTables_filter {
+  width: max-content;
+  margin-left: auto;
+}
+
+#disableTable {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  font-weight: bolder;
+  font-size: xxx-large;
+  color: white;
+  background-color: #21212188;
+  display: none;
+}
+
+#disableTable.active {
+  display: revert;
+}
+
+.table-responsive {
+  position: relative;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.logo-concessionaire {
+  left: 50%;
+  bottom: unset;
+  transform: translateX(-50%);
+  top: 10px;
+  opacity: 1;
+  z-index: 1030;
+}
+
+/* TEMPORARY CSS */
+
+.dropdown-notif {
+  left: -130px;
+}

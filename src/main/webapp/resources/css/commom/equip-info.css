@@ -1,0 +1,61 @@
+@charset "ISO-8859-1";
+
+ /* sat info div*/   
+.sat-info-bagde {
+position: absolute;
+top: -4px;
+margin-left: -8px;
+background-color: #1E90FF;
+color: #FFFFFF !important;
+text-align: center;
+line-height: 11px;
+min-width: 11px;
+display: block;
+border-radius: 50%;
+float: left;
+cursor: pointer;
+z-index: 3;
+text-indent: 0px;
+text-decoration: none;
+font-size: 10px;
+border: 1px solid black;
+}
+ 
+ /* sat info icon hover */   
+ .sat-info-bagde:hover {
+ text-decoration: none;
+ background:  #ffc107;
+ color: #555;
+ }
+ 
+ /* sat info icon focus */   
+ .sat-info-bagde:focus{ 
+ background: #000080;
+  outline: none;
+ }
+    
+ /* table information*/   
+/*  .table-info{  
+   text-align: center;  
+   width: 325px;
+   margin: 0 auto; /*centralizar tabela*/
+   
+ /* }*/
+  
+ /* .table-col1{
+  width: 25%;
+  border: 1px solid #A9A9A9;
+  font-weight: bold;
+  font-style: italic;
+  }
+  
+  .table-col2{
+  width: 25%;
+  border: 1px solid #A9A9A9; 
+  }
+  
+  .table-info th{ background: #696969; color: #FFFFFF;}
+  .table-col1{ background:  #FFFF00; color:#333333; }
+    
+*/
+    

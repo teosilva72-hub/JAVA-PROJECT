@@ -1,0 +1,193 @@
+.equip-info {
+  font-size: 0.3125rem;
+  position: absolute;
+  left: 50%;
+  width: 15.625rem;
+}
+
+#page-dms {
+  position: relative;
+  text-align: center;
+}
+
+.equip-info .tableStyle {
+  position: relative;
+  font-size: 0.625rem;
+  width: 15.625rem;
+  height: 4.3125rem;
+  border: none;
+  background: #333333;
+  border-right: 0.375rem solid #ff0000; /*#00fa9a;*/
+  border-radius: 0;
+}
+
+.equip-info .tableStyle.on {
+  border-right: 0.375rem solid #00fa9a;
+}
+
+.equip-info .tableStyle.change {
+  border-right: 0.375rem solid #00BFFF;
+}
+
+.equip-info .tableStyle.preview {
+  border-image: linear-gradient(16deg, #ff0000 45%, #00BFFF 60%) 1 100%;
+  opacity: 1 !important;
+}
+
+.equip-info .tableStyle.on.preview {
+  border-image: linear-gradient(16deg, #00fa9a 45%, #00BFFF 60%) 1 100%;
+}
+  
+
+.equip-info .tableStyle.unchanged {
+  opacity: .6;
+}
+
+.equip-info.unable {
+  opacity: .4;
+}
+
+.dms-name {
+  margin-bottom: -0.3125rem;
+  height: 0.8125rem;
+  color: white;
+}
+
+.nameDMS {
+  float: left;
+  margin-left: 25%;
+}
+
+.kmDMS{
+  float: right;
+  margin-right: 25%;
+}
+
+.border-table {
+  border-top-style: solid;
+  height: 1.0625rem;
+  border-left-style: solid;
+  background-color: #5d5d5d;
+  border-color: #000000;
+  border-width: 0.0625rem;
+}
+
+.border-table-right.bottom {
+  border-bottom-style: solid;
+  border-width: 0.0625rem;
+  border-color: #000000;
+}
+
+.border-table-right {
+  border-right-style: solid;
+  border-width: 0.0625rem;
+  border-color: #000000;
+}
+
+.padding-dms {
+  margin-left: 0.4375rem;
+  margin-top: 0.375rem;
+}
+
+.picture-box {
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.msg-pos {
+  position: absolute;
+  right: 0.3125rem;
+  bottom: 0.1875rem;
+}
+
+.table-message {
+  width: 9.375rem;
+  color: yellow;
+  text-transform: uppercase;
+}
+
+.equip-info .second-img {
+  display: none;
+}
+
+.driver2.equip-info .msg-pos,
+.driver2 .equip-info .msg-pos {
+  bottom: 0.4375rem !important;
+}
+
+.driver2.equip-info .message1,
+.driver2 .equip-info .message1 {
+  margin-bottom: 0.375rem !important;
+  border-bottom-style: solid !important;
+}
+
+.driver2.equip-info .message2,
+.driver2 .equip-info .message2 {
+  border-bottom-style: solid !important;
+}
+
+.driver2.equip-info .message3,
+.driver2 .equip-info .message3 {
+  display: none !important;
+}
+
+.driver2 #input-message-3 {
+  display: none !important;
+}
+
+.driver3.equip-info .msg-pos,
+.driver3 .equip-info .msg-pos {
+  right: 3.4375rem !important;
+}
+
+.driver3.equip-info .padding-dms,
+.driver3 .equip-info .padding-dms {
+  margin-left: 0.125rem !important;
+}
+
+.driver3.equip-info .second-img,
+.driver3 .equip-info .second-img {
+  display: revert !important;
+  margin-right: 2.0625rem;
+  margin-top: 0.375rem;
+}
+
+.driver3.equip-info .table-message,
+.driver3 .equip-info .table-message {
+  width: 6.875rem !important;
+}
+
+/* sat info div*/
+.dms-info-bagde {
+  position: absolute;
+  top: -0.375rem;
+  margin-left: -1.5625rem;
+  background-color: #1e90ff;
+  color: #ffffff !important;
+  text-align: center;
+  line-height: 0.875rem;
+  min-width: 0.875rem;
+  display: block;
+  border-radius: 50%;
+  float: left;
+  cursor: pointer;
+  z-index: 3;
+  text-indent: 0px;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border: 0.0625rem solid black;
+}
+
+/* sat info icon hover */
+.dms-info-bagde:hover {
+  text-decoration: none;
+  background: #ffc107;
+  color: #555;
+}
+
+/* sat info icon focus */
+.dms-info-bagde:focus {
+  background: #000080;
+  outline: none;
+}

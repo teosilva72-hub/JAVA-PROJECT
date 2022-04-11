@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" 	
+	template="/template/dashboard-rov-layout.xhtml"> <!-- MAIN TEMPLATE STRUCTURE END -->
+	
+	<!-- TAG METADATA: PARA CARREGAR CAMPOS DA TABELA NO PROCESSAMENTO DA PÁGINA -->
+	
+	<f:metadata>
+
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.ecovias_araguaia_vehicle_counting_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.ecovias_araguaia_vehicle_counting_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECO 101')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('false')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSpecialPDF('vehicle-count-eco101')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
+	
+		<!-- CALL REPORT TYPE -->
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv v')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('Subtrecho, Equipamento, KM, Nº Faixas, Sentido, Ano, Mês, %s, %s, 1, 2, 2A, 3, 4, 4A, 5, 6, 6A, 7, 8, 9, 10, 11, E9, E10, 0, Total',
+			satLabels.global_date_column, satLabels.global_interval_column))}" />
+		
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('
+			t.subtrecho;
+			s.name;
+			km;
+			number_lanes;
+			f.direction;
+			DATE_FORMAT(data, `%Y`);
+			DATE_FORMAT(data, `%m`);
+			DATE_FORMAT(data, `%d/%m/%Y`) as sd;
+			TIME($period)@sd;
+			SUM(IF(classe = `1`, 1, 0));
+			SUM(IF(classe = `2`, 1, 0));
+			SUM(IF(classe = `2A`, 1, 0 ));
+			SUM(IF(classe = `3`, 1, 0 )); 
+			SUM(IF(classe = `4`, 1, 0 )); 
+			SUM(IF(classe = `4A`, 1, 0 )); 
+			SUM(IF(classe = `5`, 1, 0 )); 
+			SUM(IF(classe = `6`, 1, 0));
+			SUM(IF(classe = `6N`, 1, 0 ));
+			SUM(IF(classe = `7`, 1, 0 )); 
+			SUM(IF(classe = `8`, 1, 0));
+			SUM(IF(classe = `9`, 1, 0 )); 
+			SUM(IF(classe = `10`, 1, 0 )); 
+			SUM(IF(classe = `11`, 1, 0));
+			SUM(IF(classe = `E9`, 1, 0 )); 
+			SUM(IF(classe = `9N`, 1, 0 )); 
+			SUM(IF(classe NOT IN (`1`, `2`, `2A`, `3`, `4`, `4A`, `5`, `6`, `6N`, `7`, `8`, `9`, `10`, `11`, `E9`, `9N`), 1, 0 ));
+			SUM(1)')}" />
+
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions f ON f.equip_id = siteID AND f.lane = v.lane INNER JOIN sat_equipment s ON s.equip_id = siteID INNER JOIN filter_subtrecho t ON siteID = t.equip_id')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
+
+		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('s.name, f.direction')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setOrderDate('s.name, sd, $period, f.direction')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+		
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('7@8')}" />
+		
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_weighing.id_weighing|name' , true, true)}" />
+
+    </f:metadata>
+	
+	<!---->
+	
+	<!-- TEMPLATE DO CABEÇALHO -->
+	
+	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
+	
+	    <!-- CCS STYLE -->
+	    
+	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
+		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
+		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" /> <!-- DATEPICKER STYLE -->
+		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
+			
+		<!---->
+		
+		<!-- JAVASCRIPT FILE -->
+
+		<h:outputScript library="js/datepicker" name="locales-datepicker.js" /> <!-- DATEPICKER LOCALE DEFINITIONS JS --> 
+		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS --> 			
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
+		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
+		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
+		<h:outputScript library="js/alert" name="alerts.js" />	<!-- ENABLE ALERTS -->
+	
+	   <!---->
+	
+	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
+	
+	 <!---->
+	 
+	 <!-- TEMPLATE DO CONTEÚDO PRINCIPAL  -->
+	
+	 <ui:define name="main-content" >   <!-- MAIN CONTENT TEMPLATE COMPONENT --> 
+	 
+	  <!-- ============================================================================================================================= -->
+	 		
+	   <!-- DIV DE ESTRUTURA DA TABELA --> 
+	    
+	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
+	       <!----> 		
+	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
+	        
+	         <!-- ALERT MESSAGE -->
+	 
+	         <ui:include src="/template/alerts/alerts.xhtml" />
+             
+       <!-- ============================================================================================================================= -->
+           
+           <!-- NOME DO RELATÓRIO -->   
+        
+	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
+	       <h:outputText value="Contagem de Veículos" /> <!-- NAME LABEL -->
+	       <hr></hr> <!-- HORIZONTAL LINE -->
+	    </div> <!-- REPORT NAME DIV END -->
+	 
+	 <!---->
+	 
+	  <!-- ============================================================================================================================= -->
+	 
+		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
+	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
+		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
+		width="100%" headerClass="custom-table-header">
+		<!-- DATATABALE JSF -->
+		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
+			<h:column>
+				<!-- COLUMN -->
+				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->
+				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
+			</h:column> <!-- COLUMN END -->
+		</c:forEach> <!-- LOOP TAG END -->
+	</h:dataTable> <!-- DATATABALE JSF END -->
+	<!---->
+</h:form><!-- FORM TABLE END-->
+	 
+	  <!-- ============================================================================================================================= -->
+	 
+	    <!-- ACTION BUTTONS TEMPLATE: BOTÕES DE ENVIO DE FORMULÁRIO, LIMPEZA DE TABELA E VISUALIZAÇÃO DE GRÁFICOS -->
+	 
+	      <ui:include src="/template/action-reports/buttons_template.xhtml" />
+	  
+	  <!-- ============================================================================================================================= -->
+		
+	  </div><!-- TABLE CONTAINER DIV CONTENT END -->   
+	  
+	  <!-- DIV DE ESTRUTURA DA TABELA -->   
+		
+	  <!-- ============================================================================================================================= -->
+	  
+	     <!-- SUBMIT MODAL TEMPLATE: REALIZAR O PREENCHIMENTO DO FORMULÁRIO -->
+	   
+	      <ui:include src="/template/modal/submit_modal_template.xhtml" />
+	        
+      <!-- ============================================================================================================================= -->
+             
+         <!-- CLEAR MODAL TEMPLATE: LIMPAR DADOS DA TABELA -->
+               
+          <ui:include src="/template/modal/clear_modal_template.xhtml" />
+	   
+	  <!-- ============================================================================================================================= -->
+	   
+	     <!-- DOWNLOAD MODAL TEMPLATE: REALIZAR DOWNLOAD DE ARQUIVOS EXCEL -->
+	   
+	      <ui:include src="/template/modal/download_modal_template.xhtml" />
+		    
+	  <!-- ============================================================================================================================= -->	    
+		    		
+		<!-- LOADING MESSAGE: MENSAGEM DE CARREGAMENTO (ATIVADA ENQUANTO AS INFORMAÇÕES SÃO PROCESSADAS) -->
+							
+		<div id="loading"> 
+			<span>#{reportsLabels.reports_loading_message}...</span>
+		</div>
+		
+	  <!-- ============================================================================================================================= -->
+	  
+	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION  -->
+			   	 	
+		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
+		 
+		 </form> <!-- FORM VALIDATION END -->
+		 
+	  <!-- ============================================================================================================================= -->
+	
+	</ui:define>  <!-- MAIN CONTENT TEMPLATE COMPONENT END -->	
+				 
+</ui:composition> 	 <!-- MAIN TEMPLATE STRUCTURE END -->

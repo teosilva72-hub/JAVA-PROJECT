@@ -1,0 +1,67 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+
+		<ui:define name="head">
+			<meta name="viewport" content="width=device-width, initial-scale=1" />
+			<h:outputStylesheet name="equipments.css" library="css/equipments" />
+
+		</ui:define>
+
+		<ui:define name="main-content">
+			<div class="eqp-jumbotron bg-dark px-3 row">
+			<c:forEach items="#{listEquips.equips}" var="loadItem">
+				<ui:fragment rendered="#{loadItem.value}">
+							<div class="jumbotron col-3 eqp-dark bg-dark">
+								<div class='d-flex justify-content-center'>
+									<div class='col-12 p-1'>
+										<div class="eqp-card shadow rounded p-2 bg-body">
+											<div class="card card-scroll card-scrollable">
+											<c:forEach items="#{loadItem.list}" var="item" varStatus="loop">	
+													<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
+														<div class="row">
+															<div class="col my-auto">
+																<div class="row text-center me-0 disabled">
+																	<label
+																		class="form-label list-eqp p-0 col-3 mx-auto">
+																		#{item.equip_id}
+																	</label>
+																	<label
+																		class="form-label list-eqp p-0 col-3 mx-auto">
+																		#{item.nome}
+																	</label>
+																	<label
+																		class="form-label list-eqp p-0 col-3 mx-auto">
+																		#{item.km}
+																	</label>
+																	<div class="col-3 bg-danger mx-auto">
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</c:forEach>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+				</ui:fragment>
+			</c:forEach>
+		 </div>
+		</ui:define>
+
+		<ui:define name="jscript">
+
+		</ui:define>
+</ui:composition>

@@ -1,0 +1,51 @@
+.status {
+  background-color: red;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.status.ok {
+  background-color: green;
+}
+
+.vent {
+  width: 80px;
+  position: absolute;
+  left: Calc(50% - 40px);
+}
+
+.vent:last-child {
+  top: 9px;
+}
+
+.vent.active {
+  animation: 0.75s linear infinite spinner-border;
+}
+
+.vent-body {
+  height: 110px;
+}
+
+.header {
+  font-size: 42px;
+  height: 70px;
+}
+
+.header .temp {
+  font-size: 35px;
+}
+
+.bi-gear-fill {
+  opacity: 0;
+  color: yellow;
+}
+
+.bi-gear-fill.active {
+  animation: maintenance linear infinite 1s;
+}
+
+@keyframes maintenance {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}

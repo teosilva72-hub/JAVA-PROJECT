@@ -1,0 +1,286 @@
+
+/*
+ * General styles
+ */
+
+body{
+	overflow-y: hidden;
+}
+
+.form-group{
+	margin-top: 0.25%;
+	border: none;
+	width: 100%;
+	height: 60px;
+}
+
+.input-group{
+	float: left;
+	margin-top: 2%;
+	margin-left: 10%;
+	width: 60%;	
+}
+
+.checkbox-group{
+	float: left;
+	margin-top: 0%;
+	margin-left: 0%;
+	width: 10%;
+	border: none;
+}
+
+.custom-control-input{
+	float: left;	
+}
+
+.square-user{
+position: absolute;    
+top: 14px; 
+left: 34px;	
+width: 12px;
+height: 12px;
+border-top: 1px solid rgba(0,0,0,.15);
+border-left: 1px solid rgba(0,0,0,.15);
+background-color: #212121;
+transform: rotate(45deg);
+z-index: 9999;
+}
+
+.custom-control-label{
+margin-left: 25%;
+margin-top: 0%;
+color: black;
+}
+
+input,
+input::-webkit-input-placeholder {   
+display:flex;
+flex-grow:1;
+}
+
+.form-group .input-group input{	
+height: 40px;
+width: 150px;
+border: 1px solid #555;
+border-radius: 5px;
+outline: none;
+background: white;
+padding-left: 25px;	
+}	
+
+.form-group .input-group .input-group-addon{
+background: #212121;
+color: #fff;
+width: 40px;
+height: auto;
+text-align: center;
+}
+
+.square-user {
+position: absolute;    
+top: 14px; 
+left: 34px;	
+width: 12px;
+height: 12px;
+border-top: 1px solid rgba(0,0,0,.15);
+border-left: 1px solid rgba(0,0,0,.15);
+background-color: #212121;
+transform: rotate(45deg);
+z-index: 9999;
+}
+
+
+input[type="checkbox"]:not(:checked) + label:before{
+background: #fff;
+border: 2px solid #555;
+width: 15px;
+height: 15px;	
+}
+	
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before{
+background-color: #1E90FF;
+border: 0px;	 
+}
+	
+.param-search{
+	width: 95%;
+}
+
+.badge-icon{
+margin-top: 8px;
+font-size: 24px;
+color:#FFF;
+}
+
+.modal{
+	margin-top: 100px;	
+}
+
+/*Buttons DIV*/
+
+.buttons{	
+position: relative;
+margin-left: 7%;
+width: 100%;	
+margin-top: 0%;
+border: none;
+height: 50px;		
+}
+
+/*buttons*/
+.search-button{float:left; margin-left: 4%; margin-top: 1%;}
+.limpar-button{ float: left; margin-left:8%; margin-top:1%;}
+
+/*TABLE*/
+
+.ui-title-titulo{
+	 margin-top: 5px;
+	 margin-right: 60px;
+}
+
+.ui-outputlabel-param{
+	float: left;
+	margin-left: 280px;
+	margin-top: 0px;
+}
+
+.ui-inputtext-busca{
+	float:left;
+	margin-top: 0px;
+	margin-left: 10px;
+	width: 200px;
+	text-align: center;
+}
+
+.ui-button-limpar{
+	margin-left: 30px;
+}
+
+.ui-panel-footer {
+	width: 100%;	
+	margin-top: 0px;
+}
+
+.ui-icon-edit{
+	margin-top: 10px;
+}
+
+.form-control{
+	font-size:12px;
+}
+
+.idColumn,  .nameColumn, .jobColumn, .emailColumn, .userColumn, 
+.permitionColumn, .statusColumn, .actionColumn{
+	
+	vertical-align: middle !important;
+}
+
+/*LINK ACTIONS*/
+.action-links{
+	border: none;	
+	height: 40px;
+}
+
+#update-link{
+float: left;
+margin-left: 2.5%
+}
+
+#delete-link{
+float: right;
+margin-right: 8%;
+}
+
+#form-new\:btn-add{
+	margin-left: 7%;
+}
+
+.edit-icon, .trash-alt-icon{
+color: #fff;
+font-size: 24px;
+margin-top: 8px;	
+}
+
+/*DIV CONTENTTABLE AND BUTTON*/
+#tab-content{
+	width: 100%;
+	border: none;	
+}
+
+/*TABLE DIV*/
+#tab-user{
+	width: 100%;
+	margin-top: 1.5%;
+	border: none;	
+}
+
+/*BTN DIV*/
+#buttons{
+ border: none;	
+ height: 45px;
+ margin-top: 1.5%;	
+}
+
+/*BTN INSIDE BTN DIV*/
+.panel-button{
+	margin-top: 1.25%;
+	border: none;
+	cursor: pointer;
+	width: 150px;
+	height: 40px;
+	border-radius: 5px;	
+	text-align: center;
+}
+
+#btn-clean-tab, #btn-search-tab{	
+	border: none;
+	height: 40px;
+	width: 150px;
+}
+
+#btn-search-tab{float: left; margin-left: 1%;}
+#btn-clean-tab{float: left; margin-left: 2.5%; }
+
+/*DIV CONTENT TABLE AND BUTTON*/
+
+.input-fields, .select-fields{
+	position: relative;	
+	border: none;
+	height: 65px;	
+}
+	
+.input-fields input{
+width: 100%;
+height: 40px;
+margin-bottom: 20px;
+border: 1px solid #767676;
+border-radius: 25px;
+outline: none;
+background: white;
+padding-left: 45px;	
+margin-top: 25px;
+	
+}	
+	
+.input-fields input:focus, 
+.select-fields select:focus
+{
+   border-bottom: 2px solid   #1C86EE; /*#dc3545*/
+   box-shadow: 2px 2px 2px  #1C86EE;
+}
+
+
+.input-fields span, .select-fields span{
+	position: absolute;
+	top: 8px;
+	padding-left: 15px;
+	color: #292525;
+	height: 40px;
+}
+
+.groupFieldsSearch{	
+	border: none;
+	width: 100%;	
+}
+	
+

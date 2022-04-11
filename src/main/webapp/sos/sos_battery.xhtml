@@ -1,0 +1,360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" 
+	template="/template/dashboard-rov-layout.xhtml">
+	
+	<f:metadata>
+	
+	<!-- Create Table Header -->	
+	<f:viewAction action="#{sosReportsBean.CreateFields(2)}" />  
+	          
+    </f:metadata>
+	
+	<ui:define name="head" >
+				
+	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" />		
+		<h:outputStylesheet library="css/reports" name="reports_template.css" />
+		<h:outputStylesheet library="css/forms" name="form-style.css" />
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
+
+		<h:outputScript library="js/datepicker" name="locales-datepicker.js" />
+		<h:outputScript library="js/datepicker" name="datepicker.js" />		
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
+		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  /> 
+		<h:outputScript library="js/validation-forms/reports/sos" name="sos-battery-validation.js" />  
+		<h:outputScript library="js/reports" name="sos_reports_dataTable.js"  />   
+	 	<h:outputScript library="js/charts" name="chart.js" />
+					
+	</ui:define>
+	
+	 <ui:define name="main-content" ><!-- TABLE DIV CONTENT --> 	
+	 
+	   <div class="table-container">   <!-- TABLE DIV CONTENT --> 			
+	     <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->
+	  	   
+		<!-- INFO MESSAGE DIV -->		
+		 <div id="info" class="alert alert-primary" role="alert" style="display: none;"> <!-- ALERT -->
+           <b>#{reportsMessages.reports_message_records_not_found_title}</b> : #{reportsMessages.reports_message_records_not_found}
+        </div> <!---->
+              		
+		<!-- REPORTS LABEL INFORMATION --> 
+	  <div class="text-dark text-center font-weight-bold report-title" >
+	 <h:outputText value="#{sosLabels.sos_report_title_battery}" />
+	 <hr></hr>
+	 </div>
+	 
+	 <!-- TABLE -->
+	  <h:dataTable id="sos-battery-table" value="#{sosReportsBean.resultList}" var="status" autocomplete="off"				               
+     styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0" width="100%" 
+     headerClass="custom-table-header">	
+     
+    <f:facet name="header">          
+      <tr>
+        <th rowspan="2" class="custom-table-header" >#{sosReportsBean.columns.get(0).field}</th>
+        <th rowspan="2" class="custom-table-header" >#{sosReportsBean.columns.get(1).field}</th>
+        <th colspan="2" class="custom-table-header" >#{sosLabels.sos_report_master_column_battery}</th> <!-- SUB HEADER -->          
+      </tr>
+      
+      <tr>
+        <th class="custom-table-header" >#{sosReportsBean.columns.get(2).field}</th>
+        <th class="custom-table-header" >#{sosReportsBean.columns.get(3).field}</th>               
+      </tr>
+      </f:facet>
+      
+     <c:forEach items="#{sosReportsBean.columns}" var="data" varStatus="loop">
+		<h:column>					
+			<h:outputText value="#{status[data.value]}" />
+		</h:column>
+	</c:forEach>                 
+     	 	    
+	</h:dataTable> <!---->					
+	  </h:form> <!---->
+			
+		<!---->
+			
+	    <!-- ********************************************************************************************************************* -->
+			    
+  	        <!-- BUTTONS -->
+
+			<h:form id="form-btns"> <!-- BUTTONS FORM -->					
+				<div id="buttons"> <!-- BUTTONS DIV CONTENT -->
+					
+					<div id="btn-search" class="text-center"> <!-- BUTTON SEARCH DIV -->
+						<h:commandButton id="btn-tab-search"
+							class="btn btn-dark draw-button fas fa-search fa-3x" value=""
+							data-toggle="tooltip" data-placement="bottom"
+							title="#{reportsLabels.reports_btn_search}">
+							<f:passThroughAttribute name="data-toggle" value="modal" />
+							<f:passThroughAttribute name="data-target"
+								value="#modalReportOptions" />
+							<f:ajax execute="@form" render="@none" />
+						</h:commandButton>
+					</div> <!---->
+					
+					<div id="btn-reset"> <!-- BUTTON RESET DIV -->
+						<h:commandButton id="btn-tab-reset"
+							class="btn btn-dark draw-button fas fa-redo-alt fa-3x disable-fontawesome"
+							value="" data-toggle="tooltip" data-placement="bottom"
+							disabled="#{sosReportsBean.clearBool}"
+							title="#{reportsLabels.reports_btn_clean}">
+							<f:passThroughAttribute name="data-toggle" value="modal" />
+							<f:passThroughAttribute name="data-target" value="#modalClear" />
+							<f:ajax execute="@form" render="@none" />
+						</h:commandButton>
+					</div> <!---->
+														
+				   <div id="btn-excel" > <!-- BUTTON EXCEL DIV -->	
+					<h:commandButton id="excel-act" value=""
+					disabled="#{sosReportsBean.excelBool}"
+					class="fas fa-file-excel fa-2x" data-toggle="tooltip"
+					data-placement="bottom" title="#{reportsLabels.reports_btn_excel}"
+					action="#{sosReportsBean.download}" widgetVar="excelWgt">
+					<f:passThroughAttribute name="data-toggle" value="modal" />
+					<f:passThroughAttribute name="data-target" value="#modalDownload" />
+					<f:ajax execute="@form" render="@none" />
+				</h:commandButton>
+				   </div> <!---->	
+				   
+				  <div id="btn-chart"> <!-- BUTTON CHART DIV -->	
+				    <h:commandButton id="chart-act" value="" 
+					  onclick="toggleChart();"	disabled="#{sosReportsBean.chartBool}" 						
+					  class="fas fa-chart-pie fa-2x" data-toggle="tooltip"
+					  data-placement="bottom" title="#{reportsLabels.reports_btn_chart}" widgetVar="chartWgt">	
+				      <f:ajax execute="@form" render="@none" />	
+				   </h:commandButton>
+			      </div><!---->			
+						   
+				</div> <!---->
+			</h:form> <!---->
+		</div> <!---->
+		
+		    <!-- ********************************************************************************************************************* --> 	
+		    
+		    <!-- CHART COMPONENT -->
+                  		    		
+		    <div class="chart-wrapper invisible" > <!-- CHART DIV -->
+		    
+		     <a class="text-decoration-none" id="close-link">
+            <span id="btn-chart-close"><i class="fas fa-times"></i></span>
+            </a>
+          
+             <!--Div that will hold the pie chart-->
+             <div id="chart-div"></div>     
+                                         
+             <a class="text-decoration-none" id="download-link">             
+             <span id="btn-chart-download"> 
+             <i class="fas fa-download chart-icon"></i>  
+             </span>              
+            </a>  
+          
+           </div> <!----> 				
+         
+		  <!-- ********************************************************************************************************************* -->
+			  
+	      <!--  MODALS -->					
+			   		
+		<!-- MODAL SUBMIT -->
+
+		<div class="modal fade" id="modalReportOptions" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<h:form class="modal-content" name="report-form"
+					id="report-form">
+					<div class="modal-header text-center">
+						<h4 class="modal-title w-100 font-weight-bold">#{reportsLabels.reports_modal_title}</h4>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<br />
+
+						<!-- EQUIPMENTS OPTIONS -->
+
+						<div class="form-row">
+							<div class="form-group col-sm-12 select-field">
+								<span><i class="fas fa-hdd"></i></span> <span for="equip"
+										class="valid-icon-hidden"></span> <select name="equip" id="equip" >
+										<option value="">#{reportsLabels.reports_select_equipments}</option>
+										 <ui:repeat var="eqp" value="#{sosReportsBean.equipments}"
+											varStatus="eqpStatus">
+											<option value="#{eqp.value}">#{eqp.label}</option>
+										</ui:repeat>
+									</select>
+							  </div>
+							  <div class="error-label">
+									<label for="equip" class="error" id="equip-error"></label>
+								</div>
+						  </div>
+											
+							<!-- PERIODS OPTIONS -->
+
+							<div class="form-row">
+							<div class="form-group col-sm-12 select-field">
+									<span><i class="fas fa-clock"></i></span> <span for="periods"
+										class="valid-icon-hidden"></span> <select name="periods"
+										id="periods" size="1">
+										<option value="">#{reportsLabels.reports_select_periods}</option>
+										<ui:repeat var="per" value="#{sosReportsBean.periods}"
+											varStatus="perStatus">
+											<option value="#{per.value}">#{per.label}</option>
+										</ui:repeat>
+									</select>
+								</div>
+								<div class="error-label">
+									<label for="periods" class="error" id="periods-error"></label>
+								</div>
+							</div>
+
+							<!-- START DATE -->
+
+						<div class="form-row">
+							<div class="form-group col-sm-12 input-field">
+									<span><i class="far fa-calendar-alt"></i></span> <span
+										for="dateStart" class="valid-icon-hidden"></span> <input
+										type="text" class="datepicker" autocomplete="off"
+										name="dateStart" id="dateStart"
+										placeholder="#{reportsLabels.reports_input_date_start_placeholder}" />
+								</div>
+								<div class="error-label">
+									<label for="dateStart" class="error" id="dateStart-error"></label>
+								</div>
+							</div>
+
+							<!-- END DATE -->
+
+							<div class="form-row">
+							<div class="form-group col-sm-12 input-field">
+									<span><i class="far fa-calendar-alt"></i></span> <span
+										for="dateEnd" class="valid-icon-hidden"></span> <input
+										type="text" class="datepicker" autocomplete="off"
+										name="dateEnd" id="dateEnd"
+										placeholder="#{reportsLabels.reports_input_date_end_placeholder}" />
+
+								</div>
+								<div class="error-label">
+									<label for="dateEnd" class="error" id="dateEnd-error" />
+								</div>
+							</div>
+							
+							 <input type="hidden" name="jsTable" value="sos-battery-table" />	
+							 <input type="hidden" name="jsTableScrollHeight" value="50.3vh" />	
+							 
+						</div> <!---->
+
+					<div class="modal-footer"> <!-- MODAL BUTTONS -->
+						<button type="button" id="btn-form-confirm"
+						class="btn btn-dark form-modal-draw-button" onclick="verif('#report-form', '[id$=btn-form-send]')">#{reportsLabels.reports_form_btn_send}
+						</button>
+
+						<h:commandButton value="#{reportsLabels.reports_form_btn_send}" style="display: none;"
+							id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
+							<f:ajax execute="@form" render="form-table form-btns" listener="#{sosReportsBean.GetReports(2)}" onevent="onEventFunction" />
+						</h:commandButton>
+
+						<h:commandButton value="#{reportsLabels.reports_form_btn_reset}"
+							id="btn-form-reset" immediate="true" type="reset"							
+							class="btn btn-dark form-modal-draw-button  reset-btn">
+							<f:ajax execute="@form"
+								render=":equip :axles :periods :dateStart :dateEnd" />
+						</h:commandButton>
+					</div>
+			    </h:form> <!---->
+				</div> <!----> 
+			</div> <!---->	
+			
+			<!-- ********************************************************************************************************************* -->	
+								
+				<div class="modal fade" id="modalClear" tabindex="-1"
+					aria-labelledby="clearModalLabel" aria-hidden="true"> <!-- MODAL CLEAR -->	
+					<div class="modal-dialog confirmation-modal">
+						<h:form class="modal-content" name="form-clear" id="form-clear" >
+							<div class="modal-header">
+								<h5 class="modal-title modal-alert-title" id="clearModalLabel">#{reportsLabels.reports_modal_alert_clear_title}</h5>
+							</div>
+							<div class="modal-body">
+								<p class="modal-alert-msg">#{reportsLabels.reports_modal_alert_clear_table}</p>
+							</div>
+							<div class="modal-footer">
+								<h:commandButton
+									value="#{reportsLabels.reports_modal_alert_btn_yes}"
+									action="#{sosReportsBean.resetFormValues(2)}"
+									class="btn btn-dark form-draw-button" />
+									
+								<h:commandButton
+									value="#{reportsLabels.reports_modal_alert_btn_no}"
+									class="btn btn-dark form-draw-button">
+									<f:passThroughAttribute name="data-dismiss" value="modal" />
+									<f:ajax execute="@form" render="@none" />
+								</h:commandButton>
+							</div>
+						</h:form>
+					</div>
+				</div> <!---->					
+					
+			<div class="modal fade" id="modalDownload" tabindex="-1"
+				aria-labelledby="downloadModalLabel" aria-hidden="true"> <!-- MODAL DOWNLOAD -->	
+				<div class="modal-dialog confirmation-modal">
+					<h:form class="modal-content" name="form-download" id="form-download">
+						<div class="modal-header">
+							<h5 class="modal-title modal-alert-title" id="donwloadModalLabel">#{reportsLabels.reports_modal_alert_download_title}</h5>
+						</div>
+						<div class="modal-body">
+							<p class="modal-alert-msg">
+								#{reportsLabels.reports_modal_alert_download_file_excel} <span
+									class="extension">#{reportsLabels.reports_modal_alert_extension_xlsx}</span> ?
+							</p>
+						</div>
+						<div class="modal-footer">
+							<h:commandButton p:onclose="download"
+								value="#{reportsLabels.reports_modal_alert_btn_yes}"
+								p:data-toggle="modal" p:data-target="#modalDownload"
+								action="#{sosReportsBean.download}"
+								class="btn btn-dark form-draw-button" />
+								
+							<h:commandButton id="cancelDownload"
+								value="#{reportsLabels.reports_modal_alert_btn_no}"
+								class="btn btn-dark form-draw-button">
+								<f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+						</div>
+					</h:form>
+				</div>
+			</div><!---->
+				
+			   <!---->
+
+         <!-- ********************************************************************************************************************* -->
+						
+		<div id="loading"> <!-- LOADING MESSAGE -->
+			<span>#{reportsLabels.reports_loading_message}...</span>
+		</div>
+		
+		 <!-- ********************************************************************************************************************* -->
+								 	 
+		 <!-- EXTERNAL SCRIPT ELEMENTS -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+		 	
+		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
+		 <input type="hidden" name="maxDateMsg" value="#{validatorMessages.validator_max_date}" /> <!-- MAX DATE VALIDATION MESSAGE -->
+	     <input type="hidden" name="greatherThanMsg" value="#{validatorMessages.validator_start_date_greater_than_end_date_header}" /> <!-- START DATE GREATHER THAN END DATE VALIDATION MESSAGE -->
+		 <input type="hidden" name="requiredEquipmentsMsg" value="#{requiredMessages.required_reports_select_equipments}" /> <!-- REQUIRED EQUIPMENTS MESSAGE -->
+		 <input type="hidden" name="requiredPeriodsMsg" value="#{requiredMessages.required_reports_select_periods}" /> <!-- REQUIRED PERIODS MESSAGE -->
+		 <input type="hidden" name="requiredDateStartMsg" value="#{requiredMessages.required_reports_input_date_start}" /> <!-- REQUIRED START DATE MESSAGE -->
+		 <input type="hidden" name="requiredDateEndMsg" value="#{requiredMessages.required_reports_input_date_end}" /> <!-- REQUIRED END DATE MESSAGE -->
+		 <input type="hidden" name="requiredValidDateMsg" value="#{validatorMessages.validator_valid_date}" /> <!-- VALID DATE MESSAGE -->
+		 
+		 </form> <!----> 	 	
+		 
+	 </ui:define>
+</ui:composition>	

@@ -1,0 +1,28 @@
+html, body {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.btn-modal {
+	margin-top: 10px !important;
+	width: 100%;
+	margin: 5px;
+}
+a#btn_append_veh {
+    position: relative;
+    top: 25px;
+}
+a.deleteTipoVeh {
+    display: block;
+    position: relative;
+    margin: 15px;
+    right: 15px;
+}
+a#btn_veh_ocup {
+    position: relative;
+    top: 25px;
+}
+.hidden{
+	display: none;
+}

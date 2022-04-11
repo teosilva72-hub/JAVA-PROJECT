@@ -1,0 +1,223 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" template="/template/dashboard-rov-layout.xhtml">
+
+	<f:metadata>
+
+		<f:viewParam id="act1" name="equip" value="#{meteoPanelBean.station}" />
+
+	</f:metadata>
+
+	<ui:define name="head">
+		<title>#{abaLabels.mto_panel}</title>
+		<h:outputStylesheet name="panel.css" library="css/meteo" />
+
+	</ui:define>
+
+	<ui:define name="main-content">
+
+		<!-- INFO MESSAGE DIV -->
+		<div id="info" class="alert alert-primary" role="alert" style="display: none;">
+			<!-- ALERT -->
+			<b>#{meteoLabels.$message_meteo_records_not_found_title}</b> :
+			#{meteoLabels.$message_meteo_records_not_found}
+		</div>
+		<!---->
+
+		<!-- Inicio da estrutura do conteudo -->
+
+		<div class="jumbotron jumbotron-fluid">
+			<div class="barraBusca">
+				<div class="row line">
+					<!-- Inicio barra de pesquisa -->
+					<div class="col-sm">
+						<div class="select-field meteo">
+							<span><i class="fas fa-hdd"></i></span>
+							<span for="equip" class="valid-icon-hidden"></span>
+							<select name="equip" id="equip">
+								<ui:repeat var="eqp" value="#{meteoPanelBean.equipments}" varStatus="eqpStatus">
+									<option value="#{eqp.value}">#{eqp.label}</option>
+								</ui:repeat>
+							</select>
+						</div>
+						<div class="error-label"><label for="equip" class="error" id="equip-error"></label></div>
+					</div>
+					<!-- Final barra de pesquisa -->
+
+					<!-- Final do botão barra de pesquisa -->
+					<!-- Inicio da barra de informação -->
+					<div class="col-sm">
+						<div class="alert name-alert" role="alert">
+							<h:outputLabel id="stat" class="stationName meteo" value="" />
+						</div>
+					</div>
+					<!-- Final barra de informação -->
+				</div>
+			</div>
+
+			<div class="cardContainer">
+				<!-- Inicio da primeira grid-->
+				<div class="row line">
+					<div class="col-4 panel-card custom AbsoluteAirPressure">
+						<!-- Inicio do card 1 -->
+						<div class="card">
+							<div class="card-body presAtm">
+								<h:outputLabel value="#{meteoLabels.$label_meteo_panel_atmPressure}" />
+								<h1 id="pressure" class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> hPa</span></h1>
+							</div>
+						</div>
+						<!-- Final do card 1 -->
+					</div>
+					<div class="col-4 panel-card custom Temperature">
+						<!-- Inicio do card 2-->
+						<div class="card">
+							<div class="card-body temperatura">
+								<div>
+									<h:outputLabel value="#{meteoLabels.$label_meteo_panel_temperature}" />
+									<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> °C</span></h1>
+	
+								</div>
+							</div>
+						</div>
+						<!-- Final do card 2-->
+					</div>
+					<div class="col-4 panel-card custom PrecipitationAbsolute">
+						<!-- Inicio do card 3 -->
+						<div class="card">
+							<div class="card-body taxaPrecip">
+								<h:outputLabel value="#{meteoLabels.$label_meteo_panel_absolute_preciptation}" />
+								<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> L/m²</span></h1>
+							</div>
+						</div>
+						<!-- Final do card 3 -->
+					</div>
+					<div class="col-4 panel-card custom RelativeHumidity">
+						<!-- Inicio do card 4 -->
+						<div class="card">
+							<div class="card-body umidade">
+								<h:outputLabel value="#{meteoLabels.$label_meteo_panel_relative_humidity}" />
+								<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> %</span></h1>
+							</div>
+						</div>
+						<!-- Final do card 4 -->
+					</div>
+					<div class="col-4 panel-card custom deg WindDirection">
+						<!-- Inicio do card 5 -->
+						<div class="card bussolaMaxHei py-1">
+							<div class="card-body textBuss bussola">
+								<h:outputLabel value="#{meteoLabels.$label_meteo_panel_wind_direction}" />
+								<div class="direction-wind">
+									<h:graphicImage class="card-ponteiro" url="/resources/images/estacao/setaBussola.png"
+										style="transform: rotate(0deg);" />
+								</div>
+	
+							</div>
+						</div>
+						<!-- Final do card 5 -->
+					</div>
+					<div class="col-4 panel-card custom WindSpeed">
+						<!-- Inicio do card 6 -->
+						<div class="card">
+							<div class="card-body velocVento">
+								<div class="">
+									<h:outputLabel value="#{meteoLabels.$label_meteo_panel_wind_speed}" />
+									<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value text-black"></input><span class="card-notation"> km/h</span></h1>
+								</div>
+	
+							</div>
+						</div>
+						<!-- Final do card 6 -->
+					</div>
+					<div id="card-road-temp" class="col-4 panel-card custom RoadTemperature">
+						<!-- Inicio do card 8 -->
+						<div class="card">
+							<div class="card-body road-temperature">
+								<div>
+									<h:outputLabel value="#{meteoLabels.$label_meteo_panel_road_temperature}" />
+									<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> °C</span></h1>
+								</div>
+							</div>
+						</div>
+						<!-- Final do card 8 -->
+					</div>
+	
+					<div class="col-4 panel-card custom Visibility">
+						<!-- Inicio do card 9 -->
+						<div class="card visibility maxHeight">
+							<div class="card-body">
+								<h:outputLabel value="#{meteoLabels.$label_meteo_panel_visibility}" />
+								<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> m</span></h1>
+							</div>
+						</div>
+						<!-- Final do card 9 -->
+					</div>
+
+					<div class="col-4 panel-card custom WaterFilmHeight">
+						<!-- Inicio do card 10 -->
+						<div class="card waterfilm maxHeight">
+							<div class="card-body">
+								<h:outputLabel value="#{meteoLabels.$label_meteo_panel_waterfilm}" />
+								<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> mil</span></h1>
+							</div>
+						</div>
+						<!-- Final do card 10 -->
+					</div>
+					<div class="col-4 panel-card custom">
+						<!-- Inicio do card 11 -->
+						<div class="card energia">
+							<div class="card-body">
+								<div class=" ">
+									<h5 class="">
+										<h:outputLabel value="#{meteoLabels.$label_meteo_panel_status} : " />
+										<label id="status"></label> <!-- JSF LABEL NOT WORK HERE -->
+										<h:inputHidden id="hidden" value="#{meteoPanelBean.panel.status}" />
+									</h5>
+									<h5 class="status-volts">#{meteoLabels.$label_meteo_panel_line_volts} :
+										#{meteoPanelBean.panel.lineVolts}</h5>
+									<h5 class="status-battery">#{meteoLabels.$label_meteo_panel_battery} :
+										#{meteoPanelBean.panel.battery}</h5>
+	
+								</div>
+							</div>
+						</div>
+						<!-- Final do card 11 -->
+					</div>
+				</div>
+				<!-- Final da terceira grid -->
+			</div>
+		</div>
+
+		<!-- Final da estrutura do conteudo -->
+
+
+		<!-- ********************************************************************************************************************* -->
+
+		<!-- EXTERNAL SCRIPT ELEMENTS -->
+
+		<form name="validation">
+			<!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+
+			<input type="hidden" name="requiredEquipmentMsg"
+				value="#{requiredMessages.required_mto_reports_select_equipments}" />
+			<!-- EQUIPMENT REQUIRED MESSAGE -->
+			<input type="hidden" name="panelStatus" value="#{meteoPanelBean.panel.status}" /> <!-- EQUIPMENT STATUS -->
+
+		</form>
+		<!---->
+
+		<!-- CHANGE STATUSSS -->
+
+	</ui:define>
+	<ui:define name="jscript">
+		<c:if test="#{ loginAccount.load.en_meteo }">
+			<h:outputScript name="main.js" library="js/meteo" />
+			<script>
+				window.initMeteo()
+			</script>
+		</c:if>
+	</ui:define>
+</ui:composition>

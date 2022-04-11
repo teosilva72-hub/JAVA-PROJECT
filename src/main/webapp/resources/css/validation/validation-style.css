@@ -1,0 +1,82 @@
+/* validation classes style */
+
+/* error class */
+.error {
+	color: #dc4535;
+}
+
+/* valid class*/
+.success {
+	color: #00CC00;
+}
+
+/* hidden icon fontawesome for validation (inside elements) */
+.valid-icon-hidden{ 
+  display: none;
+}
+
+/* visible icon fontawesome for validation (inside elements) */
+.valid-icon-visible{  
+  display: block;  
+}
+
+/* error label class */
+.error-label {
+	border: 1px solid transparent;
+	font-size: 12px;   
+    margin-left: 33px;   
+}
+
+/* invalid class style */
+.invalid {
+	border: 1px solid red !important;
+	-moz-box-shadow: 0 0 3px red;
+	-webkit-box-shadow: 0 0 3px red;
+	box-shadow: 0 0 3px red;
+	border-radius: 25px;
+	-moz-border-radius: 5px;
+	border-bottom: 2px solid #dc4535 !important; /*#dc3545*/
+	box-shadow: 2px 2px 2px #dc4535 !important;
+}
+
+/* valid class */
+.valid {
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+/* Validation icon position type select checkbox options */
+ .checkbox-field .valid-icon-hidden,
+ .checkbox-field .valid-icon-visible {
+  margin-left: 86% !important;
+} 
+
+/* Validation icon position type (input/select) */
+ .input-field .valid-icon-hidden, .input-field .valid-icon-visible,
+ .select-field .valid-icon-hidden, .select-field .valid-icon-visible
+ {
+  margin-left: 90% !important;
+}
+
+ .input-field-half .valid-icon-hidden, .input-field-half .valid-icon-visible,
+ .select-field-half .valid-icon-hidden, .select-field-half .valid-icon-visible{
+    margin-left: 82% !important;
+ }
+
+
+/* ONLY FOR SAT DIRECTIONS *** */
+.select-direction .valid-icon-hidden,
+.select-direction .valid-icon-visible{
+	position: absolute;
+	margin-left: 70% !important;    
+    margin-top: 9px;	 
+}
+
+label#direction1-error, label#direction2-error {
+    margin-top: 15px;
+ 
+} 
+.display-revert{
+   display : revert;
+}

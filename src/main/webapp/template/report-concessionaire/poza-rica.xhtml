@@ -1,0 +1,629 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf">
+<h:body>
+
+	<!-- REAL TIME  -->
+
+	<li class="nav-item">
+
+		<a href="#realTimeSubmenu" data-toggle="collapse" aria-expanded="false" class="nav-link">
+			<!-- REALTIME MENU -->
+			<i class="fas fa-road icon"></i><span
+				class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span>
+		</a>
+
+		<ul class="collapse list-unstyled" id="realTimeSubmenu">
+			<!-- REALTIME SUBMENU -->
+
+			<ui:fragment rendered="#{loginAccount.mapEnabled}">
+				<li class="nav-item">
+					<h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/map/map.xhtml?faces-redirect=true')}" value="">
+						<i class="fas fa-map-marked-alt icon-sub"></i>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_gis_map}</span>
+					</h:commandLink>
+				</li>
+			</ui:fragment>
+
+			<!---->
+
+			<!-- REALTIME ITEM -->
+
+			<li class="nav-item">
+				<h:commandLink class="nav-link"
+					action="#{navigationController.redirectToURL('/realtime/realtime.xhtml?faces-redirect=true')}"
+					value="">
+					<i class="fas fa-map-signs icon-sub"></i>
+					<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_interface}</span>
+				</h:commandLink>
+			</li>
+
+			<!---->
+
+			<!-- OCR REFALTIME MENU -->
+
+			<ui:fragment rendered="#{loginAccount.load.en_ocr}">
+				<li class="nav-item">
+					<a class="nav-link" href="#ocrUiSubmenu" data-toggle="collapse" aria-expanded="false">
+						<!-- OCR SUBMENU -->
+						<i class="fas fa-camera-retro icon-sub"></i>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_ocr_interface}</span>
+					</a>
+
+					<ul class="collapse list-unstyled" id="ocrUiSubmenu">
+						<!-- OCR REALTIME -->
+
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/ocr/ocr_realtime.xhtml?faces-redirect=true')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span
+									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_realtime}</span>
+							</h:commandLink>
+						</li>
+						<!---->
+
+						<!-- OCR REALTIME OVERVIEW -->
+
+						<li class="nav-item">
+							<h:commandLink class=" sub-link nav-link"
+								action="#{navigationController.redirectToURL('/ocr/ocr_realtime_details.xhtml?faces-redirect=true')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span
+									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_realtime_details}</span>
+							</h:commandLink>
+						</li>
+						<!---->
+
+					</ul>
+					<!---->
+				</li>
+				<!---->
+			</ui:fragment>
+			<!--  -->
+
+			<!-- COLAS ITEM -->
+
+			<ui:fragment rendered="#{loginAccount.load.en_colas}">
+				<li class="nav-item">
+					<h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/colas/colasTable.xhtml?faces-redirect=true')}"
+						value="">
+						<i class="fas fa-car icon-sub"></i>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_colas_realtime}</span>
+					</h:commandLink>
+				</li>
+			</ui:fragment>
+
+			<!---->
+
+		</ul>
+	</li>
+
+	<!---->
+
+	<!-- DMS MENU -->
+
+	<ui:fragment rendered="#{loginAccount.load.en_dms}">
+		<li class="nav-item"><a class="nav-link" href="#dmsUiSubmenu" data-toggle="collapse" aria-expanded="false">
+				<i class="fas fa-tv icon"></i>
+				<span class="text">#{dashboardLabels.dashboard_sidebar_module_dms}</span></a>
+
+			<ul class="collapse list-unstyled" id="dmsUiSubmenu">
+				<!-- DMS SUBMENU -->
+
+				<!-- ACTIVE MESSAGES -->
+
+				<li class="nav-item">
+					<h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/dms/messages/message-activate.xhtml?faces-redirect=true')}"
+						value="">
+						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+						<span
+							class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sub_menu_user_interface_active_messages}</span>
+					</h:commandLink>
+				</li>
+				<!---->
+
+				<!-- AVAILABLE MESSAGES -->
+
+				<li class="nav-item">
+					<h:commandLink class="nav-link"
+						action="#{navigationController. redirectToURL('/dms/messages/message-available.xhtml?faces-redirect=true')}"
+						value="">
+						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+						<span
+							class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sub_menu_user_interface_available_messages}</span>
+					</h:commandLink>
+				</li>
+				<!---->
+
+			</ul>
+			<!---->
+		</li>
+		<!---->
+	</ui:fragment>
+	<!---->
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+	<!-- METEO PANEL MENU -->
+
+	<ui:fragment rendered="#{loginAccount.load.en_meteo}">
+		<li class="nav-item"><a class="nav-link" href="#meteoUiSubmenu" data-toggle="collapse" aria-expanded="false">
+				<i class="fas fa-wind icon"></i>
+				<span class="text">#{dashboardLabels.$label_dashboard_sidebar_meteo_panel_menu}</span></a>
+
+			<ul class="collapse list-unstyled" id="meteoUiSubmenu">
+				<li class="nav-item">
+					<h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/meteo/panel/meteo-panel.xhtml?faces-redirect=true')}"
+						value="">
+						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+						<span
+							class="text-sub">#{dashboardLabels.$label_dashboard_sidebar_meteo_panel_realtime_sub_menu}</span>
+					</h:commandLink>
+				</li>
+			</ul>
+			<!---->
+		</li>
+	</ui:fragment>
+
+	<!---->
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+	<!-- SPEED MENU -->
+
+	<ui:fragment rendered="#{loginAccount.load.en_speed}">
+		<li class="nav-item"><a class="nav-link" href="#speedUiSubmenu" data-toggle="collapse" aria-expanded="false">
+				<i class="fas fa-shipping-fast icon"></i>
+				<span class="text">#{dashboardLabels.dashboard_sidebar_module_speed}</span></a>
+
+			<ul class="collapse list-unstyled" id="speedUiSubmenu">
+				<li class="nav-item">
+					<h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/speed/realtime/speed-real.xhtml?faces-redirect=true')}"
+						value="">
+						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+						<span
+							class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_user_interface_monitor}</span>
+					</h:commandLink>
+				</li>
+			</ul>
+			<!---->
+		</li>
+
+	</ui:fragment>
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+	<!-- DETAILED REPORT -->
+
+	<li class="nav-item"><a class="nav-link" href="#detailUiSubmenu" data-toggle="collapse" aria-expanded="false">
+			<i class="fas fa-info-circle icon"></i>
+			<span class="text">#{dashboardLabels.dashboard_detailed_report_menu}</span></a>
+
+		<ul class="collapse list-unstyled" id="detailUiSubmenu">
+
+			<!-- DAI DETAIL -->
+
+			<li class="nav-item">
+				<h:commandLink class="nav-link"
+					action="#{navigationController. redirectToURL('/reports/detailed-reports/tuxpan/dai/dai-detail.xhtml?faces-redirect=true')}"
+					value="">
+					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_dai_detail_submenu}</span>
+				</h:commandLink>
+			</li>
+
+			<!---->
+
+			<!-- OCR DETAIL -->
+
+			<li class="nav-item">
+				<h:commandLink class="nav-link"
+					action="#{navigationController. redirectToURL('/reports/detailed-reports/tuxpan/ocr/ocr-detail.xhtml?faces-redirect=true')}"
+					value="">
+					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ocr_detail_submenu}</span>
+				</h:commandLink>
+			</li>
+
+			<!---->
+
+		</ul>
+	</li>
+	<!---->
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+	<!-- REPORTS MENU -->
+	<li class="nav-item"><a href="#modMenu" data-toggle="collapse" aria-expanded="false" class="nav-link">
+			<i class="fas fa-file-signature icon"></i>
+			<span class="text">#{dashboardLabels.dashboard_sidebar_menu_reports}</span></a>
+
+		<ul class="collapse list-unstyled" id="modMenu">
+
+			<!--  REPORTS SUBMENU -->
+
+			<!-- Battery -->
+			<ui:fragment rendered="#{loginAccount.load.en_sos || loginAccount.load.en_dms}">
+
+				<li class="nav-item">
+					<a class="nav-link" href="#batterySubmenu" data-toggle="collapse" aria-expanded="false">
+						<svg width="16" height="16" fill="currentColor" class="bi bi-battery-charging icon-sub"
+							viewBox="0 0 16 16">
+							<path
+								d="M9.585 2.568a.5.5 0 0 1 .226.58L8.677 6.832h1.99a.5.5 0 0 1 .364.843l-5.334 5.667a.5.5 0 0 1-.842-.49L5.99 9.167H4a.5.5 0 0 1-.364-.843l5.333-5.667a.5.5 0 0 1 .616-.09z" />
+							<path
+								d="M2 4h4.332l-.94 1H2a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h2.38l-.308 1H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
+							<path
+								d="M2 6h2.45L2.908 7.639A1.5 1.5 0 0 0 3.313 10H2V6zm8.595-2-.308 1H12a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H9.276l-.942 1H12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.405z" />
+							<path
+								d="M12 10h-1.783l1.542-1.639c.097-.103.178-.218.241-.34V10zm0-3.354V6h-.646a1.5 1.5 0 0 1 .646.646zM16 8a1.5 1.5 0 0 1-1.5 1.5v-3A1.5 1.5 0 0 1 16 8z" />
+						</svg>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_battery}</span>
+					</a>
+					<ul class="collapse list-unstyled moduleSubMenu" id="batterySubmenu">
+
+						<!---->
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/battery/RelatorioMin.xhtml')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span class="text-sub"
+									style="margin-left: 1%;">#{dashboardLabels.dashboard_sidebar_sub_menu_battery_min}</span>
+							</h:commandLink>
+						</li>
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/battery/RelatorioMax.xhtml')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span class="text-sub"
+									style="margin-left: 1%;">#{dashboardLabels.dashboard_sidebar_sub_menu_battery_max}</span>
+							</h:commandLink>
+						</li>
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/battery/RelatorioMinMax.xhtml')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span class="text-sub"
+									style="margin-left: 1%;">#{dashboardLabels.dashboard_sidebar_sub_menu_battery_min_max}</span>
+							</h:commandLink>
+						</li>
+
+					</ul>
+				</li>
+
+			</ui:fragment>
+
+			<!-- COLAS -->
+			<ui:fragment rendered="#{loginAccount.load.en_colas}">
+
+				<li class="nav-item">
+					<a class="nav-link" href="#colasSubmenu" data-toggle="collapse" aria-expanded="false">
+						<i class="fas fa-hourglass-half icon-sub"></i>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_colas}</span></a>
+					<ul class="collapse list-unstyled moduleSubMenu" id="colasSubmenu">
+
+						<!---->
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/colas/tuxpan/waiting_time/waiting_time.xhtml')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span class="text-sub"
+									style="margin-left: 1%;">#{dashboardLabels.dashboard_sidebar_sub_menu_colas_estimated_time}</span>
+							</h:commandLink>
+						</li>
+
+					</ul>
+				</li>
+
+			</ui:fragment>
+			<!---->
+
+			<!-- CFTV -->
+			<ui:fragment rendered="#{loginAccount.load.en_cftv}">
+			</ui:fragment>
+			<!---->
+
+			<!---->
+
+			<!-- COMMS -->
+			<ui:fragment rendered="#{loginAccount.load.en_comms}">
+			</ui:fragment>
+			<!---->
+
+			<!---->
+
+			<!-- DAI  -->
+			<ui:fragment rendered="#{loginAccount.load.en_dai}">
+
+				<li class="nav-item">
+					<a class="nav-link" href="#daiSubmenu" data-toggle="collapse" aria-expanded="false">
+						<i class="fas fa-video icon-sub"></i>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_dai}</span></a>
+					<ul class="collapse list-unstyled" id="daiSubmenu">
+
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/dai/tuxpan/incidents/incidents.xhtml?faces-redirect=true')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span
+									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sub_menu_dai_incidents}</span>
+							</h:commandLink>
+						</li>
+
+					</ul>
+				</li>
+				<!---->
+			</ui:fragment>
+			<!---->
+
+			<!---->
+
+			<ui:fragment rendered="#{loginAccount.load.en_ocr}">
+
+			</ui:fragment>
+			<!---->
+
+			<!---->
+
+			<!-- METEO MENU -->
+			<ui:fragment rendered="#{loginAccount.load.en_meteo}">
+				<li class="nav-item">
+					<!-- LIST -->
+					<a class="nav-link" href="#meteoSubmenu" data-toggle="collapse" aria-expanded="false">
+						<i class="fas fa-wind icon-sub"></i>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_meteo}</span></a>
+
+					<ul class="collapse list-unstyled" id="meteoSubmenu">
+						<!--  METEO REPORT SUBMENU ITEM  -->
+
+						<!--  METEO REPORT SUBMENU  -->
+
+						<ui:fragment rendered="#{loginAccount.load.en_meteo}">
+
+							<li class="nav-item"><a class="nav-link" href="#mtoSubmenu" data-toggle="collapse"
+									aria-expanded="false">
+									<i class="fas fa-cloud icon-sub-item"></i>
+									<span
+										class="text-sub-item">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
+
+								<ul class="collapse list-unstyled" id="mtoSubmenu">
+
+									<!--  MTO REPORT SUBMENU ITEM -->
+
+									<!-- METEO PERIOD -->
+
+									<li class="nav-item">
+										<h:commandLink class="nav-link"
+											action="#{navigationController.redirectToURL('/reports/meteo/tuxpan/mto/periods/mto-periods.xhtml')}"
+											value="">
+											<i class="fas fa-arrow-circle-right icon-sub-item-2"></i>
+											<span
+												class="text-sub-item-2">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_period}</span>
+										</h:commandLink>
+									</li>
+
+									<!---->
+
+								</ul>
+							</li>
+
+							<!---->
+
+							<li class="nav-item"><a class="nav-link" href="#vsSubmenu" data-toggle="collapse"
+									aria-expanded="false"><i class="fas fa-sun icon-sub-item"></i>
+									<span
+										class="text-sub-item">#{dashboardLabels.dashboard_sidebar_module_sv}</span></a>
+
+								<ul class="collapse list-unstyled" id="vsSubmenu">
+									<!--  SV REPORT SUBMENU ITEM  -->
+
+									<!-- SV PERIOD -->
+
+									<li class="nav-item">
+										<h:commandLink class="nav-link"
+											action="#{navigationController.redirectToURL('/reports/meteo/tuxpan/sv/periods/sv-periods.xhtml')}"
+											value="">
+											<i class="fas fa-arrow-circle-right icon-sub-item-2"></i>
+											<span
+												class="text-sub-item-2">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_period}</span>
+										</h:commandLink>
+									</li>
+
+									<!---->
+
+								</ul>
+							</li>
+
+							<!---->
+
+						</ui:fragment>
+
+						<!--  SV REPORT SUBMENU  -->
+
+					</ul>
+					<!---->
+				</li>
+				<!---->
+			</ui:fragment>
+
+			<!---->
+
+			<!-- OCC REPORT MENU -->
+			<ui:fragment rendered="#{loginAccount.load.en_occ}">
+				<li class="nav-item">
+					<h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/occurrence/occurrences.xhtml?faces-redirect=true')}"
+						value="" data-toggle="collapse" aria-expanded="false">
+						<i class="far fa-file-alt icon-sub"></i>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_occ}</span>
+					</h:commandLink>
+				</li>
+				<!---->
+			</ui:fragment>
+			<!---->
+
+			<!---->
+
+			<!-- DMS REPORT ITEM -->
+			<ui:fragment rendered="#{loginAccount.load.en_dms}">
+			</ui:fragment>
+			<!---->
+
+			<!-- SOS REPORT ITEM -->
+			<ui:fragment rendered="#{loginAccount.load.en_sos}">
+
+				<li class="nav-item"><a class="nav-link" href="#sosSubmenu" data-toggle="collapse"
+						aria-expanded="false">
+						<i class="fas fa-hdd icon-sub"></i>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sos}</span></a>
+
+					<ul class="collapse list-unstyled" id="sosSubmenu">
+
+						<!-- SOS BATTERY REPORT -->
+
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/sos/tuxpan/battery/battery.xhtml?faces-redirect=true')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span
+									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_sos_battery}</span>
+							</h:commandLink>
+						</li>
+						<!---->
+
+						<!-- SOS CALL REPORT -->
+
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/sos/tuxpan/call_history/call_history.xhtml?faces-redirect=true')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span
+									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_sos_call}</span>
+							</h:commandLink>
+						</li>
+						<!---->
+
+						<!-- SOS STATISTIC REPORT -->
+
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/sos/tuxpan/statistics/call_statistics.xhtml?faces-redirect=true')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span
+									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_sos_statistic}</span>
+							</h:commandLink>
+						</li>
+						<!---->
+
+						<!-- SOS STATUS REPORT -->
+
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/sos/tuxpan/status/status.xhtml?faces-redirect=true')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span
+									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_sos_status}</span>
+							</h:commandLink>
+						</li>
+
+						<!---->
+
+					</ul>
+				</li>
+
+			</ui:fragment>
+			<!---->
+
+			<!-- SPEED REPORT ITEM -->
+			<ui:fragment rendered="#{loginAccount.load.en_speed}">
+
+				<li class="nav-item"><a class="nav-link" href="#speedSubmenu" data-toggle="collapse"
+						aria-expanded="false">
+						<i class="fas fa-hdd icon-sub"></i>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_speed}</span></a>
+
+					<ul class="collapse list-unstyled" id="speedSubmenu">
+						<!-- SPEED SUBMENU ITEM -->
+
+
+						<!-- VELOCIDADE REPORT -->
+
+						<li class="nav-item">
+							<h:commandLink class="nav-link"
+								action="#{navigationController.redirectToURL('/reports/speed/speed-records.xhtml?faces-redirect=true')}"
+								value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span
+									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_speed_records_sub_menu_report}
+								</span>
+							</h:commandLink>
+						</li>
+
+						<!---->
+
+					</ul>
+				</li>
+
+			</ui:fragment>
+			<!---->
+
+			<!-- VIDEOWALL REPORT ITEM -->
+			<ui:fragment rendered="#{loginAccount.load.en_videowall}">
+			</ui:fragment>
+			<!---->
+
+			<!-- WIM REPORT ITEM -->
+			<ui:fragment rendered="#{loginAccount.load.en_wim}">
+				<li class="nav-item"><a class="nav-link" href="#wimUiSubmenu" data-toggle="collapse"
+						aria-expanded="false">
+						<i class="fas fa-truck-moving icon-sub"></i>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_wim}</span></a>
+
+					<ul class="collapse list-unstyled" id="wimUiSubmenu">
+						<!-- WIM REPORT SUBMENU ITEM -->
+
+						<li class="nav-item">
+							<h:commandLink class="nav-link" action="#{navigationController.wimReport}" value="">
+								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+								<span
+									class="text-sub-item">#{dashboardLabels.dashboard_sidebar_wim_sub_menu_report}</span>
+							</h:commandLink>
+						</li>
+					</ul>
+				</li>
+				<!---->
+				<!---->
+			</ui:fragment>
+			<!---->
+		</ul>
+	</li>
+	<!---->
+	<!---->
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+</h:body>
+
+</html>

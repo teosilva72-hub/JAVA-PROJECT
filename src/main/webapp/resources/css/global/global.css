@@ -1,0 +1,41 @@
+  /*********
+  **************************************************/
+ /********** VALIDADOR ************** VALIDADOR *************/
+/***********************************************************/
+select.error-global {
+	border-radius: 25px;
+   border: 1px solid red !important;
+    -moz-box-shadow: 0 0 3px red;
+    -webkit-box-shadow: 0 0 3px red;
+    box-shadow: 0 0 3px red;   
+    -moz-border-radius:5px;  
+    border-bottom: 2px solid   #dc4535 !important; /*#dc3545*/
+    box-shadow: 2px 2px 2px  #dc4535 !important;
+}
+input.error-global {
+	border-radius: 25px;
+   border: 1px solid red !important;
+    -moz-box-shadow: 0 0 3px red;
+    -webkit-box-shadow: 0 0 3px red;
+    box-shadow: 0 0 3px red;   
+    -moz-border-radius:5px;  
+    border-bottom: 2px solid   #dc4535 !important; /*#dc3545*/
+    box-shadow: 2px 2px 2px  #dc4535 !important;
+}
+textarea.error-global{
+   	border: 1px solid red !important;
+    -moz-box-shadow: 0 0 3px red;
+    -webkit-box-shadow: 0 0 3px red;
+    box-shadow: 0 0 3px red;   
+    -moz-border-radius:5px;  
+    border-bottom: 2px solid   #dc4535 !important; /*#dc3545*/
+    box-shadow: 2px 2px 2px  #dc4535 !important;
+}
+label{
+	font-size: 7pt;
+	color: red;
+	text-align: center;
+}
+em{
+	font-size: 9pt;
+}

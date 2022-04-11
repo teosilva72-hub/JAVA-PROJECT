@@ -1,0 +1,218 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:pf="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+
+	<ui:define name="head">
+
+		<h:outputStylesheet name="users-form.css" library="css/users" />
+		<h:outputStylesheet library="css/forms" name="form-style.css" />
+			
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
+		<h:outputScript library="js/validation-forms/users" name="user-update-validation.js" />
+		
+	</ui:define>
+
+	<ui:define name="main-content">
+
+		<h:form prependId="false" id="form-update"> <!-- FORM -->
+		
+			 <!-- ALERT MESSAGE -->
+             
+			<div id="success" class="alert alert-success" role="alert" style="display: none;"> <!-- ALERT SUCCESS -->
+				#{usersMessages.users_update_success_update}  			
+			  </div><!---->
+						  
+			  <div id="usernameError" class="alert alert-danger" role="alert" style="display:none;"> <!-- ALERT USERNAME ERROR -->
+				#{usersMessages.users_username_already_exists}
+			  </div><!---->
+			  
+			  <div id="emailError" class="alert alert-danger" role="alert" style="display:none;"> <!-- ALERT EMAIL ERROR -->
+				#{usersMessages.users_email_already_exists}
+			  </div><!---->
+			  
+			   <div id="error" class="alert alert-danger" role="alert" style="display:none;"> <!-- ALERT ERROR -->
+				#{usersMessages.users_update_failed_update_header} - #{usersMessages.users_update_failed_update_body}
+			  </div><!---->
+			  			  
+			  <!---->	
+
+			<div class="titleFieldsUser"> <!-- TITLE -->
+				<h5 class="title text-center">#{usersLabels.user_update_title}</h5>
+				<div class="titleGroupHr"></div> <!-- DIVIDER-->
+			</div> <!---->
+
+			<div class="groupFieldsUser"> <!-- CONTAINER DIV -->						
+
+					<div class="form-row"> <!-- ID -->
+						<div class="form-group col-sm-12 input-field"> <!-- FORM GROUP -->
+						  <span><i class="fas fa-id-card-alt"></i></span> 
+							<span for="userId" class="valid-icon-hidden"></span>
+							   <h:inputHidden name="myUserId" id="myUserId" value="#{userAccount.user.userID}" />						
+							   <h:inputText value="#{userAccount.user.userID}" autocomplete="off" name="userId" id="userId" p:type="text"
+									  p:placeholder="#{usersLabels.user_update_input_id_placeholder}" disabled="true" style="background-color: #E6E6FA" />
+								  </div> <!---->
+								  <div class="error-label">
+									<label for="userId" class="error" id="userId-error"></label>
+							   </div> <!---->
+						  </div> <!---->
+						  
+						  	<div class="form-row"> <!-- FULL NAME -->
+						<div class="form-group col-sm-12 input-field"> <!-- FORM GROUP -->
+						  <span><i class="fas fa-keyboard"></i></span> 
+							<span for="fullname" class="valid-icon-hidden"></span>						
+							   <h:inputText value="#{userAccount.user.name}" autocomplete="off" name="fullname" id="fullname" p:type="text"
+									  p:placeholder="#{usersLabels.user_update_input_full_name_placeholder}" />
+								  </div> <!---->
+								  <div class="error-label">
+									<label for="fullname" class="error" id="fullname-error"></label>
+							   </div> <!---->
+						  </div> <!---->
+					
+					<div class="form-row"> <!-- JOB POSITION-->
+						<div class="form-group col-sm-12 input-field"> <!-- FORM GROUP -->
+						  <span><i class="fas fa-briefcase"></i></span> 
+							<span for="jobPosition" class="valid-icon-hidden"></span>		
+							<h:inputText value="#{userAccount.user.job_position}" autocomplete="off" name="jobPosition" id="jobPosition"
+							p:type="text"
+							p:placeholder="#{usersLabels.user_update_input_job_position_placeholder}" />
+						</div> <!---->
+						 <div class="error-label">
+							<label for="jobPosition" class="error" id="jobPosition-error"></label>
+						</div> <!---->
+					</div> <!---->
+
+					<div class="form-row"> <!-- EMAIL-->
+						<div class="form-group col-sm-12 input-field"> <!-- FORM GROUP -->
+						  <span><i class="fas fa-envelope"></i></span> 
+							<span for="email" class="valid-icon-hidden"></span>		
+							<h:inputText value="#{userAccount.user.email}" autocomplete="off" name="email" id="email" p:type="text"
+							p:placeholder="#{usersLabels.user_update_input_email_placeholder}" />
+						</div> <!---->
+						  <div class="error-label">
+							<label for="email" class="error" id="email-error"></label>
+						</div> <!---->
+					</div> <!---->
+
+					<div class="form-row"> <!-- USERNAME -->
+						<div class="form-group col-sm-12 input-field"> <!-- FORM GROUP -->
+						  <span><i class="fas fa-user"></i></span> 
+							<span for="username" class="valid-icon-hidden"></span>		
+							<h:inputText value="#{userAccount.user.username}" autocomplete="off" p:type="text"
+							name="username" id="username"
+							p:placeholder="#{usersLabels.user_update_input_username_placeholder}" />
+						</div> <!---->
+						 <div class="error-label">							
+							<label for="username" class="error" id="username-error" ></label>						
+						</div> <!---->
+                     </div><!---->
+					
+					 <div class="form-row"> <!-- PERMISSIONS -->
+						<div class="form-group col-sm-12 select-field"> <!-- FORM GROUP -->
+						  <span><i class="fas fa-fingerprint"></i></span> 
+							<span for="permissions" class="valid-icon-hidden"></span>		
+							<h:selectOneMenu value="#{userAccount.user.permission_id}" id="permissions">
+								<f:selectItem itemLabel="#{usersLabels.user_update_select_access_level_placeholder}"
+									itemValue="" />
+								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_admin}" itemValue="1" />
+								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_occ}" itemValue="2" />
+								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_maintenance}"
+									itemValue="3" />
+								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_operational}"
+									itemValue="4" />
+								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_supervisor}"
+									itemValue="5" />
+								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_super_user}"
+									itemValue="6" />
+								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_user}" itemValue="7" />
+								
+								<c:if test="#{loginAccount.load.en_sos}">
+									<f:selectItem itemLabel="#{usersLabels.users_access_level_label_workstation}" itemValue="8" />
+								</c:if>
+								
+								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_videowall}" itemValue="9" />
+																
+							</h:selectOneMenu>
+						</div> <!---->
+						<div class="error-label">					
+						<label for="permissions" class="error" id="permissions-error"></label>
+					  </div> <!----> 
+					</div><!---->
+
+				<div class="form-row"> <!-- STATUS -->
+					<div id="radio-status">
+						<h:selectOneRadio class="status" value="#{userAccount.user.activeStatus}">
+							<f:selectItem itemLabel="#{usersLabels.user_update_radio_active_label}" class="rb1"
+								itemValue="true" />
+							<f:selectItem itemLabel="#{usersLabels.user_update_radio_inactive_label}" class="rb2"
+								itemValue="false" />
+						</h:selectOneRadio>
+					  </div> <!---->
+					</div> <!---->
+
+					<div class="form-row"> <!-- BUTTONS DIV -->
+					<div id="buttons">					
+											
+						 <button type="button" id="btn-update"
+							class="btn btn-dark draw-button" onclick="verif('#form-update', '[id$=btn-form-confirm]')" > #{usersLabels.user_update_btn_update}
+						</button>
+
+						<h:commandButton value="#{usersLabels.user_update_btn_update}" style="display: none;"
+							id="btn-form-confirm" class="btn btn-dark draw-button" >
+							<f:ajax execute="@form" render="@none" listener="#{userAccount.atualizarCadastro}" onevent="onEventFunction" />
+						</h:commandButton>
+						
+						<h:commandButton value="#{usersLabels.user_update_btn_cancel}"
+							id="btn-cancel" action="#{userAccount.redirectToPanel}"
+							class="btn btn-dark draw-button" >
+							<f:ajax exeucte="@form" render="@none" />
+						</h:commandButton>
+
+					</div> <!---->
+				</div> <!---->
+
+			</div> <!---->																																																																																																														
+		</h:form>
+
+		<!-- EXTERNAL SCRIPT ELEMENTS -->
+
+		<form name="validation">
+			<!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+
+			<input type="hidden" name="validatorMaxLengthMsg" value="#{validatorMessages.validator_global_minlength}" />
+			<!-- MAX LENGTH VALIDATION MESSAGE -->
+			<input type="hidden" name="validatorMinLengthMsg" value="#{validatorMessages.validator_global_maxlength}" />
+			<!-- MIN LENGTH VALIDATION MESSAGE -->
+			<input type="hidden" name="fullNameMsg" value="#{requiredMessages.required_user_register_fullname}" />
+			<!-- FULL NAME REQUIRED MESSAGE -->
+			<input type="hidden" name="jobPositionMsg"
+				value="#{requiredMessages.required_user_register_job_position}" />
+			<!-- JOB POSITION REQUIRED MESSAGE -->
+			<input type="hidden" name="emailMsg" value="#{requiredMessages.required_user_register_email}" />
+			<!-- EMAIL REQUIRED MESSAGE -->
+			<input type="hidden" name="usernameMsg" value="#{requiredMessages.required_user_register_username}" />
+			<!-- USERNAME REQUIRED MESSAGE -->
+			<input type="hidden" name="permissionMsg" value="#{requiredMessages.required_user_register_permissions}" />
+			<!-- PERMISSIONS REQUIRED MESSAGE -->
+			<input type="hidden" name="validatorNumber" value="#{validatorMessages.validator_number_message}" />
+			<!-- NUMBER VALIDATION MESSAGE -->
+			<input type="hidden" name="validatorEmail" value="#{validatorMessages.validator_email_message}" />
+			<!-- EMAIL VALIDATION MESSAGE -->
+			<input type="hidden" name="validatorName" value="#{validatorMessages.validator_name_message}" />
+			<!-- NAME VALIDATION MESSAGE -->
+			<input type="hidden" name="validatorJobPosition"
+				value="#{validatorMessages.validator_job_position_message}" /> <!-- JOB POSITION VALIDATION MESSAGE -->
+			<input type="hidden" name="validatorUsername" value="#{validatorMessages.validator_user_message}" />
+			<!-- USERNAME VALIDATION MESSAGE  -->
+			<input type="hidden" name="requiredPermission"
+				value="#{requiredMessages.required_user_register_permissions}" /> <!-- PERMISSIONS REQUIRED MESSAGE -->
+		</form>
+		<!---->
+
+
+	</ui:define>
+</ui:composition>

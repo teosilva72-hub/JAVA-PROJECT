@@ -1,0 +1,480 @@
+@charset "ISO-8859-1";
+
+/* FOLLOWING COFINGURATIONS */
+body {
+	overflow: hidden;
+}
+
+/*****************************************************/
+/****************** TABLE CONTAINER ******************/
+/*****************************************************/
+
+/* table container div */
+.table-container {
+	width: 100%;
+	border: 1px solid transparent;
+}
+
+#loading {
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	text-align: center;
+	font-weight: bolder;
+	font-size: xxx-large;
+	color: white;
+	background-color: #21212188;
+	display: none;
+  }
+
+  #loading > span {
+	position: absolute;
+    top: 50%;
+	transform: translate(-50%, -50%);
+	overflow: hidden;
+  }
+
+  #loading.active > span {
+	animation: 1.5s ease-in 0.5s infinite load;
+  }
+  
+  #loading.active {
+	display: revert;
+  }
+
+  @keyframes load {
+	  from {
+		width: 0%;
+	  }
+	  to {
+		width: 100%;
+	  }
+  }
+
+/* buttons div content */
+#buttons {
+	border: 1px solid transparent;
+	height: 50px;
+	margin-top: 1.5%;
+}
+
+/* divs inside buttons div */
+#btn-reset, #btn-search, #btn-excel, #btn-chart {
+	border: 1px solid transparent;
+	height: 40px;
+	width: auto;
+	float: left;
+}
+
+#btn-excel{
+	width: 50px;
+	margin-left: 40%;	
+}
+
+#btn-chart{
+	width: 50px;
+	margin-top: 0.25%;	
+	margin-left: 0%;
+}
+
+/* div for reset button config */
+#btn-search {
+	margin-left: 1%;
+}
+
+#btn-reset {
+	margin-left: 0.75%;
+}
+
+/* style class for buttons inside buttons div ((#btn-reset > div) / (#btn-search > div)) */
+.draw-button {
+	margin-top: 1.25%;
+	border: none;
+	cursor: pointer;
+	width: 150px;
+	height: 40px;
+	border-radius: 5px;
+	text-align: center;
+}
+
+/* style hover for draw-button */
+.draw-button:hover {
+	-webkit-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+	-moz-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+	box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+}
+
+/* Disabled button configuration */
+.btn-primary:disabled
+ {
+ color: #fff;
+ background-color: red !important;
+ border-color: #6c757d;
+}
+
+/* Enabled button configuration */
+.draw-button:enabled
+{
+  color: #fff;    
+  background-color: #212121;
+  border: solid #1C86EE 1px;
+}
+
+.draw-button.disabled {
+  opacity: 0.65; 
+  cursor: not-allowed;
+}
+
+.disable-fontawesome.disabled,
+.disable-fontawesome[disabled],
+.disabled > .disable-fontawesome,
+[disabled] > .disable-fontawesome
+ {
+  opacity: 0.5;
+  /*optional*/ cursor: not-allowed;
+  /*optional*/ pointer-events: none;
+}
+
+.fa-file-excel.disabled,
+.fa-file-excel[disabled],
+.disabled > .fa-file-excel,
+[disabled] > .fa-file-excel,
+.fa-chart-pie.disabled,
+.fa-chart-pie[disabled],
+.disabled > .fa-chart-pie,
+[disabled] > .fa-chart-pie
+ {
+  opacity: 0.5;
+  /*optional*/ cursor: not-allowed;
+  /*optional*/ pointer-events: none;
+  display: none;
+ }
+
+/* Excel image icon initial config */
+.fa-file-excel{
+	margin-left: 25%;
+	margin-top: 3px;	  
+}
+
+/* Excel image icon enabled */
+.fa-file-excel:not([disabled]), .fa-chart-pie:not([disabled]){
+	color: #343a40;	
+	display: block;
+}
+
+/* Excel image icon hover enabled config */
+.fa-file-excel:not([disabled]):hover {
+	cursor: pointer;
+	-webkit-transform: scale(1.1);
+	-moz-transform: scale(1.1);
+	-o-transform: scale(1.1);
+	-ms-transform: scale(1.1);
+	transform: scale(1.1);
+	-webkit-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+	-moz-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+	box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+}
+
+/* Line Chart image icon hover enabled config */
+.fa-chart-pie:not([disabled]):hover {
+	cursor: pointer;
+	-webkit-transform: scale(1.1);
+	-moz-transform: scale(1.1);
+	-o-transform: scale(1.1);
+	-ms-transform: scale(1.1);
+	transform: scale(1.1);		
+}
+
+/*****************************************************/
+/****************** TABLE CONTAINER ******************/
+/*****************************************************/
+
+/* Validation icon position type select checkbox options */
+ .checkbox-field .valid-icon-hidden,
+ .checkbox-field .valid-icon-visible {
+  position: absolute;
+  top: 5%;
+  right: 7%;
+  transition: right 0.2s;
+} 
+
+/* Validation icon position type (input/select) */
+ .input-field .valid-icon-hidden, .input-field .valid-icon-visible,
+ .select-field .valid-icon-hidden, .select-field .valid-icon-visible
+ {
+  position: absolute;
+  float: right;
+  top: 12%;
+  right: 7%;
+  transition: right 0.2s;
+}
+
+/* SELECT NONE ARROW ICON */
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+/* ------------------ */
+
+/* input and select width definition */ 
+#equips, #equip, #periods, #dateStart, #dateEnd, #month, 
+#year, #start_month, #end_month, [id$=-filter], [id$=-period] {width: 100%;}
+
+/*****************************************************/
+/****************** FORM CONTAINER ******************/
+/*****************************************************/
+
+/* modal dialog configuration */
+.modal-dialog {	
+	margin-top: 0px;	
+	bottom: 0;
+	left: 0;	
+	margin: auto;
+	border: 4px solid #212121;
+	margin-top: 20px;
+	border-radius: 5px;
+	-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);	
+} 
+
+/* form modal title settings */
+.modal-title {
+	color: black;
+	margin-left: 5%;
+}
+
+/* modal button on close hide effect */
+button.close{
+   outline: none;
+   font-weight:400;
+}
+
+/* form modal content style*/
+.modal-content {
+	background: #FFFFFF;
+}
+
+/* Alert Modal */
+.confirmation-modal{
+  margin-top: 200px !important;
+} 
+
+/* Extension Span */
+.extension{
+	color: green;
+	font-weight: 600;
+}
+
+/* modal title conf */
+.modal-alert-title{
+  color: #212121;	
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* modal message conf */
+.modal-alert-msg{
+ color: #212121;
+ font-size: 18px;
+ font-weight: 300;
+}
+
+#modalReportOptions{	
+	margin-top:6%;	
+}
+
+/* Alert Modal */
+
+/*****************************************************/
+/****************** FORM CONTAINER ******************/
+/*****************************************************/
+
+.report-title{
+	position:absolute;
+	font-size: 16px;
+	width: 400px;
+	margin-top: 0.5%;
+	margin-left: 1%;
+}
+
+hr{
+	color: black;
+}
+
+#vehicle-count-table{
+	margin-top: 5%;
+}
+
+
+#disableTable {  
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  font-weight: bolder;
+  font-size: 18px;
+  color: white;
+  background-color: #21212188;
+  display: none;
+  z-index: 10300;
+  width: 100vw;
+  height: 100vh;
+}
+
+#disableTable.active {
+  display: revert;
+}
+
+.load-message{
+  position: absolute;  
+   top: 50%;
+   left: 45%;	
+}
+
+.equip-label{
+	color: black;
+}
+
+/* CHARTS */
+
+#chart-div {
+    margin-left: 15%;
+    margin-top: 0%;
+    cursor: pointer;
+}
+
+.chart-wrapper, .chart-area{
+	border: 1px solid transparent;
+	height: 100%;
+	width: 100%;	
+}
+
+#btn-chart-close{
+	color: black;
+    font-size: 25px;
+    position: absolute;
+    margin-left: 2%;
+    margin-top: 2%;
+}
+
+#btn-chart-download{
+	color: black;
+    font-size: 25px;
+    position: absolute;
+    margin-left: 2%;
+    margin-top: 2%;
+	
+}
+
+#btn-chart-close:hover, #btn-chart-download:hover{
+ transform: scale(1.2);
+ cursor: pointer;
+	
+}
+
+#download-link{
+  position: absolute;
+  margin-left: 2%;
+  margin-top: -3%;
+}
+
+.table-hidden{
+	display: none;
+}
+
+.table-show{
+	display: block;
+}
+
+.chart {
+  align-content: center;
+  display: flex;
+  justify-content: center;
+}
+
+.modal {
+  text-align: center;
+}
+
+.logo-concessionaire {
+    left: 50%;
+    top: 74px;
+    bottom: unset;
+    height: 45px;
+    transform: translateX(-50%);
+    opacity: .8;
+    z-index: 1;
+}
+
+.alert {
+  z-index: 100;	
+}
+
+
+/* MULTICHART DEFINITION */
+
+#tabs{	
+ border-bottom: 1px solid transparent !important;
+ margin-top: 0.30%;
+}
+	
+.tab-content{  
+ position: absolute;
+ left: 50%;
+ transform: translate(-50%, 0%);
+}	
+
+
+.nav-tabs .nav-item .nav-link.active {
+ background-color: #0080FF;
+ color: #FFF;
+}
+
+.nav-tabs .nav-item .nav-link {
+ background-color: #F8F8FF;
+}
+
+#btn-chart-close-multi{
+   color: black;
+   font-size: 25px;
+   position: absolute;
+   margin-left: 0%;
+   margin-top: 0.5%;
+}
+
+.btn-chart-download-multi{
+   color: black;
+   font-size: 25px;
+   position: absolute;
+   margin-left: -4%;
+   margin-top: -2.25%;
+}
+
+#btn-chart-close-multi:hover, .btn-chart-download-multi:hover{
+  transform: scale(1.2);
+  cursor: pointer;
+	
+}
+
+#close-link-multi{
+  margin-left: 10%;
+  margin-top: 2%;
+  position: absolute;
+}
+
+/* MULTICHART DEFINITION */
+
+

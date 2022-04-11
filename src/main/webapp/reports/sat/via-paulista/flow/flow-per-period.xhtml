@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+	
+	<f:metadata>
+	
+	<!-- Create Table Header -->
+	<f:viewAction action="#{fluxoPeriodo.createFields}" />  
+		          
+    </f:metadata>
+    	
+	<ui:define name="head" >
+	
+	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
+		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
+		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
+		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
+	    <h:outputStylesheet library="css/reports" name="flow-period.css" />
+	    <h:outputStylesheet library="css/validation" name="validation-style.css" />
+			
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" /> 
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
+		<h:outputScript library="js/validation-forms/reports/sat" name="sat-period-flow-validation.js" />
+		<h:outputScript library="js/reports" name="table-config.js" /> <!-- DATA TABLE CONFIG --> 
+		<h:outputScript library="js/alert" name="alerts.js" />	 <!-- ALERT MESSAGES -->
+						
+	</ui:define>
+	
+	 <ui:define name="main-content" > <!-- MAIN CONTENT TEMPLATE --> 
+	
+	<!-- ============================================================================================================================= -->
+		  		  		        
+         <!-- ALERT MESSAGE -->
+	 
+         <ui:include src="/template/alerts/alerts.xhtml" />
+             
+     <!-- ============================================================================================================================= -->
+       
+	     <!-- NOME DO RELATÓRIO -->   
+        
+        <div class="row">
+		    <div class="float-left text-dark text-center font-weight-bold w-25 mt-3 ml-2" > <!-- REPORT NAME DIV --> 
+		       <h:outputText class="h4 " value="#{satLabels.via_paulista_flow_per_period_title}" /> <!-- NAME LABEL -->
+		       <hr></hr> <!-- HORIZONTAL LINE -->
+		    </div> <!-- REPORT NAME DIV END -->
+		    		 		  
+	    </div>
+	    
+	   <!----> 	    
+	
+	<!-- ============================================================================================================================= -->	
+				
+		<div class="container mt-3"> <!-- CONTAINER DIV -->	
+			
+			 <!-- FORM --> 		
+
+		      <h:form name="form" id="form">		          
+			
+				<div class="row justify-content-center">
+				
+				  <!-- EQUIPMENTS OPTIONS -->
+
+						<div class="form-row w-25 p-2">
+							<div class="form-group col-sm-12 checkbox-field">
+								<span><i class="fas fa-hdd"></i></span> 
+								  <span for="equips" class="valid-icon-hidden"></span> 
+								    <select name="equips" id="equips" multiple="multiple" >								
+										 <ui:repeat var="eqp" value="#{fluxoPeriodo.equipments}" varStatus="eqpStatus">
+											<option value="#{eqp.value}">#{eqp.label}</option>
+										</ui:repeat>
+									</select>
+							  </div>
+							  <div class="error-label">
+									<label for="equips" class="error" id="equips-error"></label>
+								</div>
+						  </div>
+						  
+						  <!---->
+					
+					<!-- PERIOD OPTIONS -->
+
+					<div class="form-row w-25 p-2">
+						<div class="form-group col-sm-12 select-field">
+							<span><i class="fas fa-clock"></i></span> 
+							<span for="periods" class="valid-icon-hidden"></span> 
+								<select name="periods" id="periods" size="1" >
+									<option value="">#{reportsLabels.reports_select_period}</option>
+										<ui:repeat var="per" value="#{fluxoPeriodo.periods}" varStatus="perStatus">
+											<option value="#{per.value}">#{per.label}</option>
+										</ui:repeat>
+								</select>
+							</div>
+						<div class="error-label">
+							<label for="periods" class="error" id="periods-error"></label>
+						</div>
+					</div>
+							
+						<!---->
+							
+						<!-- MONTH OPTIONS -->
+
+							<div class="form-row w-25 p-2">
+								<div class="form-group col-sm-12 select-field">
+									<span><i class="fas fa-calendar"></i></span> <span for="month"
+										class="valid-icon-hidden"></span> 
+										<select name="month" id="month" size="1">
+											<option value="">#{reportsLabels.reports_select_month}</option>
+												<ui:repeat var="mth" value="#{fluxoPeriodo.months}" varStatus="mthStatus">
+													<option value="#{mth.value}">#{mth.label}</option>
+												</ui:repeat>
+										</select>
+									</div>
+								<div class="error-label">
+									<label for="month" class="error" id="month-error"></label>
+								</div>
+							</div>
+							
+							<!---->
+														
+							<!-- YEARS OPTIONS -->
+
+							<div class="form-row w-25 p-2">
+								<div class="form-group col-sm-12 select-field">
+									<span><i class="fas fa-calendar-alt"></i></span>
+									 <span for="year" class="valid-icon-hidden"></span> 
+									 	<select name="year" id="year" size="1">
+											<option value="">#{reportsLabels.reports_select_year}</option>
+												<ui:repeat var="yr" value="#{fluxoPeriodo.years}" varStatus="yrStatus">
+													<option value="#{yr.value}">#{yr.label}</option>
+												</ui:repeat>
+									 </select>
+								</div>
+								<div class="error-label">
+									<label for="year" class="error" id="year-error"></label>
+								</div>
+							</div>	
+							
+						  <!---->
+								
+					</div>
+			
+				<!---->
+
+			<!-- FOOTER BUTTONS -->
+			
+			<div class="row">
+	
+				<button type="button" id="btn-form-confirm"
+					class="btn btn-dark form-modal-draw-button ml-5" onclick="verif('#form', '[id$=btn-form-send]')">#{satLabels.sat_reports_form_btn_send}
+				</button>
+						
+				<h:commandButton value="#{reportsLabels.reports_form_btn_send}" style="display: none"
+					id="btn-form-send" onclick="isValidSubmit();" >
+					<f:ajax execute="@form" render="form-info" listener="#{fluxoPeriodo.processInformations}" />
+				</h:commandButton>
+				
+		        <!---->
+		        
+		        <h:commandButton value="#{reportsLabels.reports_form_btn_reset}" id="btn-form-reset"
+					immediate="true" type="reset" class="btn btn-dark form-modal-draw-button reset-btn ml-2" >
+				</h:commandButton><!-- BUTTON RESET -->
+				<!---->							
+						             						
+			</div>
+
+			<!---->
+								
+		</h:form><!-- FORM TABLE END-->
+		
+		</div> <!---->
+		
+	<!-- ============================================================================================================================= -->		
+								
+		 <!-- MODAL INFORMATION -->
+		 
+			<div class="modal fade" id="modalInfo" tabindex="-1"
+				aria-labelledby="infoModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+					<div class="modal-dialog">
+						<h:form class="modal-content" id="form-info" prependId="false" >
+							<div class="modal-header text-center">
+								<h4 class="modal-title w-100 font-weight-bold" id="infoModalLabel">#{reportsLabels.reports_modal_alert_process_data_title}</h4>								
+							</div>
+							
+						<div class="modal-body">														               
+				             			         				                        
+				             <h:inputTextarea id="display" value="#{fluxoPeriodo.displayMessage}" style="width: 100%; outline: 0;" rows= "15" cols="50" readonly="true" /> 
+				             									  					             				          														
+						</div>
+						
+						<!---->
+						
+						<div class="modal-footer">
+						
+							<button type="button" id="activate-excel-act"
+								class="btn btn-dark form-modal-draw-button" disabled="true" onclick="$('#excel-act').click(); $('#activate-excel-act').prop('disabled', true); $('#activate-dismiss-modal').prop('disabled', false);"
+								data-toggle="tooltip" data-placement="bottom" title="#{reportsLabels.reports_modal_alert_btn_download_file}" >
+								<i class="fas fa-download"></i>
+								#{reportsLabels.reports_modal_alert_btn_excel}
+							</button>    							   									
+	       								
+	       					<!---->		
+						
+						     <h:commandButton id="excel-act" value="#{reportsLabels.reports_modal_alert_btn_excel}"
+							      class="btn btn-dark form-draw-button d-none" widgetVar="excelWgt" 
+							      action="#{fluxoPeriodo.downloadFile}" >	       					  	
+	       					</h:commandButton>
+	       					
+	       					<!---->	   
+	       					
+	       					<button type="reset" id="activate-dismiss-modal"
+								class="btn btn-dark form-modal-draw-button" disabled="true" onclick="$('#dismiss-modal').click(); $('#activate-dismiss-modal').prop('disabled', true);">
+								 <i class="fas fa-sign-out-alt"></i>
+								 #{reportsLabels.reports_modal_alert_btn_exit}
+							</button>    							   									
+	       								
+	       					<!---->		
+	       														
+							<h:commandButton id="dismiss-modal"	value="#{reportsLabels.reports_modal_alert_btn_exit}" 
+								class="btn btn-dark form-draw-button d-none" action="#{fluxoPeriodo.resetStepView}"  >
+							    <f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+							
+							<!---->														
+										
+						</div>
+						
+						  <pf:poll autoStart="false" widgetVar="poll" interval="3" listener="#{fluxoPeriodo.message(fluxoPeriodo.step)}" update="display" async="true"  />  						  					
+																	
+					 </h:form>
+				  </div>
+			  </div>
+										
+			<!---->
+
+    	<!-- ============================================================================================================================= -->	
+			
+		 <!-- EXTERNAL SCRIPT ELEMENTS -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+		 			 		 	
+		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->		
+		 <input type="hidden" name="equipmentSelectMsg" value="#{reportsLabels.reports_select_equipments}" />	<!-- SELECT EQUIPMENT LABEL MESSAGE -->	 	
+		 <input type="hidden" name="requiredEquipmentsMsg" value="#{requiredMessages.required_reports_select_equipments}" /> <!-- REQUIRED EQUIPMENT MESSAGE -->	
+		 <input type="hidden" name="requiredPeriodMsg" value="#{requiredMessages.required_reports_select_periods}" /> <!-- REQUIRED PERIODS MESSAGE -->			
+		 <input type="hidden" name="requiredMonthMsg" value="#{requiredMessages.required_reports_select_months}" /> <!-- REQUIRED MONTH MESSAGE -->	
+		 <input type="hidden" name="requiredYearMsg" value="#{requiredMessages.required_reports_select_years}" /> <!-- REQUIRED YEAR MESSAGE -->
+		 
+		 </form> <!----> 	 	
+			   	
+	 </ui:define>
+</ui:composition>	

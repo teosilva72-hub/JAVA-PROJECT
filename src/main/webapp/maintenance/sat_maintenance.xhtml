@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+
+
+	<ui:define name="head">
+	
+		<!-- TITLE -->
+		<title>#{abaLabels.sat_board}</title>
+					
+		<!-- CSS -->			
+		<h:outputStylesheet library="css/sat" name="style.css" />		
+		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />		
+						
+	</ui:define>
+	
+	<ui:define name="main-content">
+	
+	<!-- PRE LOADER -->
+		
+		<div id="preloader">
+			<!---->
+			<div class="inner">
+				<div class="bolas">
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			<!---->
+			</div>
+		</div>
+		
+		<!---->
+		
+		<h:form id="enable">
+			<!-- UPDATE FORM -->
+			<h:commandButton id="btn-enable-user" value="loop"
+				style="display: none;" type="buttom">
+				<f:ajax execute="@form" listener="#{maintenanceSatView.enableUser}"></f:ajax>
+			</h:commandButton>
+			<!---->
+		</h:form>
+		
+		<!---->
+			
+		<!-- UPDATE -->
+		<div class="btn-toolbar" role="toolbar"
+			aria-label="Toolbar with button groups">
+			<div id="btnPage" class="btn-group mr-2 pags btn-group-toggle"
+				data-toggle="buttons" role="group" aria-label="First group"></div>
+		</div>
+				
+		<!-- PAGE -->
+		<div class="container-fluid row" id="page">
+				
+			<!-- FOR EACH -->
+			<c:forEach items="#{maintenanceSatView.equips.satList}" var="item" varStatus="loop" ><!-- EQUIP LIST -->	
+			
+			<!--<c:forEach var="sat" begin="1" end="6">	--> 	
+						
+			<!-- EQUIP STRUCTURE -->
+				<ui:param name="MaintenanceStatus" value="#{ maintenanceSatView.satStatus.get(loop.index) }" />
+				<ui:param name="MaintenanceLanes" value="#{ maintenanceSatView.satListLanes.get(loop.index) }" />
+
+				<div class="col-6 sat-def" id="#{item.table_id}#{item.equip_id}" lanes="#{MaintenanceStatus.numberLanes}" 
+					status ="#{MaintenanceStatus.isOnline()}" >
+				
+				<!-- <div class="col-6" id="sat#{sat}"> -->
+				
+					<!-- EQUIP NAME -->
+					<div class="btn-group btnSat">
+						<div class="btn btn-sat">#{item.nome}</div>
+						
+							<!-- BATTERY INFO -->
+							<div class="btn btn-battery">
+								<svg aria-hidden="true" focusable="false" data-prefix="fas" class="betterySat" data-icon="car-battery" role="img" width="22" eight="22" viewBox="0 0 512 512"> 
+									<path fill="currentColor" d="M480 128h-32V80c0-8.84-7.16-16-16-16h-96c-8.84 0-16 7.16-16 16v48H192V80c0-8.84-7.16-16-16-16H80c-8.84 0-16 7.16-16 
+									16v48H32c-17.67 0-32 14.33-32 32v256c0 17.67 14.33 32 32 32h448c17.67 0 32-14.33 32-32V160c0-17.67-14.33-32-32-32zM192 264c0 4.42-3.58 8-8 8H72c-4.42 0-8-3.58-8-8v-16c0-4.42 
+									3.58-8 8-8h112c4.42 0 8 3.58 8 8v16zm256 0c0 4.42-3.58 8-8 8h-40v40c0 4.42-3.58 8-8 8h-16c-4.42 0-8-3.58-8-8v-40h-40c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h40v-40c0-4.42 
+									3.58-8 8-8h16c4.42 0 8 3.58 8 8v40h40c4.42 0 8 3.58 8 8v16z"></path>
+								</svg>
+							</div>
+						
+						   <!-- EQUIP INFO  -->
+						
+							  <a role="button" class="btn btn-primary btn-Info" data-toggle="popover" data-popover-content="#pop#{item.table_id}#{item.equip_id}" 
+							 	  data-trigger="focus" >
+								 	<svg aria-hidden="true" focusable="false" data-prefix="fas" class="btnInfo" data-icon="info" role="img" viewBox="0 0 192 512"> 
+										 <path fill="currentColor" d="M20 424.229h20V279.771H20c-11.046 0-20-8.954-20-20V212c0-11.046 8.954-20 20-20h112c11.046 0 20 8.954 20 20v212.229h20c11.046 0 
+											 20 8.954 20 20V492c0 11.046-8.954 20-20 20H20c-11.046 0-20-8.954-20-20v-47.771c0-11.046 8.954-20 20-20zM96 0C56.235 0 24 32.235 24 72s32.235 72 72 72 72-32.235 
+											 72-72S135.764 0 96 0z">
+									 	</path>
+								 	</svg>	
+							  	 </a>	
+								
+							<!---->	
+												
+					 	</div>
+														
+					<div class="contendo">
+						<!-- inicio do contendo -->
+						<div class="d-flex">
+							<div class="number"></div>
+							<!--  inicio da linha das horas -->
+							<div class="number" id="h0">#{maintenanceSatView.hours[0]}</div>
+							<!-- horas-->
+							<div class="number" id="h1">#{maintenanceSatView.hours[1]}</div>
+							<!-- horas -->
+							<div class="number" id="h2">#{maintenanceSatView.hours[2]}</div>
+							<!-- horas -->
+							<div class="number" id="h3">#{maintenanceSatView.hours[3]}</div>
+							<!-- horas -->
+							<div class="number" id="h4">#{maintenanceSatView.hours[4]}</div>
+							<!-- horas -->
+							<div class="number" id="h5">#{maintenanceSatView.hours[5]}</div>
+							<!-- horas -->
+							<div class="number" id="h6">#{maintenanceSatView.hours[6]}</div>
+							<!-- horas -->
+							<div class="number" id="h7">#{maintenanceSatView.hours[7]}</div>
+							<!-- horas -->
+							<div class="number" id="h8">#{maintenanceSatView.hours[8]}</div>
+							<!-- horas -->
+							<div class="number" id="h9">#{maintenanceSatView.hours[9]}</div>
+							<!-- horas -->
+							<div class="number" id="h10">#{maintenanceSatView.hours[10]}</div>
+							<!-- horas -->
+							<div class="number" id="h11">#{maintenanceSatView.hours[11]}</div>
+							<!-- horas -->
+							<div class="number" id="h12">#{maintenanceSatView.hours[12]}</div>
+							<!-- horas -->
+							<div class="number" id="h13">#{maintenanceSatView.hours[13]}</div>
+							<!-- horas -->
+							<div class="number" id="h14">#{maintenanceSatView.hours[14]}</div>
+							<!-- horas -->
+							<div class="number" id="h15">#{maintenanceSatView.hours[15]}</div>
+							<!-- horas -->
+							<div class="number" id="h16">#{maintenanceSatView.hours[16]}</div>
+							<!-- horas -->
+							<div class="number" id="h17">#{maintenanceSatView.hours[17]}</div>
+							<!-- horas -->
+							<div class="number" id="h18">#{maintenanceSatView.hours[18]}</div>
+							<!-- horas -->
+							<div class="number" id="h19">#{maintenanceSatView.hours[19]}</div>
+							<!-- horas -->
+							<div class="number" id="h20">#{maintenanceSatView.hours[20]}</div>
+							<!-- horas -->
+							<div class="number" id="h21">#{maintenanceSatView.hours[21]}</div>
+							<!-- horas -->
+							<div class="number" id="h22">#{maintenanceSatView.hours[22]}</div>
+							<!-- horas -->
+							<div class="number" id="h23">#{maintenanceSatView.hours[23]}</div>
+							<!-- horas -->
+						</div>
+						
+					
+						
+						<!-- final da linha das horas -->
+						<div class="d-flex bg-table-dark">
+							<div class="l">
+								<div class="d-flex" row="0">
+									<!-- row 1 -->
+									<div class="ll-offset">#{MaintenanceStatus.isOnline() ? 'ON' : 'OFF'}</div>
+								</div>
+								<div class="d-flex" row="1">
+									<!-- row 1 -->
+									<div class="ll-offset">FX01#{ item.faixa1.isEmpty() ? '' : ''.format('%s', item.faixa1.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="2">
+									<!-- row 1 -->
+									<div class="ll-offset">FX02#{ item.faixa2.isEmpty() ? '' : ''.format('%s', item.faixa2.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="3">
+									<!-- row 1 -->
+									<div class="ll-offset">FX03#{ item.faixa3.isEmpty() ? '' : ''.format('%s', item.faixa3.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="4">
+									<!-- row 1 -->
+									<div class="ll-offset">FX04#{ item.faixa4.isEmpty() ? '' : ''.format('%s', item.faixa4.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="5">
+									<!-- row 1 -->
+									<div class="ll-offset">FX05#{ item.faixa5.isEmpty() ? '' : ''.format('%s', item.faixa5.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="6">
+									<!-- row 1 -->
+									<div class="ll-offset">FX06#{ item.faixa6.isEmpty() ? '' : ''.format('%s', item.faixa6.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="7">
+									<!-- row 1 -->
+									<div class="ll-offset">FX07#{ item.faixa7.isEmpty() ? '' : ''.format('%s', item.faixa7.substring(0, 1)) }</div>
+								</div>
+								<div class="d-flex" row="8">
+									<!-- row 1 -->
+									<div class="ll-offset">FX08#{ item.faixa8.isEmpty() ? '' : ''.format('%s', item.faixa8.substring(0, 1)) }</div>
+								</div>
+							</div>
+							<c:forEach var="value" begin="0" end="23"> 							
+								<div class="l" col="#{maintenanceSatView.hours[value]}">
+									<!-- inicio da sat -->							
+									<div class="d-flex" row="0">
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceStatus.statusZero[value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceStatus.statusFifteen[value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceStatus.statusThirty[value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceStatus.statusFortyFive[value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+									</div>
+									<!-- inicio da sat -->								 
+									<div class="d-flex" row="1">
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceLanes.laneZero[0][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFifteen[0][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneThirty[0][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFortyFive[0][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+									</div>									
+									<!-- row 1 -->
+									<div class="d-flex" row="2">
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceLanes.laneZero[1][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFifteen[1][value] == 1 ? 'online' : ''}"></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneThirty[1][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFortyFive[1][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+									</div>
+									<!-- row 2 -->
+									<div class="d-flex" row="3">
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceLanes.laneZero[2][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFifteen[2][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneThirty[2][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFortyFive[2][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+									</div>
+									<!-- row3 -->
+									<div class="d-flex" row="4">
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceLanes.laneZero[3][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFifteen[3][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneThirty[3][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFortyFive[3][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+									</div>
+									<!-- 4 -->
+									<div class="d-flex" row="5">
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceLanes.laneZero[4][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFifteen[4][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneThirty[4][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFortyFive[4][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+									</div>
+									<!-- row 5 -->
+									<div class="d-flex" row="6">
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceLanes.laneZero[5][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFifteen[5][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneThirty[5][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFortyFive[5][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+									</div>
+									<!-- row 6 -->
+									<div class="d-flex" row="7">
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceLanes.laneZero[6][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFifteen[6][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneThirty[6][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFortyFive[6][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+									</div>
+									<!-- row 7 -->
+									<div class="d-flex" row="8">
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceLanes.laneZero[7][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFifteen[7][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneThirty[7][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+										<div class="ll #{MaintenanceLanes.laneFortyFive[7][value] == 1 ? 'online' : ''}" ></div>
+										<!-- intervalo de tempo -->
+									</div>
+									<!-- row 8 -->													
+								</div>
+							</c:forEach>
+						</div>
+						
+						<div class="d-flex">
+							<div class="number"></div>
+							<!-- horas parte inferior do sat -->
+							<div class="number" id="h0">#{maintenanceSatView.hours[0]}</div>
+							<!-- horas-->
+							<div class="number" id="h1">#{maintenanceSatView.hours[1]}</div>
+							<!-- horas -->
+							<div class="number" id="h2">#{maintenanceSatView.hours[2]}</div>
+							<!-- horas -->
+							<div class="number" id="h3">#{maintenanceSatView.hours[3]}</div>
+							<!-- horas -->
+							<div class="number" id="h4">#{maintenanceSatView.hours[4]}</div>
+							<!-- horas -->
+							<div class="number" id="h5">#{maintenanceSatView.hours[5]}</div>
+							<!-- horas -->
+							<div class="number" id="h6">#{maintenanceSatView.hours[6]}</div>
+							<!-- horas -->
+							<div class="number" id="h7">#{maintenanceSatView.hours[7]}</div>
+							<!-- horas -->
+							<div class="number" id="h8">#{maintenanceSatView.hours[8]}</div>
+							<!-- horas -->
+							<div class="number" id="h9">#{maintenanceSatView.hours[9]}</div>
+							<!-- horas -->
+							<div class="number" id="h10">#{maintenanceSatView.hours[10]}</div>
+							<!-- horas -->
+							<div class="number" id="h11">#{maintenanceSatView.hours[11]}</div>
+							<!-- horas -->
+							<div class="number" id="h12">#{maintenanceSatView.hours[12]}</div>
+							<!-- horas -->
+							<div class="number" id="h13">#{maintenanceSatView.hours[13]}</div>
+							<!-- horas -->
+							<div class="number" id="h14">#{maintenanceSatView.hours[14]}</div>
+							<!-- horas -->
+							<div class="number" id="h15">#{maintenanceSatView.hours[15]}</div>
+							<!-- horas -->
+							<div class="number" id="h16">#{maintenanceSatView.hours[16]}</div>
+							<!-- horas -->
+							<div class="number" id="h17">#{maintenanceSatView.hours[17]}</div>
+							<!-- horas -->
+							<div class="number" id="h18">#{maintenanceSatView.hours[18]}</div>
+							<!-- horas -->
+							<div class="number" id="h19">#{maintenanceSatView.hours[19]}</div>
+							<!-- horas -->
+							<div class="number" id="h20">#{maintenanceSatView.hours[20]}</div>
+							<!-- horas -->
+							<div class="number" id="h21">#{maintenanceSatView.hours[21]}</div>
+							<!-- horas -->
+							<div class="number" id="h22">#{maintenanceSatView.hours[22]}</div>
+							<!-- horas -->
+							<div class="number" id="h23">#{maintenanceSatView.hours[23]}</div>
+							
+						</div> <!---->					
+					</div> <!---->				
+				</div> <!---->
+					
+				<!-- ======================== POPOVER ======================== -->			
+				<ui:include src="/template/popover-alert/sat/sat-popover.xhtml" />		
+													
+			</c:forEach>
+			
+		</div>
+		
+	  <!---->	
+		
+	</ui:define>
+		
+	<ui:define name="jscript">
+	
+	    <!-- JS -->	
+		<h:outputScript library="js/maintenance" name="controller_sat.js" />
+	
+	</ui:define>
+	
+</ui:composition>

@@ -1,0 +1,114 @@
+.wim-jumbotron {
+	position: fixed;
+	top: 65px;
+	bottom: 45px;
+	right: 15px;
+	left: 15px;
+}
+
+.PGFdark {
+  padding-top: 1rem;
+  margin-top: 10px;
+  height: 98%;
+}
+
+.PGFpicture {
+  padding-top: 1rem;
+  height: 98%;
+}	
+
+.card-scroll {
+	overflow: auto;
+    height: 100%;
+}
+
+.pgf1 {
+	object-fit: cover;
+	border: solid 2px black;
+	width: 90%;
+	height: 100%;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
+}
+
+.pgfcam {
+	object-fit: cover;
+	margin-left: 8%;
+	border: solid 2px black;
+	width: 80%;
+	height: 100%;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
+}
+
+.btns-cam {
+	width:	100%;
+	font-size: 10pt;
+	margin-top:	70%;
+}
+
+.btns-cam-confirm {
+	width:	100%;
+	font-size: 10pt;
+	margin-top:	2%;
+}
+
+.pgf-picture {
+	height: 45%;
+}
+
+.pgf-cameras {
+	height: 100%;
+}
+
+.pgf-input {
+	border: 1px solid black;
+	border-radius: 25px;
+	outline: none;
+}
+.pgf-warn {
+	width: fit-content;
+}
+
+.pgfmin {
+	object-fit: contain;
+	border: solid 1px black;
+	width: 100%;
+	height: 100%;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
+}
+
+.pgf-card{
+	  background: linear-gradient(120deg, rgb(60 60 60) 0%, rgb(140 140 140) 35%, rgb(56 56 56) 100%);
+}
+
+
+.pgf-form {
+	cursor: pointer;
+	border-width: 3px !important;
+}
+
+.list-pgf {
+	text-overflow: ellipsis;
+    white-space: nowrap;
+	overflow: hidden;
+	font-size: 12px;
+}
+
+.btnpgf {
+	writing-mode: vertical-lr;
+	text-orientation: upright;
+} 
+
+.logo-concessionaire {
+  left: 50%;
+  bottom: unset;
+  transform: translateX(-50%);
+  top: 10px;
+  opacity: 1;
+  z-index: 1030;
+}

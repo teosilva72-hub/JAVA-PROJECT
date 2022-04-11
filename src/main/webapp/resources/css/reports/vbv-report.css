@@ -1,0 +1,245 @@
+/**
+* Tracevia App
+*
+* Layout do navbar component
+*
+* Esta folha de estilo é destinada ao uso
+* no relatório do VBV
+*
+* @project Tracevia App
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0 
+* @since 1.0 
+* @package resources/css/reports/vbv_report
+*/
+
+/* --------------------------------------------- */
+
+/**
+* Estilo para aplicar um margin-top de 15vh
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.top-15-vh{
+	margin-top: 15vh;
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo para definir um padding de 15 pixels
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.padding-15{	
+	padding: 15px;
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo para definir margin left  no botão de envio do formulário
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.submit-btn {
+	margin-left: 17%;	
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo para definir estilo quando botão txt estiver desabilitado
+* aplica-se ao icon (fontawesome)
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.txt.disabled,
+.txt[disabled],
+.disabled > .fa-file-alt,
+[disabled] > .fa-file-alt
+ {
+  opacity: 0.5;
+  cursor: not-allowed; /*optional*/
+  pointer-events: none; /*optional*/
+  display: none;
+ }
+ 
+/* --------------------------------------------- */
+
+/**
+* Estilo para definir um margin left de 50%
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.txt{margin-left: 50%;}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo quando icone está habilitado
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.txt:not([disabled]){
+	color: #343a40;
+	display: block;
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo para definir efeito hover quando passar pelo botão.
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.txt:not([disabled]):hover {
+	cursor: pointer;
+	-webkit-transform: scale(1.1);
+	-moz-transform: scale(1.1);
+	-o-transform: scale(1.1);
+	-ms-transform: scale(1.1);
+	transform: scale(1.1);
+	-webkit-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+	-moz-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+	box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo para corrigir posicionamento do error label.
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.error-label {
+	margin-top: 5px !important;
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo que define uma cor para o botão de informações.
+*
+* @author Wellington
+* @date 04/01/2022
+* @version 1.0
+* @since 1.0
+* @colorDef custom blue
+*/
+.info-design {
+	color: #006cac;
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo que muda a cor do botão de informações 
+* ao passar com mouse por cima do mesmo.
+*
+* @author Wellington
+* @date 04/01/2022
+* @version 1.0
+* @since 1.0
+* @colorDef DodgerBlue
+*/
+.info-design:hover{
+	color: #1E90FF;
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo para definir a largura da modal de informações.
+*
+* @author Wellington
+* @date 04/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.infoModal-conf { 
+	max-width: 75vw;
+}
+
+/**
+* Estilo para definir um espaço a esquerda 
+* para o label de descrição do relatório.
+*
+* @author Wellington
+* @date 04/01/2022
+* @version 1.0
+* @since 1.0
+*/
+label#label{
+	margin-left: 8%;	
+}
+	
+/* --------------------------------------------- */
+
+/**
+* Estilo para definir um espaço a esquerda 
+* para o label de descrição do relatório.
+*
+* @author Wellington
+* @date 17/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.error-label{	
+	margin-top: 3px !important; 	
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo para esconder iconde de validação
+*
+* @author Wellington
+* @date 17/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.valid-icon-hidden{ 
+  display: none !important;
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo para mostrar icone de validação
+*
+* @author Wellington
+* @date 17/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.valid-icon-visible{  
+  display: block !important;  
+}
+
+/* --------------------------------------------- */

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Insert title here</title>
+</head>
+<body>
+
+<audio id="remoteAudio" controls>
+	<p>Your browser doesn't support HTML5 audio.</p>		
+</audio>
+<script>
+import { Simpleuser, SimplesUserOptions} from "sip.js/lib/platform/web";
+
+//Helper function to get an HTML audio element
+function getAudioElement(id; string): HTMLAudioElement{
+	const el= document.getElementbyId(id);
+	if (!(el instanceof HTMLAudioElement)) {
+		throw new Error (`Element "${id}" not found or not an audio element.`);	
+	 }
+	return el;
+	}
+	
+//Helper function to wait
+async function wait (ms: number): Promise<void> {
+	retrn new Promise((resolve) => {
+		setTimeout(resolve, ms);
+	});
+}
+
+// Main function
+async function main(): Promise<void> {
+	// SIP over WebSocket Server URL
+	// The URL of a SIP over WebSocket server which will complete the call.
+	// FreeSwitch is an example of a server which supports SIP over WebSocket.
+	// SIP over WebSocket is an internet standard the details of which are
+	// outside the scope of this documentation, but there are many resources
+	// available. See: https://tools.ietf.org/html/rfc7118 for the specification.
+	const server = "wss://127.0.0.1:5066";
+	
+	// SIP Request URI
+	// The SIP Request URI of the destination. It's "Who you wanna call?"
+	// SIP is an internet standard the details of which are outside the
+	// scope of this documentation, but there are many resources available.
+	// See: https://tools.ietf.org/html/rfc3261 for the specification.
+	const destination = "sip:1061@127.0.0.1";
+	
+	// SIP Address of Record (AOR)
+	// This is the user's SIP address. It's "Where people can reach you."
+	// SIP is an internet standard the details of which are outside the
+	// scope of this documentation, but there are many resources available.
+	// See: https://tools.ietf.org/html/rfc3261 for the specification.
+	const aor = "sip:1060@127.0.0.1";
+	
+	// SIP Authorization Password
+	// This is the user's authorization password used for authorizing requests.
+	// SIP is an internet standard the details of which are outside the
+	// scope of this documentation, but there are many resources available.
+	// See: https://tools.ietf.org/html/rfc3261 for the specification.
+	const authorizationPassword = "1234";
+	
+	// Configuration Options
+	// These are configuration options for the `SimpleUser` instance.
+	// Here we are setting the HTML audio element we want to use to
+	// play the audio received from the remote end of the call.
+	// An audio element is needed to play the audio received from the
+	// remote end of the call. Once the call is established, a `MediaStream`
+	// is attached to the provided audio element's `src`attribute.
+	const options: SimpleUserOptions = {
+			aor,
+			media: {
+				remote: {
+					audio: getAudioElement("remoteAudio")
+				}
+			},
+	  userAgenteOptions: {
+		  authorizationPassword,
+		  authorizationUsername,
+		 }
+	};
+	
+	// Construct a SimpleUser instance
+	const simpleUser = new SimpleUser(server, options);
+	
+	// Supply delegate to handle inbound calls (optional)
+	simpleUser.delegate = {
+		onCallReceived: async () => {
+			await simpleUser.answer();
+		}
+	};
+	
+	// Connect to server
+	await simpleUser.connect();
+	
+	// Register to receive inbound calls (optional)
+	await simpleUser.register();
+	
+	// Place call to the destination
+	await simpleUser.call(destination);
+	
+	// Wait some number of milliseconds
+	await wait(5000);
+	
+	// Hangup call
+	await simpleUser.hangup();
+}
+	// Run it
+	main()
+		.then(() => console.log(`Success`))
+		.catch((error: Error) => console.error(`Failure`, error));
+	
+	// Sending an Invite
+	// userAgente defined elsewhere
+	userAgent.start().then(() =>{
+		const target = UserAgent.makeURI("sip:bob@example.com");
+		
+		const inviter = new Inviter(userAgent, target);
+		invite.invite();
+	});
+	// Sending an Invite End
+	
+	// Transport Options
+	const transportOptions = {
+			server: "wss://example.com:8443"
+	};
+	// Transport Options End
+	
+	// Anonymous User Agent
+	const userAgent = new UserAgent({transportOptions});
+	userAgent.start();
+	// Anonymous User Agent End
+	
+	//Authenticated User Agent
+	const userAgentOptions: UserAgentOptions = {
+		authorizationPassword: 'secretPassword',
+		authorizationUsername: 'authorizationUsername',
+		transportOptions,
+		uri
+	};
+	const userAgent = new UserAgent(userAgentOptions);
+	
+	const registerer = new Registerer(userAgent);
+	
+	userAgent.start().then(() => {
+		registerer.register();
+	});
+	//Authenticated User Agent End
+	
+	//End Call
+	const session = ""
+		function endCall() {
+		switch(session.state) {
+		case SessionState.Initial:
+		case SessionState.Establishing
+		if (session instanceOf Inviter) {
+			// An unestablished outgoing session
+			session.cancel();
+		} else {
+			// An unestablished incoming session
+			session.reject();
+		}
+		break;
+		case SessionState.Established:
+			// An established session
+			session.bye();
+			break;
+		case SessionState.Terminating:
+		case SessionState.Terminated:
+			// Cannot terminate a session that is already terminated
+			break;
+		}
+	}
+	//End call End
+	
+	// Session State Change
+	const inviter = new Inviter(userAgent, target);
+	inviter.statChange.addListener((state: SessionState) => {
+		console.log(`Session state changed to ${state}`);
+		switch (state) {
+		case SessionState.Initial:
+			break;
+		case SessionState.Establishing:
+			break;
+		case SessionState.Terminating:
+			// fall through
+		case SessionState.Terminated:
+			cleanupMedia();
+			break;
+		 default:
+			 throw new Error("Unknown session state.");
+	
+		});
+	inviter.invite();
+	function onInvite(invitation) {
+		invitation.stateChange.addListener((state: SessionState) => {
+			console.log(`Session state changed to ${state}`);
+			switch (state) {
+			case SessionState.Initial:
+				break;
+			case SessionState.Establishing:
+				break;
+			case SessionState.Established:
+				setupRemoteMedia(invitation);
+				break;
+			case SessionState.Terminating:
+				// fall through
+			case SessionState.Terminated:
+				cleanupMedia();
+				break;
+			default:
+				throw new Error("Unknown session state.");
+			}
+		}
+		
+		)}
+		invitation.accept();
+	}
+	// Session State Change End
+	
+	//Attaching Media
+	// Assumes you have a media element on the DOM
+	const mediaElement = document.getElementById('mediaElement');
+	
+	const remoteStream = new MediaStream();
+	function setupRemoteMedia(session: Session) {
+		session.sessionDescriptionHandler.peerConnection.getReceivers().forEach((receiver) => {
+		remoteStream.addTrack(receiver.track);	
+		}
+	});
+	mediaElement.srcObject = remoteStream;
+	mediaElement.play();
+}
+	//Attaching Media End
+	
+	//Cleaning up Media
+	// Assumes you have a media element on the DOM
+	var mediaElement = document.getElementById('mediaElement');
+	
+	function cleanupMedia() {
+		mediaElement.srcObject = null;
+		mediaElement.pause();
+	}
+	//Cleaning up Media End
+	
+	//Send DTMF
+	// DTMF INFO Body
+	const options = {
+		requestOptions: {
+			body: {
+				contentDisposition: "render",
+				contentType: "application/dtmf-relay",
+				content: "Signal=1\r\nDuration=1000"
+			}
+		}
+	};
+	// DTMF INFO Body End
+	// Send the Message
+	infoer.info(options);
+	// Send the Message End
+	// Send DTMF End
+	
+	//Send a Massage
+	//Construct the Messager
+	const content = 'Hello World';
+	const target = UserAgent.makeURI("sip:bob@example.com");
+	const messager = new Messager(userAgent, target, content);
+	//Construct the Messager End
+	//Sending the Message
+	messager.message();
+	//Sendiung the Message End
+	//Send a Message End
+	
+	
+</script>
+
+</body>
+</html>

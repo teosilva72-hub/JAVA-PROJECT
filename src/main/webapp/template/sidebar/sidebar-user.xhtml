@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite">
+
+<h:body>
+
+	<ui:composition>
+		<h:form>
+			<!-- FORM -->
+
+			<ul class="list-unstyled components">
+				<!-- MENU LIST COMPONENTS -->
+
+				<!-- DASHBOARD APPLICATION -->
+
+				<li class="nav-item"><h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/dashboard/dashboard.xhtml?faces-redirect=true')}" value=""
+						data-toggle="collapse" aria-expanded="false">
+						<i class="fas fa-laptop-code icon"></i>
+						<span class="text">#{dashboardLabels.dashboard_sidebar_menu_dashboard}</span>
+					</h:commandLink></li>
+				<!---->
+
+				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+				  <!-- CONCESSIONAIRE MENU -->	
+                 
+                 <!-- ECOVIAS ARAGUAIA -->	
+               						
+				<ui:fragment rendered="#{loginAccount.road.ecoviasAraguaia}" >	
+                   <ui:include src="/template/report-concessionaire/ecovias-araguaia.xhtml" />                     
+				</ui:fragment>	
+				
+				<!---->
+				
+				<!-- Poza Rica -->
+				<ui:fragment rendered="#{loginAccount.road.cardel}" >	
+                   <ui:include src="/template/report-concessionaire/poza-rica.xhtml" />                     
+				</ui:fragment>	
+				
+				<!-- Alternativas Viales -->
+				<ui:fragment rendered="#{loginAccount.road.alternativasViales}" >	
+                   <ui:include src="/template/report-concessionaire/alternativasViales.xhtml" />                     
+				</ui:fragment>
+				<!---->
+				
+                 <!--  -->
+				<ui:fragment rendered="#{loginAccount.road.tester}" >	
+                   <ui:include src="/template/report-concessionaire/tester.xhtml" />                     
+				</ui:fragment>	
+                 <!-- TUXPAN TAMPICO -->	
+               						
+				 <ui:fragment rendered="#{loginAccount.road.tuxpan}" >	
+                   <ui:include src="/template/report-concessionaire/tuxpan-tampico.xhtml" />                     
+				</ui:fragment>	
+				
+				<!---->
+				
+				 <!-- VIA PAULISTA -->	
+               						
+				<ui:fragment rendered="#{loginAccount.road.viaPaulista}" >	
+                   <ui:include src="/template/report-concessionaire/via-paulista.xhtml" />                     
+				</ui:fragment>	
+				
+				<!---->
+				
+				 <!-- VIA SUL -->	
+				
+				 <ui:fragment rendered="#{loginAccount.road.viaSul}" >	
+                   <ui:include src="/template/report-concessionaire/via-sul.xhtml" />                     
+				</ui:fragment>
+				
+				 <!---->	
+
+				<!-- ECO 101 -->	
+			
+				<ui:fragment rendered="#{loginAccount.road.eco101}" >	
+					<ui:include src="/template/report-concessionaire/eco-101.xhtml" />                     
+				</ui:fragment>
+				
+				<!---->
+			
+				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+			
+			</ul>
+			<!-- MENU LIST END -->
+
+		</h:form>
+		<!-- FORM END -->
+
+		<h:outputScript name="dashboard-submenus.js" library="js/dashboard" />
+
+	</ui:composition>
+</h:body>
+</html>

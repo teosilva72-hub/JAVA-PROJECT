@@ -1,0 +1,98 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+    xmlns:jsf="http://xmlns.jcp.org/jsf" >
+    
+   <h:body>    	
+   	
+		<div class="modal fade" id="OPmodal" role="dialog"> <!-- OPTIONS MODAL -->				
+			<div class="modal-dialog"> <!-- MODAL DIALOG -->					
+				<div class="modal-content"> <!-- MODAL CONTENT -->
+					<div class="modal-header text-center">
+					    <h4 class="modal-title w-100 font-weight-bold">#{mapLabels.$label_map_option_modal_title}</h4>
+							<button type="button" id="close-btn" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+				    	</div>
+                   
+                   <!---->
+                   
+					<div class="modal-body"> <!-- MODAL BODY -->
+						<h:form id="form-modal-submit"> <!-- FORM OPTIONS -->
+							<div class="row"> <!-- ROW -->
+								<div class="form-group col-md-4"> <!-- FORM GROUP EDIT BUTTON -->
+
+									<!-- INPUT HIDDEN VALUES -->
+									
+									<h:inputHidden id="equipCod" value="#{equipsBean.equipId}" />
+									<h:inputHidden id="equipTable" value="#{equipsBean.equipTable}" />
+									<input type="hidden" value="map" id="interface-search" name="interface-search" />
+
+									<!-- EDIT BUTTON -->
+
+									<h:commandButton id="btn-edit" value="#{mapLabels.$label_map_option_btn_edit_equipment}"
+											onclick="sendToBean(); $('#OPmodal').modal('toggle'); hideEditDirections();"
+											class="btn btn-dark form-modal-draw-button"
+											action="#{equipsBean.searchEquipment}">
+											<f:passThroughAttribute name="data-toggle" value="modal" />
+											<f:passThroughAttribute name="data-target" value="#editmodal" />
+											<f:ajax execute="@form" render="edit-equip-form:equipId  edit-equip-form:equipName edit-equip-form:cities
+											 edit-equip-form:roads edit-equip-form:km edit-equip-form:width edit-equip-form:long edit-equip-form:lat" />
+									</h:commandButton>
+
+									<!---->
+									
+								</div>
+									
+								<!---->
+
+								<div class="form-group col-md-4"> <!-- FORM GROUP POSITION BUTTON -->
+
+										<!-- INPUT HIDDEN VALUES -->
+										<h:inputHidden id="positionX" />
+										<h:inputHidden id="positionY" />
+
+										<!-- POSITION BUTTON -->
+										<h:commandButton
+											value="#{mapLabels.$label_map_option_btn_position}" id="position"
+											onclick="dragEquip(); hiddenBtns(); $('#OPmodal').modal('hide');"
+											class="btn btn-dark form-modal-draw-button">
+											<f:ajax execute="@form" render="@none" />
+										</h:commandButton>
+									<!---->
+								</div>
+									
+								<!---->
+
+								<div class="form-group col-md-4"> <!-- FORM GROUP DELETE BUTTON -->
+
+									<!-- DELETE BUTTON -->
+									
+									<h:commandButton id="deleteEquip"
+										value="#{mapLabels.$label_map_option_btn_delete}"
+										action="#{equipsBean.runDel}"
+										onclick="sendToBean(); $('#OPmodal').modal('hide');"
+										class="btn btn-dark form-modal-draw-button">
+											<f:passThroughAttribute name="data-toggle" value="modal" />
+											<f:passThroughAttribute name="data-target" value="#deletemodal" />
+											<f:ajax execute="@form" render="delete-equip-form:del-equip-name" />
+									</h:commandButton>
+										
+									<!---->
+
+								</div> <!---->																
+									
+							</div><!---->								
+						</h:form><!---->						
+					</div><!---->						
+				</div><!---->					
+			</div><!---->				
+		</div><!---->
+   	   	
+   	<!---->
+    
+   </h:body> 
+ </html>

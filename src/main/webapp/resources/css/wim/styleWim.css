@@ -1,0 +1,130 @@
+.jumbotron {
+	margin-right: 44px;
+	margin-top: -10px;
+	height: 100vh;
+	background-color: transparent;
+	margin-left: -12px;
+}
+
+.contendo {
+	margin-left: 1%;
+}
+
+.textT {
+	font-weight: 999;
+	color: #343a40;
+	margin-top: 5px;
+	font-size: smaller;
+}
+.inputDesign{
+	margin-top: 5px;
+}
+.column3 {
+	margin-top: 13px;
+	background: transparent;
+	margin-left: -40px;
+}
+
+.eixos {
+	margin-top: 13px;
+}
+.input-field, .inputDesign {
+	color: #343a40;
+	font-weight: 999;
+	text-align: center;
+}
+.ll.error {
+	border: solid 2px red;
+}
+
+.ll.ok {
+	border: solid 2px green;
+}
+
+.btn1 {
+	margin-top: -1px;
+}
+.msgErro{
+	display: none;
+}
+.msgErro.active{
+	display: block;
+	color: red;
+	font-family: 'arial black';
+	font-weight: 999;
+	text-align: center;
+}
+.modal-color {
+    background-color: #343a40;
+}
+.img{
+	height: 150px;
+}
+.img3{
+	height: 150px;
+}
+.pdf{
+	font-size: 12pt;
+	color: white;
+	margin-top: -5px;
+}
+.btnPdf{
+	position: relative;
+	border: solid 1px black;
+	top: -17px;
+}
+.linkPdf{
+	text-decoration: none;
+}
+.alerta{
+	font-size: 15pt;
+    text-align: center;
+    margin-left: 31px;
+    margin-right: -8px;
+}
+.alertPdf{
+	height: 20px;
+	font-weight: 999;
+}
+.alertPdf > p{
+	margin-top: -10px;
+}
+.textPdf1{
+	font-weight: 999;
+}
+#img1, #img2{
+	width: 150px;
+	width: 100%;
+	margin-top: 2%;
+	border: solid 2px black;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+.c-loader {
+  animation: is-rotating 1s infinite;
+  border: 6px solid #e5e5e5;
+  border-radius: 50%;
+  border-top-color: #51d4db;
+  height: 50px;
+  width: 50px;
+  margin-left: 50%;
+  margin-top: -80%;
+  display: none;
+}
+
+@keyframes is-rotating {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.logo-concessionaire {
+       right: 40%;
+    left: unset;
+    top: 10px;
+    height: 55px;
+    transform: unset;
+    opacity: 1;
+    z-index: 1100;
+}

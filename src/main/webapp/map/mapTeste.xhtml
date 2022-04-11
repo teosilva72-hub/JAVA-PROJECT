@@ -1,0 +1,603 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+	
+	<f:metadata>
+	
+	<f:viewAction onPostback="true" action="#{equipsBean.defineInterfaceView('map')}" />  
+	
+	</f:metadata>
+
+	<ui:define name="head">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>#{mapLabels.$label_map_home}</title>
+		<h:outputStylesheet name="form-style.css" library="css/forms" />
+		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
+		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
+		<c:if test="#{ DMS }">
+			<h:outputStylesheet name="layoutDMS.css" library="css/dms" />
+		</c:if>
+		<c:if test="#{ SPEED }">
+			<h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
+		</c:if>
+		<c:if test="#{ METEO }">
+			<h:outputStylesheet name="layoutMETEO.css" library="css/meteo" />
+		</c:if>
+		<h:outputStylesheet name="cftv.css" library="css/map" />
+		<h:outputStylesheet name="map.css" library="css/map" />
+		<h:outputStylesheet library="css/validation"
+			name="validation-style.css" />
+
+		<!-- Script -->
+		<h:outputScript name="bootstrap-input-spinner.js"
+			library="bootstrap/js" />
+		<h:outputScript library="js/validation-forms/models"
+			name="validation-models.js" />
+		<h:outputScript library="js/validation-forms/user-interface" name="map-validation.js" />
+		<h:outputScript library="js/map/" name="mapPaleta.js" />
+
+	</ui:define>
+
+	<ui:param name="permission" value="#{ userAccount.userPermision() }" />
+	<ui:param name="SuperAdmin"
+		value="#{ permission == 1 || permission == 6 }" />
+	<ui:param name="DMS" value="#{ loginAccount.load.en_dms }" />
+	<ui:param name="METEO" value="#{ loginAccount.load.en_meteo }" />
+	<ui:param name="CFTV" value="#{ loginAccount.load.en_cftv }" />
+	<ui:param name="SPEED" value="#{ loginAccount.load.en_speed }" />
+	<ui:param name="VideoWall" value="#{ permission == 9 }" />
+	<ui:param name="Map" value="map" />
+
+	<ui:define name="main-content">
+	
+		<c:if test="#{ SuperAdmin || VideoWall }">
+					
+		 <!-- ======================== ALERTS ======================== -->
+			
+			<ui:include src="/template/alerts/alerts.xhtml" />  
+		
+		</c:if>
+		
+		<!---->
+
+		<!-- WEB ZOOM -->
+		
+		<div class="map-options">
+			<div id="topButtons">
+
+				<button type="button" id="divide" class="zoomButton"
+					data-toggle="tooltip" data-placement="bottom" title="Divide Screen">
+					<span><i class="fas fa-object-group fa-2x"></i></span>
+				</button>
+
+				<button type="button" id="zoomIn" class="zoomButton"
+					data-toggle="tooltip" data-placement="bottom" title="Zoom In"
+					data-trigger="hover">
+					<span><i class="fas fa-plus-square fa-2x"></i></span>
+				</button>
+
+				<button type="button" id="zoomOut" class="zoomButton"
+					data-toggle="tooltip" data-placement="bottom" title="Zoom Out"
+					data-trigger="hover">
+					<span><i class="fas fa-minus-square fa-2x"></i></span>
+				</button>
+
+				<div class="d-flex options-menu pt-1">
+					<!-- CFTV OPTION DROPDOWN EQUIPMENT BTN CLICK RIGHT MOUSE -->
+	
+					<!---->
+					
+					<!-- CFTV LIST EQUIPS TOP PAGE -->
+						
+					<ui:fragment  rendered="#{ CFTV }" >	
+						<h:form prependId="false" id="sumIdCftv">
+							<div class="dropdown cftv-dropdown ml-3">
+								<button class="btn btn-dark dropdown-toggle" type="button"
+									id="dropdown-cftv-btn-icone" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false">
+									PTZ <i class="far fa-window-restore"></i>
+								</button>
+								<div class="dropdown-menu drop-down-ptz"
+									aria-labelledby="dropdownMenu2">
+									<div class="row">
+										<c:forEach begin="1" end="#{CftvCam.idTotal}" var="ptz">
+											<div class="col-md-6 col-dropdown-cftv">
+												<button class="dropdown-item d-cftv#{ptz} d-cftv-value"
+													type="button" value="#{ptz}" id="ptz-window#{ptz}">PTZ
+													#{ptz}</button>
+											</div>
+										</c:forEach>
+									</div>
+								</div>
+							</div>
+							
+							<h:inputHidden value="#{CftvCam.idTotal}" id="totalIdCftv" />
+							<h:commandButton style="display:none;" id="btnCftvSumTotal">
+								<f:ajax execute="@form" render=":sumIdCftv"
+									listener="#{CftvCam.totalId}" />
+							</h:commandButton>
+						</h:form>
+					</ui:fragment>
+						
+					<!--  -->
+					<c:if test="#{ SuperAdmin }">
+	
+						<input id="addequip" type="button"
+							class="btn btn-dark form-modal-draw-button"
+							onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();cftvInput();"
+							title="Add Equipment" data-toggle="modal" data-target="#modaladd"
+							value="#{mapLabels.$label_map_option_btn_add_equipment}"> </input>
+	
+					</c:if>
+				</div>
+
+		<!--		<div class="paleta-cores">
+					<a class="btn btn-dark paletaBtn" data-toggle="collapse"
+						onclick="color()" href="#paleta" role="button"
+						aria-expanded="false" aria-controls="collapseExample"><i
+						class="fas fa-palette"></i></a>
+
+					<div class="collapse" id="paleta">
+						<div class="card card-body conf-card">
+							<div class="row row-position">
+								<div class="col-md-2 " id="color">
+									<input type="button" class="color" onclick="color()" />
+								</div>
+								<div class="col-md-2 " id="color-1">
+									<input type="button" class="color-1" onclick="color1()" />
+								</div>
+								<div class="col-md-2 " id="color-2">
+									<input type="button" class="color-2" onclick="color2()" />
+								</div>
+								<div class="col-md-2 " id="color-3">
+									<input type="button" class="color-3" onclick="color3()" />
+								</div>
+								<div class="col-md-2 " id="color-4">
+									<input type="button" class="color-4" onclick="color4()" />
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div> -->
+
+				 <div class="linesbox d-none" >
+					<div>
+						<input type="checkbox" id="visiblelines" name="visiblelines"
+							checked=""></input> <label for="visiblelines">#{mapLabels.$label_map_option_btn_lines_equips}</label>
+					</div>
+				</div> 
+				
+				<!---->		
+				
+				<div class="darkmodebox">
+					<input type="checkbox" id="darkmode" name="darkmode"></input> 
+					   <label for="darkmode">
+					      <div class="scenary">
+						   <div class="moon">
+			                 <img id="dark-icon" src="/resources/images/dark-light/moon.webp" />						
+						  </div>
+						    <div class="sun">
+						       <img id="light-icon" src="/resources/images/dark-light/sun.webp" />		
+						    </div>						
+						  </div>							
+						</label>		
+				   </div>  
+			    </div>
+
+			<c:if test="#{ SuperAdmin || VideoWall }">
+
+				<!--  ******************************************************************************************************* -->
+
+				<h:form id="real">
+
+					<h:inputHidden id="equipIdPos" value="#{equipsBean.equipId}" />
+					<h:inputHidden id="equipTablePos" value="#{equipsBean.equipTable}" />
+					<h:inputHidden id="equipPosX" value="#{equipsBean.positionX}" />
+					<h:inputHidden id="equipPosY" value="#{equipsBean.positionY}" />
+				
+					<!--  ******************************************************************************************************* -->
+
+					<h:commandButton id="savePos" style="display:none;"
+						class="btn btn-dark form-modal-draw-button"
+						value="#{mapLabels.$label_map_option_btn_save_position_equipment}">
+						<f:ajax execute="@form" render="@none"
+							listener="#{equipsBean.definePosition}" onevent="onEventMapFunction"/>
+					</h:commandButton>
+
+					<!--  ******************************************************************************************************* -->
+
+					<h:commandButton id="cancelPos" style="display:none;"
+						class="btn btn-dark form-modal-draw-button"
+						value="#{mapLabels.$label_map_option_btn_cancel_position_equipment}"
+						onclick="alertOptions('#error', '${mapLabels.$message_map_alert_position_cancel}');"
+						title="Cancel Change Position">
+						<f:ajax render="#realcancel" onevent="onEventMapFunction" />
+					</h:commandButton>
+				</h:form>
+
+				<!--  ******************************************************************************************************* -->
+
+			</c:if>
+
+		</div>
+
+		<!-- WEB ZOOM END -->
+
+		<!-- HABILITAR EQUIPAMENTOS DISPONIVEIS -->
+
+		<!-- DropDown Equip Size Menu -->
+		<div class="dropleft">
+
+			<button class="btn btn-dark dropdown-toggle" type="button"
+				id="dropdwnsizebtn" data-toggle="dropdown" aria-haspopup="true"
+				aria-expanded="false">#{mapLabels.$label_map_size_equip_button}</button>
+
+			<div class="dropdown-menu" id="szselect"
+				aria-labelledby="dropdownMenuButton">
+				<button class="dropdown-item dprbtn" data-toggle="modal"
+					data-target="#sizeeqps" data-backdrop="false" id="dropall"
+					from="draggable">#{mapLabels.$label_map_size_select_all}</button>
+
+				<ui:fragment rendered="#{ CFTV }">
+					<button class="dropdown-item dprbtn" data-toggle="modal"
+						data-target="#sizeeqps" data-backdrop="false" id="dropcftv"
+						from="cftv">#{mapLabels.$label_map_size_select_cftv}</button>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{loginAccount.load.en_colas}">
+					<button class="dropdown-item dprbtn" data-toggle="modal"
+						data-target="#sizeeqps" data-backdrop="false" id="dropcolas"
+						from="colas">#{mapLabels.$label_map_size_select_colas}</button>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{loginAccount.load.en_comms}">
+					<button class="dropdown-item dprbtn" data-toggle="modal"
+						data-target="#sizeeqps" data-backdrop="false" id="dropcomms"
+						from="comms">#{mapLabels.$label_map_size_select_comms}</button>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{loginAccount.load.en_dai}">
+					<button class="dropdown-item dprbtn" data-toggle="modal"
+						data-target="#sizeeqps" data-backdrop="false" id="dropdai"
+						from="dai">#{mapLabels.$label_map_size_select_dai}</button>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{loginAccount.load.en_ocr}">
+					<button class="dropdown-item dprbtn" data-toggle="modal"
+						data-target="#sizeeqps" data-backdrop="false" id="droplpr"
+						from="lpr">#{mapLabels.$label_map_size_select_ocr}</button>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{loginAccount.load.en_meteo}">
+					<button class="dropdown-item dprbtn" data-toggle="modal"
+						data-target="#sizeeqps" data-backdrop="false" id="dropmto"
+						from="mto">#{mapLabels.$label_map_size_select_mto}</button>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{loginAccount.load.en_dms}">
+					<button class="dropdown-item dprbtn" data-toggle="modal"
+						data-target="#sizeeqps" data-backdrop="false" id="dropdms"
+						from="dms">#{mapLabels.$label_map_size_select_dms}</button>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{loginAccount.load.en_sat}">
+					<button class="dropdown-item dprbtn" data-toggle="modal"
+						data-target="#sizeeqps" data-backdrop="false" id="dropsat"
+						from="sat">#{mapLabels.$label_map_size_select_sat}</button>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{loginAccount.load.en_sos}">
+					<button class="dropdown-item dprbtn" data-toggle="modal"
+						data-target="#sizeeqps" data-backdrop="false" id="dropsos"
+						from="sos">#{mapLabels.$label_map_size_select_sos}</button>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{loginAccount.load.en_speed}">
+					<button class="dropdown-item dprbtn" data-toggle="modal"
+						data-target="#sizeeqps" data-backdrop="false" id="dropspeed"
+						from="speed">#{mapLabels.$label_map_size_select_speed}</button>
+				</ui:fragment>
+
+				<ui:fragment rendered="#{loginAccount.load.en_wim}">
+					<button class="dropdown-item dprbtn" data-toggle="modal"
+						data-target="#sizeeqps" data-backdrop="false" id="dropwim"
+						from="wim">#{mapLabels.$label_map_size_select_wim}</button>
+				</ui:fragment>
+			</div>
+		</div>
+
+		<!--  ******************************************************************************************************* -->
+
+		<!-- DropDown Equip Size Menu END -->
+
+		<!-- WEB ZOOM DIVIDE -->
+		<div class="map-full-option" style="display: none;">
+
+			<button type="button" id="full" class="zoomButton"
+				data-toggle="tooltip" data-placement="bottom" title="Full Map View">
+				<span><i class="fas fa-expand fa-2x"></i></span>
+			</button>
+		</div>
+
+		<div id="mapDivide" class="row" style="display: none">
+
+			<!-- Imagem 1 -->
+			<div class="squarebox" id="divs">
+				<section id="zoomDivs1"> <iframe class="grid-img"
+					id="frame1" src="" /> </section>
+				<button type="button" id="zoomIn1" class="zoomButton"
+					data-toggle="tooltip" data-placement="bottom" title="Zoom In"
+					data-trigger="hover">
+					<span><i class="fas fa-plus-square fa-1x"></i></span>
+				</button>
+				<button type="button" id="zoomOut1" class="zoomButton"
+					data-toggle="tooltip" data-placement="bottom" title="Zoom Out"
+					data-trigger="hover">
+					<span><i class="fas fa-minus-square fa-1x"></i></span>
+				</button>
+				<button type="button" id="fulldiv1" class="zoomFull"
+					data-toggle="tooltip" data-placement="bottom" title="Reset View"
+					data-trigger="hover">
+					<span> <i class="fas fa-expand-arrows-alt"></i></span>
+				</button>
+			</div>
+
+			<!-- Imagem 2 -->
+			<div class="squarebox" id="divs1">
+				<section id="zoomDivs2"> <iframe class="grid-img"
+					id="frame2" src="" /> </section>
+				<button type="button" id="zoomIn2" class="zoomButton"
+					data-toggle="tooltip" data-placement="bottom" title="Zoom In"
+					data-trigger="hover">
+					<span><i class="fas fa-plus-square fa-1x"></i></span>
+				</button>
+				<button type="button" id="zoomOut2" class="zoomButton"
+					data-toggle="tooltip" data-placement="bottom" title="Zoom Out"
+					data-trigger="hover">
+					<span><i class="fas fa-minus-square fa-1x"></i></span>
+				</button>
+				<button type="button" id="fulldiv2" class="zoomFull"
+					target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png"
+					data-toggle="tooltip" data-placement="bottom" title="Reset View"
+					data-trigger="hover">
+					<span> <i class="fas fa-expand-arrows-alt"></i></span>
+				</button>
+			</div>
+
+			<!-- Imagem 3 -->
+			<div class="squarebox" id="divs2">
+				<section id="zoomDivs3"> <iframe class="grid-img"
+					id="frame3" src="" /> </section>
+				<button type="button" id="zoomIn3" class="zoomButton"
+					data-toggle="tooltip" data-placement="bottom" title="Zoom In"
+					data-trigger="hover">
+					<span><i class="fas fa-plus-square fa-1x"></i></span>
+				</button>
+				<button type="button" id="zoomOut3" class="zoomButton"
+					data-toggle="tooltip" data-placement="bottom" title="Zoom Out"
+					data-trigger="hover">
+					<span><i class="fas fa-minus-square fa-1x"></i></span>
+				</button>
+				<button type="button" id="fulldiv3" class="zoomFull"
+					target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png"
+					data-toggle="tooltip" data-placement="bottom" title="Reset View"
+					data-trigger="hover">
+					<span> <i class="fas fa-expand-arrows-alt"></i></span>
+				</button>
+			</div>
+		</div>
+
+		<!-- OVERFLOW -->
+		<section class="overflow" scroll-zoom=".5" max-scale="10"
+			id="content"> <!-- START SECTION -->
+		<div id="zoomtext" scale="1" class="section">
+
+			<!-- MAP FRONT IMAGE -->
+
+			<ui:param name="Coord" value="#{ loginAccount.coord }" />
+
+			<h:graphicImage class="grab-map" width="100%" id="mapTuxpan"
+				value="#{loginAccount.mapUI}" p:dark="#{loginAccount.darkMapUI}" />
+			<div class="drawLines grab-map" gps_start="#{''.format('%f;%f;%f', Coord[0][0], Coord[0][1], Coord[0][2])}" gps_end="#{''.format('%f;%f;%f', Coord[1][0], Coord[1][1], Coord[1][2])}"></div>
+		</div>
+
+		<!-- Label -->
+		<div id="labelPos">
+			<label id="posX"></label> <label id="posY"></label>
+		</div>
+
+		<!-- Drag Items --> <!-- CAUSE -->
+
+		<div class="draggable" id="equipAll"></div>
+		<div class="zoomRoad" id="zoomRoad">
+			<ui:param name="Naranjos" value="#{ loginAccount.coordMap('naranjos') }" />
+			<ui:param name="RightLosgil" value="#{ loginAccount.coordMap('right-losgil') }" />
+
+			<div name="naranjos-zoomPoint" for="naranjos"></div>
+			<div name="naranjos" style="display: none" gps_start="#{''.format('%f;%f;%f', Naranjos[0][0], Naranjos[0][1], Naranjos[0][2])}" gps_end="#{''.format('%f;%f;%f', Naranjos[1][0], Naranjos[1][1], Naranjos[1][2])}">
+				<div class="background-zoomPoint"></div>
+				<img src="/resources/images/map/tuxpan/naranjos.webp" />
+			</div>
+
+			<div name="right-losgil-zoomPoint" for="right-losgil"></div>
+			<div name="right-losgil" style="display: none" gps_start="#{''.format('%f;%f;%f', RightLosgil[0][0], RightLosgil[0][1], RightLosgil[0][2])}" gps_end="#{''.format('%f;%f;%f', RightLosgil[1][0], RightLosgil[1][1], RightLosgil[1][2])}">
+				<div class="background-zoomPoint"></div>
+				<img src="/resources/images/map/tuxpan/right-losgil.webp" />
+			</div>
+		</div>
+
+		<!-- Plaque -->
+		
+		<ui:fragment rendered="#{loginAccount.plaque ne ''}">
+
+			<div>
+				<c:forEach items="#{roadView.plaque}" var="plaque">
+					<div class="plaque" longitude="#{plaque.longitude}"
+						latitude="#{plaque.latitude}" posY="#{plaque.mapY}">
+						<img width="75"
+							src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
+					</div>
+				</c:forEach>
+			</div>
+
+		</ui:fragment> </section>
+
+		<div class="context-menu">
+			<c:if test="#{ CFTV }">
+				<button type="button" class="btn btn-secondary dinamic-mouse-right" for="cftv" onclick="settingCftv()">#{mapLabels.$label_map_equipment_settings}</button>
+				<button type="button" class="btn btn-dark dinamic-mouse-right" for="cftv" onclick="windowCftvRight()">#{mapLabels.$label_map_equipment_realtime_view}</button>
+			</c:if>
+			<button type="button" class="btn btn-dark dinamic-mouse-right" for="carGPS" onclick="openModalGPS()">#{mapLabels.$label_map_change_vehicle}</button>
+			<c:if test="#{ SuperAdmin }">
+				<button type="button" class="btn btn-secondary dinamic-mouse-right" for="all" onclick="moreOption()">#{mapLabels.$label_map_equipment_options}</button>
+			</c:if>
+		</div>
+
+	</ui:define>
+
+		<!---->
+
+	<ui:define name="modal-content">
+		<c:if test="#{ SuperAdmin }">
+
+        <!-- ======================== CREATE ======================== -->
+		
+        	<ui:include src="/template/map-modal/create-map.xhtml" />  
+
+		</c:if>
+		
+		<!---->
+
+		<c:if test="#{ SuperAdmin || VideoWall }">
+		
+		<!-- ======================== OPTIONS ======================== -->
+
+			<ui:include src="/template/map-modal/options-map.xhtml" />
+			
+		<!---->
+		
+		<!-- ======================== EDIT ======================== -->
+			
+       		<ui:include src="/template/map-modal/edit-map.xhtml" />  
+       		
+       	<!---->
+									
+		</c:if>
+		
+		<!---->
+
+		<c:if test="#{ SuperAdmin }">
+					
+		<!-- ======================== DELETE ======================== -->
+		
+       		 <ui:include src="/template/map-modal/delete-map.xhtml" />  				
+
+		</c:if>
+		
+		<!---->
+				
+		<!-- ======================== SIZE ======================== -->
+		
+        	<ui:include src="/template/map-modal/size-map.xhtml" />  
+        	
+        <!---->
+		
+		<!-- ======================== VEHICLES ======================== -->
+		
+			<ui:include src="/template/map-modal/vehicles-map.xhtml" />  
+			
+		<!---->
+		
+		<!-- ======================== CFTV SETTINGS ======================== -->
+		
+		<ui:fragment  rendered="#{ CFTV }" >
+			<ui:include src="/template/map-modal/cftv-settings.xhtml" />  
+		</ui:fragment>
+		<!---->
+			
+	</ui:define>
+	
+	<!---->
+
+	<ui:define name="jscript">
+
+		<c:if test="#{ DMS }">
+			<h:outputScript name="dmsAnimation.js" p:type="module"
+				library="js/dms" />
+		</c:if>
+		
+		<!---->
+
+		<c:if test="#{ SPEED }">
+			<h:outputScript name="speed_event.js" library="js/speed" />
+		</c:if>
+		
+		<!---->
+
+		<c:if test="#{ METEO }">
+			<h:outputScript name="main.js" library="js/meteo" />
+		</c:if>
+		
+		<!---->
+		
+		<h:outputScript name="gps.js" library="js/gps" />
+		<h:outputScript name="map.js" library="js/map" />
+		
+		<ui:fragment  rendered="#{ CFTV }" >		
+			<h:outputScript library="js/map/" name="mapCftcv.js" />
+		</ui:fragment>
+		<!---->
+
+		<form name="roadLine">
+
+			<c:forEach items="#{roadView.roadLine}" var="point">
+				<input type="hidden" value="#{''.format('%s,%s,%s', point[0], point[1], point[2])}" />
+			</c:forEach>
+
+		</form>
+		
+		<!---->
+
+		<c:if test="#{ SuperAdmin }">
+
+			<!-- Mudança -->
+
+			<!-- ********************************************************************************************************************* -->
+
+			<!-- EXTERNAL SCRIPT ELEMENTS -->
+
+			<form name="validation">
+			
+				<!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+
+				<input type="hidden" name="requiredEquipmentsMsg"	value="#{requiredMessages.required_user_interface_select_equipments}" /> <!-- EQUIPMENT REQUIRED MESSAGE -->				
+				<input type="hidden" name="requiredEquipIdMsg" value="#{requiredMessages.required_user_interface_equip_id}" /> <!-- EQUIPMENT ID REQUIRED MESSAGE -->
+				<input type="hidden" name="validatorNumberMsg" value="#{validatorMessages.validator_number_message}" />	<!-- EQUIPMENT ID IS NUMBER VALIDATION MESSAGE -->
+				<input type="hidden" name="validatorMaxLenght" value="#{validatorMessages.validator_global_maxlength}" /> <!-- EQUIPMENT NAME LENGHT VALIDATION MESSAGE -->
+				<input type="hidden" name="requiredEquipmentNameMsg" value="#{requiredMessages.required_user_interface_equip_name}" /> <!-- EQUIPMENT NAME REQUIRED MESSAGE -->
+				<input type="hidden" name="requiredCitiesMsg" value="#{requiredMessages.required_user_interface_cities}" />	<!-- CITIES REQUIRED MESSAGE -->
+				<input type="hidden" name="requiredRoadsMsg" value="#{requiredMessages.required_user_interface_roads}" /> <!-- ROADS REQUIRED MESSAGE -->
+				<input type="hidden" name="requiredKmMsg" value="#{requiredMessages.required_user_interface_km}" />	<!-- KM REQUIRED MESSAGE -->
+
+			</form>
+			
+			<!---->
+
+		</c:if>
+		
+		<!---->
+	
+	</ui:define>
+</ui:composition>

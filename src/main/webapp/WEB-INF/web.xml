@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" version="4.0">
+    
+  <display-name>Tracevia</display-name>
+ 
+   <welcome-file-list>
+    <welcome-file>login.xhtml</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>*.xhtml</url-pattern>
+  </servlet-mapping>
+  <login-config>
+    <auth-method>FORM</auth-method>
+    <form-login-config>
+      <form-login-page>/login.xhtml</form-login-page>
+      <form-error-page>/login.xhtml</form-error-page>
+    </form-login-config>
+  </login-config>
+  <session-config>
+    <session-timeout>-1</session-timeout>
+  </session-config>
+  <filter>
+    <filter-name>Controle</filter-name>
+    <filter-class>br.com.tracevia.webapp.filter.ControleDeAcesso</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>Controle</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <error-page>
+    <exception-type> javax.faces.application.ViewExpiredException </exception-type>
+    <location>/login.xhtml</location>
+  </error-page>
+  
+  <context-param>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>none</param-value>
+  </context-param>
+         
+</web-app>

@@ -1,0 +1,270 @@
+html, body {
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+.card-inputs {
+	background-color: #343a40 !important;
+	margin-top: -15px;
+	width: 90%;
+	margin-left: 31px;
+}
+
+.fourth {
+	font-weight: 999;
+	margin-top: -50px;
+	width: 90%;
+	border-color: #343a40;
+	color: white;
+	background-image: -webkit-linear-gradient(45deg, white 50%, transparent 50%);
+	background-image: linear-gradient(45deg, #343a40 50%, transparent 50%);
+	background-position: 100%;
+	background-size: 400%;
+	-webkit-transition: background 30s ease-in-out;
+	transition: background 3s ease-in-out;
+	box-shadow: 4px 4px 4px 3px rgba(0, 0, 0, 0.2);
+	border-color: #343a40;
+}
+
+.btn1 {
+	margin-top: 5px;
+	margin-left: 31px;
+}
+
+.fourth:hover {
+	border-color: #343a40;
+	background-position: 0;
+	color: white;
+	box-shadow: 6px 6px 6px 5px rgba(0, 0, 0, 0.2);
+	transition: background 600ms ease-in-out;
+}
+
+.col-md-3 {
+	margin: 0;
+	padding: 0;
+}
+
+.search {
+	font-weight: 999;
+	border-color: #343a40;
+	color: white;
+	background-image: -webkit-linear-gradient(45deg, white 50%, transparent 50%);
+	background-image: linear-gradient(45deg, #28a745 50%, transparent 50%);
+	background-position: 100%;
+	background-size: 400%;
+	-webkit-transition: background 5s ease-in-out;
+	transition: background 3s ease-in-out;
+	margin-top: -20px;
+	box-shadow: 4px 4px 4px 3px rgba(0, 0, 0, 0.2);
+}
+
+.search:hover {
+	background-position: 0;
+	color: white;
+	box-shadow: 6px 6px 6px 5px rgba(0, 0, 0, 0.2);
+	border-color: #343a40;
+	transition: background 600ms ease-in-out;
+}
+
+.form-control {
+	margin-top: -10px;
+}
+
+.multi-collapse {
+	margin-top: -2px;
+}
+
+.textP {
+	font-weight: 100;
+	color: white;
+	text-align: center;
+	margin-top: 5px;
+}
+
+.form-control {
+	margin-top: -10px;
+}
+
+.datapicker {
+	z-index: 999;
+}
+
+.search {
+	width: 100%;
+}
+
+.titleColumn2 {
+	color: black;
+	font-weight: 999;
+	margin-top: -45px;
+}
+
+.column3 {
+	margin-left: -20px;
+}
+
+.titleColumn2-1 {
+	color: black;
+	font-weight: 200;
+}
+
+.cardS {
+	background: #343a40;
+	text-align: center;
+	color: white;
+	height: 23px;
+	border: solid 1px;
+}
+
+.p1 {
+	text-align: center;
+	color: black;
+	font-weight: 700;
+	margin-top: 5px;
+}
+
+span {
+	text-align: center;
+}
+
+.img1 {
+	width: 100%;
+	margin-top: 2%;
+	border: solid 2px black;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+
+.img2 {
+	border: solid 2px black;
+	width: 100%;
+	margin-top: 2%;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+
+.img3 {
+	border: solid 2px black;
+	width: 60%;
+	margin-left: 20%;
+	margin-top: 2%;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+
+.jumbotron {
+	margin-top: -50px;
+	height: 100vh;
+	background-color: white;
+}
+
+.inputSearch {
+	margin-top: 2px;
+}
+
+.eixos {
+	margin-top: 18px;
+	text-align: center;
+	font-weight: 999;
+	font-size: 10pt;
+	background: #343a40;
+	color: white;
+}
+
+.tt {
+	font-weight: 999;
+	font-size: 10pt;
+	color: black;
+}
+
+.rowWeight {
+	margin-top: 15px;
+}
+
+.progress {
+	margin-top: 15px;
+}
+
+.cardWeight {
+	margin-top: 10px;
+	background: #343a40;
+	height: 20%;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+
+.titleColumn2-2 {
+	margin-top: 10px;
+	font-weight: 200;
+	color: white;
+	font-weight: 200;
+	cursor: help;
+}
+.size{
+	width: 0%;
+	background: green;
+	color: white;
+	font-weight: 999;
+}
+.size.normal {
+	width: 50%;
+	background: green;
+	color: white;
+	font-weight: 999;
+}
+
+.size.acima {
+	width: 100%;
+	background: red;
+	color: white;
+	font-weight: 999;
+}
+
+.size.attention {
+	width: 80%;
+	background: yellow;
+	color: black;
+	font-weight: 999;
+}
+
+.erro {
+	margin-top: -10px;
+}
+
+.col-md-3 {
+	padding: 0;
+}
+
+.alert1 {
+	height: 15px;
+	width: 90%;
+	margin-left: 31px;
+}
+
+.eixos {
+	cursor: pointer;
+}
+
+.cardS {
+	font-weight: bolder;
+	cursor: pointer;
+}
+
+.troca.active{
+	background: #DCD;
+	color: black;
+}
+
+.titleColumn2-2.active{
+	color: black;
+}
+.dropdown{
+	z-index: 999;
+}

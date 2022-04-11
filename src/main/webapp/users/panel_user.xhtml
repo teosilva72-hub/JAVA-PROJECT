@@ -1,0 +1,185 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+
+	<ui:define name="head">
+
+		<h:outputStylesheet library="css/datatables/custom"
+			name="table-style.css" />
+		<h:outputStylesheet library="css/commom" name="commons.css" />
+		<h:outputStylesheet library="css/users" name="panel-user.css" />
+
+		<h:outputScript library="js/validation-forms/users"	name="user-panel.js" />
+	
+	</ui:define>
+
+	<ui:define name="main-content">
+
+		<!-- ALERT MESSAGE -->
+
+		<div id="success" class="alert alert-success" role="alert"
+			style="display: none;"> <!-- ALERT SUCCESS -->			
+			#{usersMessages.users_delete_success_delete}
+		</div>
+		<!---->
+
+		<div id="error" class="alert alert-danger" role="alert"
+			style="display: none;"> <!-- ALERT ERROR -->			
+			#{usersMessages.users_delete_failed_delete_header} -
+			#{users_delete_failed_delete_body}
+		</div>
+		<!---->
+		<!---->
+
+		<div class="container">
+			<div id="tab-content">
+
+				<h:form id="form-new">
+
+					<div class="form-row">
+						<!-- BUTTONS DIV -->
+						<div id="buttons">
+
+							<h:commandButton class="btn btn-dark draw-button" id="btn-add"
+								value="#{usersLabels.user_panel_btn_select_add}"
+								action="#{navigationController.redirectToURL('/users/register_user.xhtml?faces-redirect=true')}">
+							</h:commandButton>
+
+						</div>
+						<!---->
+					</div>
+					<!---->
+
+				</h:form>
+
+          		<div id="tab-user">
+					<h:dataTable id="user-table" value="#{userAccount.userDataModel}"
+						var="user" autocomplete="off"
+						styleClass="table table-striped table-bordered table-dark custom-table text-center"
+						cellspacing="0" width="100%" headerClass="custom-table-header">
+
+						<h:column>
+							<f:facet name="header">#{usersLabels.user_panel_table_col_id}</f:facet>
+							<h:outputText value="#{user.user_id}" />
+
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">#{usersLabels.user_panel_table_col_name}</f:facet>
+							<h:outputText value="#{user.name}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">#{usersLabels.user_panel_table_col_job_position}</f:facet>
+							<h:outputText value="#{user.job_position}" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{usersLabels.user_panel_table_col_email}</f:facet>
+							<h:outputText value="#{user.email}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">#{usersLabels.user_panel_table_col_user}</f:facet>
+							<h:outputText value="#{user.username}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">#{usersLabels.user_panel_table_col_access_level}</f:facet>
+							<h:outputText value="#{user.permission_role}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">#{usersLabels.user_panel_table_col_status}</f:facet>
+							<h:outputText value="#{user.activeStatusName}" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">#{usersLabels.user_panel_table_col_actions}</f:facet>
+							<div class="action-links">
+								<div id="update-link">
+									<h:form id="update-form">
+										<h:commandLink action="#{userAccount.usuarioInfoToUp}"
+											value="">
+											<span><i class="fas fa-user-edit edit-icon"></i></span>
+											<f:setPropertyActionListener value="#{user.user_id}"
+												target="#{userAccount.id}" />
+										</h:commandLink>
+									</h:form>
+								</div>
+								<div id="delete-link">
+									<h:form id="delete-form">
+										<h:commandLink action="#{userAccount.getRowValue}" value="">
+											<span><i class="fas fa-trash-alt trash-alt-icon"></i></span>
+											<f:setPropertyActionListener
+												target="#{userAccount.id}"
+												value="#{user.user_id}" />
+											<f:passThroughAttribute name="data-toggle" value="modal" />
+											<f:passThroughAttribute name="data-target"
+												value="#deleteModal" />
+											<f:ajax execute="@form" render="@none" />
+										</h:commandLink>
+									</h:form>
+								</div>
+							</div>
+						</h:column>
+					</h:dataTable>					
+					</div>				
+			  </div>
+		  </div>
+				
+
+		<h:form id="dialog-form"> <!-- DELETE DIALOG -->			
+			<div class="modal" id="deleteModal" tabindex="-1" role="dialog"
+				aria-labelledby="deleteModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title"><b style="color:black;">#{usersLabels.user_delete_modal_title}</b></h4>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+						    <p class="text-center"><b style="color:black;">#{usersLabels.user_delete_modal_body} : </b>
+						   <b style='color: red;'> <h:outputText id="modal-text" value="#{userAccount.id} ?" /> </b></p> 						   	
+						</div>
+						<div class="modal-footer">
+							<div class="submit-modal">
+								<h:commandButton id="submitBtn"
+									value="#{usersLabels.user_delete_modal_btn_yes}"
+									class="btn btn-dark" action="#{userAccount.excluirUsuario}" >
+									<f:setPropertyActionListener value="#{deleteValue}" target="#{userAccount.id}"/> <!-- ENVIAR VALOR DE DELEÇÃO PARA O BACKING BEAN -->
+								</h:commandButton>
+							</div>
+							<div class="cancel-modal">								
+								<h:commandButton value="#{usersLabels.user_delete_modal_btn_no}" class="btn btn-secondary" p:data-dismiss="modal" action="#{alunoController.removeDelValue}" /> <!-- DISMISS BUTTON -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<!---->
+
+	</ui:define>
+
+	<ui:define name="jscript">
+	</ui:define>
+
+	<ui:define name="jscript">
+		<h:outputScript name="panel-user-datatable.js"
+			library="js/page-datatables" />
+	</ui:define>
+
+</ui:composition>

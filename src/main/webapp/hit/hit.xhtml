@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://jcp.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+
+	<ui:define name="loading"></ui:define>
+
+	<ui:define name="head">
+		<title>HIT - Galibo</title>
+		<!-- Style -->
+		<h:outputStylesheet library="css/datatables/custom"
+			name="table-style.css" />
+		<h:outputStylesheet name="cftv.css" library="css/map" />
+		<h:outputStylesheet name="map.css" library="css/map" />
+		<h:outputStylesheet name="layoutDMS.css" library="css/dms" />
+		<h:outputStylesheet library="css/hit" name="layoutHit.css" />
+		<h:outputStylesheet library="css/hit" name="hit.css" />
+		<h:outputStylesheet library="css/global" name="global.css" />
+		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
+		<h:outputStylesheet library="css/commom" name="commons.css" />
+		<h:outputStylesheet library="css/forms" name="form-style.css" />
+
+	</ui:define>
+	<ui:define name="default-content">
+
+		<div class="row">
+			<div class="col-1"></div>
+			<div class="col-5 text-center">
+				<h:form prependId="false" id="list-table">
+					<h:dataTable id="table-hit" var="date" disabled="true"
+						value="#{HitController.listar}" class="text-center"
+						styleClass="table table-sm custom-table table-striped table-dark table-hover"
+						cellspacing="0" width="100%" headerClass="custom-table-header"
+						columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn, text-center justify-content-center">
+
+						<h:column>
+							<f:facet name="header">#{occLabels.occ_list_table_id}</f:facet>
+							<h:outputText value="#{date.equipId}" class="text-center"
+								style="font-size: 12px; " />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">Equipo</f:facet>
+							<h:outputText value="#{date.equipName}" style="font-size: 12px;" />
+						</h:column>
+
+						<h:column>
+							<f:facet name="header">KM</f:facet>
+							<h:outputText value="#{date.km}" style="font-size: 12px;" />
+						</h:column>
+
+
+					</h:dataTable>
+				</h:form>
+				<h:form prependId="false" id="getEquip">
+					<h:inputHidden value="#{HitController.id}" id="tableId" />
+					<h:commandButton style="display:none;" id="setId">
+						<f:ajax execute="@form" render=":getEquip :galibo :inputs_msg"
+							listener="#{HitController.equipHit}" />
+					</h:commandButton>
+				</h:form>
+			</div>
+			<div class="col-5">
+
+				<div class="row" id="append_col">
+					<!-- init card -->
+					<h:form prependId="false" id="galibo">
+						<c:forEach begin="0" end="0" var="value" varStatus="loop">
+							<c:if test="value">alert</c:if>
+							<div class="col-5">
+								<div class="card bg-dark contet_card equip-box hit_equips_card">
+									<span class="equip_name">Equipo:
+										#{HitController.hit.equip_type}</span>
+									<hr></hr>
+									<div class="row">
+
+										<div class="col-6">
+											<svg width="8" height="8" fill="orange"
+												class="bi bi-circle-fill hitCircleOne" viewBox="0 0 16 16">
+											<circle cx="8" cy="8" r="8" /> </svg>
+										</div>
+										<div class="col-6">
+											<svg width="8" height="8" fill="orange"
+												class="bi bi-circle-fill hitCircleTwo" viewBox="0 0 16 16">
+											<circle cx="8" cy="8" r="8" /> </svg>
+										</div>
+									</div>
+
+
+									<div id="child-msg" class="col-auto msg-pos">
+										<div id="Hitmessage" class="hit table-message">
+											<div class="row message_#{item.table_id}#{item.equip_id}"
+												msg="" id="msg_one">
+												<div class="col-1 px-0 border-table">
+													<span id="box-0" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="box-1" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="box-2" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="box-3" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="box-4" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="box-5" style=""></span>
+												</div>
+
+											</div>
+											<div class="row message2" msg="" id="msg_two">
+												<div class="col-1 px-0 border-table">
+													<span id="Msg_0" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="Msg_1" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="Msg_2" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="Msg_3" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="Msg_4" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="Msg_5" style=""></span>
+												</div>
+
+											</div>
+											<div class="row bottom message3" msg="" id="msg_three">
+												<div class="col-1 px-0 border-table">
+													<span id="msg_0" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="msg_1" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="msg_2" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="msg_3" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="msg_4" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="msg_5" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="msg_6" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="msg_7" style=""></span>
+												</div>
+												<div class="col-1 px-0 border-table">
+													<span id="msg_8" style=""></span>
+												</div>
+
+											</div>
+											<div id="hitMIMG">
+												<div id="iconHit"></div>
+												<div class="row bottom quadIm" msg="">
+													<div class="col-1 px-0 border-table hitQuad">
+														<span id="box-25" style=""></span>
+													</div>
+													<div class="col-1 px-0 border-table hitQuad">
+														<span id="box-25" style=""></span>
+													</div>
+												</div>
+												<div class="row bottom quadIm" msg="">
+													<div class="col-1 px-0 border-table hitQuad">
+														<span id="box-25" style=""></span>
+													</div>
+													<div class="col-1 px-0 border-table hitQuad">
+														<span id="box-25" style=""></span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+					</h:form>
+					<!-- end card -->
+					<!-- init cards option -->
+					<div class="col-6">
+						<h:form prependId="false" id="inputs_msg">
+							<div class="card bg-dark card_opt">
+								<div class="card-body">
+									<h5 class="card-title text-center title_opt">Opciones</h5>
+									<hr></hr>
+									<div class="row">
+										<div class="col-12">
+											<span class="msg_span">Mensaje 1</span><input type="text"
+												class="form-control input_msg" id="input_one"
+												value="#{HitController.hit.msg1}" />
+										</div>
+										<div class="col-12">
+											<span class="msg_span">mensaje 2</span><input type="text"
+												class="form-control input_msg" id="input_two"
+												value="#{HitController.hit.msg2}" />
+										</div>
+										<div class="col-12">
+											<span class="msg_span">mensaje 3</span><input type="text"
+												class="form-control input_msg" id="input_three"
+												value="#{HitController.hit.msg3}" />
+										</div>
+										<div class="col-12">
+											<span class="msg_span">Símbolo</span>
+											<h:selectOneMenu value="#{HitController.hit.img}"
+												class="form-control inputDesign" id="simbol" name="simbol">
+												<f:selectItem itemLabel="Seleccionar" itemValue="" />
+												<f:selectItem itemLabel="↖" itemValue="1" />
+												<f:selectItem itemLabel="↗" itemValue="2" />
+												<f:selectItem itemLabel="↘" itemValue="3" />
+												<f:selectItem itemLabel="↙" itemValue="4" />
+											</h:selectOneMenu>
+
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Final do conteudo do site -->
+		<!-- Script -->
+		<h:outputScript name="controllerHIT.js" library="js/hit" />
+		<h:outputScript name="controller_occ.js" library="js/occ" />
+		<h:outputScript name="datepicker.js" library="js/datepicker" />
+		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
+		<h:outputScript name="jquery.validate.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="additional-methods.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
+
+	</ui:define>
+</ui:composition>

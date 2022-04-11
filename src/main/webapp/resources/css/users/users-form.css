@@ -1,0 +1,128 @@
+
+/*
+ * General styles
+ */
+
+body, html{     	
+	overflow-y: hidden;
+}
+
+/*inputs width*/
+#userId{width: 35%;}
+#fullname, #jobPosition, #email, #username, #permissions {width: 100%;}
+
+
+/*Title USERS DIV*/
+.titleFieldsUser{
+	position: absolute;	
+	border: none;
+	width: 25%;
+	margin-top: 0px;
+	margin-left: 2.5%;
+	color: black;
+}
+
+.titleGroupHr{
+	background: black;
+	padding-bottom: 0.75px;
+	margin-bottom: 5px;	
+	margin-bottom: 15px;
+	width: 90%;
+	margin-left: 4%;
+}
+
+/* DIV CONTAINER */
+.groupFieldsUser{
+	border: none;
+	width: 40%;	
+	margin-left: 30%;
+	margin-top: 60px;
+	border-radius: 15px;		
+}
+
+/* Validation icon position type select checkbox options */
+.checkbox-field .valid-icon-hidden,
+.checkbox-field .valid-icon-visible {
+ margin-left: 86% !important;
+} 
+
+/* Validation icon position type (input/select) */
+.input-field .valid-icon-hidden, .input-field .valid-icon-visible,
+.select-field .valid-icon-hidden, .select-field .valid-icon-visible
+{
+ margin-left: 90% !important;
+}
+
+/*Radio Button*/
+
+#radio-status .status{
+	width: 100%;
+	border: none;
+   }
+   
+   .status label{  
+	margin-top: 0px;
+	margin-left: 5px; 
+	color: black;
+   }
+   
+   .status td {    
+	 float: left;    
+   }
+
+   .status td input {
+	 float: left;
+	 margin-left: 36px;  
+	 margin-top: 4%;    
+   }
+     
+   /*Radio Button*/
+
+   /* buttons div content */
+#buttons {
+	width: 100%;
+	border: 1px solid transparent;
+	height: 50px;
+	margin-top: 1.5%;
+}
+
+/* divs inside buttons div */
+ #btn-register, #btn-reset, #btn-update, #btn-cancel, #btn-add {
+	border: 1px solid transparent;
+	height: 40px;	
+	float: left;
+}
+
+/* div for reset button config */
+#btn-register, #btn-update{
+	margin-left: 1%;
+	width: 120px;
+}
+
+#btn-add {
+	margin-left: 5%;
+	width: 120px;
+}
+
+#btn-reset, #btn-cancel {
+	margin-left: 0.75%;
+	width: 120px;
+}
+
+
+.draw-button {
+	margin-top: 1.25%;
+	border: none;
+	cursor: pointer;
+	width: 150px;
+	height: 40px;
+	border-radius: 5px;
+	text-align: center;
+}
+
+/* style hover for draw-button */
+.draw-button:hover {
+	-webkit-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+	-moz-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+	box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+}

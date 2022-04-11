@@ -1,0 +1,382 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+    xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui">
+
+    <f:view locale="#{language.locale}">
+        <div class="col-md atual">
+            <div class="text-center" id="one">
+                <span class="label-header-content">#{dmsLabels.dms_active_messages_label_current_state}</span>
+                <c:forEach items="#{dmsActiveMessage.dmsList}" var="item" varStatus="loop">
+                    <div id="listDMS#{item.equip_id}" idMessage="#{item.message.id_message}" type="#{item.message.tipo}"
+                        name="#{item.nome}" driver="#{item.message.driver}">
+                        <input type="hidden" name="page1" imageId="#{item.message.pages[0].id_image}"
+                            image="#{item.message.pages[0].image}" imageId2="#{item.message.pages[0].id_image2}"
+                            image2="#{item.message.pages[0].image2}" line1="#{item.message.pages[0].text1}"
+                            line2="#{item.message.pages[0].text2}" line3="#{item.message.pages[0].text3}"
+                            timer="#{item.message.pages[0].timer}" />
+                        <input type="hidden" name="page2" imageId="#{item.message.pages[1].id_image}"
+                            image="#{item.message.pages[1].image}" imageId2="#{item.message.pages[1].id_image2}"
+                            image2="#{item.message.pages[1].image2}" line1="#{item.message.pages[1].text1}"
+                            line2="#{item.message.pages[1].text2}" line3="#{item.message.pages[1].text3}"
+                            timer="#{item.message.pages[1].timer}" />
+                        <input type="hidden" name="page3" imageId="#{item.message.pages[2].id_image}"
+                            image="#{item.message.pages[2].image}" imageId2="#{item.message.pages[2].id_image2}"
+                            image2="#{item.message.pages[2].image2}" line1="#{item.message.pages[2].text1}"
+                            line2="#{item.message.pages[2].text2}" line3="#{item.message.pages[2].text3}"
+                            timer="#{item.message.pages[2].timer}" />
+                        <input type="hidden" name="page4" imageId="#{item.message.pages[3].id_image}"
+                            image="#{item.message.pages[3].image}" imageId2="#{item.message.pages[3].id_image2}"
+                            image2="#{item.message.pages[3].image2}" line1="#{item.message.pages[3].text1}"
+                            line2="#{item.message.pages[3].text2}" line3="#{item.message.pages[3].text3}"
+                            timer="#{item.message.pages[3].timer}" />
+                        <input type="hidden" name="page5" imageId="#{item.message.pages[4].id_image}"
+                            image="#{item.message.pages[4].image}" imageId2="#{item.message.pages[4].id_image2}"
+                            image2="#{item.message.pages[4].image2}" line1="#{item.message.pages[4].text1}"
+                            line2="#{item.message.pages[4].text2}" line3="#{item.message.pages[4].text3}"
+                            timer="#{item.message.pages[4].timer}" />
+                    </div>
+                    <div class="option message-block">
+                        <div class="check-select">
+                            <input class="form-check-input" type="checkbox" id="check#{item.equip_id}" />
+                        </div>
+    
+                        <div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2" scale="1.4">
+    
+                            <!-- Table with DIV -->
+    
+                            <div class="tableStyle card">
+                                <div class="dms-name card-header py-0">
+                                    <div class="text-center dmsTab#{item.equip_id}">
+                                        <span class="nameDMS">#{item.nome}</span>
+                                        <span class="kmDMS">#{item.km}</span>
+                                    </div>
+                                </div>
+                                <div class="row text-center card-body p-0">
+                                    <div id="child-img" class="col-2 padding-dms">
+                                        <img src="/resources/images/pictures/#{dmsMessage.image}"
+                                            class="picture-box primary" id-img="0" />
+                                    </div>
+                                    <div id="child-msg" class="col-auto msg-pos">
+                                        <div id="message" class="table-message">
+                                            <div class="row border-table-right message1" msg="">
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-1"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-2"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-3"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-4"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-5"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-6"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-7"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-8"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-9"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-10"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-11"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-12"></span>
+                                                </div>
+                                            </div>
+                                            <div class="row border-table-right message2" msg="">
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-13"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-14"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-15"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-16"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-17"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-18"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-19"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-20"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-21"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-22"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-23"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-24"></span>
+                                                </div>
+                                            </div>
+                                            <div class="row border-table-right bottom message3" msg="">
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-25"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-26"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-27"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-28"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-29"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-30"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-31"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-32"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-33"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-34"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-35"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-36"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="child-img" class="col-2 second-img ms-auto">
+                                        <img src="/resources/images/pictures/#{dmsMessage.image}"
+                                            class="picture-box secondary" id-img="0" />
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+        <!-- FINAL DA TABELA ESTADO ATUAL -->
+        <!-- INICIO DA TABELA NOVO ESTADO -->
+        <div class="col-md">
+            <div class="text-center" id="two">
+                <span class="label-header-content">#{dmsLabels.dms_active_messages_label_new_state}</span>
+                <c:forEach items="#{dmsActiveMessage.dmsList}" var="item" varStatus="loop">
+                    <div id="listChangeDMS#{item.equip_id}" idMessage="#{item.messageChange.id_message}"
+                        type="#{item.messageChange.tipo}" name="#{item.nome}" driver="#{item.messageChange.driver}"
+                        status="#{item.msg_status}">
+                        <input type="hidden" name="page1" imageId="#{item.messageChange.pages[0].id_image}"
+                            image="#{item.messageChange.pages[0].image}" imageId2="#{item.messageChange.pages[0].id_image2}"
+                            image2="#{item.messageChange.pages[0].image2}" line1="#{item.messageChange.pages[0].text1}"
+                            line2="#{item.messageChange.pages[0].text2}" line3="#{item.messageChange.pages[0].text3}"
+                            timer="#{item.messageChange.pages[0].timer}" />
+                        <input type="hidden" name="page2" imageId="#{item.messageChange.pages[1].id_image}"
+                            image="#{item.messageChange.pages[1].image}" imageId2="#{item.messageChange.pages[1].id_image2}"
+                            image2="#{item.messageChange.pages[1].image2}" line1="#{item.messageChange.pages[1].text1}"
+                            line2="#{item.messageChange.pages[1].text2}" line3="#{item.messageChange.pages[1].text3}"
+                            timer="#{item.messageChange.pages[1].timer}" />
+                        <input type="hidden" name="page3" imageId="#{item.messageChange.pages[2].id_image}"
+                            image="#{item.messageChange.pages[2].image}" imageId2="#{item.messageChange.pages[2].id_image2}"
+                            image2="#{item.messageChange.pages[2].image2}" line1="#{item.messageChange.pages[2].text1}"
+                            line2="#{item.messageChange.pages[2].text2}" line3="#{item.messageChange.pages[2].text3}"
+                            timer="#{item.messageChange.pages[2].timer}" />
+                        <input type="hidden" name="page4" imageId="#{item.messageChange.pages[3].id_image}"
+                            image="#{item.messageChange.pages[3].image}" imageId2="#{item.messageChange.pages[3].id_image2}"
+                            image2="#{item.messageChange.pages[3].image2}" line1="#{item.messageChange.pages[3].text1}"
+                            line2="#{item.messageChange.pages[3].text2}" line3="#{item.messageChange.pages[3].text3}"
+                            timer="#{item.messageChange.pages[3].timer}" />
+                        <input type="hidden" name="page5" imageId="#{item.messageChange.pages[4].id_image}"
+                            image="#{item.messageChange.pages[4].image}" imageId2="#{item.messageChange.pages[4].id_image2}"
+                            image2="#{item.messageChange.pages[4].image2}" line1="#{item.messageChange.pages[4].text1}"
+                            line2="#{item.messageChange.pages[4].text2}" line3="#{item.messageChange.pages[4].text3}"
+                            timer="#{item.messageChange.pages[4].timer}" />
+                    </div>
+                    <div class="option message-block">
+                        <div class="check-select">
+                            <input class="form-check-input" type="checkbox" disabled="disabled"
+                                id="check#{item.equip_id}_Change" />
+                        </div>
+    
+                        <div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2" scale="1.4">
+    
+                            <!-- Table with DIV -->
+    
+                            <div class="tableStyle card">
+                                <div class="dms-name card-header py-0">
+                                    <div class="text-center dmsTab#{item.equip_id}">
+                                        <span class="nameDMS">#{item.nome}</span>
+                                        <span class="kmDMS">#{item.km}</span>
+                                    </div>
+                                </div>
+                                <div class="row text-center card-body p-0">
+                                    <div id="child-img" class="col-2 padding-dms">
+                                        <img src="/resources/images/pictures/#{dmsMessage.image}"
+                                            class="picture-box primary" id-img="0" />
+                                    </div>
+                                    <div id="child-msg" class="col-auto msg-pos">
+                                        <div id="message" class="table-message">
+                                            <div class="row border-table-right message1" msg="">
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-1"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-2"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-3"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-4"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-5"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-6"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-7"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-8"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-9"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-10"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-11"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-12"></span>
+                                                </div>
+                                            </div>
+                                            <div class="row border-table-right message2" msg="">
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-13"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-14"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-15"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-16"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-17"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-18"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-19"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-20"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-21"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-22"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-23"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-24"></span>
+                                                </div>
+                                            </div>
+                                            <div class="row border-table-right bottom message3" msg="">
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-25"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-26"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-27"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-28"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-29"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-30"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-31"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-32"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-33"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-34"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-35"></span>
+                                                </div>
+                                                <div class="col-1 px-0 border-table">
+                                                    <span id="box-36"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="child-img" class="col-2 second-img ms-auto">
+                                        <img src="/resources/images/pictures/#{dmsMessage.image}"
+                                            class="picture-box secondary" id-img="0" />
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+    </f:view>
+
+</ui:composition>

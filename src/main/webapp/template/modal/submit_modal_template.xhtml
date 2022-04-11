@@ -1,0 +1,254 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" >
+   <h:body>
+   
+	<!-- SUBMIT MODAL -->
+
+	<div class="modal fade" id="modalReportOptions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<!-- MODAL COMPONENT DIV -->
+		<!---->
+		<div class="modal-dialog" role="document">
+			<!-- MODAL DIALOG DIV -->
+			<!---->
+			<h:form class="modal-content" name="report-form" id="report-form">
+				<!-- MODAL FORM -->
+				<!---->
+				<div class="modal-header text-center">
+					<!-- MODAL HEADER DIV -->
+					<!---->
+					<h4 class="modal-title w-100 font-weight-bold">
+						#{reportsLabels.reports_modal_title}
+					</h4>
+					<!-- MODAL TITLE -->
+					<!---->
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<!-- MODAL CLOSE BUTTON -->
+						<span aria-hidden="true">&times;</span>
+						<!-- SPAN ICON -->
+					</button>
+					<!-- MODAL CLOSE BUTTON END  -->
+					<!---->
+				</div>
+				<!-- MODAL HEADER DIV END -->
+				<!---->
+				<div class="modal-body row">
+					<!-- MODAL BODY DIV -->
+
+					<br />
+					<!-- LINE BREAK -->
+
+					<!-- REMOVE FIELDS FROM SEARCH | TEMPORARILY INACTIVE -->
+					<div class="col-12 #{reportBean.limitColumn ? '' : 'd-none'}">
+						<div class="form-group col-sm-12 checkbox-field">
+							<span><i class="fas fa-hdd"></i></span> <span
+									class="valid-icon-hidden"></span> <select name="allColumns"
+									id="allColumns" field="Column" multiple="multiple">
+								<c:forEach var="column" items="#{reportBean.columnsInUse}"
+									varStatus="loop">
+									<option value="#{loop.index}">#{column}</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="error-label">
+							<label for="allColumns" class="error" id="allColumns-error"></label>
+						</div>
+					</div>
+
+					<!-- FILTER FIEDS -->
+
+					<c:forEach var="filterSearch"  items="${reportBean.filterSearch}">
+						<div class="col-12">
+							<!-- FORM ROW DIV -->
+							<div class="form-group col-sm-12 checkbox-field">
+								<!-- FORM GROUP DIV -->
+								<span><i class="fas fa-hdd"></i></span>
+								<!-- SPAN ICON -->
+								<span for="#{reportBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter" class="valid-icon-hidden"></span>
+								<!-- SPAN VALIDATION ICON -->
+								<!---->
+								<select name="#{reportBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter" id="#{reportBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter"
+									field="#{reportBean.getLeft(filterSearch)[1]}" multiple="#{reportBean.getLeft(filterSearch)[2]}"
+									required="#{reportBean.getLeft(filterSearch)[3]}">
+									<!-- SELECT OPTIONS -->
+									<!---->
+									<c:if test="#{reportBean.getLeft(filterSearch)[2] ne 'multiple'}">
+										<option value="">
+											#{reportBean.getLeft(filterSearch)[1]}
+										</option>
+									</c:if>
+									<!---->
+									<ui:repeat var="filter" value="#{reportBean.getRight(filterSearch)}">
+										<!-- LOOP -->
+										<!---->
+										<option value="#{filter[0]}">#{filter[1]}</option>
+										<!---->
+									</ui:repeat>
+									<!---->
+								</select>
+								<!-- INPUT -->
+								<!---->
+							</div>
+							<!-- FORM GROUP DIV END -->
+							<div class="error-label">
+								<!-- ERROR LABEL DIV -->
+								<label for="#{reportBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter" class="error" id="#{reportBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter-error"></label>
+								<!-- ERROR LABEL -->
+							</div>
+							<!-- ERROR LABEL DIV END -->
+						</div>
+						<!-- FORM ROW DIV END -->
+
+						<!---->
+					</c:forEach>
+
+					<!-- PERIOD FIEDS -->
+
+					<c:if test="#{reportBean.hasPeriod()}">
+						<div class="col-12">
+							<!-- FORM ROW DIV -->
+							<div class="form-group col-sm-12 checkbox-field">
+								<!-- FORM GROUP DIV -->
+								<span><i class="fas fa-hdd"></i></span>							
+								<!---->
+								<select name="date-period" id="date-period" required="required">
+									<option value="">#{reportsLabels.reports_select_period}</option>
+									<!-- SELECT OPTIONS -->
+									<ui:repeat var="period" value="#{reportBean.getPeriod()}" varStatus="status">
+										<!-- LOOP -->
+										<!---->
+										<option value="#{period[0]},#{period[1]},#{period[2]}">#{period[2]}</option>
+										<!---->
+									</ui:repeat>
+									<!---->
+								</select>
+								<!-- INPUT -->
+								<!---->
+								<!-- SPAN ICON -->
+								<span for="date-period" class="valid-icon-hidden"></span>
+								<!-- SPAN VALIDATION ICON -->
+							</div>
+							<!-- FORM GROUP DIV END -->
+							<div class="error-label">
+								<!-- ERROR LABEL DIV -->
+								<label for="date-period" class="error" id="date-period-error"></label>
+								<!-- ERROR LABEL -->
+							</div>
+							<!-- ERROR LABEL DIV END -->
+						</div>
+					</c:if>
+					<!-- FORM ROW DIV END -->
+
+					<!-- START DATE -->
+
+					<c:forEach var="dateSearch"  items="${reportBean.dateSearch}">
+						<div class="col-6">
+							<!-- FORM ROW DIV -->
+							<div class="form-group input-field">
+								<!-- FORM GROUP DIV -->
+								<span><i class="far fa-calendar-alt"></i></span>
+								<!---->
+								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[1].replaceAll(' ', '')}-start" id="#{dateSearch[1].replaceAll(' ', '')}-start" required="#{dateSearch[2]}"
+									placeholder="#{reportsLabels.reports_input_date_start_placeholder}" />
+								<!-- INPUT -->
+								<!---->
+								<!-- SPAN ICON -->
+								<span for="#{dateSearch[1].replaceAll(' ', '')}-start" class="valid-icon-hidden"></span>
+								<!-- SPAN VALIDATION ICON -->
+								<!---->
+							</div>
+							<!-- FORM GROUP DIV END -->
+							<div class="error-label">
+								<!-- ERROR LABEL DIV -->
+								<label for="#{dateSearch[1].replaceAll(' ', '')}-start" class="error" id="#{dateSearch[1].replaceAll(' ', '')}-start-error"></label>
+								<!-- ERROR LABEL -->
+							</div>
+							<!-- ERROR LABEL DIV END -->
+						</div>
+						<!-- FORM ROW DIV END -->
+
+						<!---->
+
+						<!-- END DATE -->
+
+						<div class="col-6">
+							<!-- FORM ROW DIV -->
+							<div class="form-group input-field">
+								<!-- FORM GROUP DIV -->
+								<span><i class="far fa-calendar-alt"></i></span>								
+								<!---->
+								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[1].replaceAll(' ', '')}-end" id="#{dateSearch[1].replaceAll(' ', '')}-end" required="#{dateSearch[2]}"
+									placeholder="#{reportsLabels.reports_input_date_end_placeholder}" />
+								<!-- INPUT -->
+								<!---->
+								<!-- SPAN ICON -->
+								<span for="#{dateSearch[1].replaceAll(' ', '')}-end" class="valid-icon-hidden"></span>
+								<!-- SPAN VALIDATION ICON -->
+								<!---->
+							</div>
+							<!-- FORM GROUP DIV END -->
+							<div class="error-label">
+								<!-- ERROR LABEL DIV -->
+								<label for="#{dateSearch[1].replaceAll(' ', '')}-end" class="error" id="#{dateSearch[1].replaceAll(' ', '')}-end-error"></label>
+								<!-- ERROR LABEL -->
+							</div>
+							<!-- ERROR LABEL DIV END -->
+						</div>
+						<!-- FORM ROW DIV END -->
+
+						<!---->
+					</c:forEach>
+
+					<input type="hidden" name="jsTable" value="speed-records-table" />
+					<!-- TABLE NAME -->
+					<input type="hidden" name="jsTableScrollHeight" value="50.3vh" />
+					<!-- TABLE VIEW HEIGHT -->
+					<input type="hidden" name="isMulti" value="true" />
+					<!-- TABLE VIEW HEIGHT -->
+
+					<!---->
+				</div>
+				<!-- MODAL BODY DIV END -->
+
+				<!---->
+				<div class="modal-footer">
+					<!-- MODAL FOOTER DIV -->
+
+					<h:commandButton value="#{reportsLabels.reports_form_btn_reset}" id="btn-form-reset"
+						immediate="true" type="reset" class="btn btn-dark form-modal-draw-button reset-btn" >
+					</h:commandButton><!-- BUTTON RESET -->
+
+					<!---->
+					<button type="button" id="btn-form-confirm" class="btn btn-dark form-modal-draw-button"
+						onclick="verif('#report-form', '[id$=btn-form-send]')">
+						#{reportsLabels.reports_form_btn_send}
+					</button>
+					<!-- SUBMIT BUTTON -->
+
+					<!---->
+
+					<h:commandButton value="#{reportsLabels.reports_form_btn_send}" style="display: none"
+						id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
+						<f:ajax execute="@form" render="form-table form-btns" listener="#{reportBean.createFields}"
+							onevent="onEventFunction" />
+					</h:commandButton>
+					<!-- SUBMIT HIDDEN BUTTON -->
+
+					<!---->
+				</div>
+				<!-- MODAL FOOTER DIV END -->
+			</h:form>
+			<!-- MODAL FORM END -->
+		</div>
+		<!-- MODAL DIALOG DIV END -->
+	</div>
+	<!-- MODAL COMPONENT DIV END -->
+
+	<!-- =============================================================================================================================================== -->
+</h:body>
+
+</html>

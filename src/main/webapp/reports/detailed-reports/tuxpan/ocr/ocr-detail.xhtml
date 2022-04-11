@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+	<ui:define name="head">
+		<title>#{abaLabels.ocr_report}</title>
+		<h:outputStylesheet library="css/datatables/custom"
+			name="table-style.css" />
+		<h:outputStylesheet library="css/reports" name="reports_template.css" />
+		<h:outputStylesheet library="css/forms" name="form-style.css" />
+		<h:outputStylesheet library="css/ocr" name="ocrStyle.css" />
+		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
+		<h:outputStylesheet library="bootstrap/css"
+			name="bootstrap-multiselect.css" />
+		<h:outputStylesheet library="css/occ" name="occurrences.css" />
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
+		<h:outputScript library="js/ocr" name="controller_ocr.js" />
+	</ui:define>
+	<ui:define name="main-content">
+		<div class="row">
+			<div class="col-md-12">
+
+				<h1 class="text-center">#{ocrLabels.ocr_report_title}</h1>
+				<hr></hr>
+			</div>
+			<div class="col-md-5">
+				<div class="table">
+					<!-- TABELA -->
+					<h:form prependId="false" id="tabela">
+						<h:dataTable id="ocr-table" var="data" disabled="true"
+							value="#{OcrReport.list}"
+							styleClass="table table-sm custom-table table-striped table-dark table-hover text-center"
+							cellspacing="0" width="100" headerClass="custom-table-header"
+							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
+							<h:column>
+								<f:facet name="header">#{ocrLabels.ocr_report_number_label}</f:facet>
+								<h:outputText value="#{data.id}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{ocrLabels.ocr_report_dataHour_label}</f:facet>
+								<h:outputText value="#{data.dataHour}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{ocrLabels.ocr_report_cam_label}</f:facet>
+								<h:outputText value="#{data.cam}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{ocrLabels.ocr_report_plate_label}</f:facet>
+								<h:outputText value="#{data.placa}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{ocrLabels.km}</f:facet>
+								<h:outputText value="#{data.km}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{ocrLabels.direction}</f:facet>
+								<h:outputText value="#{data.direction}"
+									style="font-size: 12px; " />
+							</h:column>
+						</h:dataTable>
+						<div class="c-loader"></div>
+					</h:form>
+				</div>
+			</div>
+			<div class="col-md-1">
+				<div class="btns">
+					<div class="row">
+						<div class="col-md-12">
+							<button type="button" class="btn btn-dark btn1" id="btnPdf"
+								data-toggle="modal" data-target="#modalPdf">
+								<i class="fas fa-file-pdf icone"></i>
+							</button>
+						</div>
+						<div class="col-md-12">
+							<button type="button" class="btn btn-warning btn1" id="search"
+								data-toggle="modal" data-target="#modalPesquisa"
+								onclick="dataPicker()">
+								<i class="fas fa-search"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<h3 class="text-center"></h3>
+				<h:form prependId="false" id="imagem">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-8">
+									<img class="img1"
+										src="data:image/jpg;base64, #{OcrReport.imageVeh}"></img>
+								</div>
+								<div class="col-md-3">
+									<h4 class="text-center"></h4>
+									<img class="img2"
+										src="data:image/jpg;base64, #{OcrReport.imagePlt}"></img>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+		</div>
+		<h:form prependId="false" id="ID">
+			<h:inputText value="#{OcrReport.rowkey}" id="event"
+				style="display:none;" />
+			<h:inputText value="#{OcrReport.camera}" id="camSet"
+				style="display:none;" />
+			<h:commandButton id="btnTable" style="display:none;">
+				<f:ajax listener="#{OcrReport.idGet}" execute="@form"
+					render=":ID :pdfModal :imagem" />
+			</h:commandButton>
+		</h:form>
+		<!-- Modal -->
+		<h:form prependId="false" id="pesquisar">
+			<div class="modal fade" id="modalPesquisa" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">#{ocrLabels.ocr_report_modal_search_title}</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-4">
+									<span>#{ocrLabels.ocr_report_modal_search_dateInitial}</span>
+									<h:inputText class="form-control inputDesign ll"
+										id="dateInitial" pt:placeholder="yyyy-mm-dd"
+										autocomplete="off" value="#{OcrReport.dtStart}"></h:inputText>
+								</div>
+								<div class="col-md-4">
+									<span>#{ocrLabels.ocr_report_modal_search_hourInitial}</span>
+									<h:selectOneMenu value="#{OcrReport.hrStart}"
+										class="form-control inputDesign ll" id="hourInitial">
+										<f:selectItem itemLabel="Horas" itemValue="" />
+										<f:selectItems value="#{OcrReport.horas}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-4">
+									<span>#{ocrLabels.ocr_report_modal_search_minuteInitial}</span>
+									<h:selectOneMenu value="#{OcrReport.minStart}"
+										class="form-control inputDesign ll" id="minuteInitial">
+										<f:selectItem itemLabel="Minutos" itemValue="" />
+										<f:selectItems value="#{OcrReport.minutos}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-4">
+									<hr></hr>
+									<span>#{ocrLabels.ocr_report_modal_search_dateFinal}</span>
+									<h:inputText class="form-control inputDesign ll" id="dateFinal"
+										pt:placeholder="yyyy-mm-dd" autocomplete="off"
+										value="#{OcrReport.dtFinal}"></h:inputText>
+								</div>
+								<div class="col-md-4">
+									<hr></hr>
+									<span>#{ocrLabels.ocr_report_modal_search_hourFinal}</span>
+									<h:selectOneMenu value="#{OcrReport.hrFinal}"
+										class="form-control inputDesign ll" id="hourFinal">
+										<f:selectItem itemLabel="Horas" itemValue="" />
+										<f:selectItems value="#{OcrReport.horas}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-4">
+									<hr></hr>
+									<span>#{ocrLabels.ocr_report_modal_search_minuteFinal}</span>
+									<h:selectOneMenu value="#{OcrReport.minFinal}"
+										class="form-control inputDesign ll" id="minuteFinal">
+										<f:selectItem itemLabel="Minutos" itemValue="minuteFinal" />
+										<f:selectItems value="#{OcrReport.minutos}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-12">
+									<hr></hr>
+									<span>#{ocrLabels.ocr_filter_img}</span> <select name="img_all"
+										id="img_all" class="form-control inputDesign">
+										<option value="0">#{ocrLabels.ocr_option_filter_all_img}</option>
+										<option value="1">#{ocrLabels.ocr_option_filer_img_plate}</option>
+										<option value="2">#{ocrLabels.ocr_option_filter_img}</option>
+									</select>
+									<h:inputHidden id="img_all_get" value="#{OcrReport.all_img}"></h:inputHidden>
+								</div>
+								<div class="col-md-12">
+									<hr></hr>
+									<span>#{ocrLabels.ocr_report_modal_search_camera}</span>
+									<h:selectOneMenu value="#{OcrReport.camera}"
+										class="form-control inputDesign" id="camera">
+										<f:selectItem
+											itemLabel="#{ocrLabels.ocr_report_modal_search_all_cam}"
+											itemValue="" />
+										<f:selectItems value="#{OcrReport.cams}" />
+									</h:selectOneMenu>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">#{ocrLabels.ocr_report_modal_search_close_button}</button>
+
+							<button type="button" class="btn btn-dark" id="enviar"
+								onclick="validador()">#{ocrLabels.ocr_report_modal_search_search_button}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<h:commandButton style="display:none;" id="setForm">
+				<f:ajax execute="@form" listener="#{OcrReport.search}"
+					render=":pesquisar :tabela" />
+			</h:commandButton>
+
+		</h:form>
+		<!-- modal pdf -->
+		<h:form prependId="false" id="pdfModal">
+			<div class="modal fade" id="modalPdf" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">
+								#{ocrLabels.ocr_report_modal_download_title} <i
+									class="fas fa-cloud-download-alt"></i>
+							</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="font-weight-bold ml-5">ID: #{OcrReport.rowkey}</div>
+							</div>
+							<div class="row">
+								<p class="text-dark ml-5">
+									#{ocrLabels.ocr_reports_modal_download_file} <span
+										class="text-danger">#{ocrLabels.ocr_reports_modal_download_extension_pdf}</span>
+									?
+								</p>
+							</div>
+						</div>
+						<div class="modal-footer">
+
+							<h:commandButton
+								value="#{ocrLabels.ocr_reports_modal_download_btn_no}"
+								class="btn btn-dark form-draw-button" id="limpar">
+								<f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+
+							<h:commandButton pt:onclose="download" pt:data-toggle="modal"
+								pt:data-target="#modalPdf" id="gerarPdf"
+								value="#{ocrLabels.ocr_reports_modal_download_btn_yes}"
+								class="btn btn-dark form-draw-button" action="#{OcrReport.pdf}" />
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<h:outputScript name="datepicker.js" library="js/datepicker" />
+		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
+		<h:outputScript name="jquery.validate.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="additional-methods.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
+	</ui:define>
+</ui:composition>

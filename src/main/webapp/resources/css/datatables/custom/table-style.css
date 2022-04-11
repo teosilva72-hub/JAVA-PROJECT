@@ -1,0 +1,70 @@
+
+.custom-table{
+	border-collapse:collapse;	
+	margin-top: 0%;
+	font-weight: bold;	
+	border: 1px solid #555;	
+	font-size: 14px;
+} 
+
+.custom-table-header{
+	text-align:center;
+	background: #212121;
+	color: #fff;
+	border: none;
+	padding:16px;
+	position: sticky; top: 0;		
+}
+
+.custom-table-odd-row, .custom-table-even-row {
+	text-align:center;	
+}
+
+/* BootStrap Table Hover - HOVER ROW */
+
+.table-hover tbody tr:hover td{  
+background: #FFF0F5; /*#A9D0F5*/
+color: #000;
+}
+
+.custom-table-header table.dataTable thead tr[role="row"]{
+    visibility: collapse !important;
+}
+
+/*BootStrap Table Striped - SELECTED ROW */
+
+/* TABLE SORTING */
+
+table.dataTable thead .sorting::after,
+table.dataTable thead .sorting::before,
+table.dataTable thead .sorting_asc::before,
+table.dataTable thead .sorting_asc::after  {
+    display:none;
+}
+
+
+table.dataTable thead .sorting_desc::after,
+table.dataTable thead .sorting_desc::before {
+    display:none;
+}
+
+table.dataTable thead .sorting {
+   background-image: url("/resources/icons/dataTables/sort_both.png");
+   background-repeat: no-repeat;
+   background-position: center right;
+}
+
+table.dataTable thead .sorting_asc {
+   background-image: url("/resources/icons/dataTables/sort_asc.png");
+   background-repeat: no-repeat;
+   background-position: center right;
+}
+
+table.dataTable thead .sorting_desc {
+   background-image: url("/resources/icons/dataTables/sort_desc.png");
+   background-repeat: no-repeat;
+   background-position: center right;
+}
+	
+/*TABLE SORTING*/
+

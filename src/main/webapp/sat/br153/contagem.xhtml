@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" 	
+	template="/template/dashboard-rov-layout.xhtml"> <!-- MAIN TEMPLATE STRUCTURE END -->
+	
+	<!-- TAG METADATA: PARA CARREGAR CAMPOS DA TABELA NO PROCESSAMENTO DA PÁGINA -->
+	
+	<f:metadata>
+
+			<f:viewAction onPostback="true" action="#{testerBean.defineFileName('ReportCall')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('CALLS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('CALLS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('jsTableScroll')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('false')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
+	
+		<!-- CALL REPORT TYPE -->
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DIA, HORAS, SAT01, SAT02, SAT03, SAT04, SAT05, SAT06, SAT07, SAT08, SAT09, TOTAL DE VEÍCULOS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(IF(siteID = 1, 1, 0)); SUM(IF(siteID = 2, 1, 0)); SUM(IF(siteID = 3, 1, 0)); SUM(IF(siteID = 4, 1, 0)); SUM(IF(siteID = 5, 1, 0)); 
+		SUM(IF(siteID = 6, 1, 0)); SUM(IF(siteID = 7, 1, 0)); SUM(IF(siteID = 8, 1, 0)); SUM(IF(siteID = 9, 1, 0)); SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', '15 minutes')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', '1 hours')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', 'day')}" />
+		
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipe', 'sat_equipment.equip_id|name', true, true)}" />
+		<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('user', 'Usuario')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('state_id', 'Estado', true)}" /> -->
+    </f:metadata>
+	
+	<!---->
+	
+	<!-- TEMPLATE DO CABEÇALHO -->
+	
+	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
+	
+	    <!-- CCS STYLE -->
+	    
+	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
+		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
+		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" /> <!-- DATEPICKER STYLE -->
+		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
+			
+		<!---->
+		
+		<!-- JAVASCRIPT FILE -->
+
+		<h:outputScript library="js/datepicker" name="locales-datepicker.js" /> <!-- DATEPICKER LOCALE DEFINITIONS JS --> 
+		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS --> 			
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
+		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
+		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
+	
+	   <!---->
+	
+	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
+	
+	 <!---->
+	 
+	 <!-- TEMPLATE DO CONTEÚDO PRINCIPAL  -->
+	
+	 <ui:define name="main-content" >   <!-- MAIN CONTENT TEMPLATE COMPONENT --> 
+	 
+	  <!-- ============================================================================================================================= -->
+	 		
+	   <!-- DIV DE ESTRUTURA DA TABELA --> 
+	    
+	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
+	       <!----> 		
+	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
+	          <!----> 	    
+	           <div id="info" class="alert alert-primary" role="alert" style="display: none;"> <!-- ALERT MESSAGE DIV -->
+                  <b>#{reportsMessages.reports_message_records_not_found_title}</b> : #{reportsMessages.reports_message_records_not_found} <!-- MESSAGE -->
+              </div> <!-- ALERT MESSAGE END DIV -->	
+       
+             <!----> 
+             
+       <!-- ============================================================================================================================= -->
+           
+           <!-- NOME DO RELATÓRIO -->   
+        
+	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
+	       <h:outputText value="Relatório de Contagem" /> <!-- NAME LABEL -->
+	       <hr></hr> <!-- HORIZONTAL LINE -->
+	    </div> <!-- REPORT NAME DIV END -->
+	 
+	 <!---->
+	 
+	  <!-- ============================================================================================================================= -->
+	 
+		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
+	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
+		width="100%" headerClass="custom-table-header">
+		<!-- DATATABALE JSF -->
+		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
+			<h:column>
+				<!-- COLUMN -->
+				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->
+				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
+			</h:column> <!-- COLUMN END -->
+		</c:forEach> <!-- LOOP TAG END -->
+	</h:dataTable> <!-- DATATABALE JSF END -->
+	<!---->
+</h:form><!-- FORM TABLE END-->
+	 
+	  <!-- ============================================================================================================================= -->
+	 
+	    <!-- ACTION BUTTONS TEMPLATE: BOTÕES DE ENVIO DE FORMULÁRIO, LIMPEZA DE TABELA E VISUALIZAÇÃO DE GRÁFICOS -->
+	 
+	      <ui:include src="/template/action-reports/buttons_template_1.xhtml" />
+	  
+	  <!-- ============================================================================================================================= -->
+		
+	  </div><!-- TABLE CONTAINER DIV CONTENT END -->   
+	  
+	  <!-- DIV DE ESTRUTURA DA TABELA -->   
+		
+	  <!-- ============================================================================================================================= -->
+	  
+	     <!-- SUBMIT MODAL TEMPLATE: REALIZAR O PREENCHIMENTO DO FORMULÁRIO -->
+	   
+	      <ui:include src="/template/modal/submit_modal_template.xhtml" />
+	        
+      <!-- ============================================================================================================================= -->
+             
+         <!-- CLEAR MODAL TEMPLATE: LIMPAR DADOS DA TABELA -->
+               
+          <ui:include src="/template/modal/clear_modal_template.xhtml" />
+	   
+	  <!-- ============================================================================================================================= -->
+	   
+	     <!-- DOWNLOAD MODAL TEMPLATE: REALIZAR DOWNLOAD DE ARQUIVOS EXCEL -->
+	   
+	      <ui:include src="/template/modal/download_modal_template.xhtml" />
+		    
+	  <!-- ============================================================================================================================= -->	    
+		    		
+		<!-- LOADING MESSAGE: MENSAGEM DE CARREGAMENTO (ATIVADA ENQUANTO AS INFORMAÇÕES SÃO PROCESSADAS) -->
+							
+		<div id="loading"> 
+			<span>#{reportsLabels.reports_loading_message}...</span>
+		</div>
+		
+	  <!-- ============================================================================================================================= -->
+	  
+	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION  -->
+		 		 		  
+		  <!-- EQUIPAMENTOS A SEREM INICIALIZADOS NO FORMULÁRIO -->	
+		  
+		  <ui:repeat value="#{testerBean.build.equipments}" var="eqp"> <!-- JSF UI REPEAT LOOP -->
+		     <input type="hidden" value="#{eqp.value}" /> <!-- INPUT TO GET VALUES FROM LIST -->
+		  </ui:repeat> <!---->
+		 		  	 	
+		 <!-- VÁRIAVEIS E MENSAGENS -->		
+		   	 	
+		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
+		 <input type="hidden" name="maxDateMsg" value="#{validatorMessages.validator_max_date}" /> <!-- MAX DATE VALIDATION MESSAGE -->
+		 <input type="hidden" name="greatherThanMsg" value="#{validatorMessages.validator_start_date_greater_than_end_date_header}" /> <!-- START DATE GREATHER THAN END DATE VALIDATION MESSAGE -->
+		 <input type="hidden" name="equipmentSelectMsg" value="#{reportsLabels.reports_select_equipments}" />	<!-- SELECT EQUIPMENT LABEL MESSAGE -->
+		 <input type="hidden" name="requiredEquipmentsMsg" value="#{requiredMessages.required_reports_select_equipments}" /> <!-- REQUIRED EQUIPMENTS MESSAGE -->
+		 <input type="hidden" name="requiredDateStartMsg" value="#{requiredMessages.required_reports_input_date_start}" /> <!-- REQUIRED START DATE MESSAGE -->
+		 <input type="hidden" name="requiredDateEndMsg" value="#{requiredMessages.required_reports_input_date_end}" /> <!-- REQUIRED END DATE MESSAGE -->
+		 <input type="hidden" name="requiredValidDateMsg" value="#{validatorMessages.validator_valid_date}" /> <!-- VALID DATE MESSAGE -->
+		 
+		 </form> <!-- FORM VALIDATION END -->
+		 
+	  <!-- ============================================================================================================================= -->
+	
+	</ui:define>  <!-- MAIN CONTENT TEMPLATE COMPONENT END -->	
+				 
+</ui:composition> 	 <!-- MAIN TEMPLATE STRUCTURE END -->

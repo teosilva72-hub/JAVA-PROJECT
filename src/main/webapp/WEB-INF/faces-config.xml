@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+    version="2.2">
+          
+          <application>  
+                   
+         <locale-config>
+            <default-locale>pt_BR</default-locale>
+            <supported-locale>pt_BR</supported-locale>
+            <supported-locale>es_AR</supported-locale>
+            <supported-locale>es_ES</supported-locale>
+            <supported-locale>es_MX</supported-locale>
+            <supported-locale>es_CO</supported-locale>
+            <supported-locale>en_US</supported-locale>
+        </locale-config>
+        
+      <!-- LABELS AND PLACEHOLDERS  -->
+                            
+        <resource-bundle>
+          <base-name>bundle.labels.dashboard.labels_dashboard</base-name>           
+          <var>dashboardLabels</var>        
+        </resource-bundle>
+    
+         <resource-bundle>
+          <base-name>bundle.labels.login.labels_login</base-name>           
+          <var>loginLabels</var>        
+        </resource-bundle>
+        
+        <resource-bundle>
+          <base-name>bundle.labels.pmv.labels_pmv</base-name>           
+          <var>dmsLabels</var>        
+        </resource-bundle>  
+        
+        <resource-bundle>
+          <base-name>bundle.labels.meteo.labels_meteo</base-name>           
+          <var>meteoLabels</var>        
+        </resource-bundle> 
+             
+        <resource-bundle>
+          <base-name>bundle.labels.sat.labels_sat</base-name>           
+          <var>satLabels</var>        
+        </resource-bundle> 
+        
+        <resource-bundle>
+          <base-name>bundle.labels.system.calendar.labels_calendar</base-name>           
+          <var>calendarLabels</var>        
+        </resource-bundle>
+        
+         <resource-bundle>
+          <base-name>bundle.labels.system.directions.labels_directions</base-name>           
+          <var>directionsLabels</var>        
+        </resource-bundle> 
+        
+          <resource-bundle>
+          <base-name>bundle.labels.system.excel.labels_excel</base-name>           
+          <var>excelLabels</var>        
+        </resource-bundle> 
+        
+        <resource-bundle>
+          <base-name>bundle.labels.system.maps.labels_maps</base-name>           
+          <var>mapLabels</var>        
+        </resource-bundle> 
+        
+          <resource-bundle>
+          <base-name>bundle.labels.system.periods.labels_periods</base-name>           
+          <var>periodsLabels</var>        
+        </resource-bundle>    
+        
+        <resource-bundle>
+          <base-name>bundle.labels.system.access-denied.labels_access_denied</base-name>           
+          <var>accessDeniedLabels</var>        
+        </resource-bundle>
+        
+         <resource-bundle>
+          <base-name>bundle.labels.system.restricted.labels_restricted</base-name>           
+          <var>restrictedLabels</var>        
+        </resource-bundle>    
+               
+          <resource-bundle>
+          <base-name>bundle.labels.system.realtime.labels_realtime</base-name>           
+          <var>realtimeLabels</var>        
+        </resource-bundle>
+        
+         <resource-bundle>
+          <base-name>bundle.labels.system.informations.labels_info</base-name>           
+          <var>infoLabels</var>        
+        </resource-bundle>  
+        
+         <resource-bundle>
+          <base-name>bundle.labels.users.labels_users</base-name>           
+          <var>usersLabels</var>        
+        </resource-bundle>
+        
+          <resource-bundle>
+          <base-name>bundle.labels.occ.labels_occ</base-name>           
+          <var>occLabels</var>        
+        </resource-bundle>
+        
+        <resource-bundle>
+          <base-name>bundle.labels.wim.labels_wim</base-name>           
+          <var>wimLabels</var>        
+        </resource-bundle>
+        
+        <resource-bundle>
+        	<base-name>bundle.labels.dai.labels_dai</base-name>
+        	<var>daiLabels</var>
+        </resource-bundle>
+        
+        <resource-bundle>
+        	<base-name>bundle.labels.ocr.labels_ocr</base-name>
+        	<var>ocrLabels</var>
+        </resource-bundle>
+        
+        <resource-bundle>
+        	<base-name>bundle.labels.colas.labels_colas</base-name>
+        	<var>colasLabels</var>
+        </resource-bundle>
+        
+         <resource-bundle>
+        	<base-name>bundle.labels.aba.labels_aba</base-name>
+        	<var>abaLabels</var>
+        </resource-bundle>
+
+		 <resource-bundle>
+        	<base-name>bundle.labels.pgf.labels_pgf</base-name>
+        	<var>pgfLabels</var>
+        </resource-bundle>
+        
+          <resource-bundle>
+        	<base-name>bundle.labels.system.reports.labels_reports</base-name>
+        	<var>reportsLabels</var>
+        </resource-bundle>
+        
+         <resource-bundle>
+        	<base-name>bundle.labels.system.pdf.labels_pdf</base-name>
+        	<var>pdfLabels</var>
+        </resource-bundle>
+        
+          <resource-bundle>
+        	<base-name>bundle.labels.system.excel-sheet.labels_excel_sheet</base-name>
+        	<var>excelSheetLabels</var>
+        </resource-bundle>
+        
+         <resource-bundle>
+        	<base-name>bundle.labels.system.charts.labels_charts</base-name>
+        	<var>chartsLabels</var>
+        </resource-bundle>
+        
+         <resource-bundle>
+        	<base-name>bundle.labels.sos.labels_sos</base-name>
+        	<var>sosLabels</var>
+        </resource-bundle>
+        
+        <resource-bundle>
+        	<base-name>bundle.labels.phone.labels_phone</base-name>
+        	<var>phoneLabels</var>
+        </resource-bundle>
+        
+         <resource-bundle>
+        	<base-name>bundle.labels.system.select-item.labels_select_item</base-name>
+        	<var>selectItemLabels</var>
+        </resource-bundle>
+        
+         <resource-bundle>
+        	<base-name>bundle.labels.speed.labels_speed</base-name>
+        	<var>speedLabels</var>
+        </resource-bundle>
+        
+          <resource-bundle>
+          <base-name>bundle.labels.system.notifications.labels_notifications</base-name>           
+          <var>notificationLabels</var>        
+        </resource-bundle>
+        
+                               
+        <resource-bundle>
+          <base-name>bundle.labels.system.support.labels_support</base-name>           
+          <var>supportLabels</var>        
+        </resource-bundle>
+    
+        
+     <!-- ********************************** -->
+        
+        <!-- MESSAGES  -->
+        
+         <resource-bundle>
+          <base-name>bundle.messages.dashboard.messages_dashboard</base-name>           
+          <var>dashboardMessages</var>        
+        </resource-bundle>
+		             
+         <resource-bundle>
+          <base-name>bundle.messages.login.messages_login</base-name>           
+          <var>loginMessages</var>        
+        </resource-bundle>
+        
+         <resource-bundle>
+          <base-name>bundle.messages.pmv.messages_pmv</base-name>           
+          <var>dmsMessages</var>        
+        </resource-bundle>
+        				
+		<resource-bundle>
+          <base-name>bundle.messages.system.email.messages_email</base-name>           
+          <var>emailMessages</var>        
+        </resource-bundle>
+        
+         <resource-bundle>
+          <base-name>bundle.messages.system.notifications.messages_notifications</base-name>           
+          <var>notificationsMessages</var>        
+        </resource-bundle>
+		
+		<resource-bundle>
+          <base-name>bundle.messages.system.required.messages_required</base-name>           
+          <var>requiredMessages</var>        
+        </resource-bundle>
+		
+		<resource-bundle>
+          <base-name>bundle.messages.system.validator.messages_validator</base-name>           
+          <var>validatorMessages</var>        
+        </resource-bundle>
+        
+        <resource-bundle>
+          <base-name>bundle.messages.system.maps.messages_maps</base-name>           
+          <var>mapMessages</var>        
+        </resource-bundle>
+        
+         <resource-bundle>
+          <base-name>bundle.messages.system.realtime.messages_realtime</base-name>           
+          <var>realtimeMessages</var>        
+        </resource-bundle>
+		                
+         <resource-bundle>
+          <base-name>bundle.messages.users.messages_users</base-name>           
+          <var>usersMessages</var>        
+        </resource-bundle>
+        
+        <resource-bundle>
+          <base-name>bundle.messages.occ.messages_occ</base-name>           
+          <var>occMessages</var>        
+        </resource-bundle>
+        
+        <resource-bundle>
+          <base-name>bundle.messages.system.realtime.messages_realtime</base-name>           
+          <var>realtimeMessages</var>        
+        </resource-bundle>
+              
+         <resource-bundle>
+          <base-name>bundle.messages.sat.messages_sat</base-name>           
+          <var>satMessages</var>        
+        </resource-bundle>
+        
+         <resource-bundle>
+          <base-name>bundle.messages.system.reports.messages_reports</base-name>           
+          <var>reportsMessages</var>        
+        </resource-bundle>
+        
+        
+                      				                     
+        <!-- ********************************** -->
+           
+        <!-- BUNDLE CONFIGURATION  -->
+           
+        <!-- CONFIG LABELS -->
+    
+        <message-bundle>bundle.labels.dashboard.labels_dashboard</message-bundle>
+        <message-bundle>bundle.labels.login.labels_login</message-bundle>        
+		<message-bundle>bundle.labels.pmv.labels_pmv</message-bundle> 
+		<message-bundle>bundle.labels.meteo.labels_meteo</message-bundle>		
+		<message-bundle>bundle.labels.sat.labels_sat</message-bundle>
+		<message-bundle>bundle.labels.system.calendar.labels_calendar</message-bundle>
+		<message-bundle>bundle.labels.system.directions.labels_directions</message-bundle>	
+		<message-bundle>bundle.labels.system.excel.labels_excel</message-bundle>		
+		<message-bundle>bundle.labels.system.maps.labels_maps</message-bundle>		
+		<message-bundle>bundle.labels.system.periods.labels_periods</message-bundle>
+		<message-bundle>bundle.labels.system.restricted.labels_restricted</message-bundle>
+		<message-bundle>bundle.labels.system.realtime.labels_realtime</message-bundle>	
+		<message-bundle>bundle.labels.system.access-denied.labels_access_denied</message-bundle>
+		<message-bundle>bundle.labels.system.informations.labels_info</message-bundle>	
+		<message-bundle>bundle.labels.system.select-item.labels_select_item</message-bundle>			
+        <message-bundle>bundle.labels.users.labels_users</message-bundle>
+        <message-bundle>bundle.labels.occ.labels_occ</message-bundle>
+        <message-bundle>bundle.labels.wim.labels_wim</message-bundle>
+        <message-bundle>bundle.labels.dai.labels_dai</message-bundle>
+        <message-bundle>bundle.labels.ocr.labels_ocr</message-bundle>
+		<message-bundle>bundle.labels.pgf.labels_pgf</message-bundle>
+        <message-bundle>bundle.labels.colas.labels_colas</message-bundle>
+        <message-bundle>bundle.labels.aba.labels_colas</message-bundle>
+        <message-bundle>bundle.labels.system.reports.labels_reports</message-bundle>
+        <message-bundle>bundle.labels.system.pdf.labels_pdf</message-bundle>
+        <message-bundle>bundle.labels.system.excel-sheet.labels_excel_sheet</message-bundle>
+        <message-bundle>bundle.labels.system.pdf.labels_pdf</message-bundle>
+        <message-bundle>bundle.labels.system.charts.labels_charts</message-bundle>
+        <message-bundle>bundle.labels.aba.labels_aba</message-bundle>
+        <message-bundle>bundle.labels.phone.labels_phone</message-bundle>
+        <message-bundle>bundle.labels.speed.labels_speed</message-bundle>
+        <message-bundle>bundle.labels.system.notifications.labels_notifications</message-bundle>        
+        <message-bundle>bundle.labels.system.support.labels_support</message-bundle>
+             
+        <!-- CONFIG MESSAGES -->
+        
+        <message-bundle>bundle.messages.dashboard.messages_dashboard</message-bundle>
+        <message-bundle>bundle.messages.login.messages_login</message-bundle>
+        <message-bundle>bundle.messages.pmv.messages_pmv</message-bundle>	
+		<message-bundle>bundle.messages.system.email.messages_email</message-bundle>
+		<message-bundle>bundle.messages.system.notifications.messages_notifications</message-bundle> 
+	    <message-bundle>bundle.messages.system.required.messages_required</message-bundle>
+        <message-bundle>bundle.messages.system.validator.messages_validator</message-bundle>
+		<message-bundle>bundle.messages.users.messages_users</message-bundle>
+		<message-bundle>bundle.messages.occ.messages_occ</message-bundle>
+		<message-bundle>bundle.messages.system.maps.messages_maps</message-bundle>	
+		<message-bundle>bundle.messages.system.realtime.messages_realtime</message-bundle>	
+        <message-bundle>bundle.labels.system.reports.messages_reports</message-bundle>
+                 
+ </application> 
+
+</faces-config>
