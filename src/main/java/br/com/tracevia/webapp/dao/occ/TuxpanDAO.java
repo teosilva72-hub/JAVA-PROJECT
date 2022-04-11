@@ -12,20 +12,20 @@ import br.com.tracevia.webapp.model.occ.TuxpanOccModel;
 public class TuxpanDAO{
 	SQL_Tracevia conn = new SQL_Tracevia();
 
-	public boolean update(TuxpanOccModel data, int id) throws Exception {
+	public boolean update(TuxpanOccModel data, String id) throws Exception {
 		boolean check = false;
 		
 		String query = "UPDATE occ_tuxpan SET cobro = ?, folio_secuencial = ?, reporte = ?, siniestro = ?, fecha = ?, direccion = ?, km_reg = ?, km_inicial = ?, km_final = ?, poliza = ?,"+
-				"hora_reg_cab = ?, hora_arr_aju = ?, semoviente = ?, trabajo_cons = ?, tiempo = ?, neblina = ?, vandalismo = ?, otro = ?, obs = ?, tipo_veh = ?,"+
-				"tipo_veh_eje = ?, num_veh_inv = ?, marca_veh_inv = ?, tipo_veh_inv = ?, modelo_veh_inv = ?, color_veh_inv = ?, placa_est_veh_inv = ?, tel_veh_inv = ?, num_person = ?, nombre_person = ?,"+
-				"edad_person = ?, condiccion_person = ?, hora = ? WHERE id ="+id+"";
+				"hora_reg_cab = ?, hora_arr_aju = ?, semoviente = ?, trabajo_cons = ?, tiempo = ?, neblina = ?, vandalismo = ?, otro = ?, obs, tipo_veh = ?, tipo_veh_eje = ?,"+
+				"num_veh_inv = ?, marca_veh_inv = ?, tipo_veh_inv = ?, modelo_veh_inv = ?, color_veh_inv = ?, placa_est_veh_inv = ?, tel_veh_inv = ?, num_person = ?,"+
+				"nombre_person = ?, edad_person = ?, condiccion_person = ?, hora = ? WHERE id ='"+id+"'";
 		
 		try {
-			
-					conn.start(1);
-					conn.prepare(query);
-					//conn.executeUpdate();			
-			
+			conn.start(1);
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
+			if(result.hasNext()) {
+				for (RowResult rs : result) {
 					conn.setString(1, data.getPlz_cobro());
 					conn.setString(2, data.getFolio_sec());
 					conn.setString(3, data.getReporte());
@@ -64,8 +64,8 @@ public class TuxpanDAO{
 					if(occ > 0)
 						check = true;
 					System.out.println(occ);
-				
-			
+				}
+			}
 		}catch (Exception e){
 			throw new Exception("Erro ao alterar dados: " + e);
 		}finally {

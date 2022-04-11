@@ -29,16 +29,10 @@ public class TuxpanOcc{
 	}
 	public boolean update() {
 		boolean check = false;
-		//RequestContext.getCurrentInstance().execute("table()");
+		System.out.println("atualizar");
 		dao = new TuxpanDAO();
 		try {
-			check = dao.update(data, Integer.parseInt(idTable));
-			if(check == false) {
-				//error
-			}else {
-				//sucess
-				listTable();
-			}
+			check = dao.update(data, idTable);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,26 +45,10 @@ public class TuxpanOcc{
 		scriptsOcc();
 		try {
 			data = dao.select(idTable);
-			
-			veh_inv(data.getTipo_veh_inv(), data.getNum_eje_veh_inv(), data.getNum_tp_veh(),
-					data.getMarca_tp_veh(), data.getTipo_tp_veh(), data.getModel_tp_veh(),
-					data.getColor(), data.getPlaca_estado(), data.getTel(), data.getId_person(),
-					data.getNombre(), data.getEdad(), data.getCondiciones());
-			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return check;
-	}
-	public boolean veh_inv(String tipo, String eje, String num_veh, String marca,
-			String tipo_veh, String modelo, String cor, String placa, String tel,
-			String id_person, String nombre, String edad, String cond) {
-		boolean check = false;
-		
-		RequestContext.getCurrentInstance().execute(String.format("plusInputVehInv('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
-				tipo, eje, num_veh, marca, tipo_veh, modelo, cor, placa, tel, id_person, nombre, edad, cond));
 		
 		return check;
 	}

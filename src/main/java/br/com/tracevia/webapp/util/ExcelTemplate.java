@@ -2002,7 +2002,7 @@ public class ExcelTemplate {
 		int dataStartRow = 14;
 		int dataEndRow = 0;
 		int startCol = 0;
-		int endCol = columns.size() - 1;
+		int endCol = 2;
 		int len = lines.size() + 1;
 		
 		sheet = workbook.createSheet(sheetName);	
@@ -2039,7 +2039,9 @@ public class ExcelTemplate {
 			utilSheet.setCellValue(sheet, row, 13, i, line1[1]);
 			utilSheet.setCellValue(sheet, row, 13, i + 1, line2[1]);
 			
-			for (int n = 0; n < tempLine.length; n++) {				
+			endCol += 2;
+			
+			for (int n = 0; n < tempLine.length; n++) {
 				tempLine[n].add(line1[n + 2]);
 				tempLine[n].add(line2[n + 2]);
 			}
@@ -2049,7 +2051,7 @@ public class ExcelTemplate {
 			for (int s = 1; s < temp.size(); s++)
 				sum += Integer.parseInt(temp.get(s));
 			temp.add(String.valueOf(sum));
-			newLine.add(temp.toArray(String[]::new));
+			newLine.add(temp.toArray(new String[temp.size()]));
 		}
 		utilSheet.setCellValue(sheet, row, 12, len, "Total");
 		
@@ -2059,9 +2061,9 @@ public class ExcelTemplate {
 		
 		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow); // CRIAR CÉLULAS
 		
-		utilSheet.fileBodySimple(sheet, row, columns, newLine, startCol, endCol, dataStartRow); // PREENCHER DADOS
+		utilSheet.fileBodySimple(sheet, row, newLine, startCol, endCol, dataStartRow); // PREENCHER DADOS
 		
-		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow - 1);
+		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol - 1, dataStartRow, dataEndRow - 1);
 		
 	}
 	
