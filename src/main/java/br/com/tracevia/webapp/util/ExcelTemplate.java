@@ -2007,8 +2007,6 @@ public class ExcelTemplate {
 		
 		sheet = workbook.createSheet(sheetName);	
 		
-		dataEndRow = ((dataStartRow + lines.size()) - 1);
-		
 		excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, "sat", columns.size(), "Contagem de Veículo por Categoria",  
 				date, period, new ArrayList<>(), 0, false, true);
 		
@@ -2054,6 +2052,8 @@ public class ExcelTemplate {
 			newLine.add(temp.toArray(new String[temp.size()]));
 		}
 		utilSheet.setCellValue(sheet, row, 12, len, "Total");
+		
+		dataEndRow = ((dataStartRow + newLine.size()) - 1);
 		
 		// ------------------------------------------------------------------------------------------------------------
 		
