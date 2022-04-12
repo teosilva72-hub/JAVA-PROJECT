@@ -47,6 +47,8 @@ import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.sat.FluxoPeriodo;
 import br.com.tracevia.webapp.model.sat.FluxoPeriodo.Builder;
 import br.com.tracevia.webapp.model.sat.SAT;
+import br.com.tracevia.webapp.model.sat.SatReports;
+import br.com.tracevia.webapp.util.ExcelUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.SessionUtil;
 
@@ -55,6 +57,10 @@ import br.com.tracevia.webapp.util.SessionUtil;
 public class FluxoPeriodoBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static String FONT_ARIAL = "Arial";
+	
+	ExcelUtil utilSheet;
 	
 	  // --------------------------------------------------------------------------------------------------------------
 	
@@ -74,12 +80,15 @@ public class FluxoPeriodoBean implements Serializable {
 					
 			LocaleUtil localeSat, localeDir, localeReports, localeSheet, localeCalendar;
 				
+			List<SAT> satList;
 					
 			SAT sat;
 			
 			String[] equips;
 
 			String period, month, year;
+			
+			String[][] resultQuery;
 			
 			// --------------------------------------------------------------------------------------------------------------
 
@@ -120,7 +129,7 @@ public class FluxoPeriodoBean implements Serializable {
 	private String faixa1;
 	private int numFaixas;
 	
-	private SXSSFWorkbook workbook;	
+	private SXSSFWorkbook workbook;		
 	private SXSSFSheet sheet;
 	private SXSSFRow rowDados;
 	private PropertyTemplate propertyTemplate;
@@ -172,15 +181,16 @@ public class FluxoPeriodoBean implements Serializable {
 	int maxHour;
 	int length;
 	int indice;
-	int periodRange;
-	int index; 
-	int hr, minuto, interResp, last_index;		
-	int rangeHour, rangeInterval, pos, hrPos, creation, fill, increment, incEquip; 
-	String dtInicio, fileName;
+	int periodRange;	 
+	int interResp, last_index;		
+	int rangeHour, rangeInterval, hrPos, creation, fill, increment, incEquip, fieldsLenght; 
+	String dtInicio, fileName, data_inicial, data_final;
 
 	String[] intervalo,interInicio, interFim, separador, data, horaIntervalo, hora, sheetName;
 
 	long start, end, elapsed;
+	
+	int minuto, iterator, pos, hr, lin, col, p, empty, inc, index, indexInc;
 		
 	@ManagedProperty("#{listEquips}")
 	private ListEquipments listEquips;
@@ -578,6 +588,8 @@ public class FluxoPeriodoBean implements Serializable {
 		
 		localeSheet = new LocaleUtil();		
 		localeSheet.getResourceBundle(LocaleUtil.LABELS_EXCELSHEET);
+		
+		utilSheet = new ExcelUtil();
 						
 	    build = new ReportBuild();
 		
@@ -608,28 +620,6 @@ public class FluxoPeriodoBean implements Serializable {
 	
 	// ----------------------------------------------------------------------------------------------------------------------------------------------------- 
 	
-	public void createFields() {
-		
-		build.fields = new String[] {localeSat.getStringKey("global_equipment_column"), localeSat.getStringKey("global_date_column"), localeSat.getStringKey("global_interval_column"), 
-				localeSat.getStringKey("$labels_period_flow_direction"), localeSat.getStringKey("$labels_period_flow_light_vehicles"), localeSat.getStringKey("$labels_period_flow_commercial_vehicles"), 
-				localeSat.getStringKey("$labels_period_flow_motorcycle"),  localeSat.getStringKey("global_total_column"), localeSat.getStringKey("$labels_period_flow_speed"),	localeSat.getStringKey("$labels_period_flow_direction"), 
-				localeSat.getStringKey("$labels_period_flow_light_vehicles"), localeSat.getStringKey("$labels_period_flow_commercial_vehicles"), localeSat.getStringKey("$labels_period_flow_motorcycle"),
-				localeSat.getStringKey("global_total_column"), localeSat.getStringKey("$labels_period_flow_speed")};
-
-		// Table Object 
-		build.fieldObjectValues = new String[] {"equip", "date", "time", "direction1", "light1", "comm1", "moto1", "total1", "speed1", "direction2", "light2", "comm2", "moto2", "total2", "speed2"};
-						
-		//DESENHAR A TABELA
-		columns = build.drawTable(build.fields, build.fieldObjectValues);						
-
-		// GUARDAR VALORES NA SESSION
-		SessionUtil.setParam("fields", build.fields);	//Fields
-		SessionUtil.setParam("fieldsObject", build.fieldObjectValues); //Objects
-					
-	}
-	
-	// ----------------------------------------------------------------------------------------------------------------------------------------------------- 
-	
 	  public void processInformations() throws Exception {		  
 					  
 	   dta = new DateTimeApplication();	   
@@ -655,30 +645,27 @@ public class FluxoPeriodoBean implements Serializable {
 		 
 		 fileName = localeSat.getStringKey("via_paulista_flow_per_period_file_name")+"_"+tm.periodName(period)+"_"+tm.MonthAbbreviation(month)+"_"+tm.yearAbbreviation(year);
 		 		 
-	    List<SAT> satList= new ArrayList<SAT>();	
+	    satList = new ArrayList<SAT>();	
 		satList = equipDao.ListSATinfoHeader(equips);	
 		
 		  //--- Initializing --- //	
 		
 		  step = 1; //
 			  message(step);	// CREATE SHEETS MESSAGE
-					 
-		 for(indice=0; indice < equips.length; indice++) 	 
-			   createSheets(indice, Integer.parseInt(equips[indice]), satList); 
-		 		 								   		       		
+					 				 		 								   		       		
          step = 2;
          	message(step);	 // CREATE SHEETS ENDED MESSAGE
                 		 
-		 instaciarProcessaDados(dta);	 
-		 
+		 instaciarProcessaDados(dta);	
+		 		 
 		 for(indice=0; indice < equips.length; indice++) {				 
 																																		 
 				 step = 3;
 				 	message(step);	// DATA PROCESS MESSAGE		
 				 	
 				 step = 7;	
-				 	message(step);				 				
-			 											
+				 	message(step);		
+				 				 											
 				 processaDados(indice, equips[indice], dta, satList);
 				 			 			 			
 				 if(indice == (equips.length-1)) {
@@ -706,7 +693,7 @@ public class FluxoPeriodoBean implements Serializable {
 			SessionUtil.executeScript("$('#activate-excel-act').prop('disabled', false);");
 																
 			// REDRAW TABLE
-			columns = build.drawTable(build.fields, build.fieldObjectValues);								        
+			//columns = build.drawTable(build.fields, build.fieldObjectValues);								        
 	    }	  
 	  
 	// -------------------------------------------------------------------------------------------------------------
@@ -1003,78 +990,6 @@ public class FluxoPeriodoBean implements Serializable {
 
 	}	
 
-	private void initVariables(int tamanho) {
-
-		nomeSats = new String[tamanho];
-		data = new String[tamanho];
-		days = new String[tamanho];  	   
-		intervalo = new String[tamanho];
-		sentido1 = new String[tamanho];
-		sentido2 = new String[tamanho];		
-		auto1 = new int[tamanho];				
-		com1 = new int[tamanho];  
-		moto1 = new int[tamanho];
-		total1 = new int[tamanho];
-		autoVM1 = new int[tamanho];
-		comVM1 = new int[tamanho];
-		motoVM1 = new int[tamanho]; 
-		totalVM1 = new int[tamanho];		
-		autoV501 = new int[tamanho];
-		comV501 = new int[tamanho]; 
-		motoV501 = new int[tamanho]; 
-		totalV501 = new int[tamanho];
-		autoV851 = new int[tamanho];
-		comV851 = new int[tamanho]; 
-		motoV851 = new int[tamanho]; 
-		totalV851 = new int[tamanho];
-		autoMAX1 = new int[tamanho];
-		comMAX1 = new int[tamanho];
-		motoMAX1 = new int[tamanho];
-		totalMAX1 = new int[tamanho]; 
-		autoMIN1= new int[tamanho];
-		comMIN1 = new int[tamanho]; 
-		motoMIN1 = new int[tamanho];
-		totalMIN1 = new int[tamanho];
-		autoVDSP1 = new int[tamanho]; 
-		comVDSP1 = new int[tamanho]; 
-		motoVDSP1 = new int[tamanho];
-		totalVDSP1 = new int[tamanho];
-		speedAVG1 = new int[tamanho];
-
-		auto2 = new int[tamanho];				
-		com2 = new int[tamanho];  
-		moto2 = new int[tamanho];
-		total2 = new int[tamanho];
-		autoVM2 = new int[tamanho];
-		comVM2 = new int[tamanho];
-		motoVM2 = new int[tamanho]; 
-		totalVM2 = new int[tamanho];
-		autoV502 = new int[tamanho];
-		comV502 = new int[tamanho];
-		motoV502 = new int[tamanho]; 
-		totalV502 = new int[tamanho];
-		autoV502 = new int[tamanho];
-		comV502 = new int[tamanho]; 
-		motoV502 = new int[tamanho]; 
-		totalV502 = new int[tamanho];
-		autoV852 = new int[tamanho];
-		comV852 = new int[tamanho]; 
-		motoV852 = new int[tamanho]; 
-		totalV852 = new int[tamanho];
-		autoMAX2 = new int[tamanho];
-		comMAX2 = new int[tamanho];
-		motoMAX2 = new int[tamanho];
-		totalMAX2 = new int[tamanho]; 
-		autoMIN2= new int[tamanho];
-		comMIN2 = new int[tamanho]; 
-		motoMIN2 = new int[tamanho];
-		totalMIN2 = new int[tamanho];
-		autoVDSP2 = new int[tamanho]; 
-		comVDSP2 = new int[tamanho]; 
-		motoVDSP2 = new int[tamanho];
-		totalVDSP2 = new int[tamanho];
-		speedAVG2 = new int[tamanho];	
-	}
 	
 	public void initializeSentidoExcel(int equipamentos) {
 		
@@ -1083,292 +998,7 @@ public class FluxoPeriodoBean implements Serializable {
 		sentidoExcel1 = new String[tamanho];
 		sentidoExcel2 = new String[tamanho];
 	}
-
-	public void preencherDados05Min(int pos, int hora, int minuto, int autoFluxo1, int comFluxo1, int motoFluxo1, int totalFluxo1, 
-			int autoFluxo2, int comFluxo2, int motoFluxo2, int totalFluxo2, int autoVMedia1, int comVMedia1, int motoVMedia1, int totalVMedia1,	
-			int autoVMedia2, int comVMedia2, int motoVMedia2, int totalVMedia2,
-			int autoV50S1, int comV50S1, int motoV50S1, int totalV50S1,	int autoV50S2, int comV50S2, int motoV50S2, int totalV50S2,	
-			int autoV85S1, int comV85S1, int motoV85S1, int totalV85S1,	int autoV85S2, int comV85S2, int motoV85S2, int totalV85S2,	
-			int autoVMAX1, int comVMAX1, int motoVMAX1, int totalVMAX1, int autoVMAX2, int comVMAX2, int motoVMAX2, int totalVMAX2, 
-			int autoVMIN1, int comVMIN1, int motoVMIN1, int totalVMIN1,	int autoVMIN2, int comVMIN2, int motoVMIN2, int totalVMIN2,		
-			int autoVDESV1, int comVDESV1, int motoVDESV1, int totalVDESV1, int autoVDESV2, int comVDESV2, int motoVDESV2, int totalVDESV2) {		
-	
-
-		int idx = dta.horaIndex05Min(hora); // aponta um índice para preencher o array
-
-	 int i=0; int p=0;					
-
-		if (minuto == 0 ) 
-			 i = 0;
-		   if (minuto == 5 ) 
-			    i = 1;
-		      if (minuto == 10 ) 
-			       i = 2;
-		         if (minuto == 15 ) 
-			          i = 3;
-		             if (minuto == 20 ) 
-			             i = 4;
-		                if (minuto == 25 ) 
-			               i = 5;			
-		                   if (minuto == 30) 
-			                   i = 6;			
-		                      if (minuto == 35 ) 
-			                      i = 7;			
-		                         if (minuto == 40 ) 
-			                          i = 8;	                         
-		                            if (minuto == 45 ) 
-				                         i = 9;	
-		                              if (minuto == 50 ) 
-				                           i = 10;		                            
-		                                if (minuto == 55 ) 
-				                             i = 11;	
-
-			p = pos + idx + i; // Apontar o índice
-						
-			auto1[p] += autoFluxo1;	com1[p] +=comFluxo1; moto1[p] += motoFluxo1; total1[p] += totalFluxo1;
-			auto2[p] += autoFluxo2;	com2[p] +=comFluxo2; moto2[p] += motoFluxo2; total2[p] += totalFluxo2;
-
-			autoVM1[p] += autoVMedia1; comVM1[p] += comVMedia1;	motoVM1[p] += motoVMedia1; totalVM1[p] += totalVMedia1;
-			autoVM2[p] += autoVMedia2; comVM2[p] += comVMedia2;	motoVM2[p] += motoVMedia2; totalVM2[p] += totalVMedia2;
-
-			autoV501[p] += autoV50S1; comV501[p] += comV50S1; motoV501[p] += motoV50S1; totalV501[p] += totalV50S1;
-			autoV502[p] += autoV50S2; comV502[p] += comV50S2; motoV502[p] += motoV50S2; totalV502[p] += totalV50S2;
-
-			autoV851[p] += autoV85S1; comV851[p] += comV85S1; motoV851[p] += motoV85S1; totalV851[p] += totalV85S1;
-			autoV852[p] += autoV85S2; comV852[p] += comV85S2; motoV852[p] += motoV85S2; totalV852[p] += totalV85S2;
-
-			autoMAX1[p] += autoVMAX1; comMAX1[p] += comVMAX1; motoMAX1[p] += motoVMAX1; totalMAX1[p] += totalVMAX1; 
-			autoMAX2[p] += autoVMAX2; comMAX2[p] += comVMAX2; motoMAX2[p] += motoVMAX2; totalMAX2[p] += totalVMAX2; 
-
-			autoMIN1[p] += autoVMIN1; comMIN1[p] += comVMIN1; motoMIN1[p] += motoVMIN1; totalMIN1[p] += totalVMIN1;
-			autoMIN2[p] += autoVMIN2; comMIN2[p] += comVMIN2; motoMIN2[p] += motoVMIN2; totalMIN2[p] += totalVMIN2;
-
-			autoVDSP1[p] += autoVDESV1;	comVDSP1[p] += comVDESV1; motoVDSP1[p] += motoVDESV1; totalVDSP1[p] += totalVDESV1;
-			autoVDSP2[p] += autoVDESV2;	comVDSP2[p] += comVDESV2; motoVDSP2[p] += motoVDESV2; totalVDSP2[p] += totalVDESV2;
 		
-	   }	
-	
-	public void preencherDados06Min(int pos, int hora, int minuto, int autoFluxo1, int comFluxo1, int motoFluxo1, int totalFluxo1, 
-			int autoFluxo2, int comFluxo2, int motoFluxo2, int totalFluxo2, int autoVMedia1, int comVMedia1, int motoVMedia1, int totalVMedia1,	
-			int autoVMedia2, int comVMedia2, int motoVMedia2, int totalVMedia2,
-			int autoV50S1, int comV50S1, int motoV50S1, int totalV50S1,	int autoV50S2, int comV50S2, int motoV50S2, int totalV50S2,	
-			int autoV85S1, int comV85S1, int motoV85S1, int totalV85S1,	int autoV85S2, int comV85S2, int motoV85S2, int totalV85S2,	
-			int autoVMAX1, int comVMAX1, int motoVMAX1, int totalVMAX1, int autoVMAX2, int comVMAX2, int motoVMAX2, int totalVMAX2, 
-			int autoVMIN1, int comVMIN1, int motoVMIN1, int totalVMIN1,	int autoVMIN2, int comVMIN2, int motoVMIN2, int totalVMIN2,		
-			int autoVDESV1, int comVDESV1, int motoVDESV1, int totalVDESV1, int autoVDESV2, int comVDESV2, int motoVDESV2, int totalVDESV2) {		
-
-		
-
-		int idx = dta.horaIndex06Min(hora); // aponta um índice para preencher o array
-
-		int i=0; int p=0;					
-
-		if (minuto == 0 ) 
-			 i = 0;
-		   if (minuto == 6 ) 
-			    i = 1;
-		      if (minuto == 12 ) 
-			       i = 2;
-		         if (minuto == 18 ) 
-			          i = 3;
-		             if (minuto == 24 ) 
-			             i = 4;
-		                if (minuto == 30 ) 
-			               i = 5;			
-		                   if (minuto == 36 ) 
-			                   i = 6;			
-		                      if (minuto == 42 ) 
-			                      i = 7;			
-		                         if (minuto == 48 ) 
-			                          i = 8;	                         
-		                            if (minuto == 54 ) 
-				                         i = 9;	
-
-			p = pos + idx + i; // Apontar o índice
-						
-			auto1[p] += autoFluxo1;	com1[p] +=comFluxo1; moto1[p] += motoFluxo1; total1[p] += totalFluxo1;
-			auto2[p] += autoFluxo2;	com2[p] +=comFluxo2; moto2[p] += motoFluxo2; total2[p] += totalFluxo2;
-
-			autoVM1[p] += autoVMedia1; comVM1[p] += comVMedia1;	motoVM1[p] += motoVMedia1; totalVM1[p] += totalVMedia1;
-			autoVM2[p] += autoVMedia2; comVM2[p] += comVMedia2;	motoVM2[p] += motoVMedia2; totalVM2[p] += totalVMedia2;
-
-			autoV501[p] += autoV50S1; comV501[p] += comV50S1; motoV501[p] += motoV50S1; totalV501[p] += totalV50S1;
-			autoV502[p] += autoV50S2; comV502[p] += comV50S2; motoV502[p] += motoV50S2; totalV502[p] += totalV50S2;
-
-			autoV851[p] += autoV85S1; comV851[p] += comV85S1; motoV851[p] += motoV85S1; totalV851[p] += totalV85S1;
-			autoV852[p] += autoV85S2; comV852[p] += comV85S2; motoV852[p] += motoV85S2; totalV852[p] += totalV85S2;
-
-			autoMAX1[p] += autoVMAX1; comMAX1[p] += comVMAX1; motoMAX1[p] += motoVMAX1; totalMAX1[p] += totalVMAX1; 
-			autoMAX2[p] += autoVMAX2; comMAX2[p] += comVMAX2; motoMAX2[p] += motoVMAX2; totalMAX2[p] += totalVMAX2; 
-
-			autoMIN1[p] += autoVMIN1; comMIN1[p] += comVMIN1; motoMIN1[p] += motoVMIN1; totalMIN1[p] += totalVMIN1;
-			autoMIN2[p] += autoVMIN2; comMIN2[p] += comVMIN2; motoMIN2[p] += motoVMIN2; totalMIN2[p] += totalVMIN2;
-
-			autoVDSP1[p] += autoVDESV1;	comVDSP1[p] += comVDESV1; motoVDSP1[p] += motoVDESV1; totalVDSP1[p] += totalVDESV1;
-			autoVDSP2[p] += autoVDESV2;	comVDSP2[p] += comVDESV2; motoVDSP2[p] += motoVDESV2; totalVDSP2[p] += totalVDESV2;
-		
-	   }	 
-	 
-	public void preencherDados15Min(int pos, int hora, int minuto, int autoFluxo1, int comFluxo1, int motoFluxo1, int totalFluxo1, 
-			int autoFluxo2, int comFluxo2, int motoFluxo2, int totalFluxo2, int autoVMedia1, int comVMedia1, int motoVMedia1, int totalVMedia1,	
-			int autoVMedia2, int comVMedia2, int motoVMedia2, int totalVMedia2,
-			int autoV50S1, int comV50S1, int motoV50S1, int totalV50S1,	int autoV50S2, int comV50S2, int motoV50S2, int totalV50S2,	
-			int autoV85S1, int comV85S1, int motoV85S1, int totalV85S1,	int autoV85S2, int comV85S2, int motoV85S2, int totalV85S2,	
-			int autoVMAX1, int comVMAX1, int motoVMAX1, int totalVMAX1, int autoVMAX2, int comVMAX2, int motoVMAX2, int totalVMAX2, 
-			int autoVMIN1, int comVMIN1, int motoVMIN1, int totalVMIN1,	int autoVMIN2, int comVMIN2, int motoVMIN2, int totalVMIN2,		
-			int autoVDESV1, int comVDESV1, int motoVDESV1, int totalVDESV1, int autoVDESV2, int comVDESV2, int motoVDESV2, int totalVDESV2) {		
-	
-		int idx = dta.horaIndex15Min(hora); // aponta um índice para preencher o array
-
-		int i = 0; int p = 0;				
-
-		if(minuto == 0 ) 
-             i=0;			
-		   if(minuto == 15)
-		       i=1;
-		     if(minuto == 30)
-		         i=2;
-		        if(minuto == 45)
-		           i=3;	   
-		   
-		    p = pos + idx + i; // Apontar o índice
-
-			auto1[p] += autoFluxo1;	com1[p] +=comFluxo1; moto1[p] += motoFluxo1; total1[p] += totalFluxo1;
-			auto2[p] += autoFluxo2;	com2[p] +=comFluxo2; moto2[p] += motoFluxo2; total2[p] += totalFluxo2;
-
-			autoVM1[p] += autoVMedia1; comVM1[p] += comVMedia1;	motoVM1[p] += motoVMedia1; totalVM1[p] += totalVMedia1;
-			autoVM2[p] += autoVMedia2; comVM2[p] += comVMedia2;	motoVM2[p] += motoVMedia2; totalVM2[p] += totalVMedia2;
-
-			autoV501[p] += autoV50S1; comV501[p] += comV50S1; motoV501[p] += motoV50S1; totalV501[p] += totalV50S1;
-			autoV502[p] += autoV50S2; comV502[p] += comV50S2; motoV502[p] += motoV50S2; totalV502[p] += totalV50S2;
-
-			autoV851[p] += autoV85S1; comV851[p] += comV85S1; motoV851[p] += motoV85S1; totalV851[p] += totalV85S1;
-			autoV852[p] += autoV85S2; comV852[p] += comV85S2; motoV852[p] += motoV85S2; totalV852[p] += totalV85S2;
-
-			autoMAX1[p] += autoVMAX1; comMAX1[p] += comVMAX1; motoMAX1[p] += motoVMAX1; totalMAX1[p] += totalVMAX1; 
-			autoMAX2[p] += autoVMAX2; comMAX2[p] += comVMAX2; motoMAX2[p] += motoVMAX2; totalMAX2[p] += totalVMAX2; 
-
-			autoMIN1[p] += autoVMIN1; comMIN1[p] += comVMIN1; motoMIN1[p] += motoVMIN1; totalMIN1[p] += totalVMIN1;
-			autoMIN2[p] += autoVMIN2; comMIN2[p] += comVMIN2; motoMIN2[p] += motoVMIN2; totalMIN2[p] += totalVMIN2;
-
-			autoVDSP1[p] += autoVDESV1;	comVDSP1[p] += comVDESV1; motoVDSP1[p] += motoVDESV1; totalVDSP1[p] += totalVDESV1;
-			autoVDSP2[p] += autoVDESV2;	comVDSP2[p] += comVDESV2; motoVDSP2[p] += motoVDESV2; totalVDSP2[p] += totalVDESV2;
-		
-	     }		
-	
-	 
-	public void preencherDados01Hora(int pos, int hora, int autoFluxo1, int comFluxo1, int motoFluxo1, int totalFluxo1, 
-			int autoFluxo2, int comFluxo2, int motoFluxo2, int totalFluxo2, int autoVMedia1, int comVMedia1, int motoVMedia1, int totalVMedia1,	
-			int autoVMedia2, int comVMedia2, int motoVMedia2, int totalVMedia2,
-			int autoV50S1, int comV50S1, int motoV50S1, int totalV50S1,	int autoV50S2, int comV50S2, int motoV50S2, int totalV50S2,	
-			int autoV85S1, int comV85S1, int motoV85S1, int totalV85S1,	int autoV85S2, int comV85S2, int motoV85S2, int totalV85S2,	
-			int autoVMAX1, int comVMAX1, int motoVMAX1, int totalVMAX1, int autoVMAX2, int comVMAX2, int motoVMAX2, int totalVMAX2, 
-			int autoVMIN1, int comVMIN1, int motoVMIN1, int totalVMIN1,	int autoVMIN2, int comVMIN2, int motoVMIN2, int totalVMIN2,		
-			int autoVDESV1, int comVDESV1, int motoVDESV1, int totalVDESV1, int autoVDESV2, int comVDESV2, int motoVDESV2, int totalVDESV2) {		
-		  
-		    int idx = hora + pos;
-		    
-		    auto1[idx] += autoFluxo1;	com1[idx] +=comFluxo1; moto1[idx] += motoFluxo1; total1[idx] += totalFluxo1;
-			auto2[idx] += autoFluxo2;	com2[idx] +=comFluxo2; moto2[idx] += motoFluxo2; total2[idx] += totalFluxo2;
-
-			autoVM1[idx] += autoVMedia1; comVM1[idx] += comVMedia1;	motoVM1[idx] += motoVMedia1; totalVM1[idx] += totalVMedia1;
-			autoVM2[idx] += autoVMedia2; comVM2[idx] += comVMedia2;	motoVM2[idx] += motoVMedia2; totalVM2[idx] += totalVMedia2;
-
-			autoV501[idx] += autoV50S1; comV501[idx] += comV50S1; motoV501[idx] += motoV50S1; totalV501[idx] += totalV50S1;
-			autoV502[idx] += autoV50S2; comV502[idx] += comV50S2; motoV502[idx] += motoV50S2; totalV502[idx] += totalV50S2;
-
-			autoV851[idx] += autoV85S1; comV851[idx] += comV85S1; motoV851[idx] += motoV85S1; totalV851[idx] += totalV85S1;
-			autoV852[idx] += autoV85S2; comV852[idx] += comV85S2; motoV852[idx] += motoV85S2; totalV852[idx] += totalV85S2;
-
-			autoMAX1[idx] += autoVMAX1; comMAX1[idx] += comVMAX1; motoMAX1[idx] += motoVMAX1; totalMAX1[idx] += totalVMAX1; 
-			autoMAX2[idx] += autoVMAX2; comMAX2[idx] += comVMAX2; motoMAX2[idx] += motoVMAX2; totalMAX2[idx] += totalVMAX2; 
-
-			autoMIN1[idx] += autoVMIN1; comMIN1[idx] += comVMIN1; motoMIN1[idx] += motoVMIN1; totalMIN1[idx] += totalVMIN1;
-			autoMIN2[idx] += autoVMIN2; comMIN2[idx] += comVMIN2; motoMIN2[idx] += motoVMIN2; totalMIN2[idx] += totalVMIN2;
-
-			autoVDSP1[idx] += autoVDESV1;	comVDSP1[idx] += comVDESV1; motoVDSP1[idx] += motoVDESV1; totalVDSP1[idx] += totalVDESV1;
-			autoVDSP2[idx] += autoVDESV2;	comVDSP2[idx] += comVDESV2; motoVDSP2[idx] += motoVDESV2; totalVDSP2[idx] += totalVDESV2;
-					
-	   }
-	
-	public void preencherDados06Horas(int pos, int hora, int autoFluxo1, int comFluxo1, int motoFluxo1, int totalFluxo1, 
-			int autoFluxo2, int comFluxo2, int motoFluxo2, int totalFluxo2, int autoVMedia1, int comVMedia1, int motoVMedia1, int totalVMedia1,	
-			int autoVMedia2, int comVMedia2, int motoVMedia2, int totalVMedia2,
-			int autoV50S1, int comV50S1, int motoV50S1, int totalV50S1,	int autoV50S2, int comV50S2, int motoV50S2, int totalV50S2,	
-			int autoV85S1, int comV85S1, int motoV85S1, int totalV85S1,	int autoV85S2, int comV85S2, int motoV85S2, int totalV85S2,	
-			int autoVMAX1, int comVMAX1, int motoVMAX1, int totalVMAX1, int autoVMAX2, int comVMAX2, int motoVMAX2, int totalVMAX2, 
-			int autoVMIN1, int comVMIN1, int motoVMIN1, int totalVMIN1,	int autoVMIN2, int comVMIN2, int motoVMIN2, int totalVMIN2,		
-			int autoVDESV1, int comVDESV1, int motoVDESV1, int totalVDESV1, int autoVDESV2, int comVDESV2, int motoVDESV2, int totalVDESV2) {		
-		  		    
-			
-		int i = 0, p = 0;
-		    
-			if(hora == 0) 
-	             i=0;			
-			   if(hora == 6)
-			       i=1;
-			     if(hora == 12)
-			         i=2;
-			        if(hora == 18)
-			           i=3;		
-			        
-			p = pos + i;
-		    
-			auto1[p] += autoFluxo1;	com1[p] +=comFluxo1; moto1[p] += motoFluxo1; total1[p] += totalFluxo1;
-			auto2[p] += autoFluxo2;	com2[p] +=comFluxo2; moto2[p] += motoFluxo2; total2[p] += totalFluxo2;
-
-			autoVM1[p] += autoVMedia1; comVM1[p] += comVMedia1;	motoVM1[p] += motoVMedia1; totalVM1[p] += totalVMedia1;
-			autoVM2[p] += autoVMedia2; comVM2[p] += comVMedia2;	motoVM2[p] += motoVMedia2; totalVM2[p] += totalVMedia2;
-
-			autoV501[p] += autoV50S1; comV501[p] += comV50S1; motoV501[p] += motoV50S1; totalV501[p] += totalV50S1;
-			autoV502[p] += autoV50S2; comV502[p] += comV50S2; motoV502[p] += motoV50S2; totalV502[p] += totalV50S2;
-
-			autoV851[p] += autoV85S1; comV851[p] += comV85S1; motoV851[p] += motoV85S1; totalV851[p] += totalV85S1;
-			autoV852[p] += autoV85S2; comV852[p] += comV85S2; motoV852[p] += motoV85S2; totalV852[p] += totalV85S2;
-
-			autoMAX1[p] += autoVMAX1; comMAX1[p] += comVMAX1; motoMAX1[p] += motoVMAX1; totalMAX1[p] += totalVMAX1; 
-			autoMAX2[p] += autoVMAX2; comMAX2[p] += comVMAX2; motoMAX2[p] += motoVMAX2; totalMAX2[p] += totalVMAX2; 
-
-			autoMIN1[p] += autoVMIN1; comMIN1[p] += comVMIN1; motoMIN1[p] += motoVMIN1; totalMIN1[p] += totalVMIN1;
-			autoMIN2[p] += autoVMIN2; comMIN2[p] += comVMIN2; motoMIN2[p] += motoVMIN2; totalMIN2[p] += totalVMIN2;
-
-			autoVDSP1[p] += autoVDESV1;	comVDSP1[p] += comVDESV1; motoVDSP1[p] += motoVDESV1; totalVDSP1[p] += totalVDESV1;
-			autoVDSP2[p] += autoVDESV2;	comVDSP2[p] += comVDESV2; motoVDSP2[p] += motoVDESV2; totalVDSP2[p] += totalVDESV2;
-		
-	   }
-	
-	 
-	public void preencherDados24Horas(int pos, int autoFluxo1, int comFluxo1, int motoFluxo1, int totalFluxo1, 
-			int autoFluxo2, int comFluxo2, int motoFluxo2, int totalFluxo2, int autoVMedia1, int comVMedia1, int motoVMedia1, int totalVMedia1,	
-			int autoVMedia2, int comVMedia2, int motoVMedia2, int totalVMedia2,
-			int autoV50S1, int comV50S1, int motoV50S1, int totalV50S1,	int autoV50S2, int comV50S2, int motoV50S2, int totalV50S2,	
-			int autoV85S1, int comV85S1, int motoV85S1, int totalV85S1,	int autoV85S2, int comV85S2, int motoV85S2, int totalV85S2,	
-			int autoVMAX1, int comVMAX1, int motoVMAX1, int totalVMAX1, int autoVMAX2, int comVMAX2, int motoVMAX2, int totalVMAX2, 
-			int autoVMIN1, int comVMIN1, int motoVMIN1, int totalVMIN1,	int autoVMIN2, int comVMIN2, int motoVMIN2, int totalVMIN2,		
-			int autoVDESV1, int comVDESV1, int motoVDESV1, int totalVDESV1, int autoVDESV2, int comVDESV2, int motoVDESV2, int totalVDESV2) {		
-
-		    auto1[pos] += autoFluxo1;	com1[pos] +=comFluxo1; moto1[pos] += motoFluxo1; total1[pos] += totalFluxo1;
-		    auto2[pos] += autoFluxo2;	com2[pos] +=comFluxo2; moto2[pos] += motoFluxo2; total2[pos] += totalFluxo2;
-
-		    autoVM1[pos] += autoVMedia1; comVM1[pos] += comVMedia1;	motoVM1[pos] += motoVMedia1; totalVM1[pos] += totalVMedia1;
-		    autoVM2[pos] += autoVMedia2; comVM2[pos] += comVMedia2;	motoVM2[pos] += motoVMedia2; totalVM2[pos] += totalVMedia2;
-
-		    autoV501[pos] += autoV50S1; comV501[pos] += comV50S1; motoV501[pos] += motoV50S1; totalV501[pos] += totalV50S1;
-		    autoV502[pos] += autoV50S2; comV502[pos] += comV50S2; motoV502[pos] += motoV50S2; totalV502[pos] += totalV50S2;
-
-		    autoV851[pos] += autoV85S1; comV851[pos] += comV85S1; motoV851[pos] += motoV85S1; totalV851[pos] += totalV85S1;
-		    autoV852[pos] += autoV85S2; comV852[pos] += comV85S2; motoV852[pos] += motoV85S2; totalV852[pos] += totalV85S2;
-
-		    autoMAX1[pos] += autoVMAX1; comMAX1[pos] += comVMAX1; motoMAX1[pos] += motoVMAX1; totalMAX1[pos] += totalVMAX1; 
-		    autoMAX2[pos] += autoVMAX2; comMAX2[pos] += comVMAX2; motoMAX2[pos] += motoVMAX2; totalMAX2[pos] += totalVMAX2; 
-
-		    autoMIN1[pos] += autoVMIN1; comMIN1[pos] += comVMIN1; motoMIN1[pos] += motoVMIN1; totalMIN1[pos] += totalVMIN1;
-		    autoMIN2[pos] += autoVMIN2; comMIN2[pos] += comVMIN2; motoMIN2[pos] += motoVMIN2; totalMIN2[pos] += totalVMIN2;
-
-		    autoVDSP1[pos] += autoVDESV1;	comVDSP1[pos] += comVDESV1; motoVDSP1[pos] += motoVDESV1; totalVDSP1[pos] += totalVDESV1;
-		    autoVDSP2[pos] += autoVDESV2;	comVDSP2[pos] += comVDESV2; motoVDSP2[pos] += motoVDESV2; totalVDSP2[pos] += totalVDESV2;
-			    			
-	   }						
 
 	public int daysDifference(String dtInit, String dtEnd, int indice) throws ParseException {
 		
@@ -1821,181 +1451,49 @@ public class FluxoPeriodoBean implements Serializable {
 		
 	public void createStyle() {			
 
-		// Fonte
+		// FONTES
+						
+		fontBody = utilSheet.createFont(workbook, FONT_ARIAL, 10, false, false, IndexedColors.BLACK); // FONTE DE USO PADRÃO		
+		fontSubHeader = utilSheet.createFont(workbook, FONT_ARIAL, 10, true, false, IndexedColors.DARK_BLUE);	
+		fontReportTime = utilSheet.createFont(workbook, FONT_ARIAL, 10, true, false, IndexedColors.WHITE);		
+		fontNumbersTitle = utilSheet.createFont(workbook, FONT_ARIAL, 11, true, false, IndexedColors.WHITE); 
+		fontBackgroundColor = utilSheet.createFont(workbook, FONT_ARIAL, 10, true, false, IndexedColors.WHITE);		
+		fontBodyHeader = utilSheet.createFont(workbook, FONT_ARIAL, 10, false, false, IndexedColors.GREEN);	
+		fontBodyHeader2 = utilSheet.createFont(workbook, FONT_ARIAL, 10, false, false, IndexedColors.ORANGE);		
+		fontEspaco = utilSheet.createFont(workbook, FONT_ARIAL, 9, true, false, IndexedColors.WHITE);
+		fontEspaco2 = utilSheet.createFont(workbook, FONT_ARIAL, 11, true, false, IndexedColors.WHITE);
+		fontDataHeader = utilSheet.createFont(workbook, FONT_ARIAL, 11, true, false, IndexedColors.WHITE);
+		fontIntervalo = utilSheet.createFont(workbook, FONT_ARIAL, 10, true, false, IndexedColors.DARK_BLUE);
 
-		fontBody = workbook.createFont();
-		fontBody.setFontName(HSSFFont.FONT_ARIAL);
-		fontBody.setFontHeightInPoints((short) 10);
+		// ---------------------------------------------------------------------------------------------------------------		
 
-		fontSubHeader = workbook.createFont();
-		fontSubHeader.setColor(HSSFColor.HSSFColorPredefined.DARK_BLUE.getIndex());
-		fontSubHeader.setBold(true);
-		fontSubHeader.setFontName(HSSFFont.FONT_ARIAL);
-		fontSubHeader.setFontHeightInPoints((short) 10);	
+		// STYLES
 
-		fontReportTime = workbook.createFont();
-		fontReportTime.setColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
-		fontReportTime.setBold(true);
-		fontReportTime.setFontName(HSSFFont.FONT_ARIAL);
-		fontReportTime.setFontHeightInPoints((short) 10);	
-
-		fontNumbersTitle = workbook.createFont(); 
-		fontNumbersTitle.setColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
-		fontNumbersTitle.setBold(true); 
-		fontNumbersTitle.setFontName(HSSFFont.FONT_ARIAL); 
-		fontNumbersTitle.setFontHeightInPoints((short) 11);	
-
-		fontBackgroundColor = workbook.createFont();
-		fontBackgroundColor.setColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
-		fontBackgroundColor.setBold(true);
-		fontBackgroundColor.setFontName(HSSFFont.FONT_ARIAL);
-		fontBackgroundColor.setFontHeightInPoints((short) 10);
-
-		fontBodyHeader = workbook.createFont();
-		fontBodyHeader.setColor(HSSFColor.HSSFColorPredefined.GREEN.getIndex());
-		fontBodyHeader.setBold(false);	
-
-		fontBodyHeader2 = workbook.createFont();
-		fontBodyHeader2.setColor(HSSFColor.HSSFColorPredefined.ORANGE.getIndex());
-		fontBodyHeader2.setBold(false);	
-
-		fontEspaco = workbook.createFont();
-		fontEspaco.setColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
-		fontEspaco.setFontName(HSSFFont.FONT_ARIAL); 
-		fontEspaco.setFontHeightInPoints((short) 9);	
-		fontEspaco.setBold(true);	
-
-		fontEspaco2 = workbook.createFont();
-		fontEspaco2.setColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
-		fontEspaco2.setFontName(HSSFFont.FONT_ARIAL); 
-		fontEspaco2.setFontHeightInPoints((short) 11);	
-		fontEspaco2.setBold(true);	
-
-		fontDataHeader = workbook.createFont();
-		fontDataHeader.setColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
-		fontDataHeader.setFontName(HSSFFont.FONT_ARIAL); 
-		fontDataHeader.setFontHeightInPoints((short) 11);	
-		fontDataHeader.setBold(true);
-
-		fontIntervalo = workbook.createFont();
-		fontIntervalo.setColor(HSSFColor.HSSFColorPredefined.DARK_BLUE.getIndex());
-		fontIntervalo.setBold(true);
-		fontIntervalo.setFontName(HSSFFont.FONT_ARIAL);
-		fontIntervalo.setFontHeightInPoints((short) 10);
-
-		/* Fonte End */			
-
-		// Estilo 
-
-		style1 = workbook.createCellStyle();				
-		style1.setFont(fontBody);
-		style1.setAlignment(HorizontalAlignment.CENTER);
-		style1.setFillBackgroundColor(IndexedColors.WHITE.getIndex()); // Cor na seleção da célula
-
-		subHeader = workbook.createCellStyle();									
-		subHeader.setFont(fontSubHeader);				
-		subHeader.setFillForegroundColor(IndexedColors.WHITE.getIndex()); 
-		subHeader.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		subHeader.setAlignment(HorizontalAlignment.CENTER);	
-		subHeader.setVerticalAlignment(VerticalAlignment.CENTER); // Centralizar no vertical
-
-		reportTime = workbook.createCellStyle();						
-		reportTime.setWrapText(true);
-		reportTime.setFont(fontReportTime);		 		
-		reportTime.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
-		reportTime.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		reportTime.setAlignment(HorizontalAlignment.CENTER);	
-		reportTime.setVerticalAlignment(VerticalAlignment.CENTER); // Centralizar no vertical
-
-		numbersTitle = workbook.createCellStyle();						
-		numbersTitle.setWrapText(true);
-		numbersTitle.setFont(fontNumbersTitle);				
-		numbersTitle.setFillForegroundColor(IndexedColors.DARK_BLUE.getIndex());
-		numbersTitle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		numbersTitle.setAlignment(HorizontalAlignment.CENTER);	
-		numbersTitle.setVerticalAlignment(VerticalAlignment.CENTER); // Centralizar no vertical
-
-		blueColorBackground = workbook.createCellStyle();									
-		blueColorBackground.setWrapText(true);
-		blueColorBackground.setFont(fontBackgroundColor);				
-		blueColorBackground.setFillForegroundColor(HSSFColor.HSSFColorPredefined.LIGHT_BLUE.getIndex());
-		blueColorBackground.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		blueColorBackground.setAlignment(HorizontalAlignment.CENTER);	
-		blueColorBackground.setVerticalAlignment(VerticalAlignment.CENTER); // Centralizar no vertical
-
-		redColorBackground = workbook.createCellStyle();	 	 				
-		redColorBackground.setWrapText(true);
-		redColorBackground.setFont(fontBackgroundColor);				
-		redColorBackground.setFillForegroundColor(HSSFColor.HSSFColorPredefined.CORAL.getIndex());
-		redColorBackground.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		redColorBackground.setAlignment(HorizontalAlignment.CENTER);	
-		redColorBackground.setVerticalAlignment(VerticalAlignment.CENTER); // Centralizar no vertical
-
-		backgroundColorBodyHeader = workbook.createCellStyle();			
-		backgroundColorBodyHeader.setFont(fontBodyHeader);				
-		backgroundColorBodyHeader.setFillForegroundColor(HSSFColor.HSSFColorPredefined.LIGHT_CORNFLOWER_BLUE.getIndex());
-		backgroundColorBodyHeader.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		backgroundColorBodyHeader.setAlignment(HorizontalAlignment.CENTER);	
-		backgroundColorBodyHeader.setVerticalAlignment(VerticalAlignment.CENTER); // Centralizar no vertical	
-
-		backgroundColorBodyHeader2 = workbook.createCellStyle();									
-		backgroundColorBodyHeader2.setFont(fontBodyHeader2);				
-		backgroundColorBodyHeader2.setFillForegroundColor(HSSFColor.HSSFColorPredefined.LIGHT_YELLOW.getIndex());
-		backgroundColorBodyHeader2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		backgroundColorBodyHeader2.setAlignment(HorizontalAlignment.CENTER);	
-		backgroundColorBodyHeader2.setVerticalAlignment(VerticalAlignment.CENTER); // Centralizar no vertical		
-
-		espacoStyle = workbook.createCellStyle();					
-		espacoStyle.setFont(fontEspaco);
-		espacoStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.ORANGE.getIndex());
-		espacoStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		espacoStyle.setAlignment(HorizontalAlignment.CENTER);	
-		espacoStyle.setVerticalAlignment(VerticalAlignment.CENTER); // Centralizar no vertical
-
-		espacoStyle2 = workbook.createCellStyle();						
-		espacoStyle2.setFont(fontEspaco);
-		espacoStyle2.setFillForegroundColor(HSSFColor.HSSFColorPredefined.ORANGE.getIndex());
-		espacoStyle2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		espacoStyle2.setRotation((short) 90);							
-		espacoStyle2.setVerticalAlignment(VerticalAlignment.CENTER); // Centralizar no vertical							
-
-		dayStyle = workbook.createCellStyle();			    	
-		dayStyle.setFont(fontDataHeader);
-		dayStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.ROYAL_BLUE.getIndex());
-		dayStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		dayStyle.setAlignment(HorizontalAlignment.CENTER);	
-		dayStyle.setVerticalAlignment(VerticalAlignment.CENTER); // Centralizar no vertical				
-
-		intervaloStyle = workbook.createCellStyle();
-		intervaloStyle.setAlignment(HorizontalAlignment.CENTER);
-		intervaloStyle.setFillBackgroundColor(IndexedColors.WHITE.getIndex());				
-		intervaloStyle.setFont(fontIntervalo);
-
+		style1 = utilSheet.createCellStyle(workbook, fontBody, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+		subHeader = utilSheet.createCellStyle(workbook, fontSubHeader, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    reportTime = utilSheet.createCellStyle(workbook, fontReportTime, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.ROYAL_BLUE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);						
+	    numbersTitle = utilSheet.createCellStyle(workbook, fontNumbersTitle, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.DARK_BLUE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);											
+		blueColorBackground = utilSheet.createCellStyle(workbook, fontBackgroundColor, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.LIGHT_BLUE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);											
+		redColorBackground = utilSheet.createCellStyle(workbook, fontBackgroundColor, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.CORAL, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);	 	 				
+		backgroundColorBodyHeader = utilSheet.createCellStyle(workbook, fontBodyHeader, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.LIGHT_CORNFLOWER_BLUE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);	 	 				
+		backgroundColorBodyHeader2 = utilSheet.createCellStyle(workbook, fontBodyHeader2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.LIGHT_YELLOW, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);	 	 				
+		espacoStyle = utilSheet.createCellStyle(workbook, fontEspaco, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.ORANGE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);	 	 				
+		espacoStyle2 = utilSheet.createCellStyle(workbook, fontEspaco, VerticalAlignment.CENTER, IndexedColors.ORANGE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);	 	 				
+		espacoStyle2.setRotation((short) 90);	
+		dayStyle = utilSheet.createCellStyle(workbook, fontDataHeader, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.ROYAL_BLUE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);	 	 				
+		intervaloStyle = utilSheet.createCellStyle(workbook, fontIntervalo, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);	 	 				
+		
 		blankStyle = workbook.createCellStyle();
-		blankStyle.setBorderRight(BorderStyle.THIN);
-		blankStyle.setBorderLeft(BorderStyle.THIN);
-
-		blankStyle2 = workbook.createCellStyle();				
-		blankStyle2.setBorderLeft(BorderStyle.THIN);
-
-		//Fill Border
-		cellBorderStyle(subHeader); 
-		cellBorderStyle(reportTime);
-		cellBorderStyle(dayStyle);
-		cellBorderStyle(intervaloStyle);
-		cellBorderStyle(style1); 
-		cellBorderStyle(redColorBackground);							
-		cellBorderStyle(blueColorBackground);
-
-		/* Estilo End */
-	}
-
-	public void borderLines(SXSSFWorkbook workbook, SXSSFSheet sheet, PropertyTemplate propertyTemplate) {
-
-		sheet.getSheetName();
-		propertyTemplate.applyBorders(sheet);			
+		utilSheet.setBorderRight(blankStyle, BorderStyle.THIN);
+		utilSheet.setBorderLeft(blankStyle, BorderStyle.THIN);
+	
+		blankStyle2 = workbook.createCellStyle();
+		utilSheet.setBorderLeft(blankStyle2, BorderStyle.THIN);
+		
+		// -------------------------------------------------------------------------------------
 
 	}
+
 
 	public void columnsWidth(SXSSFSheet sheet) {
 
@@ -2118,7 +1616,7 @@ public class FluxoPeriodoBean implements Serializable {
 				}
         				
 			if(step == 2) {
-				if(equips.length > 1)  
+				if(equips.length > 1) 
 						displayMessage +="\n"+localeSat.getStringKey("$label_period_flow_message_created_sheets");		
 					
 					else displayMessage +="\n"+localeSat.getStringKey("$label_period_flow_message_created_sheet");
@@ -2127,7 +1625,7 @@ public class FluxoPeriodoBean implements Serializable {
 				}
 		
 		   if(step == 3) {		   
-			    displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_process_sheets")+" "+sheetName[indice]+" ...";
+			    displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_process_sheets")+" "+satList.get(indice).getNome()+" ...";
 			    	updateForm(); // UPDATE MODAL FORM VIEW				    	
 			    
 		   	}
@@ -2174,41 +1672,8 @@ public class FluxoPeriodoBean implements Serializable {
 					pos += ((daysInMonth - 1) * tam);	
 				
 				if(Integer.parseInt(equip) != equip_anterior)
-						dtInicio = startDate;
-											
-				String date, interval;
-				int autoSumS1, comSumS1, motoSumS1, totalSumS1,autoSumS2, comSumS2, motoSumS2,
-				totalSumS2, speedAutoS1, speedComS1, speedMotoS1, speedTotalS1, speedAutoS2, speedComS2,
-				speedMotoS2, speedTotalS2, speed50thAutoS1, speed50thComS1, speed50thMotoS1, speed50thTotalS1, speed50thAutoS2, speed50thComS2, 
-				speed50thMotoS2,speed50thTotalS2, speed85thAutoS1, speed85thComS1, speed85thMotoS1, speed85thTotalS1, speed85thAutoS2, speed85thComS2, speed85thMotoS2,
-				speed85thTotalS2, speedMaxAutoS1, speedMaxComS1, speedMaxMotoS1, speedMaxTotalS1, speedMaxAutoS2, speedMaxComS2, speedMaxMotoS2, speedMaxTotalS2,										
-				speedMinAutoS1, speedMinComS1, speedMinMotoS1, speedMinTotalS1, speedMinAutoS2, speedMinComS2, speedMinMotoS2, speedMinTotalS2, speedStdAutoS1,						
-				speedStdComS1, speedStdMotoS1, speedStdTotalS1, speedStdAutoS2, speedStdComS2, speedStdMotoS2, speedStdTotalS2, siteID;	
-							
-				data = dta.preencherDataFluxoPeriodo(startDate, endDate, tamanho, tam);								
-				days = dta.preencherDias(tamanho, tam);	
-															
-				if(period.equals("15 minutes")) {		
-				   intervalo = dta.intervalo15Minutos(tamanho);
-				   interInicio = dta.intervalo15Inicio(tamanho);	
-				   interFim = dta.intervalo15Fim(tamanho);	
-				   separador = dta.intervaloSeparador(tamanho);
-		        }
-				
-				if(period.equals("01 hour")) {	
-					intervalo = dta.preencherHora(tamanho);
-					interInicio = dta.intervaloFluxoHoraInicio(tamanho);	
-					interFim = dta.intervaloFluxoHoraFim(tamanho);	
-					separador = dta.intervaloSeparador(tamanho);
-				}
-								
-				if(period.equals("24 hours")) {	
-			       intervalo = dta.intervalo24Horas(tamanho);
-				   interInicio = dta.intervaloSeparador24Horas(tamanho);	
-				   interFim = dta.intervaloSeparador24Horas(tamanho);	
-				   separador = dta.intervaloSeparador(tamanho);		          
-				}		
-											 
+						dtInicio = startDate;						
+																		 
 				index = increment * sheetIndex;					
 						
 				equipamentoHeader(index, incEquip, tamanho, satList.get(sheetIndex).getNome(), satList.get(sheetIndex).getKm(), satList.get(sheetIndex).getEstrada(), satList.get(sheetIndex).getFaixa1()); //Preenche nome do equipamento na tabela 
@@ -2218,149 +1683,78 @@ public class FluxoPeriodoBean implements Serializable {
 				SAT sat = new SAT();
 				
 				sat = satList.get(sheetIndex);
+								
+				String[][] auxResult = dao.getVehicles(startDate, endDate, equip, period, sat, fieldsLenght, tamanho);
 				
-				lista = dao.getVehicles(startDate, endDate, equip, period, sat);									
-								
-				if(!lista.isEmpty()) {
-
-					for(FluxoPeriodo pe : lista) {
+				//CASO EXISTA REGISTROS ENTRA AQUI
+				if(auxResult.length > 0) {		
+					
+				lin = auxResult.length;
+				col = auxResult[0].length;
+														
+				for(int j = 0; j < lin; j++) {
+					   for(int i = 0; i < col; i++) {
+					
+					// CASO NO EXISTA VALOR >>>>>>> PASSA	   
+					if(auxResult[j][0] != null)	 {  
+										
+					if(period.equals("01 hour"))
+						   hr = Integer.parseInt(auxResult[j][1].substring(0, 2));
 						
-						date = pe.getDate();
-						interval = pe.getInterval();	
-						siteID = pe.getEquipId();
-																	
-						autoSumS1 = pe.getAutoS1();
-						comSumS1 = pe.getComS1();
-						motoSumS1 = pe.getMotoS1();
-						totalSumS1 = pe.getTotalS1();
-						autoSumS2 = pe.getAutoS2();
-						comSumS2 = pe.getComS2();
-						motoSumS2 = pe.getMotoS2();
-						totalSumS2 = pe.getTotalS2();
-
-						speedAutoS1 = pe.getSpeedAutoS1();
-						speedComS1 = pe.getSpeedComS1();
-						speedMotoS1 = pe.getSpeedMotoS1();
-						speedTotalS1 = pe.getSpeedTotalS1();						
-						speedAutoS2 = pe.getSpeedAutoS2();
-						speedComS2 = pe.getSpeedComS2();
-						speedMotoS2 = pe.getSpeedMotoS2();
-						speedTotalS2 = pe.getSpeedTotalS2();
-
-						speed50thAutoS1 = pe.getSpeed50thAutoS1();
-						speed50thComS1 = pe.getSpeed50thComS1();
-						speed50thMotoS1 = pe.getSpeed50thMotoS1();
-						speed50thTotalS1 = pe.getSpeed50thTotalS1();						
-						speed50thAutoS2 = pe.getSpeed50thAutoS2();
-						speed50thComS2 = pe.getSpeed50thComS2();
-						speed50thMotoS2 = pe.getSpeed50thMotoS2();
-						speed50thTotalS2 = pe.getSpeed50thTotalS2();
-
-						speed85thAutoS1 = pe.getSpeed85thAutoS1();
-						speed85thComS1 = pe.getSpeed85thComS1();
-						speed85thMotoS1 = pe.getSpeed85thMotoS1();
-						speed85thTotalS1 = pe.getSpeed85thTotalS1();						
-						speed85thAutoS2 = pe.getSpeed85thAutoS2();
-						speed85thComS2 = pe.getSpeed85thComS2();
-						speed85thMotoS2 = pe.getSpeed85thMotoS2();
-						speed85thTotalS2 = pe.getSpeed85thTotalS2();
-
-						speedMaxAutoS1 = pe.getSpeedMaxAutoS1();
-						speedMaxComS1 = pe.getSpeedMaxComS1();
-						speedMaxMotoS1 = pe.getSpeedMaxMotoS1();
-						speedMaxTotalS1 = pe.getSpeedMaxTotalS1();
-						speedMaxAutoS2 = pe.getSpeedMaxAutoS2();
-						speedMaxComS2 = pe.getSpeedMaxComS2();
-						speedMaxMotoS2 = pe.getSpeedMaxMotoS2();
-						speedMaxTotalS2 = pe.getSpeedMaxTotalS2();
-						
-						speedMinAutoS1 = pe.getSpeedMinAutoS1();
-						speedMinComS1 = pe.getSpeedMinComS1();
-						speedMinMotoS1 = pe.getSpeedMinMotoS1();
-						speedMinTotalS1 = pe.getSpeedMinTotalS1();
-						speedMinAutoS2 = pe.getSpeedMinAutoS2();
-						speedMinComS2 = pe.getSpeedMinComS2();
-						speedMinMotoS2 = pe.getSpeedMinMotoS2();
-						speedMinTotalS2 = pe.getSpeedMinTotalS2();
-
-						speedStdAutoS1 = pe.getSpeedStdAutoS1();						
-						speedStdComS1 = pe.getSpeedStdComS1();
-						speedStdMotoS1 = pe.getSpeedStdMotoS1();
-						speedStdTotalS1 = pe.getSpeedStdTotalS1();
-						speedStdAutoS2 = pe.getSpeedStdAutoS2();
-						speedStdComS2 = pe.getSpeedStdComS2();
-						speedStdMotoS2 = pe.getSpeedStdMotoS2();
-						speedStdTotalS2= pe.getSpeedStdTotalS2();	
-																																														
-						if(period.equals("01 hour") || period.equals("06 hours"))
-						   hr = Integer.parseInt(interval.substring(0, 2));
-						
-						if(!period.equals("24 hours") && !period.equals("01 hour") && !period.equals("06 hours")) {
-						    hr = Integer.parseInt(interval.substring(0, 2));
-						    minuto =  Integer.parseInt(interval.substring(3, 5));						
+					else if(!period.equals("24 hours") && !period.equals("01 hour")) {
+						    hr = Integer.parseInt(auxResult[j][1].substring(0, 2));
+						    minuto =  Integer.parseInt(auxResult[j][1].substring(3, 5));	
+						    			 
 						}
-
-						// Restrição caso não haja dados nos primeiros registros
-						if ((dtInicio != null) && (!date.equals(dtInicio))) {   // Executa uma unica vez
+					
+						// Restrio caso no haja dados nos primeiros registros
+						if ((startDate != null) && (!auxResult[j][0].equals(startDate))) {   // Executa uma unica vez
 							
 							if(period.equals("24 hours"))
-								interResp = (int) dta.daysDifference(dtInicio, date);
+								iterator = (int) dta.daysDifference(startDate, auxResult[j][0]);
 
-							else interResp = daysDifference(dtInicio, date, rangeInterval);	
+							else iterator = dta.daysDifference(startDate, auxResult[j][0], periodRange);	
 							
-							pos+= interResp;
-							dtInicio = null;
+							pos+= iterator;
+							startDate = null;
 
-						} else if (!date.equals(data_anterior)) {								
+						} else if (!auxResult[j][0].equals(data_anterior)) {								
 														
 							if(period.equals("24 hours"))
-								interResp = (int) dta.daysDifference(data_anterior, date);
+								iterator = (int) dta.daysDifference(data_anterior, auxResult[j][0]);
 							   
-							else interResp = daysDifference(data_anterior, date, rangeInterval);	
+							else iterator = dta.daysDifference(data_anterior, auxResult[j][0], periodRange);	
 							
-							pos+= interResp;							
-						} 								
-														
-						if(period.equals("15 minutes")) 
-						        preencherDados15Min(pos, hr, minuto, autoSumS1, comSumS1, motoSumS1, totalSumS1, autoSumS2, comSumS2, motoSumS2, totalSumS2,
-								speedAutoS1, speedComS1, speedMotoS1, speedTotalS1 ,speedAutoS2, speedComS2, speedMotoS2, speedTotalS2, 
-								speed50thAutoS1, speed50thComS1, speed50thMotoS1, speed50thTotalS1, speed50thAutoS2, speed50thComS2, speed50thMotoS2, speed50thTotalS2,
-								speed85thAutoS1, speed85thComS1, speed85thMotoS1, speed85thTotalS1, speed85thAutoS2, speed85thComS2, speed85thMotoS2, speed85thTotalS2,
-								speedMaxAutoS1, speedMaxComS1, speedMaxMotoS1, speedMaxTotalS1, speedMaxAutoS2, speedMaxComS2, speedMaxMotoS2, speedMaxTotalS2,
-								speedMinAutoS1, speedMinComS1, speedMinMotoS1, speedMinTotalS1, speedMinAutoS2, speedMinComS2, speedMinMotoS2, speedMinTotalS2,								
-								speedStdAutoS1, speedStdComS1, speedStdMotoS1, speedStdTotalS1, speedStdAutoS2, speedStdComS2, speedStdMotoS2, speedStdTotalS2); 
-
+							pos+= iterator;							
+						} 			
 						
-						if(period.equals("01 hour")) 
-							
-					        preencherDados01Hora(pos, hr, autoSumS1, comSumS1, motoSumS1, totalSumS1, autoSumS2, comSumS2, motoSumS2, totalSumS2,
-							speedAutoS1, speedComS1, speedMotoS1, speedTotalS1 ,speedAutoS2, speedComS2, speedMotoS2, speedTotalS2, 
-							speed50thAutoS1, speed50thComS1, speed50thMotoS1, speed50thTotalS1, speed50thAutoS2, speed50thComS2, speed50thMotoS2, speed50thTotalS2,
-							speed85thAutoS1, speed85thComS1, speed85thMotoS1, speed85thTotalS1, speed85thAutoS2, speed85thComS2, speed85thMotoS2, speed85thTotalS2,
-							speedMaxAutoS1, speedMaxComS1, speedMaxMotoS1, speedMaxTotalS1, speedMaxAutoS2, speedMaxComS2, speedMaxMotoS2, speedMaxTotalS2,
-							speedMinAutoS1, speedMinComS1, speedMinMotoS1, speedMinTotalS1, speedMinAutoS2, speedMinComS2, speedMinMotoS2, speedMinTotalS2,								
-							speedStdAutoS1, speedStdComS1, speedStdMotoS1, speedStdTotalS1, speedStdAutoS2, speedStdComS2, speedStdMotoS2, speedStdTotalS2); 
+						 data_anterior = auxResult[j][0];
+						 equip_anterior = sat.getEquip_id();
+												
+						 if(period.equals("15 minutes")) {	
+							 p = dta.index15Minutes(hr, minuto);
+					         indexInc = p + pos + inc;										
+						 }					
+						 
+						 else if(period.equals("01 hour"))				
+							 indexInc = pos + hr + inc;
 						
 						
-                           if(period.equals("24 hours")) 
-							
-					        preencherDados24Horas(pos, autoSumS1, comSumS1, motoSumS1, totalSumS1, autoSumS2, comSumS2, motoSumS2, totalSumS2,
-							speedAutoS1, speedComS1, speedMotoS1, speedTotalS1 ,speedAutoS2, speedComS2, speedMotoS2, speedTotalS2, 
-							speed50thAutoS1, speed50thComS1, speed50thMotoS1, speed50thTotalS1, speed50thAutoS2, speed50thComS2, speed50thMotoS2, speed50thTotalS2,
-							speed85thAutoS1, speed85thComS1, speed85thMotoS1, speed85thTotalS1, speed85thAutoS2, speed85thComS2, speed85thMotoS2, speed85thTotalS2,
-							speedMaxAutoS1, speedMaxComS1, speedMaxMotoS1, speedMaxTotalS1, speedMaxAutoS2, speedMaxComS2, speedMaxMotoS2, speedMaxTotalS2,
-							speedMinAutoS1, speedMinComS1, speedMinMotoS1, speedMinTotalS1, speedMinAutoS2, speedMinComS2, speedMinMotoS2, speedMinTotalS2,								
-							speedStdAutoS1, speedStdComS1, speedStdMotoS1, speedStdTotalS1, speedStdAutoS2, speedStdComS2, speedStdMotoS2, speedStdTotalS2); 
-						
-						   data_anterior = date; // Atual		
-						   equip_anterior = siteID;
-					}	
-																									
-					last_index = sheetIndex;					
-
+						else if(period.equals("24 hours"))
+							  indexInc = pos + inc;
+																 
+						if(i > 1 )
+						    resultQuery[indexInc][i] = auxResult[j][i];
+										
+					   } // CASO NO EXISTA VALOR >>>>>>> PASSA
+					 }
+				   }
+				
+					last_index = sheetIndex;
+				
 				} else  pos += tam;
-								
-				preencherDadosExcel(workbook, propertyTemplate, sheetIndex, sheetName[sheetIndex], tam);
+												
+				//preencherDadosExcel(workbook, propertyTemplate, sheetIndex, sheetName[sheetIndex], tam);
 			   
 		}catch(Exception ex) {
 			ex.printStackTrace();
@@ -2369,29 +1763,7 @@ public class FluxoPeriodoBean implements Serializable {
 		 // System.out.println("Saindo do Loop ...");
 		 // System.out.println("-----------------");
 	  }
-	
-	public void populateTable() throws Exception {
 		
-		resultList = new ArrayList<Builder>();
-														
-		for(int i = 0; i < tamanho; i++) {
-			
-			resultList.add(new FluxoPeriodo.Builder().equip(nomeSats[i]).date(data[i]).time(intervalo[i])
-									.direction1(sentido1[i])
-									.lightS1(auto1[i])
-									.commS1(com1[i])
-									.totalS1(total1[i])
-									.speedS1(totalVM1[i])
-									.direction2(sentido2[i])
-									.lightS2(auto2[i])
-									.commS2(com2[i])
-									.totalS2(total2[i])
-									.speedS2(totalVM2[i]));		
-																														
-		               }	
-		
-				 }     
-	     
 	     public void instaciarProcessaDados(DateTimeApplication dta) throws Exception {
 	    	 
 	    	 	lista = new ArrayList<FluxoPeriodo>();		    	 
@@ -2413,6 +1785,9 @@ public class FluxoPeriodoBean implements Serializable {
 				startDate = dta.createData(diaInicial, mth, yr);
 				endDate = dta.createDateTime(daysInMonth, mth, yr, endHour, endMin, endSec);
 							
+				data_inicial = startDate;
+				data_final = dta.createData(diaInicial, mth, yr);	
+											
 				tam = dta.periodsRange(period);
 				
 				increment = 0; incEquip = 0;				
@@ -2423,21 +1798,59 @@ public class FluxoPeriodoBean implements Serializable {
 						
 				tamanho = ((daysInMonth * tam) * equips.length);	
 												
-				initVariables(tamanho); 
 				initializeSentidoExcel(equips.length);
 				
 				dtInicio = startDate;			
-				data_anterior = startDate;
+				data_anterior = startDate;			
 				equip_anterior = Integer.parseInt(equips[0]);
 				hora_anterior = -1;				
 				rangeInterval = tam;
 				pos = 0;
 				hrPos = 0;		
-				hr = 0; 
-				minuto = 0; 
+				hr = 0; 				
 				interResp = 0; 
 				last_index = 0;	
 				index = 0;	
+				fieldsLenght = 58;				
+				minuto = 0;
+				iterator = 0;
+				pos = 0;
+				hr = 0;		 		
+				lin = 0;
+				col = 0;
+				p = 0;
+				empty = 0;
+				inc = 0;
+				index = 0;
+				indexInc = 0;
+				
+				data = dta.preencherDataFluxoPeriodo(startDate, endDate, tamanho, tam);								
+				days = dta.preencherDias(tamanho, tam);	
+																		
+				if(period.equals("15 minutes")) {		
+				   intervalo = dta.intervalo15Minutos(tamanho);
+				   interInicio = dta.intervalo15Inicio(tamanho);	
+				   interFim = dta.intervalo15Fim(tamanho);	
+				   separador = dta.intervaloSeparador(tamanho);
+		        }
+				
+				if(period.equals("01 hour")) {	
+					intervalo = dta.preencherHora(tamanho);
+					interInicio = dta.intervaloFluxoHoraInicio(tamanho);	
+					interFim = dta.intervaloFluxoHoraFim(tamanho);	
+					separador = dta.intervaloSeparador(tamanho);
+				}
+								
+				if(period.equals("24 hours")) {	
+			       intervalo = dta.intervalo24Horas(tamanho);
+				   interInicio = dta.intervaloSeparador24Horas(tamanho);	
+				   interFim = dta.intervaloSeparador24Horas(tamanho);	
+				   separador = dta.intervaloSeparador(tamanho);		          
+				}
+				
+				resultQuery = new String[tamanho][fieldsLenght];
+				
+				System.out.println(tamanho);
 						
 	       }
 	     	     	     

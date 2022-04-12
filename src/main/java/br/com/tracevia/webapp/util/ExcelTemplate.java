@@ -1952,6 +1952,7 @@ public class ExcelTemplate {
 			temp.add(String.valueOf(sum));
 			newLine.add(temp.toArray(String[]::new));
 		}
+		
 		utilSheet.setCellValue(sheet, row, 12, len, "Total");
 			
 		// ------------------------------------------------------------------------------------------------------------
