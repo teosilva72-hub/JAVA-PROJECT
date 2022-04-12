@@ -124,7 +124,6 @@ public class TuxpanDAO{
 					report.setId(rs.getString(35));
 					
 					long occ = conn.executeUpdate();
-					System.out.println(occ);
 				}
 			}
 

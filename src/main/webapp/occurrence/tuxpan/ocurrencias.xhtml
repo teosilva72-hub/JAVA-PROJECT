@@ -96,8 +96,6 @@
 										<f:passThroughAttribute name="data-target" value="#modalOcc" />
 										<f:ajax execute="@form" render=":form_occ :edit-form" />
 									</h:commandLink>
-
-
 								</div>
 							</h:form>
 						</h:column>
@@ -659,7 +657,7 @@
 
 							<!-- BTN SAVE OCC -->
 							<h:commandButton type="button" style="display:none;"
-								class="btn btn-primary" value="Salvar" id="saveOcc">
+								class="btn btn-primary"  id="saveOcc">
 								<f:ajax execute="@form" render=":list-table :form_occ"
 									listener="#{OccController.saveOcc}" />
 							</h:commandButton>
@@ -670,7 +668,7 @@
 							</h:commandButton>
 							<!-- BTN LISTAR OCC -->
 							<h:commandButton type="button" style="display:none;"
-								class="btn btn-primary" value="Salvar" id="list_occ">
+								class="btn btn-primary" id="list_occ">
 								<f:ajax execute="@form" render=":list-table :form_occ"
 									listener="#{OccController.listTable}" />
 							</h:commandButton>

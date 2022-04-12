@@ -29,12 +29,13 @@ public class TuxpanOcc{
 	}
 	public boolean update() {
 		boolean check = false;
-		//RequestContext.getCurrentInstance().execute("table()");
+		
 		dao = new TuxpanDAO();
 		try {
 			check = dao.update(data, Integer.parseInt(idTable));
 			if(check == false) {
 				//error
+				listTable();
 			}else {
 				//sucess
 				listTable();
@@ -50,8 +51,9 @@ public class TuxpanOcc{
 		dao = new TuxpanDAO();
 		scriptsOcc();
 		try {
-			data = dao.select(idTable);
 			
+			data = dao.select(idTable);
+			System.out.println("Datos: "+ data.getTipo_tp_veh()+ " <> "+data.getType_report());
 			veh_inv(data.getTipo_veh_inv(), data.getNum_eje_veh_inv(), data.getNum_tp_veh(),
 					data.getMarca_tp_veh(), data.getTipo_tp_veh(), data.getModel_tp_veh(),
 					data.getColor(), data.getPlaca_estado(), data.getTel(), data.getId_person(),
@@ -84,7 +86,7 @@ public class TuxpanOcc{
 				//message error
 			}else {
 				//message success
-				listTable();
+				System.out.println("Salvou com sucesso");
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -96,8 +98,9 @@ public class TuxpanOcc{
 		boolean check = false;
 		try {
 			listar = dao.listarOcorrencias();
-			if(listar.size() != 0) {
+			if(listar.size() > 0) {
 				RequestContext.getCurrentInstance().execute("table()");
+				System.out.println("listou com sucesso");
 				check = true;
 			}
 		} catch (Exception e) {
