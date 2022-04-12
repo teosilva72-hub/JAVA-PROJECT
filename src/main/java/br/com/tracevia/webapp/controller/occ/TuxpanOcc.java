@@ -13,13 +13,13 @@ import br.com.tracevia.webapp.model.occ.TuxpanOccModel;
 
 @ManagedBean(name="OccController")
 public class TuxpanOcc{
-	
+
 	@PostConstruct
 	public void init() {
 		data = new TuxpanOccModel();
 		dao = new TuxpanDAO();
 		listar = new ArrayList<TuxpanOccModel>();
-		
+
 		try {
 			listar = dao.listarOcorrencias();
 		} catch (Exception e) {
@@ -29,16 +29,18 @@ public class TuxpanOcc{
 	}
 	public boolean update() {
 		boolean check = false;
-		
+
 		dao = new TuxpanDAO();
 		try {
 			check = dao.update(data, Integer.parseInt(idTable));
 			if(check == false) {
 				//error
 				listTable();
+				scriptsSin();
 			}else {
 				//sucess
 				listTable();
+				scriptsSin();
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -51,29 +53,36 @@ public class TuxpanOcc{
 		dao = new TuxpanDAO();
 		scriptsOcc();
 		try {
-			
+
 			data = dao.select(idTable);
-			System.out.println("Datos: "+ data.getTipo_tp_veh()+ " <> "+data.getType_report());
-			veh_inv(data.getTipo_veh_inv(), data.getNum_eje_veh_inv(), data.getNum_tp_veh(),
-					data.getMarca_tp_veh(), data.getTipo_tp_veh(), data.getModel_tp_veh(),
-					data.getColor(), data.getPlaca_estado(), data.getTel(), data.getId_person(),
-					data.getNombre(), data.getEdad(), data.getCondiciones());
-			
+			if(data.getType_report().equals("1")) {
+				//message type report one
+				RequestContext.getCurrentInstance().execute("$('#modalOcc').modal('show')");
+				//arguments
+				veh_inv(data.getTipo_veh_inv(), data.getNum_eje_veh_inv(), data.getNum_tp_veh(),
+						data.getMarca_tp_veh(), data.getTipo_tp_veh(), data.getModel_tp_veh(),
+						data.getColor(), data.getPlaca_estado(), data.getTel(), data.getId_person(),
+						data.getNombre(), data.getEdad(), data.getCondiciones());
+			}else {
+				//message type report two
+				scriptsSin();
+			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return check;
 	}
 	public boolean veh_inv(String tipo, String eje, String num_veh, String marca,
 			String tipo_veh, String modelo, String cor, String placa, String tel,
 			String id_person, String nombre, String edad, String cond) {
 		boolean check = false;
-		
+
 		RequestContext.getCurrentInstance().execute(String.format("plusInputVehInv('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
 				tipo, eje, num_veh, marca, tipo_veh, modelo, cor, placa, tel, id_person, nombre, edad, cond));
-		
+
 		return check;
 	}
 	public boolean saveOcc() {
@@ -107,23 +116,28 @@ public class TuxpanOcc{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return check;
 	}
 	public void scriptsOcc() {
 		RequestContext.getCurrentInstance().execute("appendOcc()");
+	}
+	public void scriptsSin() {
+		RequestContext.getCurrentInstance().execute("$('#modalSin').modal('show')");
+		RequestContext.getCurrentInstance().execute("clickUpdate();");
+		RequestContext.getCurrentInstance().execute("hiddenBts();");
 	}
 	//variables
 	private String typeReport, idTable;
 	private TuxpanDAO dao;
 	private TuxpanOccModel data;
 	private List<TuxpanOccModel> listar;
-	
+
 	//setter and getter
 	public List<TuxpanOccModel> getListar() {
 		return listar;
 	}
-	
+
 	public String getIdTable() {
 		return idTable;
 	}

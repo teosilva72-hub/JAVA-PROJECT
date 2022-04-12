@@ -63,7 +63,7 @@ public class TuxpanOccModel{
 			String semoviente, String trab_conserv, String lluvia_granizo, String neblina, String vandalismo,
 			String otro, String obs_occ, String ocupantes_sin, String veh_sin, String causas_sin, String def_metal,
 			String senal, String dano_pav, String danos_cort_trr, String danos_obr_compl, String dano_plz_cobro,
-			String otros_sin, String[] obs_sin, String lesionados, String mortos, String type_report) {
+			String otros_sin, String obs_sin, String lesionados, String mortos, String type_report) {
 		
 		this.type_report = type_report;
 		this.id = id;

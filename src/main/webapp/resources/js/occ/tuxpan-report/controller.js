@@ -5,10 +5,12 @@ $(init => {
     veh_ocup_sin()
     clickSave()
     getTypeReport()
-    hiddenBts()
-    clickUpdate()
+	hiddenBts()
+	clickUpdate()
     blockVirgula()
+	saveSin()
 })
+
 function blockVirgula(){
 	$('#vehInv_append input').on("input", function(e) {
     	$(this).val($(this).val().replace(/,/g, ""));
@@ -30,11 +32,20 @@ function hiddenBts() {
     $('[id$=editocc]').click(a => {
         $('#updateOcc').removeClass('hidden')
         $('#occSave').addClass('hidden')
+		setTimeout(d=>{
+			$('#saveSin').addClass('hidden')
+			$('#saveUpdate').removeClass('hidden')
+		},100)
+		
     })
     $('[id$=type_occ]').click(b=>{
 		//$('[id$=form_occ] input').val('')
 		$('#updateOcc').addClass('hidden')
         $('#occSave').removeClass('hidden')
+	})
+	$('[id$=type_sin]').click(c=>{
+		$('#saveSin').removeClass('hidden')
+		$('#saveUpdate').addClass('hidden')
 	})
 }
 
@@ -45,6 +56,11 @@ function clickUpdate() {
             $('[id$=OccUpdate]').click()
         }, 100)
     })
+	$('#saveUpdate').click(c=>{
+		setTimeout(d=>{
+			$('[id$=updateSin]').click()
+		},100)
+	})
 }
 
 function getTypeReport() {
@@ -52,7 +68,7 @@ function getTypeReport() {
         $('#type_report').val('1')
     })
     $('#type_sin').click(b => {
-        $('#type_report').val('2')
+        $('#type_reports').val('2')
     })
 
 }
@@ -70,6 +86,15 @@ function clickSave() {
     })
 }
 
+function saveSin(){
+	$('#saveSin').click(a=>{
+		setTimeout(b=>{
+			$('#sinSave').click()
+			$('[id$=list_sin]').click()
+		},100)
+		
+	})
+}
 function listOcc() {
     $('[id$=list_occ]').click()
 }
@@ -339,8 +364,8 @@ function table() {
     })
     $('#occurrence-table tbody').on('click', 'tr', function() {
         var event = $(table.row(this).data()[0]).text();
-      //  $('[id$=idTable]').val(event)
-       // console.log(event)
+      $('[id$=idTable]').val(event)
+       //console.log(event)
     })
 }
 let re = /\s*,\s*/;
