@@ -204,7 +204,287 @@ public class ExcelUtil {
 		row.createCell(cellNumber);	
 
 	}
+	
+	// ----------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para criar uma única célula com valor em uma planilha Excel
+	 * @author Wellington 13/04/2022
+	 * @version 1.0
+	 * @since 1.0
+	 * @param sheet - objeto de representação de alto nível de uma planilha
+	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+	 * @param rowNumber - número da linha
+	 * @param cellNumber - número da célula  
+	 * @param value - valor em String 
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+	 */
+	public void createCellWithValue(Sheet sheet, Row row, int rowNumber, int cellNumber, String value) {		
 
+		row = sheet.getRow(rowNumber);		
+		row.createCell(cellNumber).setCellValue(value);		
+
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para criar uma única célula com valor em uma planilha Excel
+	 * @author Wellington 13/04/2022
+	 * @version 1.0
+	 * @since 1.0
+	 * @param sheet - objeto de representação de alto nível de uma planilha
+	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+	 * @param rowNumber - número da linha
+	 * @param cellNumber - número da célula   
+	 * @param value - valor em inteiro   
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+	 */
+	public void createCellWithValue(Sheet sheet, Row row, int rowNumber, int cellNumber, int value) {		
+
+		row = sheet.getRow(rowNumber);		
+		row.createCell(cellNumber).setCellValue(value);		
+
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para criar uma única célula com valor em uma planilha Excel
+	 * @author Wellington 13/04/2022
+	 * @version 1.0
+	 * @since 1.0
+	 * @param sheet - objeto de representação de alto nível de uma planilha
+	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+	 * @param rowNumber - número da linha
+	 * @param cellNumber - número da célula   
+	 * @param value - valor em double  
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+	 */
+	public void createCellWithValue(Sheet sheet, Row row, int rowNumber, int cellNumber, double value) {		
+
+		row = sheet.getRow(rowNumber);		
+		row.createCell(cellNumber).setCellValue(value);		
+
+	}
+	
+	// ----------------------------------------------------------------------------------------------------------------
+	
+		/**
+		 * Método para criar uma única célula com valor em uma planilha Excel
+		 * @author Wellington 13/04/2022
+		 * @version 1.0
+		 * @since 1.0
+		 * @param sheet - objeto de representação de alto nível de uma planilha
+		 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+		 * @param rowNumber - número da linha
+		 * @param cellNumber - número da célula   
+		 * @param value - valor em boolean 
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+		 */
+		public void createCellWithValue(Sheet sheet, Row row, int rowNumber, int cellNumber, boolean value) {		
+
+			row = sheet.getRow(rowNumber);		
+			row.createCell(cellNumber).setCellValue(value);		
+
+		}
+		
+		// ----------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para criar uma única célula com valor em uma planilha Excel
+		 * @author Wellington 13/04/2022
+		 * @version 1.0
+		 * @since 1.0
+		 * @param sheet - objeto de representação de alto nível de uma planilha
+		 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+		 * @param rowNumber - número da linha
+		 * @param cellNumber - número da célula   
+		 * @param value - valor em date  
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+		 */
+		public void createCellWithValue(Sheet sheet, Row row, int rowNumber, int cellNumber, Date value) {		
+
+			row = sheet.getRow(rowNumber);		
+			row.createCell(cellNumber).setCellValue(value);		
+
+		}
+		
+		// ----------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para criar uma única célula com valor em uma planilha Excel
+		 * @author Wellington 13/04/2022
+		 * @version 1.0
+		 * @since 1.0
+		 * @param sheet - objeto de representação de alto nível de uma planilha
+		 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+		 * @param rowNumber - número da linha
+		 * @param cellNumber - número da célula   
+		 * @param value - valor em date  
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+		 */
+		public void createCellWithValue(Sheet sheet, Row row, int rowNumber, int cellNumber, String[] values) {		
+
+			for(int i = 0; i < values.length; i++) {				
+				row = sheet.getRow(rowNumber);		
+				row.createCell(cellNumber).setCellValue(values[i]);		
+			}
+
+		}
+		
+		// ----------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para criar uma única célula com valor em uma planilha Excel
+		 * @author Wellington 13/04/2022
+		 * @version 1.0
+		 * @since 1.0
+		 * @param sheet - objeto de representação de alto nível de uma planilha
+		 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+		 * @param style - estilo da célula
+		 * @param rowNumber - número da linha	
+		 * @param cellNumber - número da célula  
+		 * @param value - valor em String 
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+		 */
+		public void createCellWithValueAndStyle(Sheet sheet, Row row, CellStyle style, int rowNumber, int cellNumber, String value) {		
+
+			row = sheet.getRow(rowNumber);		
+			row.createCell(cellNumber).setCellValue(value);
+			row.getCell(cellNumber).setCellStyle(style);
+
+		}
+
+		// ----------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para criar uma única célula com valor em uma planilha Excel
+		 * @author Wellington 13/04/2022
+		 * @version 1.0
+		 * @since 1.0
+		 * @param sheet - objeto de representação de alto nível de uma planilha
+		 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+		 * @param style - estilo da célula
+		 * @param rowNumber - número da linha
+		 * @param cellNumber - número da célula   
+		 * @param value - valor em inteiro   
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+		 */
+		public void createCellWithValueAndStyle(Sheet sheet, Row row, CellStyle style, int rowNumber, int cellNumber, int value) {		
+
+			row = sheet.getRow(rowNumber);		
+			row.createCell(cellNumber).setCellValue(value);
+			row.getCell(cellNumber).setCellStyle(style);
+
+		}
+
+		// ----------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para criar uma única célula com valor em uma planilha Excel
+		 * @author Wellington 13/04/2022
+		 * @version 1.0
+		 * @since 1.0
+		 * @param sheet - objeto de representação de alto nível de uma planilha
+		 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+		 * @param style - estilo da célula
+		 * @param rowNumber - número da linha
+		 * @param cellNumber - número da célula   
+		 * @param value - valor em double  
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+		 */
+		public void createCellWithValueAndStyle(Sheet sheet, Row row,  CellStyle style, int rowNumber, int cellNumber, double value) {		
+
+			row = sheet.getRow(rowNumber);		
+			row.createCell(cellNumber).setCellValue(value);
+			row.getCell(cellNumber).setCellStyle(style);
+
+		}
+		
+		// ----------------------------------------------------------------------------------------------------------------
+		
+			/**
+			 * Método para criar uma única célula com valor em uma planilha Excel
+			 * @author Wellington 13/04/2022
+			 * @version 1.0
+			 * @since 1.0
+			 * @param sheet - objeto de representação de alto nível de uma planilha
+			 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+			 * @param style - estilo da célula
+			 * @param rowNumber - número da linha
+			 * @param cellNumber - número da célula   
+			 * @param value - valor em boolean 
+			 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+			 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+			 */
+			public void createCellWithValueAndStyle(Sheet sheet, Row row, CellStyle style, int rowNumber, int cellNumber, boolean value) {		
+
+				row = sheet.getRow(rowNumber);		
+				row.createCell(cellNumber).setCellValue(value);		
+				row.getCell(cellNumber).setCellStyle(style);
+
+			}
+			
+			// ----------------------------------------------------------------------------------------------------------------
+			
+			/**
+			 * Método para criar uma única célula com valor em uma planilha Excel
+			 * @author Wellington 13/04/2022
+			 * @version 1.0
+			 * @since 1.0
+			 * @param sheet - objeto de representação de alto nível de uma planilha
+			 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+			 * @param style - estilo da célula
+			 * @param rowNumber - número da linha
+			 * @param cellNumber - número da célula   
+			 * @param value - valor em date  
+			 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+			 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+			 */
+			public void createCellWithValueAndStyle(Sheet sheet, Row row, CellStyle style, int rowNumber, int cellNumber, Date value) {		
+
+				row = sheet.getRow(rowNumber);		
+				row.createCell(cellNumber).setCellValue(value);	
+				row.getCell(cellNumber).setCellStyle(style);
+
+			}
+			
+			// ----------------------------------------------------------------------------------------------------------------
+			
+			/**
+			 * Método para criar uma única célula com valor em uma planilha Excel
+			 * @author Wellington 13/04/2022
+			 * @version 1.0
+			 * @since 1.0
+			 * @param sheet - objeto de representação de alto nível de uma planilha
+			 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+			 * @param style - estilo da célula
+			 * @param rowNumber - número da linha
+			 * @param cellNumber - número da célula   
+			 * @param value - valor em date  
+			 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+			 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+			 */
+			public void createCellWithValueAndStyle(Sheet sheet, Row row, CellStyle style, int rowNumber, int cellNumber, String[] values) {		
+
+				for(int i = 0; i < values.length; i++) {				
+					row = sheet.getRow(rowNumber);		
+					row.createCell(cellNumber).setCellValue(values[i]);	
+					row.getCell(cellNumber).setCellStyle(style);
+				}
+
+			}			
+		
 	// ----------------------------------------------------------------------------------------------------------------
 	// ----------------------------------------------------------------------------------------------------------------
 	// SET CELL VALUES

@@ -1005,7 +1005,7 @@ public class EquipmentsDAO {
 					sat.setSentido2(tm.oppositeDirectionTab(rs.getString(5)));
 					sat.setSentido1Abbr(tm.directionAbbreviation(rs.getString(5)));
 					sat.setSentido2Abbr(tm.oppositeDirectionAbbreviation(rs.getString(5)));
-					
+				
 					list.add(sat);
 
 				}

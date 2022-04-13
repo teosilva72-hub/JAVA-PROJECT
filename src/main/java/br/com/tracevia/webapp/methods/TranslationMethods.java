@@ -763,15 +763,14 @@ public class TranslationMethods {
  		case "L": dir = localeDirections.getStringKey("directions_tab_east"); break;
  		case "O": dir = localeDirections.getStringKey("directions_tab_west"); break;		
  		
- 		}		
+ 		}
  		
- 		return dir;	
+ 		return dir;
  		
  	}
       
    // -------------------------------------------------------------------------------------------------------
-     
-     
+          
      public String oppositeDirectionTab(String direction) {
   		
   		String dir = "";		
@@ -828,8 +827,7 @@ public class TranslationMethods {
    	}
         
      // -------------------------------------------------------------------------------------------------------
-
-
+    
      public String verticalAxisTranslate(String vAxis) {
 	    	
 	    	LocaleUtil locale = new LocaleUtil();

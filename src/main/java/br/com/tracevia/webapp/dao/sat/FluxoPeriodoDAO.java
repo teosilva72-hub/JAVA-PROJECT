@@ -2,15 +2,12 @@ package br.com.tracevia.webapp.dao.sat;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import br.com.tracevia.webapp.log.SystemLog;
 import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
 import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.SQL_Tracevia;
-import br.com.tracevia.webapp.model.sat.FluxoPeriodo;
 import br.com.tracevia.webapp.model.sat.SAT;
 
 public class FluxoPeriodoDAO {
@@ -191,9 +188,7 @@ public class FluxoPeriodoDAO {
 			conn.setString(1, startDate);
 		    conn.setString(2, endDate);
 		    conn.setString(3, equipId);
-		  		    
-		   // System.out.println("DT: "+startDate+" DT: "+endDate+" EQ: "+equipId);
-														
+		  															
 			MapResult result = conn.executeQuery();
 			
 			int row = 0;
@@ -205,7 +200,7 @@ public class FluxoPeriodoDAO {
 
 							resultSet[row][col] = rs.getString((col + 1));
 						
-						    //System.out.println("LIN["+row+"]COL["+col+"] = "+resultSet[row][col] );
+						   // System.out.println("LIN["+row+"]COL["+col+"] = "+resultSet[row][col] );
 							// DEBBUGER
 						}
 
