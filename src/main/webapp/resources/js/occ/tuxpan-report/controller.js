@@ -1,52 +1,73 @@
 $(init => {
     table()
     appendOcc()
-    $('#add_append_sin').append(btn_sin)
-    veh_ocup_sin()
     clickSave()
     getTypeReport()
-	hiddenBts()
-	clickUpdate()
+    hiddenBts()
+    clickUpdate()
     blockVirgula()
-	saveSin()
+    saveSin()
+    formSin()
+    setTimeout(a => {
+        vehOcupSin()
+    }, 100)
+
 })
 
-function blockVirgula(){
-	$('#vehInv_append input').on("input", function(e) {
-    	$(this).val($(this).val().replace(/,/g, ""));
-	});
-	$('#tiposVeh input').on("input", function(e) {
-    	$(this).val($(this).val().replace(/,/g, ""));
-	});
-	$('#datos_person input').on("input", function(e) {
-    	$(this).val($(this).val().replace(/,/g, ""));
-	});
+function formSin() {
+    $('#type_sin').click(a => {
+        blockVirgula()
+        hiddenBts()
+    })
 }
+
+function blockVirgula() {
+    $('#vehInv_append input').on("input", function(a) {
+        $(this).val($(this).val().replace(/,/g, ""));
+    });
+    $('#tiposVeh input').on("input", function(b) {
+        $(this).val($(this).val().replace(/,/g, ""));
+    });
+    $('#datos_person input').on("input", function(c) {
+        $(this).val($(this).val().replace(/,/g, ""));
+    });
+    $('#add_append_sin input').on("input", function(d) {
+        $(this).val($(this).val().replace(/,/g, ""));
+    });
+    $('#getObs input').on("input", function(d) {
+        $(this).val($(this).val().replace(/,/g, ""));
+    });
+
+}
+
 function appendOcc() {
     vehInvAppend()
     addTipo()
     datos_person()
 }
 
+function hiddenBtnSin() {
+    $('#saveSin').addClass('hidden')
+    $('#saveUpdate').removeClass('hidden')
+    blockVirgula()
+}
+
 function hiddenBts() {
     $('[id$=editocc]').click(a => {
         $('#updateOcc').removeClass('hidden')
         $('#occSave').addClass('hidden')
-		setTimeout(d=>{
-			$('#saveSin').addClass('hidden')
-			$('#saveUpdate').removeClass('hidden')
-		},100)
-		
+
+
     })
-    $('[id$=type_occ]').click(b=>{
-		//$('[id$=form_occ] input').val('')
-		$('#updateOcc').addClass('hidden')
+    $('[id$=type_occ]').click(b => {
+        //$('[id$=form_occ] input').val('')
+        $('#updateOcc').addClass('hidden')
         $('#occSave').removeClass('hidden')
-	})
-	$('[id$=type_sin]').click(c=>{
-		$('#saveSin').removeClass('hidden')
-		$('#saveUpdate').addClass('hidden')
-	})
+    })
+    $('[id$=type_sin]').click(c => {
+        $('#saveSin').removeClass('hidden')
+        $('#saveUpdate').addClass('hidden')
+    })
 }
 
 function clickUpdate() {
@@ -56,11 +77,13 @@ function clickUpdate() {
             $('[id$=OccUpdate]').click()
         }, 100)
     })
-	$('#saveUpdate').click(c=>{
-		setTimeout(d=>{
-			$('[id$=updateSin]').click()
-		},100)
-	})
+    $('#saveUpdate').click(c => {
+        getVehOcupSin()
+        getObsSin()
+        setTimeout(d => {
+            $('[id$=updateSin]').click()
+        }, 100)
+    })
 }
 
 function getTypeReport() {
@@ -86,15 +109,20 @@ function clickSave() {
     })
 }
 
-function saveSin(){
-	$('#saveSin').click(a=>{
-		setTimeout(b=>{
-			$('#sinSave').click()
-			$('[id$=list_sin]').click()
-		},100)
-		
-	})
+function saveSin() {
+    $('#saveSin').click(a => {
+        getVehOcupSin()
+        setTimeout(b => {
+            $('#sinSave').click()
+            listSin()
+        }, 100)
+    })
 }
+
+function listSin() {
+    $('[id$=list_sin]').click()
+}
+
 function listOcc() {
     $('[id$=list_occ]').click()
 }
@@ -222,7 +250,37 @@ function getPerson() {
 
 }
 
-function veh_ocup_sin() {
+function getVehOcupSin() {
+    let dados = []
+    let input = $('#add_append_sin .ocupSin')
+    for (var i = 0; i < input.length; i++) {
+        dados[i] = input.get(i).value
+    }
+    $('#ocupantesSIN').val(dados)
+        //
+    input = $('#add_append_sin .vehSin')
+    for (var i = 0; i < input.length; i++) {
+        dados[i] = input.get(i).value
+    }
+    $('#vehOcupantesSIN').val(dados)
+        //
+    return dados
+}
+
+function getObsSin() {
+    let dados = []
+    let input = $('#getObs .obs_val')
+    for (var i = 0; i < input.length; i++) {
+        dados[i] = input.get(i).value
+    }
+    $('#obsGets').val(dados)
+ 
+        //
+    return dados
+}
+
+function vehOcupSin() {
+    //$('#add_append_sin').append(btn_sin)
     let add = $('#btn_veh_ocup')
     let veh_ocup = "veh_ocu_sin"
     add.click(e => {
@@ -232,10 +290,10 @@ function veh_ocup_sin() {
         }
         let cols = $(`
 			<div class="col-5 ${veh_ocup}${result}">
-            	<input type="text" value="" class="form-control" />
+            	<input type="text" value="" class="form-control ocupSin" />
             </div>
             <div class="col-5 ${veh_ocup}${result}">
-            	<input type="text" value=""  class="form-control" />
+            	<input type="text" value=""  class="form-control vehSin" />
             </div>
             <div class="col-2 removeVehOcup ${veh_ocup}${result}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16"><path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/></svg></div>					
 		`)
@@ -269,7 +327,7 @@ function datos_person() {
 		`)
         $('#datos_person').append(cols)
         cols.filter(`.removeDatos.${person}${result}`).click(() => cols.remove())
-		blockVirgula()
+        blockVirgula()
     })
 
 }
@@ -302,7 +360,7 @@ function vehInvAppend() {
 		`)
         $('#vehInv_append').append(invVeh)
         invVeh.filter(`.removeVEH.${vehInv}${result}`).click(() => invVeh.remove())
-		blockVirgula()
+        blockVirgula()
     })
 
 }
@@ -364,11 +422,45 @@ function table() {
     })
     $('#occurrence-table tbody').on('click', 'tr', function() {
         var event = $(table.row(this).data()[0]).text();
-      $('[id$=idTable]').val(event)
-       //console.log(event)
+        $('[id$=idTable]').val(event)
+            //console.log(event)
     })
 }
 let re = /\s*,\s*/;
+
+function plusInputSin(ocupantes, vehiculo, Obs) {
+    let ocup = ocupantes.split(re)
+    let veh = vehiculo.split(re)
+    let obs = Obs.split(re)
+    addChildSin(ocup, veh)
+    setObsSin(obs)
+}
+
+function setObsSin(obs){
+	for(var i = 0; i < obs.length; i++){
+		$(`.obs${i}`).val(obs[i])
+	}
+}
+
+function addChildSin(ocup, veh) {
+    result = []
+    $('.ocupSin0').val(ocup[0])
+    $('.vehSin0').val(veh[0])
+    for (var i = 1; i < ocup.length; i++) {
+        let cols = $(`
+			<div class="col-5 deleteChildSin${i}">
+            	<input type="text" value="${ocup[i]}" class="form-control ocupSin" />
+            </div>
+            <div class="col-5 deleteChildSin${i}">
+            	<input type="text" value="${veh[i]}"  class="form-control vehSin" />
+            </div>
+            <div class="col-2 removeVEH" id="deleteChildSin${i}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16"><path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/></svg></div>					
+		`)
+        $('#add_append_sin').append(cols)
+    }
+    deleteChild()
+    blockVirgula()
+}
 
 function plusInputVehInv(tipo, eje, num_veh, marca, tipo_veh, modelo, cor, placa, tel, id_person, nombre, edad, cond) {
     let tipo_ = tipo.split(re)
@@ -490,7 +582,7 @@ function getVehInvChilds() {
     getVehInv()
     getTipoVeh()
     getPerson()
-    
+
 }
 
 function deleteChild() {

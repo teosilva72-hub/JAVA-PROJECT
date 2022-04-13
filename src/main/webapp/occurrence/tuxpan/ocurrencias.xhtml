@@ -182,16 +182,22 @@
 								</div>
 								<div class="row container-fluid" id="add_append_sin">
 									<div class="col-5">
-										<span>Ocupantes</span>
-										<h:inputText class="form-control"
-											value="#{OccController.data.ocupantes_sin}" />
+										<span>Ocupantes</span> <input type="text"
+											class="form-control ocupSin ocupSin0" value="" />
 									</div>
 									<div class="col-5">
-										<span>Vehículo</span>
-										<h:inputText class="form-control"
-											value="#{OccController.data.veh_sin}" />
+										<span>Vehículo</span> <input type="text"
+											class="form-control vehSin vehSin0" value="" />
 									</div>
+									<div class="col-2">
+										<svg id="btn_veh_ocup" width="16" height="16"
+											fill="currentColor" class="bi bi-plus-circle"
+											viewBox="0 0 16 16"> <path
+											d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+										<path
+											d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" /></svg>
 
+									</div>
 								</div>
 
 								<div class="col-12">
@@ -201,77 +207,79 @@
 								</div>
 
 								<div class="col-4"></div>
-								<div class="col-4">Si/No</div>
+								<div class="col-4 text-center">Si/No</div>
 								<div class="col-4">Observaciones</div>
+								<div class="row obss" id="getObs">
+									<div class="col-4">Defensa Metálica</div>
 
-								<div class="col-4">Defensa Metálica</div>
-								<div class="col-4">
-									<h:inputText name="def_met" id="def_met" class="form-control"
-										value="#{OccController.data.def_metal}" />
-								</div>
-								<div class="col-4">
-									<input type="text" name="def_met_obs" id="def_met_obs"
-										class="form-control" value="" />
-								</div>
+									<div class="col-4">
+										<h:inputText name="def_met" id="def_met" class="form-control"
+											value="#{OccController.data.def_metal}" />
+									</div>
+									<div class="col-4">
+										<input type="text" name="def_met_obs"
+											class="form-control obs_val obs0" value="" />
+									</div>
 
-								<div class="col-4">Señalamiento</div>
-								<div class="col-4">
-									<h:inputText name="senal" id="senal" class="form-control"
-										value="#{OccController.data.senal}" />
-								</div>
-								<div class="col-4">
-									<input type="text" name="senal_obs" id="senal_obs"
-										class="form-control" value="" />
-								</div>
+									<div class="col-4">Señalamiento</div>
+									<div class="col-4">
+										<h:inputText name="senal" id="senal" class="form-control"
+											value="#{OccController.data.senal}" />
+									</div>
+									<div class="col-4">
+										<input type="text" name="senal_obs"
+											class="form-control obs_val obs1" value="" />
+									</div>
 
-								<div class="col-4">Daño en Pavimento</div>
-								<div class="col-4">
-									<h:inputText name="pavim" id="pavim" class="form-control"
-										value="#{OccController.data.dano_pav}" />
-								</div>
-								<div class="col-4">
-									<input type="text" name="pavim_obs" id="pavim_obs"
-										class="form-control" value="" />
-								</div>
+									<div class="col-4">Daño en Pavimento</div>
+									<div class="col-4">
+										<h:inputText name="pavim" id="pavim" class="form-control"
+											value="#{OccController.data.dano_pav}" />
+									</div>
+									<div class="col-4">
+										<input type="text" name="pavim_obs"
+											class="form-control obs_val obs2" value="" />
+									</div>
 
-								<div class="col-4">Daños en Cortes Terraplenas</div>
-								<div class="col-4">
-									<h:inputText name="terrapl" id="terrapl" class="form-control"
-										value="#{OccController.data.danos_cort_trr}" />
-								</div>
-								<div class="col-4">
-									<input type="text" name="terrapl_obs" id="terrapl_obs" value=""
-										class="form-control" />
-								</div>
+									<div class="col-4">Daños en Cortes Terraplenas</div>
+									<div class="col-4">
+										<h:inputText name="terrapl" id="terrapl" class="form-control"
+											value="#{OccController.data.danos_cort_trr}" />
+									</div>
+									<div class="col-4">
+										<input type="text" name="terrapl_obs" value=""
+											class="form-control obs_val obs3" />
+									</div>
 
-								<div class="col-4">Daño en Obra Complementaria</div>
-								<div class="col-4">
-									<h:inputText name="comple" id="comple" class="form-control"
-										value="#{OccController.data.danos_obr_compl}" />
-								</div>
-								<div class="col-4">
-									<input type="text" name="comple_obs" id="comple_obs"
-										class="form-control" value="" />
-								</div>
+									<div class="col-4">Daño en Obra Complementaria</div>
+									<div class="col-4">
+										<h:inputText name="comple" id="comple" class="form-control"
+											value="#{OccController.data.danos_obr_compl}" />
+									</div>
+									<div class="col-4">
+										<input type="text" name="comple_obs"
+											class="form-control obs_val obs4" value="" />
+									</div>
 
-								<div class="col-4">Daño en Plazas de Cobro</div>
-								<div class="col-4">
-									<h:inputText name="plaza" id="plaza" class="form-control"
-										value="#{OccController.data.dano_plz_cobro}" />
-								</div>
-								<div class="col-4">
-									<input type="text" name="plaza_obs" id="plaza_obs"
-										class="form-control" value="" />
-								</div>
+									<div class="col-4">Daño en Plazas de Cobro</div>
+									<div class="col-4">
+										<h:inputText name="plaza" id="plaza" class="form-control"
+											value="#{OccController.data.dano_plz_cobro}" />
+									</div>
+									<div class="col-4">
+										<input type="text" name="plaza_obs"
+											class="form-control obs_val obs5" value="" />
+									</div>
 
-								<div class="col-4">Otros</div>
-								<div class="col-4">
-									<h:inputText name="otros" id="otros" class="form-control"
-										value="#{OccController.data.otros_sin}" />
-								</div>
-								<div class="col-4">
-									<input type="text" name="otros_obs" id="otros_obs"
-										class="form-control" value="" />
+									<div class="col-4">Otros</div>
+									<div class="col-4">
+										<h:inputText name="otros" id="otros" class="form-control"
+											value="#{OccController.data.otros_sin}" />
+									</div>
+									<div class="col-4">
+										<input type="text" name="otros_obs"
+											class="form-control obs_val obs6" value="" />
+									</div>
 								</div>
 							</div>
 						</div>
@@ -283,14 +291,21 @@
 							<button type="button" data-dismiss="modal"
 								class="btn btn-primary" id="saveUpdate">Actualizar</button>
 						</div>
+						<h:inputHidden value="#{OccController.data.obs_sin}" id="obsGets"/>
 						<h:inputHidden value="#{OccController.typeReport}"
 							id="type_reports"></h:inputHidden>
-							<h:inputHidden value="#{OccController.idTable}" />
-						<h:commandButton style="display:none" id="sinSave">
+						<h:inputHidden value="#{OccController.idTable}" />
+						<h:inputHidden value="#{OccController.data.ocupantes_sin}"
+							id="ocupantesSIN" />
+						<h:inputHidden value="#{OccController.data.veh_sin}"
+							id="vehOcupantesSIN" />
+						<h:commandButton style="display:none" id="sinSave"
+							data-dismiss="modal">
 							<f:ajax execute="@form" render=":form-sin :list-table"
 								listener="#{OccController.saveOcc}" />
 						</h:commandButton>
-						<h:commandButton style="display:none;" id="updateSin">
+						<h:commandButton style="display:none;" id="updateSin"
+							data-dismiss="modal">
 							<f:ajax execute="@form" render=":form-sin :list-table"
 								listener="#{OccController.update}" />
 						</h:commandButton>
