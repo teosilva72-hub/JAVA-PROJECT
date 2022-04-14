@@ -110,14 +110,12 @@ public class FluxoPeriodoBean implements Serializable {
 	Font fontDataHeader, fontEspaco2, fontEspaco, fontBodyHeader2, fontBodyHeader, fontBackgroundColor, fontNumbersTitle,
 	fontSubHeader, fontBody, fontIntervalo;
 	
-	int indice;	 
-	int interResp, last_index;		
-	int increment, incEquip, fieldsLenght; 
-	String dtInicio, fileName, data_inicial, data_final;
+	int indice, interResp, last_index, fieldsLenght; 
+	String dtInicio, fileName;
 
 	String[] intervalo, interInicio, interFim, separador, data;
 	
-	int minuto, iterator, pos, hr, lin, col, p, empty, inc, index, indexInc;
+	int minuto, iterator, pos, hr, lin, col, p, empty, inc, index;
 		
 	@ManagedProperty("#{listEquips}")
 	private ListEquipments listEquips;
@@ -359,18 +357,9 @@ public class FluxoPeriodoBean implements Serializable {
 			
 			startDate = dta.createData(diaInicial, mth, yr);
 			endDate = dta.createDateTime(daysInMonth, mth, yr, endHour, endMin, endSec);
-						
-			data_inicial = startDate;
-			data_final = dta.createData(diaInicial, mth, yr);	
-										
+													
 			tam = dta.periodsRange(period);
-			
-			increment = 0; incEquip = 0;				
-									
-			if(tam == 1) {increment = daysInMonth; incEquip = daysInMonth;}
-			else if(tam == 4) {increment = daysInMonth * tam; incEquip = daysInMonth * tam;}
-			else {increment = (tam * daysInMonth); incEquip = tam;}
-					
+												
 			tamanho = ((daysInMonth * tam) * equips.length);	
 								
 			dtInicio = startDate;			
@@ -389,8 +378,7 @@ public class FluxoPeriodoBean implements Serializable {
 			p = 0;
 			empty = 0;			
 			index = 0;
-			indexInc = 0;
-			
+						
 			data = dta.preencherDataFluxoPeriodo(startDate, endDate, tamanho, tam);								
 			days = dta.preencherDias(tamanho, tam);	
 																	
@@ -414,7 +402,7 @@ public class FluxoPeriodoBean implements Serializable {
 			   interFim = dta.intervaloSeparador24Horas(tamanho);	
 			   separador = dta.intervaloSeparador(tamanho);		          
 			}
-			
+						
 			resultQuery = new String[tamanho][fieldsLenght];
 			
 			//System.out.println(tamanho);
@@ -429,15 +417,12 @@ public class FluxoPeriodoBean implements Serializable {
 			
 				// System.out.println("-----------------");
 				 // System.out.println("Entrando no Loop ...");
-
-					if(last_index != sheetIndex) // Enquanto não é o ultimo index incrementa essa formula
-						pos += ((daysInMonth - 1) * tam);	
-					
-					if(Integer.parseInt(equip) != equip_anterior)
-							dtInicio = startDate;						
-																			 
-					index = increment * sheetIndex;					
-										
+													
+					if(Integer.parseInt(equip) != equip_anterior) {
+						 dtInicio = startDate;					    
+					     pos = (sheetIndex * ((daysInMonth * tam)));	
+					}					
+																
 					SAT sat = new SAT();
 					
 					sat = satList.get(sheetIndex);
@@ -445,11 +430,11 @@ public class FluxoPeriodoBean implements Serializable {
 					String[][] auxResult = dao.getVehicles(startDate, endDate, equip, period, sat, fieldsLenght, tamanho);
 					
 					//CASO EXISTA REGISTROS ENTRA AQUI
-					if(auxResult.length > 0) {		
-						
+					if(auxResult.length > 0) {	
+																	
 					lin = auxResult.length;
 					col = auxResult[0].length;
-															
+																			
 					for(int j = 0; j < lin; j++) {
 						   for(int i = 0; i < col; i++) {
 						
@@ -466,15 +451,15 @@ public class FluxoPeriodoBean implements Serializable {
 							}
 						
 							// Restrio caso no haja dados nos primeiros registros
-							if ((startDate != null) && (!auxResult[j][0].equals(startDate))) {   // Executa uma unica vez
+							if ((dtInicio != null) && (!auxResult[j][0].equals(dtInicio))) {   // Executa uma unica vez
 								
 								if(period.equals("24 hours"))
-									iterator = (int) dta.daysDifference(startDate, auxResult[j][0]);
+									iterator = (int) dta.daysDifference(dtInicio, auxResult[j][0]);
 
-								else iterator = dta.daysDifference(startDate, auxResult[j][0], tam);	
+								else iterator = dta.daysDifference(dtInicio, auxResult[j][0], tam);	
 								
 								pos+= iterator;
-								startDate = null;
+								dtInicio = null;
 
 							} else if (!auxResult[j][0].equals(data_anterior)) {								
 															
@@ -487,30 +472,29 @@ public class FluxoPeriodoBean implements Serializable {
 							} 			
 							
 							 data_anterior = auxResult[j][0];
-							 equip_anterior = sat.getEquip_id();
-													
+																				
 							 if(period.equals("15 minutes")) {	
 								 p = dta.index15Minutes(hr, minuto);
-						         indexInc = p + pos + inc;										
+						         index = p + pos;										
 							 }					
 							 
 							 else if(period.equals("01 hour"))				
-								 indexInc = pos + hr + inc;
+								 index = pos + hr;
 							
 							
 							else if(period.equals("24 hours"))
-								  indexInc = pos + inc;
+								  index = pos;
 																	 
 							if(i > 1 )
-							    resultQuery[indexInc][i] = auxResult[j][i];
-											
+							    resultQuery[index][i] = auxResult[j][i];
+																									
 						   } // CASO NO EXISTA VALOR >>>>>>> PASSA
 						 }
 					   }
 					
-						last_index = sheetIndex;
+					 equip_anterior = Integer.parseInt(equip);
 					
-					} else  pos += tam;												
+					}											
 								   
 			}catch(Exception ex) {
 				ex.printStackTrace();
@@ -541,57 +525,51 @@ public class FluxoPeriodoBean implements Serializable {
 	   month = parameterMap.get("month"); // MONTH	
 	   year = parameterMap.get("year"); // YEAR
 					  		
-		 workbook = new SXSSFWorkbook(-1); //Criar Pasta do Excel	
+		 workbook = new SXSSFWorkbook();
 				 
 		 fileName = localeSat.getStringKey("via_paulista_flow_per_period_file_name")+"_"+tm.periodName(period)+"_"+tm.MonthAbbreviation(month)+"_"+tm.yearAbbreviation(year);
 		 		 
 	     satList = new ArrayList<SAT>();	
 		 satList = equipDao.ListSATinfoHeader(equips);	
+		 
+		 // INSTANCE DATA		 
+		 instaciarProcessaDados(dta);
 		
-		  //--- Initializing --- //	
+		  //--- INITIALIZE --- //	
 		
 		  step = 1; //
-			  message(step);	// CREATE SHEETS MESSAGE
-					 				 		 								   		       		
-         step = 2;
-         	message(step);	 // CREATE SHEETS ENDED MESSAGE
-                		 
-		 instaciarProcessaDados(dta);	
-		 		 
+			  message(step);  // STARTING PROCESS MESSAGE				 				 		 								   		       		
+                   		 		 			 		 
 		 for(indice=0; indice < equips.length; indice++) {				 
 																																		 
-				 step = 3;
+				 step = 2;
 				 	message(step);	// DATA PROCESS MESSAGE		
 				 	
-				 step = 7;	
-				 	message(step);		
+				 step = 0;	
+				 	message(step);	// NO MESSAGE TO DISPLAY	
 				 				 											
 				 processaDados(indice, equips[indice], dta, satList);
 				 			 			 			
-				 if(indice == (equips.length-1)) {
-				 
-					     step = 4;
+				 if(indice == (equips.length-1)) {				 
+					     step = 3;
 					     	message(step);	// PROCESS DATA ENDED						     	
 				  }			
 		   	}
 		 
+		 	step = 4;
+	     		message(step);	// PROCESS EXCEL FILE MESSAGE	
+	     		
+	     	step = 0;
+			    message(step);	// NO MESSAGE TO DISPLAY 
+		 
+		 	generateExcelPeriodFlow(equips); // GENERATING EXCEL MESSAGE
+		 	
 		    step = 5;
-		    	message(step);	// ENDING PROCESS MESSAGE
-		    	
-		    	 step = 7;	
-				 	message(step);
-					 		   		   		    		    
-		    step = 6;		   
-		    	message(step);	// PROCESS ENDED MESSAGE	
-		    	
-		    	 step = 7;	
-				 	message(step);
-								
+		    	message(step);	// COMPLETED MESSAGE
+		   								
 			// ACTIVATE EXCEL BUTTON
-			SessionUtil.executeScript("$('#activate-excel-act').prop('disabled', false);");
-			
-			periodFlowTemplate(equips); // EXECUTE EXCEL 
-									        
+			SessionUtil.executeScript("$('#activate-excel-act').prop('disabled', false);"); // ENABLE DOWNLOAD BUTTON
+												        
 	    }	  
 	  
 	// -------------------------------------------------------------------------------------------------------------
@@ -754,7 +732,7 @@ public class FluxoPeriodoBean implements Serializable {
 			utilSheet.createCells(sheet, thirdRow, 1, 67, 2, 2);
 			
 			utilSheet.setCellValue(sheet, thirdRow, 2, 1, 2);
-			utilSheet.setCellValue(sheet, thirdRow, 2, 2, localeSheet.getStringKey("$label_excel_sheet_period_flow_model")+" - "+tm.periodName(period));
+			utilSheet.setCellValue(sheet, thirdRow, 2, 2, tm.periodName(period));
 		
 			utilSheet.setCellValue(sheet, thirdRow, 2, 6, satList.get(sheetIndex).getSentido1());
 			utilSheet.setCellValue(sheet, thirdRow, 2, 10, satList.get(sheetIndex).getSentido2());
@@ -934,226 +912,118 @@ public class FluxoPeriodoBean implements Serializable {
 		}
 		
 		// -------------------------------------------------------------------------------------------------------------
-			
-		public void createDataRows(Sheet sheet) {    	 
-
-			int rowIndex; // Variáveis para criar o excel	
-			int startRow = 5;
-			int endRow = ((daysInMonth * tam) + 5); // trabalhar aqui
-			
-			Row row = null;
-			
-			utilSheet.createRows(sheet, row, startRow, endRow);
-			utilSheet.createCells(sheet, row, 1, 67, startRow, endRow);
-				
-			for(rowIndex = startRow; rowIndex < endRow; rowIndex++) {
-
-				utilSheet.setCellStyle(sheet, row, numbersTitle, rowIndex, 1);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 2);
-				
-				utilSheet.setCellStyle(sheet, row, intervaloStyle, rowIndex, 3);
-				utilSheet.setCellStyle(sheet, row, intervaloStyle, rowIndex, 4);
-				utilSheet.setCellStyle(sheet, row, intervaloStyle, rowIndex, 5);															
-
-				// FLOW
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 6);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 7);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 8);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 9);
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 10);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 11);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 12);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 13);
-				
-				// SPEED AVG
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 15);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 16);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 17);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 18);
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 19);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 20);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 21);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 22);
-			
-				// MEDIAN SPEED 50%
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 24);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 25);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 26);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 27);
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 28);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 29);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 30);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 31);
-			
-				// MEDIAN SPEED 85%
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 33);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 34);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 35);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 36);
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 37);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 38);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 39);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 40);
-				
-				// MAX SPEED			
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 42);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 43);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 44);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 45);
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 46);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 47);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 48);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 49);
-
-				// MIN SPEED 
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 51);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 52);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 53);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 54);
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 55);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 56);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 57);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 58);
-
-				// STANDARD DEVIATION
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 60);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 61);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 62);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 63);
-				
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 64);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 65);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 66);
-				utilSheet.setCellStyle(sheet, row, style1, rowIndex, 67);
-
-			}		        
-		}	
-	  
-		// -------------------------------------------------------------------------------------------------------------
-	  
+			  
 	public void preencherDadosExcel(Workbook workbook, Sheet sheet, List<SAT> satList, int tam, int indice, String[][] dados) throws IOException {    	 
 						
-		int i, idx, rowIndex; // Variáveis para criar o excel	
+		int i = 0, idx = 0, rowIndex = 0; // Variáveis para criar o excel	
 		int rowMax = ((daysInMonth * tam) + 5); // trabalhar aqui  					        
 		int maxLimit = (daysInMonth * tam);	
+		
+		int increment = (indice * maxLimit); // INCREMENT INDEX
 
 		sheet = workbook.getSheet(satList.get(indice).getNome()); 
 		Row row = null;
-		
-		createDataRows(sheet);  // CREATE ROWS
-											
+													
 		for (rowIndex = 5, i= 0; rowIndex <= rowMax && i < (rowMax - 5); rowIndex++, i++) { 
-		
-			idx = i + (indice * maxLimit);	
 			
-			utilSheet.setCellValue(sheet, row, rowIndex, 1, (rowIndex + 1)); // NUMBERS  			
-						
-			if(days[i] != null) {
-				utilSheet.setCellValue(sheet, row, rowIndex, 2, Integer.parseInt(days[i])); // DAYS
-				utilSheet.setCellStyle(sheet, row, dayStyle, rowIndex, 2);
+			utilSheet.createRow(sheet, row, rowIndex); // CRIAR AS LINHAS
+		
+			idx = i + increment;		
+			
+			utilSheet.createCellWithValueAndStyle(sheet, row, numbersTitle, rowIndex, 1, (rowIndex + 1)); // NUMBERS
 				
-			} else utilSheet.setCellValue(sheet, row, rowIndex, 2, ""); // DAYS
+			if(days[i] != null) 
+				utilSheet.createCellWithValueAndStyle(sheet, row, dayStyle, rowIndex, 2, Integer.parseInt(days[i])); // DAYS
+								
+			else utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 2, ""); // DAYS
 		
-			utilSheet.setCellValue(sheet, row, rowIndex, 3, interInicio[i]); // START			
-			utilSheet.setCellValue(sheet, row, rowIndex, 4, separador[i]); // SEPARATOR
-			utilSheet.setCellValue(sheet, row, rowIndex, 5, interFim[i]); // END
-
+			utilSheet.createCellWithValueAndStyle(sheet, row, intervaloStyle, rowIndex, 3, interInicio[i]); // START			
+			utilSheet.createCellWithValueAndStyle(sheet, row, intervaloStyle, rowIndex, 4, separador[i]); // SEPARATOR
+			utilSheet.createCellWithValueAndStyle(sheet, row, intervaloStyle, rowIndex, 5, interFim[i]); // END
+			    
 			// FLOW		    
-			
-		    utilSheet.setCellValue(sheet, row, rowIndex, 6, dados[idx][2]); // LIGHT S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 7, dados[idx][3]); // COM S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 8, dados[idx][4]); // MOTO S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 9, dados[idx][5]); // TOTAL S1
+
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 6, dados[idx][2] == null ? 0 : Integer.parseInt(dados[idx][2])); // LIGHT S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 7, dados[idx][3] == null ? 0 : Integer.parseInt(dados[idx][3])); // COM S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 8, dados[idx][4] == null ? 0 : Integer.parseInt(dados[idx][4])); // MOTO S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 9, dados[idx][5] == null ? 0 : Integer.parseInt(dados[idx][5])); // TOTAL S1
 		    
-		    utilSheet.setCellValue(sheet, row, rowIndex, 10, dados[idx][6]); // LIGHT S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 11, dados[idx][7]); // COM S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 12, dados[idx][8]); // MOTO S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 13, dados[idx][9]); // TOTAL S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 10, dados[idx][6] == null ? 0 : Integer.parseInt(dados[idx][6])); // LIGHT S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 11, dados[idx][7] == null ? 0 : Integer.parseInt(dados[idx][7])); // COM S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 12, dados[idx][8] == null ? 0 : Integer.parseInt(dados[idx][8])); // MOTO S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 13, dados[idx][9] == null ? 0 : Integer.parseInt(dados[idx][9])); // TOTAL S2
 	
 			// SPEED AVERAGE
 		    
-		    utilSheet.setCellValue(sheet, row, rowIndex, 15, dados[idx][10]); // LIGHT S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 16, dados[idx][11]); // COM S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 17, dados[idx][12]); // MOTO S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 18, dados[idx][13]); // TOTAL S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 15, dados[idx][10] == null ? 0 : Integer.parseInt(dados[idx][10])); // LIGHT S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 16, dados[idx][11] == null ? 0 : Integer.parseInt(dados[idx][11])); // COM S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 17, dados[idx][12] == null ? 0 : Integer.parseInt(dados[idx][12])); // MOTO S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 18, dados[idx][13] == null ? 0 : Integer.parseInt(dados[idx][13])); // TOTAL S1
 		    
-		    utilSheet.setCellValue(sheet, row, rowIndex, 19, dados[idx][14]); // LIGHT S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 20, dados[idx][15]); // COM S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 21, dados[idx][16]); // MOTO S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 22, dados[idx][17]); // TOTAL S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 19, dados[idx][14] == null ? 0 : Integer.parseInt(dados[idx][14])); // LIGHT S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 20, dados[idx][15] == null ? 0 : Integer.parseInt(dados[idx][15])); // COM S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 21, dados[idx][16] == null ? 0 : Integer.parseInt(dados[idx][16])); // MOTO S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 22, dados[idx][17] == null ? 0 : Integer.parseInt(dados[idx][17])); // TOTAL S2
 		
 			// MEDIAN SPEED 50%		
 		    
-		    utilSheet.setCellValue(sheet, row, rowIndex, 24, dados[idx][18]); // LIGHT S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 25, dados[idx][19]); // COM S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 26, dados[idx][20]); // MOTO S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 27, dados[idx][21]); // TOTAL S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 24, dados[idx][18] == null ? 0 : Integer.parseInt(dados[idx][18])); // LIGHT S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 25, dados[idx][19] == null ? 0 : Integer.parseInt(dados[idx][19])); // COM S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 26, dados[idx][20] == null ? 0 : Integer.parseInt(dados[idx][20])); // MOTO S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 27, dados[idx][21] == null ? 0 : Integer.parseInt(dados[idx][21])); // TOTAL S1
 		    
-		    utilSheet.setCellValue(sheet, row, rowIndex, 28, dados[idx][22]); // LIGHT S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 29, dados[idx][23]); // COM S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 30, dados[idx][24]); // MOTO S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 31, dados[idx][25]); // TOTAL S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 28, dados[idx][22] == null ? 0 : Integer.parseInt(dados[idx][22])); // LIGHT S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 29, dados[idx][23] == null ? 0 : Integer.parseInt(dados[idx][23])); // COM S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 30, dados[idx][24] == null ? 0 : Integer.parseInt(dados[idx][24])); // MOTO S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 31, dados[idx][25] == null ? 0 : Integer.parseInt(dados[idx][25])); // TOTAL S2
 		
 		    // MEDIAN SPEED 85%		
 		    
-		    utilSheet.setCellValue(sheet, row, rowIndex, 33, dados[idx][26]); // LIGHT S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 34, dados[idx][27]); // COM S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 35, dados[idx][28]); // MOTO S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 36, dados[idx][29]); // TOTAL S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 33, dados[idx][26] == null ? 0 : Integer.parseInt(dados[idx][26])); // LIGHT S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 34, dados[idx][27] == null ? 0 : Integer.parseInt(dados[idx][27])); // COM S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 35, dados[idx][28] == null ? 0 : Integer.parseInt(dados[idx][28])); // MOTO S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 36, dados[idx][29] == null ? 0 : Integer.parseInt(dados[idx][29])); // TOTAL S1
 		  
-		    utilSheet.setCellValue(sheet, row, rowIndex, 37, dados[idx][30]); // LIGHT S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 38, dados[idx][31]); // COM S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 39, dados[idx][32]); // MOTO S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 40, dados[idx][33]); // TOTAL S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 37, dados[idx][30] == null ? 0 : Integer.parseInt(dados[idx][30])); // LIGHT S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 38, dados[idx][31] == null ? 0 : Integer.parseInt(dados[idx][31])); // COM S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 39, dados[idx][32] == null ? 0 : Integer.parseInt(dados[idx][32])); // MOTO S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 40, dados[idx][33] == null ? 0 : Integer.parseInt(dados[idx][33])); // TOTAL S2
 
 			// MAX SPEED
-		    
-		    utilSheet.setCellValue(sheet, row, rowIndex, 42, dados[idx][34]); // LIGHT S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 43, dados[idx][35]); // COM S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 44, dados[idx][36]); // MOTO S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 45, dados[idx][37]); // TOTAL S1
+		    		    
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 42, dados[idx][34] == null ? 0 : Integer.parseInt(dados[idx][34])); // LIGHT S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 43, dados[idx][35] == null ? 0 : Integer.parseInt(dados[idx][35])); // COM S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 44, dados[idx][36] == null ? 0 : Integer.parseInt(dados[idx][36])); // MOTO S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 45, dados[idx][37] == null ? 0 : Integer.parseInt(dados[idx][37])); // TOTAL S1
 		  
-		    utilSheet.setCellValue(sheet, row, rowIndex, 46, dados[idx][38]); // LIGHT S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 47, dados[idx][39]); // COM S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 48, dados[idx][40]); // MOTO S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 49, dados[idx][41]); // TOTAL S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 46, dados[idx][38] == null ? 0 : Integer.parseInt(dados[idx][38])); // LIGHT S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 47, dados[idx][39] == null ? 0 : Integer.parseInt(dados[idx][39])); // COM S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 48, dados[idx][40] == null ? 0 : Integer.parseInt(dados[idx][40])); // MOTO S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 49, dados[idx][41] == null ? 0 : Integer.parseInt(dados[idx][41])); // TOTAL S2
 		
 		    // MIN SPEED
-		    
-		    utilSheet.setCellValue(sheet, row, rowIndex, 51, dados[idx][42]); // LIGHT S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 52, dados[idx][43]); // COM S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 53, dados[idx][44]); // MOTO S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 51, dados[idx][45]); // TOTAL S1
-		 
-		    utilSheet.setCellValue(sheet, row, rowIndex, 55, dados[idx][46]); // LIGHT S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 56, dados[idx][47]); // COM S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 57, dados[idx][48]); // MOTO S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 58, dados[idx][49]); // TOTAL S2
+		    		 		    
+			utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 51, dados[idx][42] == null ? 0 : Integer.parseInt(dados[idx][42])); // LIGHT S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 52, dados[idx][43] == null ? 0 : Integer.parseInt(dados[idx][43])); // COM S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 53, dados[idx][44] == null ? 0 : Integer.parseInt(dados[idx][44])); // MOTO S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 51, dados[idx][45] == null ? 0 : Integer.parseInt(dados[idx][45])); // TOTAL S1
+		 		   
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 55, dados[idx][46] == null ? 0 : Integer.parseInt(dados[idx][46])); // LIGHT S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 56, dados[idx][47] == null ? 0 : Integer.parseInt(dados[idx][47])); // COM S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 57, dados[idx][48] == null ? 0 : Integer.parseInt(dados[idx][48])); // MOTO S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 58, dados[idx][49] == null ? 0 : Integer.parseInt(dados[idx][49])); // TOTAL S2
 									
 			// STANDARD DEVIATION
-		    
-		    utilSheet.setCellValue(sheet, row, rowIndex, 60, dados[idx][50]); // LIGHT S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 61, dados[idx][51]); // COM S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 62, dados[idx][52]); // MOTO S1
-		    utilSheet.setCellValue(sheet, row, rowIndex, 63, dados[idx][53]); // TOTAL S1
+		    		    
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 60, dados[idx][50] == null ? 0 : Integer.parseInt(dados[idx][50])); // LIGHT S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 61, dados[idx][51] == null ? 0 : Integer.parseInt(dados[idx][51])); // COM S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 62, dados[idx][52] == null ? 0 : Integer.parseInt(dados[idx][52])); // MOTO S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 63, dados[idx][53] == null ? 0 : Integer.parseInt(dados[idx][53])); // TOTAL S1
 		
-		    utilSheet.setCellValue(sheet, row, rowIndex, 64, dados[idx][54]); // LIGHT S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 65, dados[idx][55]); // COM S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 66, dados[idx][56]); // MOTO S2
-		    utilSheet.setCellValue(sheet, row, rowIndex, 67, dados[idx][57]); // TOTAL S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 64, dados[idx][54] == null ? 0 : Integer.parseInt(dados[idx][54])); // LIGHT S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 65, dados[idx][55] == null ? 0 : Integer.parseInt(dados[idx][55])); // COM S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 66, dados[idx][56] == null ? 0 : Integer.parseInt(dados[idx][56])); // MOTO S2
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 67, dados[idx][57] == null ? 0 : Integer.parseInt(dados[idx][57])); // TOTAL S2
 		
 		}
 	
@@ -1244,78 +1114,52 @@ public class FluxoPeriodoBean implements Serializable {
 	public void message(int step) { 
 		
 	    // System.out.println("step by step");
+				 
+	        if(step == 0) {
+	        	displayMessage += "";
+	        	updateForm();        	
+	        }
 						
 			if(step == 1) {
-				
-				if(equips.length > 1)    
-						displayMessage = localeSat.getStringKey("$label_period_flow_message_begin")
-						      + "\n"+localeSat.getStringKey("$label_period_flow_message_create_sheets");
-				
-						else displayMessage += localeSat.getStringKey("$label_period_flow_message_begin")
-								+ "\n"+localeSat.getStringKey("$label_period_flow_message_create_sheet");
-					
-					updateForm(); // UPDATE MODAL FORM VIEW
+				 displayMessage = localeSat.getStringKey("$label_period_flow_message_start"); // START MESSAGE
+				 updateForm(); // UPDATE MODAL FORM VIEW
 				   											    
 				}
-        				
-			if(step == 2) {
-				if(equips.length > 1) 
-						displayMessage +="\n"+localeSat.getStringKey("$label_period_flow_message_created_sheets");		
-					
-					else displayMessage +="\n"+localeSat.getStringKey("$label_period_flow_message_created_sheet");
-							
-						updateForm(); // UPDATE MODAL FORM VIEW	   
-				}
-		
-		   if(step == 3) {		   
-			    displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_process_sheets")+" "+satList.get(indice).getNome()+" ...";
-			    	updateForm(); // UPDATE MODAL FORM VIEW				    	
-			    
+        			
+		   if(step == 2) {		   
+			    displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_processing_data")+" "+satList.get(indice).getNome()+" ..."; // PROCESS INFORMATION
+			    updateForm(); // UPDATE MODAL FORM VIEW			    
 		   	}
 							
-	        if(step == 4) {
-	        	
-	        	if(equips.length > 1)        	
-	        	     displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_end_process_sheets");        	
-	        		        		        	
-	        		  updateForm(); // UPDATE MODAL FORM VIEW
-	        	 	
-	        	}
-					   
-	        if(step == 5) {        	
-	   				displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_ending_process_sheet");	   			                  				
-	   				  updateForm(); // UPDATE MODAL FORM VIEW   				
-	        	}
-   		        
-	        if(step == 6) {
-	        		displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_ended_process_sheet"); 
-	        		updateForm(); // UPDATE MODAL FORM VIEW  
-	        	    SessionUtil.executeScript("PF('poll').stop();");   
-	        	    // System.out.println("Stopped!");	        	    	
-	         } 	
-	        
-	        if(step == 7) {
-	        	displayMessage += "";
-	        	updateForm(); 
-	        	
+	        if(step == 3) {        	     	
+	        	displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_ended_process"); // PROCESS ENDED       		        		        	
+	        	updateForm(); // UPDATE MODAL FORM VIEW	        	 	
 	        }
+					   
+	        if(step == 4) {        	
+	   			displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_generate_excel_file"); // GENERATE EXCEL FILE	   			                  				
+	   			updateForm(); // UPDATE MODAL FORM VIEW   				
+	        }
+   		        
+	        if(step == 5) {        	
+        		displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_end");  // COMPLETED
+        		updateForm(); // UPDATE MODAL FORM VIEW       	  	        	    	
+	         }       
 	        
-	        if(step != 6)
-	        	SessionUtil.executeScript("scrollOnBottom();");  
+	        if(step != 5)
+	        	SessionUtil.executeScript("scrollOnBottom();");  // SCROLL ON BOTTOM DURING PROCESS
 		 }
 	
 		// -----------------------------------------------------------------------------------------   	   	     	     	     
 			     	     
-	     public void periodFlowTemplate(String[] equips) throws IOException {
+	     public void generateExcelPeriodFlow(String[] equips) throws IOException {
 	    	 
-	    	 for(int i = 0; i < equips.length; i++) {	    	 	    	 
-	    		 	createExcelHeader(sheet, i, satList); // Create 	    	 
-	    		 	preencherDadosExcel(workbook, sheet, satList, tam, i, resultQuery);
-	    	 }
-	    	 	   	
-	    	 
-	    	 //System.out.println("EXECUTOU");
-	    	 
+	    	 for(int i = 0; i < equips.length; i++) {	// EXECUTA O FOR PARA CADA EQUIPAMENTO SELECIONADO
+	    		 
+	    		 	createExcelHeader(sheet, i, satList); // CRIA A FOLHA DO EXCEL	    	 
+	    		 	preencherDadosExcel(workbook, sheet, satList, tam, i, resultQuery); // PREENCHE DADOS DO EXCEL APOS CRIAR A FOLHA
+	    		 	
+	    	 }	    	    	 
 	     }	       
 	     
 	  // ----------------------------------------------------------------------------------------- 

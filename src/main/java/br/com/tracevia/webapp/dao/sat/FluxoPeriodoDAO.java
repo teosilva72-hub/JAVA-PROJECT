@@ -169,7 +169,7 @@ public class FluxoPeriodoDAO {
 		if(period.equals("24 hours"))			
 			 select += "GROUP BY SD";		
 		
-		System.out.println(select);
+		//System.out.println(select);
 				
 		try {
 		
@@ -200,7 +200,7 @@ public class FluxoPeriodoDAO {
 
 							resultSet[row][col] = rs.getString((col + 1));
 						
-						   // System.out.println("LIN["+row+"]COL["+col+"] = "+resultSet[row][col] );
+						    // System.out.println("LIN["+row+"]COL["+col+"] = "+resultSet[row][col] );
 							// DEBBUGER
 						}
 

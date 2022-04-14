@@ -211,7 +211,7 @@
 	       					<!---->	   
 	       					
 	       					<button type="reset" id="activate-dismiss-modal"
-								class="btn btn-dark form-modal-draw-button" disabled="true" onclick="$('#dismiss-modal').click(); $('#activate-dismiss-modal').prop('disabled', true);">
+								class="btn btn-dark form-modal-draw-button" disabled="true" onclick="$('#dismiss-modal').click(); $('#activate-dismiss-modal').prop('disabled', true); PF('poll').stop();">
 								 <i class="fas fa-sign-out-alt"></i>
 								 #{reportsLabels.reports_modal_alert_btn_exit}
 							</button>    							   									
