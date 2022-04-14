@@ -6,7 +6,6 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
 import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
-import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.occ.TuxpanOccModel;
 
 public class TuxpanDAO{
@@ -151,7 +150,7 @@ public class TuxpanDAO{
 					report.setMortos(rs.getString(47));
 					report.setObs_sin(rs.getString(48));
 					
-					long occ = conn.executeUpdate();
+					conn.executeUpdate();
 				}
 			}
 
@@ -170,7 +169,7 @@ public class TuxpanDAO{
 				"num_veh_inv, marca_veh_inv, tipo_veh_inv, modelo_veh_inv, color_veh_inv, placa_est_veh_inv, tel_veh_inv, num_person,"+
 				"nombre_person, edad_person, condiccion_person, hora, type_report, "+
 				"def_metal, sinal, dano_pav, dano_cor_ter, dano_obr, dano_plz, otros_sin, ocupantes_vh, vh_ocupantes, lesionado, muerto, causas, obs_sin)"+
-				" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		try {
 			conn.start(1);
@@ -235,12 +234,11 @@ public class TuxpanDAO{
 		return saveOcc;
 	}
 	public ArrayList<TuxpanOccModel> listarOcorrencias() throws Exception {
-		String query = "SELECT id, folio_secuencial, reporte, siniestro, fecha, hora FROM occ_tuxpan";	
+		String query = "SELECT id, folio_secuencial, reporte, siniestro, fecha, hora, type_report FROM occ_tuxpan";	
 
 		ArrayList<TuxpanOccModel> listarOcc = new ArrayList<TuxpanOccModel>();
 		//System.out.println(query);
 		try {
-			TranslationMethods occTranslation = new TranslationMethods();
 			conn.start(1);
 			conn.prepare(query);
 			MapResult result = conn.executeQuery();
@@ -254,6 +252,7 @@ public class TuxpanDAO{
 					occ.setSiniestro(ifEmpty(rs.getString(4)));;
 					occ.setFecha(ifEmpty(rs.getString(5)));
 					occ.setHora(ifEmpty(rs.getString(6)));
+					occ.setType_report(type(rs.getString(7)));
 
 					listarOcc.add(occ);
 				}
@@ -263,7 +262,18 @@ public class TuxpanDAO{
 		}
 		return listarOcc;
 	}
-
+	public String type(String val) {
+		switch (val) {
+			case "1":
+				return "OCC";
+				
+			case "2":
+				return "SIN";
+			
+			default:
+				return "Error";
+		}
+	}
 	public String ifEmpty(String val) {
 		return val != null ? val.isEmpty() ? "----------" : val : "----------";
 	}

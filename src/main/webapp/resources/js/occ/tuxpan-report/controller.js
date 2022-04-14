@@ -6,18 +6,22 @@ $(init => {
     hiddenBts()
     clickUpdate()
     blockVirgula()
-    saveSin()
     formSin()
     setTimeout(a => {
         vehOcupSin()
     }, 100)
 
+	$('#modalOcc, #modalSin').on("hidden.bs.modal", () => {
+		$("#resetFormSin, #resetFormOcc").click()
+	})
 })
 
 function formSin() {
     $('#type_sin').click(a => {
+		getObsSin()
         blockVirgula()
         hiddenBts()
+		saveSin()
     })
 }
 
@@ -112,6 +116,7 @@ function clickSave() {
 function saveSin() {
     $('#saveSin').click(a => {
         getVehOcupSin()
+		getObsSin()
         setTimeout(b => {
             $('#sinSave').click()
             listSin()

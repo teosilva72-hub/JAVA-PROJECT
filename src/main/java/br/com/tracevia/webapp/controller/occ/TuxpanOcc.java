@@ -16,16 +16,35 @@ public class TuxpanOcc{
 
 	@PostConstruct
 	public void init() {
-		data = new TuxpanOccModel();
+		initializeData();
 		dao = new TuxpanDAO();
 		listar = new ArrayList<TuxpanOccModel>();
 
 		try {
 			listar = dao.listarOcorrencias();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public void initializeData() {
+		data = new TuxpanOccModel();
+	}
+	public void pdf() {
+		dao = new TuxpanDAO();
+		PDF pdf = new PDF();
+		try {
+			data = dao.select(idTable);
+			pdf.selectPdf(idTable, data);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	public boolean update() {
 		boolean check = false;
@@ -95,7 +114,7 @@ public class TuxpanOcc{
 
 		RequestContext.getCurrentInstance().execute(String.format("plusInputVehInv('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
 				tipo, eje, num_veh, marca, tipo_veh, modelo, cor, placa, tel, id_person, nombre, edad, cond));
-
+		//RequestContext.getCurrentInstance().execute("saveSin();");
 		return check;
 	}
 	public boolean saveOcc() {
@@ -138,19 +157,17 @@ public class TuxpanOcc{
 	}
 	public void scriptsOcc() {
 		RequestContext.getCurrentInstance().execute("appendOcc()");
-		RequestContext.getCurrentInstance().execute("saveSin()");
 		RequestContext.getCurrentInstance().execute("hiddenBts()");
 
 	}
 	public void scriptsSin() {
-
 		RequestContext.getCurrentInstance().execute("clickUpdate();");
 		RequestContext.getCurrentInstance().execute("blockVirgula();");
 		RequestContext.getCurrentInstance().execute("vehOcupSin();");
 		RequestContext.getCurrentInstance().execute("hiddenBtnSin();");
 	}
 	//variables
-	private String typeReport, idTable;
+	private String typeReport, idTable, reportType;
 	private TuxpanDAO dao;
 	private TuxpanOccModel data;
 	private List<TuxpanOccModel> listar;
@@ -160,6 +177,12 @@ public class TuxpanOcc{
 		return listar;
 	}
 
+	public String getReportType() {
+		return reportType;
+	}
+	public void setReportType(String reportType) {
+		this.reportType = reportType;
+	}
 	public String getIdTable() {
 		return idTable;
 	}
