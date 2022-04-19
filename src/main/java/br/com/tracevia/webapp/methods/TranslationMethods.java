@@ -715,18 +715,16 @@ public class TranslationMethods {
 	
      public String directions(String direction) {
 		
-		String dir = "";		
-		
 		switch(direction) {
 		
-		case "NORTH / SOUTH": dir = localeDirections.getStringKey("directions_north") + " / " + localeDirections.getStringKey("directions_south"); break;
-		case "SOUTH / NORTH": dir = localeDirections.getStringKey("directions_south") + " / " + localeDirections.getStringKey("directions_north"); break;
-		case "EAST / WEST": dir = localeDirections.getStringKey("directions_east") + " / " + localeDirections.getStringKey("directions_west"); break;
-		case "WEST / EAST": dir = localeDirections.getStringKey("directions_west") + " / " + localeDirections.getStringKey("directions_east") ; break;		
+		case "NORTH / SOUTH": direction = localeDirections.getStringKey("directions_north") + " / " + localeDirections.getStringKey("directions_south"); break;
+		case "SOUTH / NORTH": direction = localeDirections.getStringKey("directions_south") + " / " + localeDirections.getStringKey("directions_north"); break;
+		case "EAST / WEST": direction = localeDirections.getStringKey("directions_east") + " / " + localeDirections.getStringKey("directions_west"); break;
+		case "WEST / EAST": direction = localeDirections.getStringKey("directions_west") + " / " + localeDirections.getStringKey("directions_east") ; break;		
 		
 		}		
 		
-		return dir;	
+		return direction;	
 		
 	}
      
