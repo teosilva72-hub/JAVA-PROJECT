@@ -14,6 +14,11 @@ $(init => {
 	$('#modalOcc, #modalSin').on("hidden.bs.modal", () => {
 		$("#resetFormSin, #resetFormOcc").click()
 	})
+	$('[id$=downloadPdf]').click(e=>{
+		setTimeout(x=>{
+			$('[id$=pdfDownload]').click()
+		},200)
+	})
 })
 
 function formSin() {
@@ -155,12 +160,16 @@ function getVehInv() {
     let input = $('#vehInv_append .tipo_veh_inv')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#tipo_veh_inv').val(dados)
         //
     input = $('#vehInv_append .ejes')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#num_eje_veh_inv').val(dados)
         //
@@ -172,6 +181,8 @@ function getVehOcup() {
     let input = $('#add_append_sin input')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
 
     }
     return dados
@@ -182,36 +193,48 @@ function getTipoVeh() {
     let input = $('#tiposVeh .num_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#num_veh').val(dados)
         //
     input = $('#tiposVeh .marca_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#marca_veh').val(dados)
         //
     input = $('#tiposVeh .tipo_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#tipo_veh').val(dados)
         //
     input = $('#tiposVeh .modelo_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#modelo_veh').val(dados)
         //
     input = $('#tiposVeh .color_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#cor_veh').val(dados)
         //
     input = $('#tiposVeh .placa_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#placa_veh').val(dados)
 
@@ -219,6 +242,8 @@ function getTipoVeh() {
     input = $('#tiposVeh .tel_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#tel_veh').val(dados)
         //
@@ -230,24 +255,32 @@ function getPerson() {
     let input = $('#datos_person .id_person')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#id_person').val(dados)
         //
     input = $('#datos_person .nombre_person')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#nombre_person').val(dados)
         //
     input = $('#datos_person .edad_person')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#edad_person').val(dados)
         //
     input = $('#datos_person .cond_person')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#condiciones_person').val(dados)
         //
@@ -260,12 +293,16 @@ function getVehOcupSin() {
     let input = $('#add_append_sin .ocupSin')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#ocupantesSIN').val(dados)
         //
     input = $('#add_append_sin .vehSin')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#vehOcupantesSIN').val(dados)
         //
@@ -277,6 +314,8 @@ function getObsSin() {
     let input = $('#getObs .obs_val')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
+		if(dados[i] == "")
+			dados[i] = "-"
     }
     $('#obsGets').val(dados)
  
@@ -350,7 +389,7 @@ function vehInvAppend() {
 					<div class="input-group-prepend">
 						<span class="input-group-text">Tipo de Vehículo</span>
 					</div>
-					<input type="text" class="form-control tipo_veh_inv" />							
+					<input type="text" value="0" class="form-control tipo_veh_inv" />							
 				</div>
 			</div>
 			<div class="col-5 ${vehInv}${result}">
@@ -358,7 +397,7 @@ function vehInvAppend() {
 					<div class="input-group-prepend">
 						<span class="input-group-text">Nº Ejes</span>
 					</div>
-					<input type="text" class="form-control ejes" />							
+					<input type="text" value="0" class="form-control ejes" />							
 				</div>
 			</div>
             <div class="col-2 removeVEH ${vehInv}${result}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-archive-fill" viewBox="0 0 16 16"><path d="M12.643 15C13.979 15 15 13.845 15 12.5V5H1v7.5C1 13.845 2.021 15 3.357 15h9.286zM5.5 7h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1 0-1zM.8 1a.8.8 0 0 0-.8.8V3a.8.8 0 0 0 .8.8h14.4A.8.8 0 0 0 16 3V1.8a.8.8 0 0 0-.8-.8H.8z"/></svg></div>					

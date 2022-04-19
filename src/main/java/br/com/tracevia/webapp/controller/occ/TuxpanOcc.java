@@ -22,7 +22,7 @@ public class TuxpanOcc{
 
 		try {
 			listar = dao.listarOcorrencias();
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -31,21 +31,7 @@ public class TuxpanOcc{
 	public void initializeData() {
 		data = new TuxpanOccModel();
 	}
-	public void pdf() {
-		dao = new TuxpanDAO();
-		PDF pdf = new PDF();
-		try {
-			data = dao.select(idTable);
-			pdf.selectPdf(idTable, data);
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+	
 	public boolean update() {
 		boolean check = false;
 
