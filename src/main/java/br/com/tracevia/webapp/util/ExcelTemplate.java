@@ -2090,7 +2090,7 @@ public class ExcelTemplate {
 		
 		utilSheet.fileBodySimple(sheet, row, newLine, startCol, endCol, dataStartRow); // PREENCHER DADOS
 		
-		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol - 1, dataStartRow, dataEndRow - 1);
+		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol - 1, dataStartRow, dataEndRow);
 		
 	}
 	
