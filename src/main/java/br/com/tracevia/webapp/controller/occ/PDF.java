@@ -428,32 +428,32 @@ public class PDF {
 			
 			PdfPTable table4 = new PdfPTable(3);
 			table4.setTotalWidth(500);
-			table4.setTotalWidth(new float[]{ 165, 165, 165 });
+			table4.setTotalWidth(new float[]{ 250, 125, 125 });
 			table4.setLockedWidth(true);
 			String[] obs = model().getObs_sin().split(",");
 
-			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN", formatText))).setBorderColor(BaseColor.WHITE);
-			table4.addCell(new PdfPCell(new Phrase("SI/NO",formatText))).setBorder(Rectangle.BOTTOM);
-			table4.addCell(new PdfPCell(new Phrase("OBSERVACIONES", formatText))).setBorderColor(BaseColor.WHITE);
+			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN", formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
+			table4.addCell(new PdfPCell(new Phrase("SI/NO",formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
+			table4.addCell(new PdfPCell(new Phrase("OBSERVACIONES", formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			
 			table4.addCell(new PdfPCell(new Phrase("DEFENSA METÁLIZA", formatText)));
-			table4.addCell(new PdfPCell(new Phrase(model().getDef_metal(),formatText)));
+			table4.addCell(new PdfPCell(new Phrase(model().getDef_metal(),formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase(obs[0], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 
 			table4.addCell(new PdfPCell(new Phrase("SEÑALAMIENTO", formatText)));
-			table4.addCell(new PdfPCell(new Phrase(model().getSenal(),formatText)));
+			table4.addCell(new PdfPCell(new Phrase(model().getSenal(),formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase(obs[1], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			
 			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN PAVIMENTO", formatText)));
-			table4.addCell(new PdfPCell(new Phrase(model().getDano_pav(),formatText)));
+			table4.addCell(new PdfPCell(new Phrase(model().getDano_pav(),formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase(obs[2], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			
 			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN CORTES O TERRAPLENES", formatText)));
-			table4.addCell(new PdfPCell(new Phrase(model().getDanos_cort_trr(),formatText)));
+			table4.addCell(new PdfPCell(new Phrase(model().getDanos_cort_trr(),formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase(obs[3], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			
 			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN OBRA COMPLEMENTARIA", formatText)));
-			table4.addCell(new PdfPCell(new Phrase(model().getDanos_obr_compl(),formatText)));
+			table4.addCell(new PdfPCell(new Phrase(model().getDanos_obr_compl(),formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase(obs[4], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			
 			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN PLAZAS DE COBRO", formatText)));
@@ -461,7 +461,7 @@ public class PDF {
 			table4.addCell(new PdfPCell(new Phrase(obs[5], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			
 			table4.addCell(new PdfPCell(new Phrase("OTROS (AMBULANCIA, ABANDERAMIENTO OPERADORA", formatText)));
-			table4.addCell(new PdfPCell(new Phrase(model().getOtros_sin(),formatText)));
+			table4.addCell(new PdfPCell(new Phrase(model().getOtros_sin(),formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase(obs[6], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			document.add(table4);
 			document.add(conteudo);

@@ -1,5 +1,6 @@
 package br.com.tracevia.webapp.controller.occ;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,21 @@ public class TuxpanOcc{
 	public void initializeData() {
 		data = new TuxpanOccModel();
 	}
-	
+
+	public boolean createFolder() {
+		boolean check = false;
+		
+		if(saveOcc() == true) {
+			//create
+			File pasta = new File(System.getProperty("user.home"));
+			System.out.println(pasta);
+		}else {
+			//not create
+		}
+		
+		return check;
+	}
+
 	public boolean update() {
 		boolean check = false;
 
@@ -112,6 +127,7 @@ public class TuxpanOcc{
 			if(check == false) {
 				//message error
 			}else {
+				//createFolder();
 				//message success
 				if(typeReport.equals("1")) {
 					//type occ
