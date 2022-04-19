@@ -16,6 +16,9 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
 
+import com.groupdocs.conversion.internal.c.a.c.Border;
+import com.groupdocs.conversion.internal.c.a.pd.Cell;
+import com.groupdocs.conversion.internal.c.a.w.VerticalAlignment;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Document;
@@ -79,10 +82,8 @@ public class PDF {
 
 			//gera o arquivo		
 			document.open();			
-
 			//formato da folha
 			document.setPageSize(PageSize.A4);
-
 
 			//chamando a imagem
 			logo = ImageUtil.getInternalImagePath("images", "files", RoadConcessionaire.externalImagePath);
@@ -142,7 +143,6 @@ public class PDF {
 			document.add(table);
 			document.add(conteudo);
 			//
-
 			Paragraph title2 = new Paragraph("Vehículos Involucrados");
 			PdfPTable table1 = new PdfPTable(4);
 			table1.setTotalWidth(500);
@@ -193,7 +193,7 @@ public class PDF {
 				table2.addCell(new PdfPCell(new Phrase(placa_veh[a], formatText1)));
 				table2.addCell(new PdfPCell(new Phrase(tel[a], formatText1)));
 			}
-				
+
 			document.add(conteudo);
 			document.add(table2);
 			document.add(conteudo);
@@ -219,13 +219,13 @@ public class PDF {
 				table3.addCell(new PdfPCell(new Phrase(name_per[i], formatText1)));
 				table3.addCell(new PdfPCell(new Phrase(edad_per[i], formatText1)));
 				table3.addCell(new PdfPCell(new Phrase(cond_per[i], formatText1)));
-				
+
 			}
 
 			document.add(conteudo);
 			document.add(table3);
 			document.add(conteudo);
-			
+
 			Paragraph title5 = new Paragraph("");
 			PdfPTable table4 = new PdfPTable(2);
 			table4.setTotalWidth(500);
@@ -240,7 +240,6 @@ public class PDF {
 			table5.setTotalWidth(500);
 			table5.setTotalWidth(new float[]{ 50, 150, 300 });
 			table5.setLockedWidth(true);
-			int[] test = new int[19];
 			for(int i=0;i<19;i++) {
 				if(i == 0) {
 					table5.addCell(new PdfPCell(new Phrase("A", formatText1)));
@@ -275,7 +274,7 @@ public class PDF {
 			}
 			document.add(table5);
 			document.add(conteudo);
-			
+
 			PdfPTable tableObs = new PdfPTable(1);
 			tableObs.setTotalWidth(500);
 			tableObs.setTotalWidth(new float[]{ 500 });
@@ -284,8 +283,6 @@ public class PDF {
 			tableObs.addCell(new PdfPCell(new Phrase(model().getObs_occ(), formatText1)));
 			document.add(tableObs);
 			document.add(conteudo);
-
-			
 
 			PdfPTable table_ass = new PdfPTable(2);
 			table_ass.setTotalWidth(500);
@@ -301,10 +298,6 @@ public class PDF {
 			table_ass.addCell(new PdfPCell(new Phrase("\nFIRMA:  ______________________", formatText1)));
 			table_ass.addCell(new PdfPCell(new Phrase("\nFIRMA:  ______________________", formatText1)));
 			document.add(table_ass);			
-
-
-
-
 
 		}
 		catch(DocumentException de) {
@@ -350,20 +343,129 @@ public class PDF {
 			document.open();			
 			document.setPageSize(PageSize.A4);
 
-			Paragraph pTitulo = new Paragraph(new Phrase(20F , trad.occLabels("report"), FontFactory.getFont(FontFactory.HELVETICA, 17F)));
-			ColumnText tl = new ColumnText(writer.getDirectContent());
-			Paragraph tx = new Paragraph();
-			tl.setSimpleColumn(400,780,200,50);
-			tx.add(pTitulo);
-			tl.addElement(tx);
-			tl.go();
-			document.add(new Paragraph("\n\n\n\n"));
-			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
-			Image image2 = Image.getInstance(logo);
-			image2.setAbsolutePosition(420, 800);
-			image2.scaleAbsolute (120, 30);
-			document.add(image2);
-			PdfPTable table = new PdfPTable(new float[] { 10f, 5f, 3f });
+			//
+			logo = ImageUtil.getInternalImagePath("images", "files", RoadConcessionaire.externalImagePath);
+			if(!logo.equals("")) {
+				Image tuxpanL = Image.getInstance(logo);
+				tuxpanL.setAbsolutePosition(20, 770);
+				tuxpanL.scaleAbsolute (80, 30);
+				document.add(tuxpanL);
+			}
+			Font formatText = new Font(Font.FontFamily.TIMES_ROMAN, 10f, Font.BOLD);
+			PdfPTable title = new PdfPTable(1);
+			Paragraph conteudo = new Paragraph();
+			conteudo.add(new Paragraph(" "));
+			title.setTotalWidth(new float[]{500});
+			title.setLockedWidth(true);
+			title.addCell(new PdfPCell(new Phrase("REPORTE PRELIMINAR DE SINIESTRO", formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
+			document.add(conteudo);
+			document.add(conteudo);
+			document.add(conteudo);
+			document.add(title);
+			document.add(conteudo);
+			//
+
+			PdfPTable table0 = new PdfPTable(5);
+			table0.setTotalWidth(500);
+			table0.setTotalWidth(new float[]{ 50, 120, 50, 130, 150 });
+			table0.setLockedWidth(true);
+			table0.addCell(new PdfPCell(new Phrase("Siniestro:", formatText))).setBorderColor(BaseColor.WHITE);
+			table0.addCell(new PdfPCell(new Phrase(model().getSiniestro(), formatText))).setBorder(Rectangle.BOTTOM);
+			table0.addCell(new PdfPCell(new Phrase("", formatText))).setBorderColor(BaseColor.WHITE);
+			table0.addCell(new PdfPCell(new Phrase("Póliza aplicada (probable):", formatText))).setBorderColor(BaseColor.WHITE);
+			table0.addCell(new PdfPCell(new Phrase(model().getPoliza(), formatText))).setBorder(Rectangle.BOTTOM);
+			table0.addCell(new PdfPCell(new Phrase("Hora:", formatText))).setBorderColor(BaseColor.WHITE);
+			table0.addCell(new PdfPCell(new Phrase(model().getHora(), formatText))).setBorder(Rectangle.BOTTOM);
+			table0.addCell(new PdfPCell(new Phrase("", formatText))).setBorderColor(BaseColor.WHITE);
+			table0.addCell(new PdfPCell(new Phrase("                                Fecha:", formatText))).setBorderColor(BaseColor.WHITE);
+			table0.addCell(new PdfPCell(new Phrase(model().getFecha(), formatText))).setBorder(Rectangle.BOTTOM);
+			document.add(table0);
+			document.add(conteudo);
+			//
+			PdfPTable table1 = new PdfPTable(5);
+			table1.setTotalWidth(500);
+			table1.setTotalWidth(new float[]{ 50, 150, 50, 100, 150 });
+			table1.setLockedWidth(true);
+			String[] veh = model().getVeh_sin().split(",");
+			String[] ocup = model().getOcupantes_sin().split(",");
+			for(int i=0; i< veh.length;i++) {
+				
+				table1.addCell(new PdfPCell(new Phrase("Vehículo " + i, formatText))).setBorderColor(BaseColor.WHITE);
+				table1.addCell(new PdfPCell(new Phrase(veh[i],formatText))).setBorder(Rectangle.BOTTOM);
+				table1.addCell(new PdfPCell(new Phrase("", formatText))).setBorderColor(BaseColor.WHITE);
+				table1.addCell(new PdfPCell(new Phrase("          Ocupantes: ", formatText))).setBorderColor(BaseColor.WHITE);
+				table1.addCell(new PdfPCell(new Phrase(ocup[i], formatText))).setBorder(Rectangle.BOTTOM);
+			}
+			document.add(table1);
+			document.add(conteudo);
+
+			PdfPTable table2 = new PdfPTable(5);
+			table2.setTotalWidth(500);
+			table2.setTotalWidth(new float[]{ 70, 130, 50, 100, 150 });
+			table2.setLockedWidth(true);
+			table2.addCell(new PdfPCell(new Phrase("KM / Sentido ", formatText))).setBorderColor(BaseColor.WHITE);
+			table2.addCell(new PdfPCell(new Phrase(model().getKm_reg()+" / "+model().getDireccion(), formatText))).setBorder(Rectangle.BOTTOM);
+			table2.addCell(new PdfPCell(new Phrase("", formatText))).setBorderColor(BaseColor.WHITE);
+			table2.addCell(new PdfPCell(new Phrase("               Causas:", formatText))).setBorderColor(BaseColor.WHITE);
+			table2.addCell(new PdfPCell(new Phrase(model().getCausas_sin(), formatText))).setBorder(Rectangle.BOTTOM);
+			table2.addCell(new PdfPCell(new Phrase("Lesionados: ", formatText))).setBorderColor(BaseColor.WHITE);
+			table2.addCell(new PdfPCell(new Phrase(model().getLesionados(), formatText))).setBorder(Rectangle.BOTTOM);
+			table2.addCell(new PdfPCell(new Phrase("", formatText))).setBorderColor(BaseColor.WHITE);
+			table2.addCell(new PdfPCell(new Phrase("            Muertos: ", formatText))).setBorderColor(BaseColor.WHITE);
+			table2.addCell(new PdfPCell(new Phrase(model().getMortos(), formatText))).setBorder(Rectangle.BOTTOM);
+			table2.addCell(new PdfPCell(new Phrase("Folio RSA: ", formatText))).setBorderColor(BaseColor.WHITE);
+			table2.addCell(new PdfPCell(new Phrase(model().getFolio_sec(), formatText))).setBorder(Rectangle.BOTTOM);
+			document.add(table2);
+			document.add(conteudo);
+			
+			PdfPTable table3 = new PdfPTable(1);
+			table3.setTotalWidth(500);
+			table3.setTotalWidth(new float[]{500});
+			table3.setLockedWidth(true);
+			title.addCell(new PdfPCell(new Phrase("DAÑOS EN INFRAESTRUCTURA", formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
+			document.add(table3);
+			document.add(conteudo);
+			
+			PdfPTable table4 = new PdfPTable(3);
+			table4.setTotalWidth(500);
+			table4.setTotalWidth(new float[]{ 165, 165, 165 });
+			table4.setLockedWidth(true);
+			String[] obs = model().getObs_sin().split(",");
+
+			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN", formatText))).setBorderColor(BaseColor.WHITE);
+			table4.addCell(new PdfPCell(new Phrase("SI/NO",formatText))).setBorder(Rectangle.BOTTOM);
+			table4.addCell(new PdfPCell(new Phrase("OBSERVACIONES", formatText))).setBorderColor(BaseColor.WHITE);
+			
+			table4.addCell(new PdfPCell(new Phrase("DEFENSA METÁLIZA", formatText)));
+			table4.addCell(new PdfPCell(new Phrase(model().getDef_metal(),formatText)));
+			table4.addCell(new PdfPCell(new Phrase(obs[0], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
+
+			table4.addCell(new PdfPCell(new Phrase("SEÑALAMIENTO", formatText)));
+			table4.addCell(new PdfPCell(new Phrase(model().getSenal(),formatText)));
+			table4.addCell(new PdfPCell(new Phrase(obs[1], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
+			
+			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN PAVIMENTO", formatText)));
+			table4.addCell(new PdfPCell(new Phrase(model().getDano_pav(),formatText)));
+			table4.addCell(new PdfPCell(new Phrase(obs[2], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
+			
+			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN CORTES O TERRAPLENES", formatText)));
+			table4.addCell(new PdfPCell(new Phrase(model().getDanos_cort_trr(),formatText)));
+			table4.addCell(new PdfPCell(new Phrase(obs[3], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
+			
+			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN OBRA COMPLEMENTARIA", formatText)));
+			table4.addCell(new PdfPCell(new Phrase(model().getDanos_obr_compl(),formatText)));
+			table4.addCell(new PdfPCell(new Phrase(obs[4], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
+			
+			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN PLAZAS DE COBRO", formatText)));
+			table4.addCell(new PdfPCell(new Phrase(model().getPlz_cobro(),formatText)));
+			table4.addCell(new PdfPCell(new Phrase(obs[5], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
+			
+			table4.addCell(new PdfPCell(new Phrase("OTROS (AMBULANCIA, ABANDERAMIENTO OPERADORA", formatText)));
+			table4.addCell(new PdfPCell(new Phrase(model().getOtros_sin(),formatText)));
+			table4.addCell(new PdfPCell(new Phrase(obs[6], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
+			document.add(table4);
+			document.add(conteudo);
+
 
 		}
 		catch(DocumentException de) {

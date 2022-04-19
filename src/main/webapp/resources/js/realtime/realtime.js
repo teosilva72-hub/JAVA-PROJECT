@@ -60,14 +60,23 @@ const init = () => {
 		setEquipToolTip();
 		showGenericName();
 
-		if(window.initPMV)
-		  initPMV();
+		if (window.initPMV)
+			initPMV();
 
-		if(window.initSOS)
-		  initSOS();
+		if (window.initSOS)
+			initSOS();
 
-	    if(window.initMonitor)		
-	      initMonitor();
+		if (window.initMonitor)
+			initMonitor();
+
+		if (window.initSPEED)
+			initSPEED();
+
+		if (window.initGPS)
+			initGPS();
+
+		if (window.initMeteo)
+			initMeteo();
 	})
 }
 
