@@ -58,8 +58,9 @@ public class NotificationsBean {
 			// CASO ESSA OPÇÃO ESTEJA ATIVADA
 			if(login.road.isHasNotification()) {
 			
-					notifications();
 					count();
+					notifications();
+					
 			
 			}
 			
@@ -75,12 +76,14 @@ public class NotificationsBean {
 	{
 		NotificationsCount not = new NotificationsCount();
 		dao = new NotificationsDAO();
-		
+				
 		not = dao.notificationsCount();
+		
+		// System.out.println("COUNT: "+not.getTotal());
 						
 		if(not.getTotal() > 0) {
 			
-			SessionUtil.executeScript("$('#badge-notif').css('display','block'); $('#badge-notif').html("+not.getTotal()+")");			 			
+			SessionUtil.executeScript("$('#badge-notif').css('display','block'); "+"$('#addequip').html("+not.getTotal()+");"+"$('#badge-notif').html("+not.getTotal()+")");			 			
 						
 			   if(not.getConnection() > 0) 			   
 					SessionUtil.executeScript("$('#btn-act-connection').css('display','block'); $('#btn-act-connection').html("+not.getConnection()+")");
@@ -95,7 +98,7 @@ public class NotificationsBean {
     {
         List<NotificationsAlert> listAux = new ArrayList<NotificationsAlert>();            
         NotificationsAlert not = new NotificationsAlert();
-                     
+                           
         dao = new NotificationsDAO();
         
         listAux = dao.notifications();            
@@ -110,7 +113,7 @@ public class NotificationsBean {
                           	
             	 if(n.getAlarmType() == 8)                 
                      SessionUtil.executeScript("$('#notification-connection').append(backNotification('"+n.getViewedBgColor()+"', "+n.getAlarmType()+", '"+n.getEquipType()+"', "+n.getEquipId()+",'"+n.getDateTime()+"', '"+n.getEquipName()+"', '"+n.getDescription()+"')); $('#div-connection').css('display','block')");
-            	               
+            	        
                }  // END FOR 
             
 
