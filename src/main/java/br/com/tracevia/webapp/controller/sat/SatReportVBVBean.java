@@ -18,14 +18,14 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
+import br.com.tracevia.webapp.controller.global.ListEquipments;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.sat.VehicleByVehicleDAO;
 import br.com.tracevia.webapp.log.SystemLog;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
-import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.global.ReportBuild;
-import br.com.tracevia.webapp.model.global.VehicleByVehicle;
+import br.com.tracevia.webapp.model.sat.VehicleByVehicle;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.SessionUtil;
 

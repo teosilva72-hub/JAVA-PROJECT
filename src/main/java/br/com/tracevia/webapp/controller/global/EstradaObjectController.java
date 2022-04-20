@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.controller.global;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +19,12 @@ import br.com.tracevia.webapp.model.global.Estrada;
 
 @ManagedBean(name="roadView")
 @ViewScoped
-public class EstradaObjectController {
+public class EstradaObjectController implements Serializable {
+	
+	/**
+	 * SERIAL ID
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	public List<Plaque> plaque;
 	public List<int[]> roadLine;

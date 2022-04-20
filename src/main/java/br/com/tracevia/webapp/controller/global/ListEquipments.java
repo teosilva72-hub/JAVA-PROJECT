@@ -1,5 +1,6 @@
-package br.com.tracevia.webapp.model.global;
+package br.com.tracevia.webapp.controller.global;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +9,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.controller.global.LoginAccountBean;
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.comms.COMMS;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.dms.DMS;
+import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.LoadStartupModules;
+import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.model.hit.HIT;
 import br.com.tracevia.webapp.model.meteo.Meteo;
 import br.com.tracevia.webapp.model.ocr.OCR;
@@ -25,8 +28,13 @@ import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="listEquips")
 @ViewScoped
-public class ListEquipments {
+public class ListEquipments implements Serializable{
 	
+	/**
+	 * SERIAL ID
+	 */
+	private static final long serialVersionUID = -2393164649955760230L;
+
 	List<listEquips> equips;
 	
 	List<? extends Equipments> cftvList; 
@@ -191,7 +199,9 @@ public class ListEquipments {
 	
 	public void BuildEquipments() {
 		
-		equips = new ArrayList<listEquips>();			
+		equips = new ArrayList<listEquips>();
+		
+		//System.out.println("MANAGER");
 						
 		try {	
 			

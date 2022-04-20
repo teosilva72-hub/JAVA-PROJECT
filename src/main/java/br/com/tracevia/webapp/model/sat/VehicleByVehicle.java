@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.model.global;
+package br.com.tracevia.webapp.model.sat;
 
 public class VehicleByVehicle {
 	

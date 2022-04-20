@@ -1,5 +1,6 @@
 package br.com.tracevia.webapp.controller.cftv;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -7,13 +8,18 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import br.com.tracevia.webapp.controller.global.ListEquipments;
 import br.com.tracevia.webapp.model.cftv.CFTV;
-import br.com.tracevia.webapp.model.global.ListEquipments;
 
 @ManagedBean(name="cftvMapsView")
 @ViewScoped
-public class CFTVBuildMaps {
+public class CFTVBuildMaps implements Serializable {
 	
+	/**
+	 * SERIAL ID
+	 */
+	private static final long serialVersionUID = 765196399505145894L;
+
 	@ManagedProperty("#{listEquips}")
 	private ListEquipments equips;
 	

@@ -1,5 +1,6 @@
 package br.com.tracevia.webapp.controller.comms;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,16 +9,21 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import br.com.tracevia.webapp.controller.global.ListEquipments;
 import br.com.tracevia.webapp.model.comms.COMMS;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.wim.WIM;
 
 @ManagedBean(name="commsMapsView")
 @ViewScoped
-public class COMMSBuildMaps {
+public class COMMSBuildMaps implements Serializable {
+			
+	 /**
+	 * SERIAL ID
+	 */
+	private static final long serialVersionUID = 1L;
 	
-	 @ManagedProperty("#{listEquips}")
+	@ManagedProperty("#{listEquips}")
 	private ListEquipments equips;
 			
 	public ListEquipments getEquips() {

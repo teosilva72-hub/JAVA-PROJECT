@@ -2,6 +2,7 @@ package br.com.tracevia.webapp.controller.global;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.HashMap;
 
@@ -36,8 +37,13 @@ import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name = "loginAccount")
 @SessionScoped
-public class LoginAccountBean {
+public class LoginAccountBean implements Serializable {
 
+	/**
+	 * SERIAL ID
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private UserAccount user;
 	private UserAccount login;
 	private String credentials;    
@@ -202,7 +208,8 @@ public class LoginAccountBean {
 		locale1.getResourceBundle(LocaleUtil.MESSAGES_EMAIL);
 
 		locale2 = new LocaleUtil();
-		locale2.getResourceBundle(LocaleUtil.MESSAGES_REQUIRED);		
+		locale2.getResourceBundle(LocaleUtil.MESSAGES_REQUIRED);	
+		
 	}
 	
 	// --------------------------------------------------------------------------------------------

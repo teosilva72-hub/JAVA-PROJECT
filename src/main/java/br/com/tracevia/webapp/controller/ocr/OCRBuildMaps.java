@@ -11,10 +11,10 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.cfg.NotificationsAlarmsEnum;
 import br.com.tracevia.webapp.cfg.NotificationType;
+import br.com.tracevia.webapp.controller.global.ListEquipments;
 import br.com.tracevia.webapp.controller.global.NotificationsBean;
 import br.com.tracevia.webapp.dao.ocr.OCRDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.global.ListEquipments;
 
 @ManagedBean(name="ocrMapsView")
 @ViewScoped

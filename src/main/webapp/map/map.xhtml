@@ -5,8 +5,8 @@
 
     <f:metadata>
 
-        <f:viewAction onPostback="true" action="#{equipsBean.defineInterfaceView('map')}" />
-
+        <f:viewAction action="#{equipsBean.defineInterfaceView('map')}" />
+      
     </f:metadata>
 
     <ui:define name="head">
@@ -25,7 +25,7 @@
         <c:if test="#{ METEO }">
             <h:outputStylesheet name="layoutMETEO.css" library="css/meteo" />
         </c:if>
-        
+                
         <h:outputStylesheet name="cftv.css" library="css/map" />
         <h:outputStylesheet name="map.css" library="css/map" />
         <h:outputStylesheet name="layoutHit.css" library="css/hit" />
@@ -35,7 +35,7 @@
         <h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
         <h:outputScript library="js/validation-forms/models" name="validation-models.js" />
         <h:outputScript library="js/validation-forms/user-interface" name="map-validation.js" />
-        <h:outputScript library="js/map/" name="mapPaleta.js" />
+        <h:outputScript library="js/map/" name="mapPaleta.js" />           
 
     </ui:define>
 
@@ -50,7 +50,7 @@
 
     <ui:define name="main-content">
 
-        <c:if test="#{ SuperAdmin || VideoWall }">
+ 		  <c:if test="#{ SuperAdmin || VideoWall }">
 
             <!-- ======================== ALERTS ======================== -->
 
@@ -58,7 +58,7 @@
 
         </c:if>
 
-        <!---->
+         <!---->
 
         <!-- WEB ZOOM -->
 
@@ -201,6 +201,8 @@
             </c:if>
 
         </div>
+        
+        <!---->
 
         <!-- WEB ZOOM END -->
 
@@ -288,22 +290,27 @@
 
             <button class="btn btn-dark d-none ml-auto" title="#{mapLabels.$label_map_vehicles}" type="button" id="CarSelect">#{mapLabels.$label_map_vehicles_view}</button>
         </div>
-
-        <!--  ******************************************************************************************************* -->
-
+        
+        <!-- =========================================================================================================== -->
+                
         <!-- DropDown Equip Size Menu END -->
 
-        <!-- WEB ZOOM DIVIDE -->
+        <!-- WEB ZOOM DIVIDE BUTTON -->
+        
         <div class="map-full-option" style="display: none;">
 
             <button type="button" id="full" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Full Map View">
 				<span><i class="fas fa-expand fa-2x"></i></span>
 			</button>
         </div>
+        
+        <!---->
+        
+        <!-- MAP DIVIDE -->
+        
+        <!--   <div id="mapDivide" class="row" style="display: none">
 
-        <div id="mapDivide" class="row" style="display: none">
-
-            <!-- Imagem 1 -->
+        
             <div class="squarebox" id="divs">
                 <section id="zoomDivs1"> <iframe class="grid-img" id="frame1" src="" /> </section>
                 <button type="button" id="zoomIn1" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
@@ -317,7 +324,7 @@
 				</button>
             </div>
 
-            <!-- Imagem 2 -->
+            
             <div class="squarebox" id="divs1">
                 <section id="zoomDivs2"> <iframe class="grid-img" id="frame2" src="" /> </section>
                 <button type="button" id="zoomIn2" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
@@ -331,7 +338,7 @@
 				</button>
             </div>
 
-            <!-- Imagem 3 -->
+          
             <div class="squarebox" id="divs2">
                 <section id="zoomDivs3"> <iframe class="grid-img" id="frame3" src="" /> </section>
                 <button type="button" id="zoomIn3" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
@@ -344,9 +351,12 @@
 					<span> <i class="fas fa-expand-arrows-alt"></i></span>
 				</button>
             </div>
-        </div>
-
+        </div>-->
+                
+        <!-- =========================================================================================================== -->
+      
         <!-- OVERFLOW -->
+        
         <section class="overflow" scroll-zoom=".5" max-scale="10" id="content">
             <!-- START SECTION -->
             <div id="zoomtext" scale="1" class="section">
@@ -398,9 +408,13 @@
                 </div>
 
             </ui:fragment>
-        </section>
-
-        <div class="context-menu">
+        </section>        
+        
+        <!-- =========================================================================================================== -->
+       
+       <!-- CONTEXT -->
+       
+      <div class="context-menu">
             <c:if test="#{ CFTV }">
                 <button type="button" class="btn btn-secondary dinamic-mouse-right" for="cftv" onclick="settingCftv()">#{mapLabels.$label_map_equipment_settings}</button>
                 <button type="button" class="btn btn-dark dinamic-mouse-right" for="cftv" onclick="windowCftvRight()">#{mapLabels.$label_map_equipment_realtime_view}</button>
@@ -410,11 +424,13 @@
                 <button type="button" class="btn btn-secondary dinamic-mouse-right" for="all" onclick="moreOption()">#{mapLabels.$label_map_equipment_options}</button>
             </c:if>
         </div>
-
+        
     </ui:define>
-
-    <!---->
-
+     
+    <!-- =========================================================================================================== -->
+       
+       <!-- MODAL CONTENT -->
+       
     <ui:define name="modal-content">
         <c:if test="#{ SuperAdmin }">
 
@@ -468,15 +484,17 @@
 
         <!-- ======================== CFTV SETTINGS ======================== -->
 
-        <ui:fragment rendered="#{ CFTV }">
+        <c:if test="#{ CFTV }">
             <ui:include src="/template/map-modal/cftv-settings.xhtml" />
-        </ui:fragment>
+        </c:if>
         <!---->
 
     </ui:define>
 
-    <!---->
-
+      <!-- =========================================================================================================== -->
+     
+     <!-- JS -->
+     
     <ui:define name="jscript">
 
         <c:if test="#{ DMS }">
@@ -495,17 +513,15 @@
             <h:outputScript name="main.js" library="js/meteo" />
         </c:if>
 
-        <!---->
+        <!-- JS FILES -->
 
         <h:outputScript name="gps.js" library="js/gps" />
         <h:outputScript name="map.js" library="js/map" />
         <h:outputScript name="controllerHIT.js" library="js/hit" />
         
-        
-
-        <ui:fragment rendered="#{ CFTV }">
+        <c:if test="#{ CFTV }">
             <h:outputScript library="js/map/" name="mapCftcv.js" />
-        </ui:fragment>
+        </c:if>
         <!---->
 
         <form name="roadLine">
@@ -555,5 +571,5 @@
 
         <!---->
 
-    </ui:define>
+    </ui:define>     
 </ui:composition>

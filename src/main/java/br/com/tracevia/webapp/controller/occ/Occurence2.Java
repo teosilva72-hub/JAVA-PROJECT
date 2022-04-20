@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -53,7 +54,7 @@ import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="Occurence2")
 @ViewScoped
-public class Occurence2 {
+public class Occurence2 implements Serializable {
 
 private OccurenceData2  data;
 private OccurenceData2 getPdf;

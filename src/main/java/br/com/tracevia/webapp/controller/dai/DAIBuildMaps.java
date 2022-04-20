@@ -1,6 +1,6 @@
 package br.com.tracevia.webapp.controller.dai;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -8,15 +8,18 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.dao.dai.DAIDAO;
+import br.com.tracevia.webapp.controller.global.ListEquipments;
 import br.com.tracevia.webapp.model.dai.DAI;
-import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.global.ListEquipments;
 
 @ManagedBean(name="daiMapsView")
 @ViewScoped
-public class DAIBuildMaps {
+public class DAIBuildMaps implements Serializable {
 	
+	/**
+	 * SERIAL ID
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@ManagedProperty("#{listEquips}")
 	private ListEquipments equips;
 			

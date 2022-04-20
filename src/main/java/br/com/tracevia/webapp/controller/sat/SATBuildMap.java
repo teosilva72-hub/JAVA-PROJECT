@@ -1,10 +1,12 @@
 package br.com.tracevia.webapp.controller.sat;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -12,22 +14,28 @@ import javax.faces.context.FacesContext;
 
 import br.com.tracevia.webapp.cfg.NotificationType;
 import br.com.tracevia.webapp.cfg.NotificationsAlarmsEnum;
+import br.com.tracevia.webapp.controller.global.ListEquipments;
 import br.com.tracevia.webapp.controller.global.NotificationsBean;
 import br.com.tracevia.webapp.dao.sat.DataSatDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
-import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.sat.SAT;
-import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name = "satMapsView")
 @ViewScoped
-public class SATBuildMap {
+public class SATBuildMap implements Serializable {
 
-	List<SAT> satListValues, satStatus;
-
+	/**
+	 * Serial ID
+	 */
+	private static final long serialVersionUID = 2747230733734887530L;
+	
+	List<SAT> satListValues;	
+	List<Integer> availabilityList; 
+	List<Integer> unavailabilityList; 
+	
 	@ManagedProperty("#{listEquips}")
 	private ListEquipments equips;
-
+	
 	public ListEquipments getEquips() {
 		return equips;
 	}
@@ -39,36 +47,39 @@ public class SATBuildMap {
 	public List<SAT> getSatListValues() {
 		return satListValues;
 	}
+	
+	public List<Integer> getAvailabilityList() {
+		return availabilityList;
+	}
 
-	public List<SAT> getSatStatus() {
-		return satStatus;
+	public List<Integer> getUnavailabilityList() {
+		return unavailabilityList;
 	}
 
 	@PostConstruct
-	public void initalize() {
-
-		BuildSAT();
-
+	public void init() {
+		BuildSAT();			
 	}
-
-	@SuppressWarnings("unlikely-arg-type")
+				
 	public void BuildSAT() {
 
+		DataSatDAO dao = new DataSatDAO();
+		
+		//System.out.println("DATA");
+		
 		try {
 
 			try {
 
-				DataSatDAO dao = new DataSatDAO();
-				NotificationsBean not = new NotificationsBean();
-				DateTimeApplication dt = new DateTimeApplication();
 				
 				// LIMIT SEARCH				
 				int limit = equips.getSatList().size();
 				int countLimit = 0;
 
 				// LISTAS
-				satListValues = new ArrayList<SAT>();
-				satStatus = new ArrayList<SAT>();		
+				satListValues = new ArrayList<SAT>();					
+				availabilityList = new ArrayList<Integer>();
+				unavailabilityList = new ArrayList<Integer>();
 								
 				// LISTAR AUXILIARES											
 				List<SAT> data15MinList = new ArrayList<SAT>();
@@ -77,8 +88,6 @@ public class SATBuildMap {
 				List<SAT> data06HourList = new ArrayList<SAT>();
 				List<SAT> noDataList = new ArrayList<SAT>();
 				List<SAT> noDataAllList = new ArrayList<SAT>();
-				List<Integer> availabilityList = new ArrayList<Integer>();
-				List<Integer> unavailabilityList = new ArrayList<Integer>();
 				List<Integer> equipIdList = new ArrayList<Integer>();	
 				List<Integer> equipIdListAux = new ArrayList<Integer>();				
 				List<Integer> valuesAuxList = new ArrayList<Integer>();
@@ -243,27 +252,7 @@ public class SATBuildMap {
 							Collections.sort(satListValues); // ORDER SAT LIST
 							
 							// -----------------------------------------------------------------------												
-							
-							// SWITCH NOTIFICATION STATUS
-							
-							if(!availabilityList.isEmpty()) {
-										
-								for(SAT sat : satListValues) {	
-																																																
-									if(availabilityList.contains(sat.getEquip_id()) && sat.getStatus() == 0)
-										  not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), sat.getEquip_id(), NotificationType.SAT.getType(),
-												dt.currentDateTime(), true, false);
-																				
-									else if(unavailabilityList.contains(sat.getEquip_id()) && sat.getStatus() == 1)
-										  not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), sat.getEquip_id(),
-												NotificationType.SAT.getType(), dt.currentDateTime(), false, true);																					
-									
-								}
-																	
-							}
-							
-						// ----------------------------------------------------------------------- 						
-				
+											
 			} catch (IndexOutOfBoundsException ex) {
 
 				ex.printStackTrace();
@@ -274,7 +263,7 @@ public class SATBuildMap {
 		}
 
 		FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(":navbarDropdown2");
-
+	
 	}
 
 	// ----------------------------------------------------------------------------------------------------
