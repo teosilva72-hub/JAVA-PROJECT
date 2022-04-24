@@ -186,14 +186,14 @@ public class EquipmentsDAO {
 		String query = "";
 
 		String sql = "SELECT equip_id, name, equip_type, c.city_name, r.road_name, km, linear_width, " +
-				"linear_posX, linear_posY, map_width, map_posX, map_posY, longitude, latitude, direction, equip_type FROM meteo_equipment eq "
+				"linear_posX, linear_posY, map_width, map_posX, map_posY, longitude, latitude, direction FROM meteo_equipment eq "
 				+
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
 
 		String sqlVW = "SELECT equip_id, name, equip_type, c.city_name, r.road_name, km, vw_linear_width, " +
-				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, longitude, latitude, direction, equip_type FROM meteo_equipment eq "
+				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, longitude, latitude, direction FROM meteo_equipment eq "
 				+
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
@@ -218,6 +218,7 @@ public class EquipmentsDAO {
 					Meteo meteo = new Meteo();
 
 					meteo.setEquip_id(rs.getInt(1));
+					meteo.setTable_id("meteo");
 					meteo.setNome(rs.getString(2));
 					meteo.setEquip_type(rs.getString(3));
 					meteo.setCidade(rs.getString(4));
@@ -232,8 +233,7 @@ public class EquipmentsDAO {
 					meteo.setLongitude(rs.getDouble(13));
 					meteo.setLatitude(rs.getDouble(14));
 					meteo.setDirection(rs.getString(15));
-					meteo.setTable_id(rs.getString(16));
-
+					
 					lista.add(meteo);
 				}
 			}

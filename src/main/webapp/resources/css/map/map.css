@@ -225,11 +225,11 @@ table {
 	color: #00ff0d;
 }*/
 
-.equip-box-sat {
+.equip-box-sat, .equip-box-speed{
 	height: auto !important;
 }
 
-.equip-box, .equip-info {
+.equip-box, .equip-box-speed, .equip-info {
 	transform-origin: 50% 70% !important;
 }
 

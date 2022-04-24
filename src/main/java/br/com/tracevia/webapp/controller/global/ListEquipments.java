@@ -26,7 +26,7 @@ import br.com.tracevia.webapp.model.speed.Speed;
 import br.com.tracevia.webapp.model.wim.WIM;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
-@ManagedBean(name="listEquips")
+@ManagedBean(name="listEquipsBean")
 @ViewScoped
 public class ListEquipments implements Serializable{
 	
@@ -35,7 +35,7 @@ public class ListEquipments implements Serializable{
 	 */
 	private static final long serialVersionUID = -2393164649955760230L;
 
-	List<listEquips> equips;
+	private List<listEquips> equips;
 	
 	List<? extends Equipments> cftvList; 
 	List<? extends Equipments> colasList; 
@@ -54,16 +54,8 @@ public class ListEquipments implements Serializable{
 	LocaleUtil localeMessage, localeLabel;
 	
 	@ManagedProperty("#{loginAccount}")
-	private LoginAccountBean login;
-	
-	public List<listEquips> getEquips() {
-		return equips;
-	}
-	
-	public void setEquips(List<listEquips> equips) {
-		this.equips = equips;
-	}
-				
+	private LoginAccountBean login;	
+					
 	public LoginAccountBean getLogin() {
 		return login;
 	}
@@ -72,7 +64,10 @@ public class ListEquipments implements Serializable{
 		this.login = login;
 	}
 	
-
+	public List<listEquips> getEquips() {		
+		return equips;
+	}	
+	
 	public List<? extends Equipments> getCftvList() {
 		return cftvList;
 	}
@@ -132,10 +127,10 @@ public class ListEquipments implements Serializable{
 
 		localeLabel.getResourceBundle(LocaleUtil.LABELS_DASHBOARD);
 		
-		BuildEquipments();
-		
+		equips = BuildEquipments();		
+					
 	}
-	
+		
 	public class listEquips {
 				
 		private boolean value;
@@ -197,9 +192,9 @@ public class ListEquipments implements Serializable{
 	   }
 	}
 	
-	public void BuildEquipments() {
+	public List<listEquips> BuildEquipments() {
 		
-		equips = new ArrayList<listEquips>();
+		List<listEquips> equips = new ArrayList<listEquips>();
 		
 		//System.out.println("MANAGER");
 						
@@ -316,7 +311,9 @@ public class ListEquipments implements Serializable{
 		}catch(Exception ex) {
 			
 			ex.printStackTrace();			
-		}	
+		}			
+			
+		return equips;
 		
 	}
 	 

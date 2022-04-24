@@ -19,22 +19,6 @@ public class VIDEOWALLBuildMaps implements Serializable {
 	@PostConstruct
 	public void initalize() {
 		
-		//BuildVIDEOWALL();
-		
 	}
-	
-	public void BuildVIDEOWALL() {
-						
-		try {	
 		
-		try {
-							
-				
-            }catch(IndexOutOfBoundsException ex) {}
-		
-		}catch(Exception ex) {}		
-						
-	}
-
-	
 }

@@ -329,29 +329,24 @@
 
                     <div class="sidebar-header">
                         <h5>#{dashboardLabels.dashboard_sidebar_layers}</h5>
-                    </div>
-
+                    </div>                                                                      
+                                   
+                    <!---->				
 
                     <div class="modules-content">
-
-                        <h:form id="layers">
-
-                            <!-- <h:messages globalOnly="true" styleClass="feedback" /> -->
-
-                            <c:forEach items="#{listEquips.equips}" var="item">
-
-                                <div class="module" id="#{item.module}">
-                                    <div class="toggle-mod-btn">
-                                        <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">
-                                        </h:selectBooleanCheckbox>
-                                    </div>
-                                    <label class="label-module">#{listEquips.translateModule(item.module)}</label>
-                                </div>
-                            </c:forEach>
-
-                        </h:form>
-
-                    </div>
+                    		
+				               <c:forEach items="#{listEquipsBean.equips}" var="item">
+				
+				                      <div class="module" id="#{item.module}">
+				                          <div class="toggle-mod-btn">
+				                              <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">
+				                              </h:selectBooleanCheckbox>
+				                          </div>
+				                          <label class="label-module">#{listEquipsBean.translateModule(item.module)}</label>
+				                      </div>
+				                  </c:forEach>			                                   
+                    
+                    </div> <!---->
 
                 </div>
             </div>
@@ -368,15 +363,14 @@
                     </div>
 
                     <div class="equips-div">
-
-                        <c:forEach items="#{listEquips.equips}" var="loadItem" varStatus="loop2">
+                       <c:forEach items="#{listEquipsBean.equips}" var="loadItem" varStatus="loop2">
                             <div class="content-module">
                                 <a class="link-show-hide text-decoration-none" onclick="clicked('div#{loadItem.module}'); toggleBtnEquips.call(this);"><span><i
 										class="text-black bg-warning fa fa-plus plusMinus"></i></span></a>
                                 <!-- <button class="btn btn-warning btn-sm btn-show-hide" onclick="clicked('mtoDIV'); toggleBtnEquips.call(this);" ><i class="fa fa-plus plusMinus" ></i></button> -->
 
 
-                                <label class="label-module">#{listEquips.translateModule(loadItem.module)}</label>
+                                <label class="label-module">#{listEquipsBean.translateModule(loadItem.module)}</label>
 
                                 <div id="div#{loadItem.module}" style="display: none;">
 
@@ -409,10 +403,9 @@
 
                                 </div>
                             </div>
-
-                        </c:forEach>
-
-                    </div>
+                            
+                	</c:forEach>      
+                    </div> <!---->
                 </div>
             </div>
 

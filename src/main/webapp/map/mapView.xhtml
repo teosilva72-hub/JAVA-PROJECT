@@ -8,6 +8,30 @@
 
 <f:view locale="#{language.locale}">
 
+  	 <!-- PERMISSIONS AND DEFINITIONS -->
+
+    <ui:param name="permission" value="#{ userAccount.userPermision() }" />
+    <ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
+    <ui:param name="VideoWall" value="#{ permission == 9 }" />
+    <ui:param name="Map" value="map" />
+        
+    <!-- ENABLED EQUIPS -->
+    
+    <ui:param name="CFTV" value="#{ loginAccount.load.en_cftv }" />
+    <ui:param name="COLAS" value="#{ loginAccount.load.en_colas }" />
+    <ui:param name="COMMS" value="#{ loginAccount.load.en_comms }" />
+    <ui:param name="DAI" value="#{ loginAccount.load.en_dai }" />
+    <ui:param name="DMS" value="#{ loginAccount.load.en_dms }" />
+    <ui:param name="HIT" value="#{ loginAccount.load.en_hit }" />
+    <ui:param name="OCR" value="#{ loginAccount.load.en_ocr }" />
+    <ui:param name="METEO" value="#{ loginAccount.load.en_meteo }" />
+    <ui:param name="SAT" value="#{ loginAccount.load.en_sat }" />
+    <ui:param name="SOS" value="#{ loginAccount.load.en_sos }" />
+    <ui:param name="SPEED" value="#{ loginAccount.load.en_speed }" />
+    <ui:param name="WIM" value="#{ loginAccount.load.en_wim }" />
+            
+    <!---->
+
 	<h:head>
 
 		<!-- Required meta tags -->
@@ -17,22 +41,44 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 		<h:outputStylesheet name="bootstrap.css" library="bootstrap/css" />
-
-		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
-		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
-		<h:outputStylesheet name="layoutDMS.css" library="css/dms" />
-		<h:outputStylesheet name="layoutMETEO.css" library="css/meteo" />
-		<h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
 		<h:outputStylesheet name="map.css" library="css/map" />
 
-		<!-- Script -->
+		<c:if test="#{ CFTV }">
+             <h:outputStylesheet name="cftv.css" library="css/map" />
+        </c:if>        
+        <!---->        
+        <c:if test="#{ DMS }">
+            <h:outputStylesheet name="layoutDMS.css" library="css/dms" />
+        </c:if>        
+        <!---->                
+        <c:if test="#{ HIT }">
+           <h:outputStylesheet name="layoutHit.css" library="css/hit" />
+        </c:if>                
+        <!---->               
+        <c:if test="#{ METEO }">
+            <h:outputStylesheet name="layoutMETEO.css" library="css/meteo" />
+        </c:if>
+        <!---->
+         <c:if test="#{ SAT }">
+        	 <h:outputStylesheet name="layoutSAT.css" library="css/sat" />
+        </c:if>
+        <!---->        
+        <c:if test="#{ SPEED }">
+            <h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
+        </c:if>
+        <!---->
+         <c:if test="#{ CFTV || COLAS || COMMS || DAI || OCR || SOS || WIM  }">
+            <h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
+        </c:if>
+        <!---->
+		
 
 	</h:head>
 
 	<h:body>
 
-		<div class="content">
-
+		<div class="content">		
+		 
 			<main>
 				<div class="container-fluid">
 
@@ -87,31 +133,58 @@
 
 
 		</div>
+		
 		<!-- USE JQUERY RESOURCES AND VALIDATION -->
+		
 		<h:outputScript name="jquery-3.5.1.min.js" library="js/jquery" />
 		<h:outputScript name="bootstrap.bundle.min.js?version=#{notificationsView.timestamp}" library="bootstrap/js" />
 		<h:outputScript name="stomp.min.js?version=#{notificationsView.timestamp}" library="js/stomp" />
 		<h:outputScript name="controllerStomp.js?version=#{notificationsView.timestamp}" library="js/stomp" />
+		
+		<h:outputScript name="mapView.js?version=#{notificationsView.timestamp}" library="js/map" />
+		<h:outputScript name="gps.js?version=#{notificationsView.timestamp}" library="js/gps" />
 
-		<ui:fragment rendered="#{loginAccount.load.en_sos}">
- 
-			<script type="text/javascript" src="/phone/scripts/sos.js"></script>
-
-		</ui:fragment>
-
-		<ui:fragment rendered="#{loginAccount.load.en_dms}">
- 
-			<h:outputScript name="dmsAnimation.js" p:type="module" library="js/dms" />
-
-		</ui:fragment>
-
-		<ui:fragment rendered="#{loginAccount.load.en_speed}">
-			<h:outputScript name="speed_event.js" library="js/speed" />
-		</ui:fragment>
-
+	 	<!-- JS FILES -->
+		 
 		<h:outputScript name="gps.js" library="js/gps" />
-
 		<h:outputScript name="mapView.js" library="js/map" />
+		
+		 <!---->
+        
+        <c:if test="#{ CFTV }">
+            <h:outputScript library="js/map/" name="mapCftcv.js" />
+        </c:if>
+        <!---->
+        
+        <c:if test="#{ DMS }">
+            <h:outputScript name="dmsAnimation.js" p:type="module" library="js/dms" />
+        </c:if>
+
+        <!---->
+        
+        <c:if test="#{ HIT }">
+        	<h:outputScript name="controllerHIT.js" library="js/hit" />
+        </c:if>
+        
+        <!----> 
+       
+        <c:if test="#{ METEO }">
+            <h:outputScript name="main.js" library="js/meteo" />
+        </c:if>
+        
+        <!----> 
+        
+         <c:if test="#{ SOS }">
+         	<script type="text/javascript" src="/phone/scripts/sos.js"></script>
+         </c:if>
+         
+        <!---->
+        
+         <c:if test="#{ SPEED }">
+            <h:outputScript name="speed_event.js" library="js/speed" />
+        </c:if>
+
+        <!----> 
 
 		<form name="roadLine">
 

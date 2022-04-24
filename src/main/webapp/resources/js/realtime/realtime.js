@@ -3,28 +3,20 @@ let heightMax = 1000
 let updated = '';
 let scale = 1;
 
+// RELOAD EQUIPMENTS INFORMATION
 
-setTimeout(() => {
-	setInterval(() => {
+setInterval(() => {
 
-		let data = new Date();
-		let n = data.getSeconds();
-		let minute = data.getMinutes();
+	let data = new Date();
+	let n = data.getSeconds();
+	let minute = data.getMinutes();		
 
-		if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
-			if (n < 4){
-				init();
-
-		  location.href = location.protocol + '//' + location.host + location.pathname
-		  window.location.reload();
-	
+	if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
+		if (n > 0 && n < 4)
+			init();		
 	}
-
-}
-			     
-	}, 3000)
-}, 4000)
-
+	
+ }, 3000)
 
 // *********************************************************** //
 
@@ -33,7 +25,7 @@ const init = () => {
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))
 
-		$('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
+		$('.equip-box, .equip-info, .equip-box-sat, .equip-box-speed, .plaque').each(function () {
 			let equip = $(this)
 
 			posEquip(equip)
@@ -276,7 +268,7 @@ $(function () {
 
 	resizeEquipScale($('[scroll-zoom]'))
 
-	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
+	$('.equip-box, .equip-info, .equip-box-sat, .equip-box-speed').each(function () {
 		let equip = $(this)
 
 		posEquip(equip)
@@ -362,7 +354,7 @@ function ScrollZoom(container) {
 
 		showGenericName();
 
-		container.find('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
+		container.find('.equip-box, .equip-info, .equip-box-sat, .equip-box-speed, .plaque').each(function () {
 			let equip = $(this)
 
 			equip.css(
@@ -424,7 +416,7 @@ function barResize() {
 //RESIZE EQUIPMENT
 function resizeEquipScale(container) {
 	let max = 0;
-	let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
+	let equips = container.find('.equip-box, .equip-info, .equip-box-sat, .equip-box-speed');
 	let plaque = $('.plaque');
 	let scale;
 
@@ -444,7 +436,7 @@ function resizeEquipScale(container) {
 
 //RESIZE EQUIPMENT
 function resizeEquip(container) {
-	let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
+	let equips = container.find('.equip-box, .equip-info, .equip-box-sat, equip-box-speed');
 	let plaque = $('.plaque');
 	let scaleA;
 

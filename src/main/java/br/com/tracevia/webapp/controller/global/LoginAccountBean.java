@@ -209,7 +209,7 @@ public class LoginAccountBean implements Serializable {
 
 		locale2 = new LocaleUtil();
 		locale2.getResourceBundle(LocaleUtil.MESSAGES_REQUIRED);	
-		
+			
 	}
 	
 	// --------------------------------------------------------------------------------------------
@@ -232,7 +232,7 @@ public class LoginAccountBean implements Serializable {
 	
 		// IF SUCCESS ON AUTH GET SERVER INFORMATION	
 		isName = road.defineConcessionarieValues(language.concessionaire);
-		
+				
 		try {
 		
 		// CHANGES

@@ -3,40 +3,30 @@ let heightMax = 1000
 let updated = '';
 let scale = 1;
 
-// *********************************************************** //
+// RELOAD EQUIPMENTS INFORMATION
 
-setTimeout(() => {
-	setInterval(() => {
+setInterval(() => {
 
-		let data = new Date();
-		let n = data.getSeconds();
-		let minute = data.getMinutes();
+	let data = new Date();
+	let n = data.getSeconds();
+	let minute = data.getMinutes();		
 
-		if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
-			if (n < 4){
-				init();
-
-			 location.href = location.protocol + '//' + location.host + location.pathname
-		
-		   }
-		}
-
-	}, 3000)
-}, 4000)
-
+	if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
+		if (n > 0 && n < 4)
+			init();		
+	}
+	
+ }, 3000)
 
 // *********************************************************** //
-///////////////functions cftv/////////////////////////
 
-
-////////////////////////////////////////////////////////////////
 const init = () => {
 	$('#equipAll').load('/map/mapEquip.xhtml', () => {
 		$('[role=tooltip]').tooltip('hide')
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))
 
-		$('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .plaque').each(function () {
+		$('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .draggable .equip-box-speed, .plaque').each(function () {
 			let equip = $(this)
 
 			posEquip(equip)
@@ -390,7 +380,7 @@ function ScrollZoom(container) {
 
 		showGenericName();
 
-		container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .plaque').each(function () {
+		container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .draggable .equip-box-speed, .plaque').each(function () {
 			let equip = $(this)
 
 			equip.css(
@@ -451,9 +441,9 @@ function barResize() {
 //RESIZE EQUIPMENT
 function resizeEquipScale(container) {
 	let max = 0;
-	let equips = container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat');
+	let equips = container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .draggable .equip-box-speed');
 	let plaque = $('.plaque');
-	let allEquip = $('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat');
+	let allEquip = $('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat, #equipAll .equip-box-speed');
 	let toolbox = $('.square_tool');
 	let barSize = Number($('#bar-size').val()) || 1
 	let scaleA;
@@ -483,7 +473,7 @@ function resizeEquipScale(container) {
 
 //RESIZE EQUIPMENT
 function resizeEquip(container) {
-	let equips = container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat');
+	let equips = container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .draggable .equip-box-speed');
 	let plaque = $('.plaque');
 	let scaleA;
 
@@ -1125,7 +1115,7 @@ function cftvBottom() {
 function DirectionEquip() {
 	/* top and bottom line */
 
-	$('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction]').each(function (idx, item) {
+	$('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction], .equip-box-speed[direction]').each(function (idx, item) {
 		item = $(item)
 		if (item.attr('direction') == 'N') {
 			item.find('.equipLine').show();
@@ -1162,7 +1152,7 @@ function DirectionEquip() {
 // const setLines = () => {
 // 	let draw = $('.drawLines');
 // 	let container = $("#zoomtext.section");
-// 	let equips = $('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat');
+// 	let equips = $('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .draggable .equip-box-speed');
 
 // 	draw.css({
 // 		"width": container.css("width"),
@@ -1195,7 +1185,7 @@ const clearLines = () => {
 	let checkedLines = $("#visiblelines");
 	draw.find(".equipLine ").remove();
 	if (checkedLines.prop("checked"))
-		$('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat').each(function () {
+		$('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .draggable .equip-box-speed').each(function () {
 			let equip = $(this)
 			updateLine(equip);
 		});

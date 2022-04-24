@@ -39,7 +39,7 @@ public class NavigationBean implements Serializable {
 	public void initialize(){
 		
 		sidebarSource();
-
+		
 	}
 	
 	// ----------------------------------------------------------------

@@ -7,17 +7,15 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.view.ViewScoped;
 
 import br.com.tracevia.webapp.cfg.NotificationType;
 import br.com.tracevia.webapp.cfg.NotificationsAlarmsEnum;
-import br.com.tracevia.webapp.controller.sat.SATBuildMap;
 import br.com.tracevia.webapp.dao.global.NotificationsDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
+import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.NotificationsAlert;
 import br.com.tracevia.webapp.model.global.NotificationsCount;
-import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.SessionUtil;
 
@@ -30,12 +28,6 @@ public class NotificationsBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 2452505798932888236L;
 
-	@ManagedProperty("#{loginAccount}")
-	private LoginAccountBean login;
-	
-	@ManagedProperty("#{satMapsView}")
-	private SATBuildMap satBuild;
-	
 	LocaleUtil locale;	
 			    
 	private long timestamp;
@@ -50,70 +42,46 @@ public class NotificationsBean implements Serializable {
 
 	public void setTimestamp() {
 		this.timestamp = System.currentTimeMillis();
-	}
+	}	
 	
-	public LoginAccountBean getLogin() {
-		return login;
-	}
-
-	public void setLogin(LoginAccountBean login) {
-		this.login = login;
-	}
-		       
-	public SATBuildMap getSatBuild() {
-		return satBuild;
-	}
-
-	public void setSatBuild(SATBuildMap satBuild) {
-		this.satBuild = satBuild;
-	}
-
 	@PostConstruct
 	public void initializer() {
 		
 		locale = new LocaleUtil();
-		locale.getResourceBundle(LocaleUtil.LABELS_NOTIFICATIONS);
-		
-		try {
-			
-			// CASO ESSA OPÇÃO ESTEJA ATIVADA
-			if(login.road.isHasNotification()) {
-			
-					updateNotifications(); // UPDATE SAT NOTIFICATIONS LIST
-					count(); // UPDATE COUNT
-					notifications(); // UPDATE NOTIFICATIONS LIST					
-			
-			}
-			
-		} catch (Exception e) {			
-			e.printStackTrace();
-		}
-		
+		locale.getResourceBundle(LocaleUtil.LABELS_NOTIFICATIONS);		
+					
 	}
 	
 	// ---------------------------------------------------------------------------------
 	
-	public void updateNotifications() throws Exception {
+	public void updateOnlineStatus(List<? extends Equipments> values, List<Integer> available, List<Integer> unavailable, String typeEquip) throws Exception {
 		
-		NotificationsBean not = new NotificationsBean();
 		DateTimeApplication dt = new DateTimeApplication();
 	
 		// SWITCH NOTIFICATION STATUS
 		
-		if(!satBuild.getAvailabilityList().isEmpty()) {
-					
-			for(SAT sat : satBuild.getSatListValues()) {	
-																																											
-				if(satBuild.getAvailabilityList().contains(sat.getEquip_id()) && sat.getStatus() == 0)
-					  not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), sat.getEquip_id(), NotificationType.SAT.getType(),
+		if(!available.isEmpty()) {
+							
+			for(Equipments eq : values) {															
+								
+				if(available.contains(eq.getEquip_id()) && eq.getStatus() == 0)
+					  updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), eq.getEquip_id(), typeEquip,
 							dt.currentDateTime(), true, false);
 															
-				else if(satBuild.getUnavailabilityList().contains(sat.getEquip_id()) && sat.getStatus() == 1)
-					  not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), sat.getEquip_id(),
-							NotificationType.SAT.getType(), dt.currentDateTime(), false, true);																					
+				else if(unavailable.contains(eq.getEquip_id()) && eq.getStatus() == 1)
+					  updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), eq.getEquip_id(),
+							  typeEquip, dt.currentDateTime(), false, true);																				
 				
 			}
 												
+		} else {
+			
+				for(Equipments eq  : values) {	
+				
+					if(eq.getStatus() == 1) 
+						  updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), eq.getEquip_id(),
+								NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
+				}
 		}
 	}
 	
@@ -125,7 +93,7 @@ public class NotificationsBean implements Serializable {
 		dao = new NotificationsDAO();
 				
 		not = dao.notificationsCount();
-												
+													
 		if(not.getTotal() > 0) {
 			
 			SessionUtil.executeScript("$('#badge-notif').css('display','block'); $('#badge-notif').html("+not.getTotal()+")");			 			
