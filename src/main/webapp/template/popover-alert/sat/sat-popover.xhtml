@@ -49,14 +49,14 @@
                 
                 <!-- POPOVER VEHICLE COMPARISON -->         
                 
-                <div id="pop-data#{item.table_id}#{item.equip_id}" style="display: none;" class="popover-detail">
+                <div id="pop-data#{item.table_id}#{item.equip_id}" class="d-none popover-detail" >
                                                              
-                           <div class="p-0 popover-body">
+                           <div class="p-0 popover-body" >
                           		                            
-                             <table class="m-0 popover-d table table-bordered text-center">								 									  
+                             <table id="tab#{item.table_id}#{item.equip_id}" class="m-0 popover-d popover-table table table-bordered text-center popover-font-min w-75 h-75 ">								 									  
 								  <thead class="thead-dark">
 								   <tr>
-								      <th scope="col" colspan="8" > #{item.nome} &nbsp;:&nbsp;  #{satMapsView.satListValues.get(loop.index).currentDatetime} </th>									      
+								      <th scope="col" colspan="8"> #{item.nome} &nbsp;:&nbsp;  #{satMapsView.satListValues.get(loop.index).currentDatetime} </th>									      
 								    </tr>
 								    <tr>
 								      <th scope="col" rowspan="2" class="align-middle" > #{realtimeLabels.$label_realtime_sat_additional_info_direction} </th>
@@ -76,37 +76,37 @@
 								  </thead>
 								  <tbody class="bg-white">
 								    <tr>
-								      <th rowspan="4" scope="row" class="bg-dark text-white text-center border border-secondary align-middle" >
+								      <th rowspan="4" scope="row" class="bg-dark text-white text-center align-middle" >
 								      	  #{item.sentido1}	
 								      </th>
-								      <th scope="row" class="bg-dark text-white border-secondary" >#{realtimeLabels.$label_realtime_sat_additional_info_light}</th>
+								      <th scope="row" class="bg-dark text-white" >#{realtimeLabels.$label_realtime_sat_additional_info_light}</th>
 								      <td>#{satMapsView.satListValues.get(loop.index).autos7days1hS1}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).autosCurrent1hS1}</td>									      
 								      <td>#{satMapsView.satListValues.get(loop.index).autosProjection1hS1}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).autosVolumeS1}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).autosVelMedS1}</td>
-								      <td> - </td>
+								      <th> - </th>
 								    </tr>
 								    <tr>									      
-								      <th scope="row" class="bg-dark text-white border-secondary" >#{realtimeLabels.$label_realtime_sat_additional_info_comm}</th>
+								      <th scope="row" class="bg-dark text-white" >#{realtimeLabels.$label_realtime_sat_additional_info_comm}</th>
 								      <td>#{satMapsView.satListValues.get(loop.index).com7days1hS1}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).comCurrent1hS1}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).comProjection1hS1}</td>									      
 								      <td>#{satMapsView.satListValues.get(loop.index).comVolumeS1}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).comVelMedS1}</td>
-								      <td> - </td>									      
+								      <th> - </th>									      
 								    </tr>
 								     <tr>
-								      <th scope="row" class="bg-dark text-white border-secondary" >#{realtimeLabels.$label_realtime_sat_additional_info_motorcycle}</th>									    
+								      <th scope="row" class="bg-dark text-white" >#{realtimeLabels.$label_realtime_sat_additional_info_motorcycle}</th>									    
 								      <td>#{satMapsView.satListValues.get(loop.index).moto7days1hS1}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).motoCurrent1hS1}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).motoProjection1hS1}</td>									      
 								      <td>#{satMapsView.satListValues.get(loop.index).motoVolumeS1}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).motoVelMedS1}</td>
-								      <td> - </td>									      
+								      <th> - </th>									      
 								    </tr>
 								     <tr>
-								      <th scope="row" class="bg-dark text-white border-secondary" >#{realtimeLabels.$label_realtime_sat_additional_info_total}</th>
+								      <th scope="row" class="bg-dark text-white" >#{realtimeLabels.$label_realtime_sat_additional_info_total}</th>
 								      <td>#{satMapsView.satListValues.get(loop.index).total7days1hS1}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).totalCurrent1hS1}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).totalProjection1hS1}</td>									      
@@ -118,43 +118,43 @@
 								    <!---->
 								    
 								     <tr>
-								      <th rowspan="4" scope="row" class="bg-dark text-white border-secondary align-middle" >
+								      <th rowspan="4" scope="row" class="bg-dark text-white align-middle"  >
 								     	 #{item.sentido2}									      
 								      </th>
-								      <th scope="row" class="bg-dark text-white border-secondary" >#{realtimeLabels.$label_realtime_sat_additional_info_light}</th>
+								      <th scope="row" class="bg-dark text-white" >#{realtimeLabels.$label_realtime_sat_additional_info_light}</th>
 								      <td>#{satMapsView.satListValues.get(loop.index).autos7days1hS2}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).autosCurrent1hS2}</td>									      
 								      <td>#{satMapsView.satListValues.get(loop.index).autosProjection1hS2}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).autosVolumeS2}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).autosVelMedS2}</td>
-								      <td> - </td>
+								      <th> - </th>
 								    </tr>
 								    <tr>									      
-								      <th scope="row" class="bg-dark text-white border-secondary" >#{realtimeLabels.$label_realtime_sat_additional_info_comm}</th>
+								      <th scope="row" class="bg-dark text-white" >#{realtimeLabels.$label_realtime_sat_additional_info_comm}</th>
 								      <td>#{satMapsView.satListValues.get(loop.index).com7days1hS2}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).comCurrent1hS2}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).comProjection1hS2}</td>										      
 								      <td>#{satMapsView.satListValues.get(loop.index).comVolumeS2}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).comVelMedS2}</td>
-								      <td> - </td>									      
+								      <th> - </th>								      
 								    </tr>
 								     <tr>
-								      <th scope="row" class="bg-dark text-white border-secondary" >#{realtimeLabels.$label_realtime_sat_additional_info_motorcycle}</th>									    
+								      <th scope="row" class="bg-dark text-white" >#{realtimeLabels.$label_realtime_sat_additional_info_motorcycle}</th>									    
 								      <td>#{satMapsView.satListValues.get(loop.index).moto7days1hS2}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).motoCurrent1hS2}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).motoProjection1hS2}</td>									      
 								      <td>#{satMapsView.satListValues.get(loop.index).motoVolumeS2}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).motoVelMedS2}</td>
-								      <td> - </td>									      
+								      <th> - </th>									      
 								    </tr>
 								     <tr>
-								      <th scope="row" class="bg-dark text-white border-secondary" >#{realtimeLabels.$label_realtime_sat_additional_info_total}</th>
+								      <th scope="row" class="bg-dark text-white" >#{realtimeLabels.$label_realtime_sat_additional_info_total}</th>
 								      <td>#{satMapsView.satListValues.get(loop.index).total7days1hS2}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).totalCurrent1hS2}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).totalProjection1hS2}</td>										      
 								      <td>#{satMapsView.satListValues.get(loop.index).totalVolumeS2}</td>
 								      <td>#{satMapsView.satListValues.get(loop.index).totalVelMedS2}</td>
-								      <th>#{satMapsView.satListValues.get(loop.index).occupancyRateS2}</th>								      
+								      <th>#{satMapsView.satListValues.get(loop.index).occupancyRateS2}</th>						      
 								    </tr>									    			    									    									    									    
 								  </tbody>
 								</table>             
