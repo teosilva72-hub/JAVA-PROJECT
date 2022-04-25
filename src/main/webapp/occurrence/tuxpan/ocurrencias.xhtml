@@ -733,9 +733,10 @@
 									value="#{OccController.typeReport}"></h:inputHidden>
 
 								<!-- BTN SAVE OCC -->
-								<h:commandButton type="button" style="display:none;" action="#{OccController.saveOcc}"
+								<h:commandButton type="button" style="display:none;"
 									class="btn btn-primary" id="saveOcc">
-									
+									<f:ajax execute="@form" render=":list-table :form_occ"
+										listener="#{OccController.saveOcc}" />
 								</h:commandButton>
 								<!-- update occ -->
 								<h:commandButton style="display:none;" id="OccUpdate">
