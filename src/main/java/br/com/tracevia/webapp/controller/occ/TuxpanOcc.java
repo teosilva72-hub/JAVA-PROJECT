@@ -1,15 +1,23 @@
 package br.com.tracevia.webapp.controller.occ;
 
+
 import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.servlet.ServletException;
+import javax.servlet.http.Part;
 
 import org.primefaces.context.RequestContext;
 
+import com.groupdocs.conversion.internal.c.a.s.internal.nx.ma;
+
 import br.com.tracevia.webapp.dao.occ.TuxpanDAO;
+import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.occ.TuxpanOccModel;
 
 @ManagedBean(name="OccController")
@@ -33,19 +41,7 @@ public class TuxpanOcc{
 		data = new TuxpanOccModel();
 	}
 
-	public boolean createFolder() {
-		boolean check = false;
-		
-		if(saveOcc() == true) {
-			//create
-			File pasta = new File(System.getProperty("user.home"));
-			System.out.println(pasta);
-		}else {
-			//not create
-		}
-		
-		return check;
-	}
+
 
 	public boolean update() {
 		boolean check = false;
@@ -118,21 +114,25 @@ public class TuxpanOcc{
 		//RequestContext.getCurrentInstance().execute("saveSin();");
 		return check;
 	}
-	public boolean saveOcc() {
+	public boolean saveOcc() throws ServletException, IOException {
 		boolean check = false;
 		dao = new TuxpanDAO();
-
+		String filter = filter(reporte, siniestro, folio_sec);
+		System.out.println(file + " <<");
+		//copy(File filter, File filer);
 		try {
 			check = dao.registerOcc(data, typeReport);
+
 			if(check == false) {
 				//message error
 			}else {
+
 				//createFolder();
 				//message success
 				if(typeReport.equals("1")) {
 					//type occ
 					scriptsOcc();
-				}else {
+				}else if(typeReport.equals("2")){
 					//type sin
 				}
 			}
@@ -142,6 +142,52 @@ public class TuxpanOcc{
 		}
 		return check;
 	}	
+	/*public static void copyFile(String src, String dst) throws IOException {
+
+		File sourceFile = new File(src);        // Creating A Source File
+		File destinationFile = new File(dst+sourceFile.getName());   //Creating A Destination File. Name stays the same this way, referring to getName()
+		try 
+		{
+			Files.copy(sourceFile.toPath(), destinationFile.toPath());  
+			// Static Methods To Copy Copy source path to destination path
+		} catch(Exception e)
+		{
+			System.out.println(e);  // printing in case of error.
+			System.out.println("ERROR");
+		}
+	}*/
+	public String filter(String reporte, String siniestro, String folio) throws ServletException, IOException {
+
+		reporte = reporte.replace(" ", ""); siniestro = siniestro.replace(" ", ""); folio = folio.replace(" ", "");
+		reporte = reporte.replace(",", ""); siniestro = siniestro.replace(",", ""); folio = folio.replace(",", "");
+		reporte = reporte.replace("-", "");	siniestro = siniestro.replace("-", ""); folio = folio.replace("-", "");
+		reporte = reporte.replace("/", ""); siniestro = siniestro.replace("/", ""); folio = folio.replace("/", "");
+		reporte = reporte.replace("\\", ""); siniestro = siniestro.replace("\\", ""); folio = folio.replace("\\", "");
+		reporte = reporte.replace("*", ""); siniestro = siniestro.replace("*", ""); folio = folio.replace("*", "");
+		reporte = reporte.replace("|", "");	siniestro = siniestro.replace("|", ""); folio = folio.replace("|", "");
+		reporte = reporte.replace("?", ""); siniestro = siniestro.replace("?", ""); folio = folio.replace("?", "");
+		String result = reporte+siniestro+folio;
+		createFolder(result);
+
+		return result;
+	}
+	public String createFolder(String date) throws ServletException, IOException {
+		DateTimeApplication dta = new DateTimeApplication();
+		LocalDate local = dta.localeDate();
+		mainPath = "C:\\Report_ocurrencias\\"+local.getYear()+"\\"+local.getMonthValue()+"\\"+date+"\\";
+		File directory = new File(mainPath);
+		String x = "";
+		if (!directory.exists())
+			directory.mkdirs();
+		
+			uploadBean up = new uploadBean();
+			
+				up.upload(file, mainPath, x);
+			
+
+		return mainPath;
+	}
+
 	public boolean listTable() {
 		boolean check = false;
 		try {
@@ -169,16 +215,27 @@ public class TuxpanOcc{
 		RequestContext.getCurrentInstance().execute("hiddenBtnSin();");
 	}
 	//variables
-	private String typeReport, idTable, reportType;
+	private String typeReport, idTable, reportType, folio_sec, reporte, siniestro, mainPath = "";
+	private Part file = null, dst = null;
 	private TuxpanDAO dao;
 	private TuxpanOccModel data;
 	private List<TuxpanOccModel> listar;
 
 	//setter and getter
+
 	public List<TuxpanOccModel> getListar() {
 		return listar;
 	}
 
+	public Part getFile() {
+		return file;
+	}
+	public void setFile(Part file) {
+		this.file = file;
+	}
+	public void setListar(List<TuxpanOccModel> listar) {
+		this.listar = listar;
+	}
 	public String getReportType() {
 		return reportType;
 	}
@@ -197,13 +254,30 @@ public class TuxpanOcc{
 	public void setTypeReport(String typeReport) {
 		this.typeReport = typeReport;
 	}
-	public void setListar(List<TuxpanOccModel> listar) {
-		this.listar = listar;
-	}
+
 	public TuxpanOccModel getData() {
 		return data;
 	}
 	public void setData(TuxpanOccModel data) {
 		this.data = data;
 	}
+	public String getFolio_sec() {
+		return folio_sec;
+	}
+	public void setFolio_sec(String folio_sec) {
+		this.folio_sec = folio_sec;
+	}
+	public String getReporte() {
+		return reporte;
+	}
+	public void setReporte(String reporte) {
+		this.reporte = reporte;
+	}
+	public String getSiniestro() {
+		return siniestro;
+	}
+	public void setSiniestro(String siniestro) {
+		this.siniestro = siniestro;
+	}
+
 }

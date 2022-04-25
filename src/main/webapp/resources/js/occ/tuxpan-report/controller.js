@@ -7,20 +7,42 @@ $(init => {
     clickUpdate()
     blockVirgula()
     formSin()
+    scann()
+    divFile()
     setTimeout(a => {
         vehOcupSin()
     }, 100)
-
 	$('#modalOcc, #modalSin').on("hidden.bs.modal", () => {
 		$("#resetFormSin, #resetFormOcc").click()
+		scann()
+		divFile()
 	})
 	$('[id$=downloadPdf]').click(e=>{
 		setTimeout(x=>{
 			$('[id$=pdfDownload]').click()
 		},200)
 	})
+	$('#file').change(()=>{
+		$('#copyFile').val($('#file').val())
+	})
 })
-
+function divFile(){
+	
+		$('.file').click(()=>{
+			setTimeout(()=>{
+		$('.divForm').addClass('hidden')
+		$('.divFile').removeClass('hidden')
+		},100)
+	})
+	$('.tituloModal').click(()=>{
+		setTimeout(()=>{
+			$('.divForm').removeClass('hidden')
+			$('.divFile').addClass('hidden')
+		},50)
+		
+	})
+	
+}
 function formSin() {
     $('#type_sin').click(a => {
 		getObsSin()
@@ -29,7 +51,34 @@ function formSin() {
 		saveSin()
     })
 }
-
+function scann(){
+	$('#saveSin').prop('disabled', true)
+	$('#occSave').prop('disabled', true)
+	const id = $('#reporte, #siniestro, #folio_secuencial, #sinistro_sin, #folio_rsa')
+	$(id).change(e=>{
+		$('#occSave', '#saveSin').prop('disabled', true)
+		if($('#type_report').val() == "1"){
+			if($('#folio_secuencial').val() == ''.trim() || $('#siniestro').val() == ''.trim() || $('#reporte').val() ==''.trim()){
+				$('#occSave').prop('disabled', true)
+				
+			}else{
+				$('#occSave').prop('disabled', false)
+				$('#get_folio_sec').val($('#folio_secuencial').val())
+				$('#get_report').val($('#siniestro').val())
+				$('#get_siniestro').val($('#reporte').val())
+			}
+		}else if($('#type_reports').val() == "2"){
+			if($('#sinistro_sin').val() == ''.trim() || $('#folio_rsa').val() == ''.trim()){
+				$('#saveSin').prop('disabled', true)
+			}else{
+				$('#saveSin').prop('disabled', false)
+				$('#get_folio_secS').val($('#folio_rsa').val())
+				$('#get_siniestroS').val($('#sinistro_sin').val())
+			}
+		}
+		
+	})
+}
 function blockVirgula() {
     $('#vehInv_append input').on("input", function(a) {
         $(this).val($(this).val().replace(/,/g, ""));
@@ -72,10 +121,12 @@ function hiddenBts() {
         //$('[id$=form_occ] input').val('')
         $('#updateOcc').addClass('hidden')
         $('#occSave').removeClass('hidden')
+        scann()
     })
     $('[id$=type_sin]').click(c => {
         $('#saveSin').removeClass('hidden')
         $('#saveUpdate').addClass('hidden')
+        scann()
     })
 }
 

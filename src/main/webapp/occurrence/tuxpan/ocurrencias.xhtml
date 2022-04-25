@@ -1,15 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://jcp.org/ui"
-	template="/template/dashboard-rov-layout.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions" xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://jcp.org/ui" template="/template/dashboard-rov-layout.xhtml">
+
 
 	<ui:define name="loading"></ui:define>
 
@@ -109,7 +101,7 @@
 										</svg>
 										<f:setPropertyActionListener value="#{date.id}"
 											target="#{OccPdf.id}" />
-											<f:ajax execute="@form" listener="#{OccPdf.model}"
+										<f:ajax execute="@form" listener="#{OccPdf.model}"
 											render=":form_occ :form-sin :edit-form :download_Pdf" />
 									</h:commandLink>
 								</div>
@@ -120,8 +112,9 @@
 			</div>
 		</div>
 		<h:form prependId="false" id="download_Pdf">
-			<h:commandButton action="#{OccPdf.whichPdf}" id="pdfDownload" style="display:none;"></h:commandButton>
-			<h:inputText value="#{OccPdf.id}" style="display:none;"/>
+			<h:commandButton action="#{OccPdf.whichPdf}" id="pdfDownload"
+				style="display:none;"></h:commandButton>
+			<h:inputText value="#{OccPdf.id}" style="display:none;" />
 		</h:form>
 		<!-- Modal Sin-->
 		<div class="modal fade" id="modalSin" data-backdrop="static"
@@ -151,7 +144,7 @@
 								</div>
 								<div class="col-2">
 									<span>Siniestro</span>
-									<h:inputText class="form-control"
+									<h:inputText class="form-control" id="sinistro_sin"
 										value="#{OccController.data.siniestro}" />
 								</div>
 								<div class="col-2">
@@ -172,7 +165,7 @@
 
 								<div class="col-2">
 									<span>Folio RSA</span>
-									<h:inputText class="form-control"
+									<h:inputText class="form-control" id="folio_rsa"
 										value="#{OccController.data.folio_sec}" />
 								</div>
 								<div class="col-2">
@@ -311,6 +304,14 @@
 							<button type="button" data-dismiss="modal"
 								class="btn btn-primary" id="saveUpdate">Actualizar</button>
 						</div>
+
+						<h:inputHidden value="#{OccController.folio_sec}"
+							name="get_folio_secS" id="get_folio_secS" />
+						<h:inputHidden value="#{OccController.reporte}" name="get_reportS"
+							id="get_reportS" />
+						<h:inputHidden value="#{OccController.siniestro}"
+							name="get_siniestroS" id="get_siniestroS" />
+
 						<h:inputHidden value="#{OccController.data.obs_sin}" id="obsGets" />
 						<h:inputHidden value="#{OccController.typeReport}"
 							id="type_reports"></h:inputHidden>
@@ -321,6 +322,7 @@
 							id="vehOcupantesSIN" />
 						<h:commandButton style="display:none" id="sinSave"
 							data-dismiss="modal">
+
 							<f:ajax execute="@form" render=":form-sin :list-table"
 								listener="#{OccController.saveOcc}" />
 						</h:commandButton>
@@ -343,6 +345,7 @@
 				</div>
 			</div>
 		</div>
+
 		<!-- MODAL  OCC-->
 		<div class="modal fade" id="modalOcc" tabindex="-1"
 			data-keyboard="false" data-backdrop="static"
@@ -350,7 +353,10 @@
 			<div class="modal-dialog modal-xl">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="tituloModal">Ocorrencias</h5>
+						<h5 class="modal-title tituloModal">
+							<a href="#" class="alert-link TitleModal">Ocorrencias</a> / <a
+								href="#" class="alert-link file">Archivos</a>
+						</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -358,218 +364,117 @@
 					</div>
 					<div class="modal-body">
 						<!-- START INPUTS -->
-						<h:form prependId="false" id="form_occ">
-							<div class="row">
-								<div class="col-12">
-									<hr></hr>
-									<p class="text-center">Registro de Accidente</p>
-									<hr></hr>
-								</div>
-								<div class="col-2">
-									<span>Num.</span>
-									<h:inputText name="id_occ" id="id_occ" class="form-control"
-										value="#{OccController.data.id}" />
-								</div>
-								<div class="col-4">
-									<span>Plaza de Cobro</span>
-									<h:inputText name="plaza_cobro" id="plaza_cobro"
-										class="form-control" value="#{OccController.data.plz_cobro}" />
-								</div>
-								<div class="col-4">
-									<span>Folio Secuencial</span>
-									<h:inputText name="folio_secuencial" id="folio_secuencial"
-										class="form-control" value="#{OccController.data.folio_sec}" />
-								</div>
-								<div class="col-4">
-									<span>Reporte</span>
-									<h:inputText name="reporte" id="reporte" class="form-control"
-										value="#{OccController.data.reporte}" />
-								</div>
-								<div class="col-4">
-									<span>Siniestro</span>
-									<h:inputText name="siniestro" id="siniestro"
-										class="form-control" value="#{OccController.data.siniestro}" />
-								</div>
-								<div class="col-4">
-									<span>Fecha</span>
-									<h:inputText name="fecha" id="fecha" class="form-control"
-										value="#{OccController.data.fecha}" />
-								</div>
-								<div class="col-4">
-									<span>Hora</span>
-									<h:inputText name="hora" id="hora" class="form-control"
-										value="#{OccController.data.hora}" />
-								</div>
-								<div class="col-4">
-									<span>Dirección Y/O Trayectoria</span>
-									<h:inputText name="direccion_tray" id="direccion_tray"
-										class="form-control" value="#{OccController.data.direccion}" />
-								</div>
-								<div class="col-4">
-									<span>KM de Registro</span>
-									<h:inputText name="km_reg" id="km_reg" class="form-control"
-										value="#{OccController.data.km_reg}" />
-								</div>
-								<div class="col-4">
-									<span>KM Inicial</span>
-									<h:inputText name="km_inicial" id="km_inicial"
-										class="form-control" value="#{OccController.data.km_inicial}" />
-								</div>
-								<div class="col-4">
-									<span>KM Final</span>
-									<h:inputText name="km_final" id="km_final" class="form-control"
-										value="#{OccController.data.km_final}" />
-								</div>
-								<div class="col-4">
-									<span>Póliza Por Afectar</span>
-									<h:inputText name="poliza_afectar" id="poliza_afectar"
-										class="form-control" value="#{OccController.data.poliza}" />
-								</div>
-								<div class="col-4">
-									<span>Hora de Registro Cabina</span>
-									<h:inputText name="hora_reg_cabina" id="hora_reg_cabina"
-										class="form-control" value="#{OccController.data.fecha_cab}" />
-								</div>
-								<div class="col-4">
-									<span>Hora de Arribo de Ajustador</span>
-									<h:inputText name="hora_ajustador" id="hora_ajustador"
-										class="form-control" value="#{OccController.data.hora_ajust}" />
-								</div>
+						<h:form prependId="false"  enctype="multipart/form-data" id="form_occ">
+							<div class="divFile hidden">
+								<h:inputFile value="#{occurrencesBean.file}" id="file"/>
 							</div>
-							<div>
-								<div class="row" id="vehInv_append">
-									<div class="col-12 text-center">
+							<div class="divForm">
+								<div class="row rowFile">
+									<div class="col-12">
 										<hr></hr>
-										<p>Vehiculos Involucrados</p>
+											<p class="text-center">Registro de Accidente</p>
 										<hr></hr>
-									</div>
-									<div class="col-5">
-										<div class="input-group has-validation">
-											<div class="input-group-prepend">
-												<span class="input-group-text">Tipo de Vehículo</span>
-											</div>
-											<input type="text" class="form-control tipo_veh_inv"
-												id="tp_veh0" value="" />
-
-										</div>
-									</div>
-									<div class="col-5">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<span class="input-group-text">Nº Ejes</span>
-											</div>
-											<input type="text" class="form-control ejes" id="eje_veh0"
-												value="" />
-
-										</div>
 									</div>
 									<div class="col-2">
-										<a id="btn_append"><svg width="16" height="16"
-												fill="currentColor" class="bi bi-plus-circle"
-												viewBox="0 0 16 16"> <path
-												d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-											<path
-												d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-											</svg> </a>
-									</div>
-								</div>
-							</div>
-							<div>
-								<div class="row" id="tiposVeh">
-									<div class="col-12">
-										<hr></hr>
-									</div>
-									<div class="col-1 addNum">
-										<span>Num.</span> <input type="text" class="form-control num_"
-											id="num0" value="" />
-
-									</div>
-									<div class="col-1 addMarca">
-										<span>Marca</span> <input type="text"
-											class="form-control marca_" value="" id="marca0" />
-
-									</div>
-									<div class="col-1 addTipo">
-										<span>Tipo</span> <input type="text"
-											class="form-control tipo_" value="" id="tipo0" />
-
-									</div>
-									<div class="col-2 addModelo">
-										<span>Modelo</span> <input type="text"
-											class="form-control modelo_" value="" id="modelo0" />
-
-									</div>
-									<div class="col-2 addCor">
-										<span>Color</span> <input type="text"
-											class="form-control color_" value="" id="cor0" />
-
-									</div>
-									<div class="col-2 addPlaca">
-										<span>Placa/Estado</span> <input type="text"
-											class="form-control placa_" value="" id="placa0" />
-
-									</div>
-									<div class="col-2 addTel">
-										<span>Teléfono</span> <input type="text"
-											class="form-control tel_" value="" id="tel0" />
-
-									</div>
-									<div class="col-1">
-										<a id="btn_append_veh"><svg width="16" height="16"
-												fill="currentColor" class="bi bi-plus-circle"
-												viewBox="0 0 16 16"> <path
-												d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-											<path
-												d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-											</svg> </a>
-									</div>
-								</div>
-							</div>
-							<div>
-								<div class="row">
-									<div class="col-12">
-										<hr></hr>
-										<p class="text-center">Datos de Personas</p>
-										<hr></hr>
-									</div>
-									<div class="col-1">
-										<span>Num</span>
+										<span>Num.</span>
+										<h:inputText name="id_occ" id="id_occ" class="form-control"
+											value="#{OccController.data.id}" />
 									</div>
 									<div class="col-4">
-										<span>Nombre del Conductor</span>
+										<span>Plaza de Cobro</span>
+										<h:inputText name="plaza_cobro" id="plaza_cobro"
+											class="form-control" value="#{OccController.data.plz_cobro}" />
 									</div>
-									<div class="col-2">
-										<span>Edad</span>
+									<div class="col-4">
+										<span>Folio Secuencial</span>
+										<h:inputText name="folio_secuencial" id="folio_secuencial"
+											class="form-control" value="#{OccController.data.folio_sec}" />
 									</div>
-									<div class="col-3">
-										<span>Condiciones de Salud</span>
+									<div class="col-4">
+										<span>Reporte</span>
+										<h:inputText name="reporte" id="reporte" class="form-control"
+											value="#{OccController.data.reporte}" />
 									</div>
-									<div class="col-1"></div>
+									<div class="col-4">
+										<span>Siniestro</span>
+										<h:inputText name="siniestro" id="siniestro"
+											class="form-control" value="#{OccController.data.siniestro}" />
+									</div>
+									<div class="col-4">
+										<span>Fecha</span>
+										<h:inputText name="fecha" id="fecha" class="form-control"
+											value="#{OccController.data.fecha}" />
+									</div>
+									<div class="col-4">
+										<span>Hora</span>
+										<h:inputText name="hora" id="hora" class="form-control"
+											value="#{OccController.data.hora}" />
+									</div>
+									<div class="col-4">
+										<span>Dirección Y/O Trayectoria</span>
+										<h:inputText name="direccion_tray" id="direccion_tray"
+											class="form-control" value="#{OccController.data.direccion}" />
+									</div>
+									<div class="col-4">
+										<span>KM de Registro</span>
+										<h:inputText name="km_reg" id="km_reg" class="form-control"
+											value="#{OccController.data.km_reg}" />
+									</div>
+									<div class="col-4">
+										<span>KM Inicial</span>
+										<h:inputText name="km_inicial" id="km_inicial"
+											class="form-control" value="#{OccController.data.km_inicial}" />
+									</div>
+									<div class="col-4">
+										<span>KM Final</span>
+										<h:inputText name="km_final" id="km_final"
+											class="form-control" value="#{OccController.data.km_final}" />
+									</div>
+									<div class="col-4">
+										<span>Póliza Por Afectar</span>
+										<h:inputText name="poliza_afectar" id="poliza_afectar"
+											class="form-control" value="#{OccController.data.poliza}" />
+									</div>
+									<div class="col-4">
+										<span>Hora de Registro Cabina</span>
+										<h:inputText name="hora_reg_cabina" id="hora_reg_cabina"
+											class="form-control" value="#{OccController.data.fecha_cab}" />
+									</div>
+									<div class="col-4">
+										<span>Hora de Arribo de Ajustador</span>
+										<h:inputText name="hora_ajustador" id="hora_ajustador"
+											class="form-control" value="#{OccController.data.hora_ajust}" />
+									</div>
 								</div>
 								<div>
-									<div class="row container-fluid" id="datos_person">
-										<div class="col-1">
-											<input type="text" class="form-control id_person" value=""
-												id="id0" />
-
+									<div class="row" id="vehInv_append">
+										<div class="col-12 text-center">
+											<hr></hr>
+											<p>Vehiculos Involucrados</p>
+											<hr></hr>
 										</div>
-										<div class="col-4">
-											<input type="text" class="form-control nombre_person"
-												value="" id="nombre0" />
+										<div class="col-5">
+											<div class="input-group has-validation">
+												<div class="input-group-prepend">
+													<span class="input-group-text">Tipo de Vehículo</span>
+												</div>
+												<input type="text" class="form-control tipo_veh_inv"
+													id="tp_veh0" value="" />
 
+											</div>
+										</div>
+										<div class="col-5">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">Nº Ejes</span>
+												</div>
+												<input type="text" class="form-control ejes" id="eje_veh0"
+													value="" />
+
+											</div>
 										</div>
 										<div class="col-2">
-											<input type="text" class="form-control edad_person" value=""
-												id="edad0" />
-
-										</div>
-										<div class="col-4">
-											<input type="text" class="form-control cond_person" value=""
-												id="cond0" />
-
-										</div>
-										<div class="col-1">
-											<a id="btn_append_person"><svg width="16" height="16"
+											<a id="btn_append"><svg width="16" height="16"
 													fill="currentColor" class="bi bi-plus-circle"
 													viewBox="0 0 16 16"> <path
 													d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -579,164 +484,275 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							<div>
-								<div class="row">
-									<div class="col-12">
-										<hr></hr>
-										<p class="text-center">Motivo del Accidente</p>
-										<hr></hr>
-									</div>
-									<div class="col-12">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<span class="input-group-text">A</span>
-											</div>
-											<div class="input-group-prepend">
-												<span class="input-group-text">Someviente</span>
-											</div>
-											<h:inputText type="text" class="form-control"
-												value="#{OccController.data.semoviente}" />
+								<div>
+									<div class="row" id="tiposVeh">
+										<div class="col-12">
+											<hr></hr>
 										</div>
-									</div>
-									<div class="col-12">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<span class="input-group-text">B</span>
-											</div>
-											<div class="input-group-prepend">
-												<span class="input-group-text">Trabajos de
-													Conservación</span>
-											</div>
-											<h:inputText type="text" class="form-control"
-												value="#{OccController.data.trab_conserv}" />
+										<div class="col-1 addNum">
+											<span>Num.</span> <input type="text"
+												class="form-control num_" id="num0" value="" />
+
 										</div>
-									</div>
-									<div class="col-12">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<span class="input-group-text">C</span>
-											</div>
-											<div class="input-group-prepend">
-												<span class="input-group-text">Lluvia, Granizo</span>
-											</div>
-											<h:inputText type="text" class="form-control"
-												value="#{OccController.data.lluvia_granizo}" />
+										<div class="col-1 addMarca">
+											<span>Marca</span> <input type="text"
+												class="form-control marca_" value="" id="marca0" />
+
 										</div>
-									</div>
-									<div class="col-12">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<span class="input-group-text">D</span>
-											</div>
-											<div class="input-group-prepend">
-												<span class="input-group-text">Neblina</span>
-											</div>
-											<h:inputText type="text" class="form-control"
-												value="#{OccController.data.neblina}" />
+										<div class="col-1 addTipo">
+											<span>Tipo</span> <input type="text"
+												class="form-control tipo_" value="" id="tipo0" />
+
 										</div>
-									</div>
-									<div class="col-12">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<span class="input-group-text">E</span>
-											</div>
-											<div class="input-group-prepend">
-												<span class="input-group-text">Vandalismo</span>
-											</div>
-											<h:inputText type="text" class="form-control"
-												value="#{OccController.data.vandalismo}" />
+										<div class="col-2 addModelo">
+											<span>Modelo</span> <input type="text"
+												class="form-control modelo_" value="" id="modelo0" />
+
 										</div>
-									</div>
-									<div class="col-12">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<span class="input-group-text">F</span>
-											</div>
-											<div class="input-group-prepend">
-												<span class="input-group-text">Otro</span>
-											</div>
-											<h:inputText type="text" class="form-control"
-												value="#{OccController.data.otro}" />
+										<div class="col-2 addCor">
+											<span>Color</span> <input type="text"
+												class="form-control color_" value="" id="cor0" />
+
 										</div>
-									</div>
-									<div class="col-12">
-										<hr></hr>
-										<span class="text-center">Observaciones</span>
-										<h:inputTextarea class="form-control"
-											value="#{OccController.data.obs_occ}"></h:inputTextarea>
+										<div class="col-2 addPlaca">
+											<span>Placa/Estado</span> <input type="text"
+												class="form-control placa_" value="" id="placa0" />
+
+										</div>
+										<div class="col-2 addTel">
+											<span>Teléfono</span> <input type="text"
+												class="form-control tel_" value="" id="tel0" />
+
+										</div>
+										<div class="col-1">
+											<a id="btn_append_veh"><svg width="16" height="16"
+													fill="currentColor" class="bi bi-plus-circle"
+													viewBox="0 0 16 16"> <path
+													d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+												<path
+													d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+												</svg> </a>
+										</div>
 									</div>
 								</div>
+								<div>
+									<div class="row">
+										<div class="col-12">
+											<hr></hr>
+											<p class="text-center">Datos de Personas</p>
+											<hr></hr>
+										</div>
+										<div class="col-1">
+											<span>Num</span>
+										</div>
+										<div class="col-4">
+											<span>Nombre del Conductor</span>
+										</div>
+										<div class="col-2">
+											<span>Edad</span>
+										</div>
+										<div class="col-3">
+											<span>Condiciones de Salud</span>
+										</div>
+										<div class="col-1"></div>
+									</div>
+									<div>
+										<div class="row container-fluid" id="datos_person">
+											<div class="col-1">
+												<input type="text" class="form-control id_person" value=""
+													id="id0" />
+
+											</div>
+											<div class="col-4">
+												<input type="text" class="form-control nombre_person"
+													value="" id="nombre0" />
+
+											</div>
+											<div class="col-2">
+												<input type="text" class="form-control edad_person" value=""
+													id="edad0" />
+
+											</div>
+											<div class="col-4">
+												<input type="text" class="form-control cond_person" value=""
+													id="cond0" />
+
+											</div>
+											<div class="col-1">
+												<a id="btn_append_person"><svg width="16" height="16"
+														fill="currentColor" class="bi bi-plus-circle"
+														viewBox="0 0 16 16"> <path
+														d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+													<path
+														d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+													</svg> </a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div class="row">
+										<div class="col-12">
+											<hr></hr>
+											<p class="text-center">Motivo del Accidente</p>
+											<hr></hr>
+										</div>
+										<div class="col-12">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">A</span>
+												</div>
+												<div class="input-group-prepend">
+													<span class="input-group-text">Someviente</span>
+												</div>
+												<h:inputText type="text" class="form-control"
+													value="#{OccController.data.semoviente}" />
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">B</span>
+												</div>
+												<div class="input-group-prepend">
+													<span class="input-group-text">Trabajos de
+														Conservación</span>
+												</div>
+												<h:inputText type="text" class="form-control"
+													value="#{OccController.data.trab_conserv}" />
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">C</span>
+												</div>
+												<div class="input-group-prepend">
+													<span class="input-group-text">Lluvia, Granizo</span>
+												</div>
+												<h:inputText type="text" class="form-control"
+													value="#{OccController.data.lluvia_granizo}" />
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">D</span>
+												</div>
+												<div class="input-group-prepend">
+													<span class="input-group-text">Neblina</span>
+												</div>
+												<h:inputText type="text" class="form-control"
+													value="#{OccController.data.neblina}" />
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">E</span>
+												</div>
+												<div class="input-group-prepend">
+													<span class="input-group-text">Vandalismo</span>
+												</div>
+												<h:inputText type="text" class="form-control"
+													value="#{OccController.data.vandalismo}" />
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">F</span>
+												</div>
+												<div class="input-group-prepend">
+													<span class="input-group-text">Otro</span>
+												</div>
+												<h:inputText type="text" class="form-control"
+													value="#{OccController.data.otro}" />
+											</div>
+										</div>
+										<div class="col-12">
+											<hr></hr>
+											<span class="text-center">Observaciones</span>
+											<h:inputTextarea class="form-control"
+												value="#{OccController.data.obs_occ}"></h:inputTextarea>
+										</div>
+									</div>
+								</div>
+								<!-- INPUTS HIDDEN -->
+								<h:inputHidden value="#{OccController.folio_sec}"
+									name="get_folio_sec" id="get_folio_sec" />
+								<h:inputHidden value="#{OccController.reporte}"
+									name="get_report" id="get_report" />
+								<h:inputHidden value="#{OccController.siniestro}"
+									name="get_siniestro" id="get_siniestro" />
+								<!-- VEH INV AND EJE -->
+								<h:inputHidden value="#{OccController.idTable}" />
+								<h:inputHidden class="form-control" name="tipo_veh_inv"
+									id="tipo_veh_inv" value="#{OccController.data.tipo_veh_inv}" />
+
+								<h:inputHidden class="form-control" name="num_eje_veh_inv"
+									id="num_eje_veh_inv"
+									value="#{OccController.data.num_eje_veh_inv}" />
+
+								<!-- VEH INV TIPO -->
+								<h:inputHidden id="num_veh" name="num_veh" class="form-control"
+									value="#{OccController.data.num_tp_veh}" />
+
+								<h:inputHidden id="marca_veh" name="marca_veh"
+									class="form-control" value="#{OccController.data.marca_tp_veh}" />
+
+								<h:inputHidden id="tipo_veh" name="tipo_veh"
+									class="form-control" value="#{OccController.data.tipo_tp_veh}" />
+
+								<h:inputHidden id="modelo_veh" name="modelo_veh"
+									class="form-control" value="#{OccController.data.model_tp_veh}" />
+
+								<h:inputHidden id="cor_veh" name="cor_veh" class="form-control"
+									value="#{OccController.data.color}" />
+
+								<h:inputHidden id="placa_veh" name="placa_veh"
+									class="form-control" value="#{OccController.data.placa_estado}" />
+
+								<h:inputHidden id="tel_veh" name="tel_veh" class="form-control"
+									value="#{OccController.data.tel}" />
+
+								<!-- DATOS PERSON -->
+								<h:inputHidden name="id_person" id="id_person"
+									class="form-control" value="#{OccController.data.id_person}" />
+
+								<h:inputHidden name="nombre_person" id="nombre_person"
+									class="form-control" value="#{OccController.data.nombre}" />
+
+								<h:inputHidden name="edad_person" id="edad_person"
+									class="form-control" value="#{OccController.data.edad}" />
+
+								<h:inputHidden name="codiciones_person" id="condiciones_person"
+									class="form-control" value="#{OccController.data.condiciones}" />
+
+								<h:inputHidden name="type_report" id="type_report"
+									value="#{OccController.typeReport}"></h:inputHidden>
+
+								<!-- BTN SAVE OCC -->
+								<h:commandButton type="button" style="display:none;" action="#{OccController.saveOcc}"
+									class="btn btn-primary" id="saveOcc">
+									
+								</h:commandButton>
+								<!-- update occ -->
+								<h:commandButton style="display:none;" id="OccUpdate">
+									<f:ajax execute="@form" render=":list-table :form_occ"
+										listener="#{OccController.update}" />
+								</h:commandButton>
+								<!-- BTN LISTAR OCC -->
+								<h:commandButton type="button" style="display:none;"
+									class="btn btn-primary" id="list_occ">
+									<f:ajax execute="@form" render=":list-table :form_occ"
+										listener="#{OccController.listTable}" />
+								</h:commandButton>
+								<h:commandButton style="display:none;" id="resetFormOcc">
+									<f:ajax execute="@form" render=":form_occ"
+										listener="#{OccController.initializeData}" />
+								</h:commandButton>
 							</div>
-							<!-- INPUTS HIDDEN -->
-							<!-- VEH INV AND EJE -->
-							<h:inputHidden value="#{OccController.idTable}" />
-							<h:inputHidden class="form-control" name="tipo_veh_inv"
-								id="tipo_veh_inv" value="#{OccController.data.tipo_veh_inv}" />
-
-							<h:inputHidden class="form-control" name="num_eje_veh_inv"
-								id="num_eje_veh_inv"
-								value="#{OccController.data.num_eje_veh_inv}" />
-
-							<!-- VEH INV TIPO -->
-							<h:inputHidden id="num_veh" name="num_veh" class="form-control"
-								value="#{OccController.data.num_tp_veh}" />
-
-							<h:inputHidden id="marca_veh" name="marca_veh"
-								class="form-control" value="#{OccController.data.marca_tp_veh}" />
-
-							<h:inputHidden id="tipo_veh" name="tipo_veh" class="form-control"
-								value="#{OccController.data.tipo_tp_veh}" />
-
-							<h:inputHidden id="modelo_veh" name="modelo_veh"
-								class="form-control" value="#{OccController.data.model_tp_veh}" />
-
-							<h:inputHidden id="cor_veh" name="cor_veh" class="form-control"
-								value="#{OccController.data.color}" />
-
-							<h:inputHidden id="placa_veh" name="placa_veh"
-								class="form-control" value="#{OccController.data.placa_estado}" />
-
-							<h:inputHidden id="tel_veh" name="tel_veh" class="form-control"
-								value="#{OccController.data.tel}" />
-
-							<!-- DATOS PERSON -->
-							<h:inputHidden name="id_person" id="id_person"
-								class="form-control" value="#{OccController.data.id_person}" />
-
-							<h:inputHidden name="nombre_person" id="nombre_person"
-								class="form-control" value="#{OccController.data.nombre}" />
-
-							<h:inputHidden name="edad_person" id="edad_person"
-								class="form-control" value="#{OccController.data.edad}" />
-
-							<h:inputHidden name="codiciones_person" id="condiciones_person"
-								class="form-control" value="#{OccController.data.condiciones}" />
-
-							<h:inputHidden name="type_report" id="type_report"
-								value="#{OccController.typeReport}"></h:inputHidden>
-
-							<!-- BTN SAVE OCC -->
-							<h:commandButton type="button" style="display:none;"
-								class="btn btn-primary" id="saveOcc">
-								<f:ajax execute="@form" render=":list-table :form_occ"
-									listener="#{OccController.saveOcc}" />
-							</h:commandButton>
-							<!-- update occ -->
-							<h:commandButton style="display:none;" id="OccUpdate">
-								<f:ajax execute="@form" render=":list-table :form_occ"
-									listener="#{OccController.update}" />
-							</h:commandButton>
-							<!-- BTN LISTAR OCC -->
-							<h:commandButton type="button" style="display:none;"
-								class="btn btn-primary" id="list_occ">
-								<f:ajax execute="@form" render=":list-table :form_occ"
-									listener="#{OccController.listTable}" />
-							</h:commandButton>
-							<h:commandButton style="display:none;" id="resetFormOcc">
-								<f:ajax execute="@form" render=":form_occ"
-									listener="#{OccController.initializeData}" />
-							</h:commandButton>
 						</h:form>
 						<!-- END INPUTS -->
 					</div>
