@@ -69,7 +69,9 @@ public class TuxpanOcc{
 		try {
 
 			data = dao.select(idTable);
-
+			String filter = filter(data.getReporte(), data.getSiniestro(), data.getFolio_sec());
+			mainPath = createFolder(filter);
+			listarAqr = listarFiles(mainPath);
 			if(data.getType_report().equals("1")) {
 				//message type report one
 				scriptsOcc();
@@ -142,20 +144,7 @@ public class TuxpanOcc{
 		}
 		return check;
 	}	
-	/*public static void copyFile(String src, String dst) throws IOException {
-
-		File sourceFile = new File(src);        // Creating A Source File
-		File destinationFile = new File(dst+sourceFile.getName());   //Creating A Destination File. Name stays the same this way, referring to getName()
-		try 
-		{
-			Files.copy(sourceFile.toPath(), destinationFile.toPath());  
-			// Static Methods To Copy Copy source path to destination path
-		} catch(Exception e)
-		{
-			System.out.println(e);  // printing in case of error.
-			System.out.println("ERROR");
-		}
-	}*/
+	
 	public String filter(String reporte, String siniestro, String folio) {
 		System.out.println("passo 2");
 		reporte = reporte.replace(" ", ""); siniestro = siniestro.replace(" ", ""); folio = folio.replace(" ", "");
@@ -167,10 +156,7 @@ public class TuxpanOcc{
 		reporte = reporte.replace("|", "");	siniestro = siniestro.replace("|", ""); folio = folio.replace("|", "");
 		reporte = reporte.replace("?", ""); siniestro = siniestro.replace("?", ""); folio = folio.replace("?", "");
 		String result = reporte+siniestro+folio;
-		
-			createFolder(result);
-		
-
+		createFolder(result);
 		return result;
 	}
 	public String createFolder(String date){
@@ -183,7 +169,16 @@ public class TuxpanOcc{
 			directory.mkdirs();			
 		return mainPath;
 	}
-	
+	public String[] listarFiles(String date) {
+		
+		File dir = new File(date);
+		File[] arq = dir.listFiles();
+		listarAqr = new String[arq.length];
+		for(int i = 0; i< arq.length; i++) {
+			listarAqr[i] = arq[i].getName();
+		}
+		return listarAqr;
+	}
 	public void uploadFile() throws Exception {
 		uploadBean up = new uploadBean();	
 		String space = "";
@@ -193,7 +188,7 @@ public class TuxpanOcc{
 		//passando variavel para uploadFile
 		up.upload(file, mainPath, space);	
 	}
-	
+
 	public boolean listTable() {
 		boolean check = false;
 		try {
@@ -215,13 +210,14 @@ public class TuxpanOcc{
 
 	}
 	public void scriptsSin() {
-		RequestContext.getCurrentInstance().execute("clickUpdate();");
+		//RequestContext.getCurrentInstance().execute("clickUpdate();");
 		RequestContext.getCurrentInstance().execute("blockVirgula();");
 		RequestContext.getCurrentInstance().execute("vehOcupSin();");
 		RequestContext.getCurrentInstance().execute("hiddenBtnSin();");
 	}
 	//variables
 	private String typeReport, idTable, reportType, folio_sec, reporte, siniestro, mainPath = "";
+	private String[] listarAqr = null;
 	private Part file = null, dst = null;
 	private TuxpanDAO dao;
 	private TuxpanOccModel data;
@@ -233,6 +229,12 @@ public class TuxpanOcc{
 		return listar;
 	}
 
+	public String[] getListarAqr() {
+		return listarAqr;
+	}
+	public void setListarAqr(String[] listarAqr) {
+		this.listarAqr = listarAqr;
+	}
 	public Part getFile() {
 		return file;
 	}

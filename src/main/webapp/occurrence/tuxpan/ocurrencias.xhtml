@@ -98,7 +98,7 @@
 										<f:setPropertyActionListener value="#{date.id}"
 											target="#{OccController.idTable}" />
 										<f:ajax execute="@form"
-											render=":form_occ :form-sin :edit-form" />
+											render=":form_occ :form-sin :edit-form :formFileSin :formFile" />
 									</h:commandLink>
 									<h:commandLink id="downloadPdf">
 										<svg width="16" height="16" fill="currentColor"
@@ -143,7 +143,8 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<h:form prependId="false" id="formFileSin" enctype="multipart/form-data">
+						<h:form prependId="false" id="formFileSin"
+							enctype="multipart/form-data">
 							<div class="divFile hidden">
 								<h:inputFile value="#{OccController.file}" name="files"
 									class="getFiles" a:multiple="true" />
@@ -153,8 +154,19 @@
 									id="get_siniestros" />
 								<h:inputHidden value="#{OccController.folio_sec}"
 									id="get_folio_secs" />
-										<h:inputHidden value="#{OccController.reporte}" />
-
+								<h:inputHidden value="#{OccController.reporte}" id="sinReporte" />
+								<div class="row">
+									<div class="col-12">
+										<hr />
+										#{occLabels.occ_list_files}
+									</div>
+									<c:forEach items="#{OccController.listarAqr}" var="item"
+										class="listandoFile" varStatus="loop">
+										<div class="col-12">
+											<span>#{item}</span>
+										</div>
+									</c:forEach>
+								</div>
 							</div>
 						</h:form>
 						<h:form prependId="false" id="form-sin">
@@ -407,7 +419,18 @@
 									id="siniestroFile" />
 								<h:inputHidden value="#{OccController.folio_sec}"
 									id="folio_secFile" />
-
+								<div class="row">
+									<div class="col-12">
+										<hr />
+										#{occLabels.occ_list_files}
+									</div>
+									<c:forEach items="#{OccController.listarAqr}" var="item"
+										class="listandoFile" varStatus="loop">
+										<div class="col-12">
+											<span>#{item}</span>
+										</div>
+									</c:forEach>
+								</div>
 							</div>
 						</h:form>
 						<h:form prependId="false" id="form_occ">

@@ -105,6 +105,7 @@ function scann() {
                 $('#get_siniestroS').val($('#sinistro_sin').val())
                  $('#get_folio_secs').val($('#folio_rsa').val())
                 $('#get_siniestros').val($('#sinistro_sin').val())
+                $('#sinReporte').val("-")
                 
             }
         }
@@ -174,9 +175,9 @@ function clickUpdate() {
     $('#saveUpdate').click(c => {
         getVehOcupSin()
         getObsSin()
-        setTimeout(d => {
+        //setTimeout(d => {
             $('[id$=updateSin]').click()
-        }, 100)
+        //}, 100)
     })
 }
 

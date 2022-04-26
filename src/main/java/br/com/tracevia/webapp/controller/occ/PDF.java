@@ -465,6 +465,26 @@ public class PDF {
 			table4.addCell(new PdfPCell(new Phrase(obs[6], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			document.add(table4);
 			document.add(conteudo);
+			
+			PdfPTable table5 = new PdfPTable(2);
+			table5.setTotalWidth(500);
+			table5.setTotalWidth(new float[]{250,250});
+			table5.setLockedWidth(true);
+			TuxpanOcc method = new TuxpanOcc();
+			String filter = method.filter(model().getReporte(), model().getSiniestro(), model().getFolio_sec());
+			String mainPath = method.createFolder(filter);
+			String[] imgs = method.listarFiles(mainPath);
+			String[] x = new String[imgs.length];
+			for(int i=0;i<imgs.length;i++) {
+				x[i] = mainPath+imgs[i];
+				System.out.println(x[i]);
+				table5.addCell(x[i]);
+			}
+			
+			
+	        
+	        
+	        document.add(table5);
 
 
 		}
@@ -495,7 +515,7 @@ public class PDF {
 	}
 
 	private boolean check = false;
-	private String logo, id;
+	private String logo, id, img;
 	private TuxpanOccModel date;
 	private TuxpanDAO dao;
 	public String getLogo() {
@@ -507,7 +527,15 @@ public class PDF {
 			return "";
 		}
 	}
-
+	public String getImg() {
+		try {
+			Path path = Paths.get(img);
+			byte[] file = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(file);
+		}catch (Exception e) {
+			return "";
+		}
+	}
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
