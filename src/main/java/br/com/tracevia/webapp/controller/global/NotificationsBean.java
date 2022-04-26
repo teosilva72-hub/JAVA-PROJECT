@@ -45,12 +45,7 @@ public class NotificationsBean implements Serializable {
 	}	
 	
 	@PostConstruct
-	public void initializer() {
-		
-		locale = new LocaleUtil();
-		locale.getResourceBundle(LocaleUtil.LABELS_NOTIFICATIONS);		
-					
-	}
+	public void initializer() {}		
 	
 	// ---------------------------------------------------------------------------------
 	
@@ -111,7 +106,7 @@ public class NotificationsBean implements Serializable {
     {
         List<NotificationsAlert> listAux = new ArrayList<NotificationsAlert>();            
         NotificationsAlert not = new NotificationsAlert();
-                           
+                                   
         dao = new NotificationsDAO();
         
         listAux = dao.notifications();            
@@ -132,15 +127,18 @@ public class NotificationsBean implements Serializable {
 
         }else {
         	
+        	locale = new LocaleUtil();
+            locale.getResourceBundle(LocaleUtil.LABELS_NOTIFICATIONS);
+        	
             not.setEquipId(0);
             not.setAlarmType(0);
             not.setEquipType("none");               
             not.setDescription(locale.getStringKey("no_notifications"));
             not.setViewedBgColor("dropdown-nofit-alert");
             
+         	SessionUtil.executeScript("$('#notification-list').empty()");
             SessionUtil.executeScript("$('#notification-list').append(backWithoutNotification('"+not.getViewedBgColor()+"', "+not.getAlarmType()+", '"+not.getEquipType()+"', "+not.getEquipId()+", '"+not.getDescription()+"')); $('#div-single').css('display','block')");
-   		 
- 
+                        
             }
                    
     }

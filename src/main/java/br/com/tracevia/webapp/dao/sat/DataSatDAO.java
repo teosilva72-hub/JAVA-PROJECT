@@ -33,11 +33,46 @@ public class DataSatDAO {
 			// Obter data com a hora formatada
 			hourDatetime = dta.getDataIntervalHour(calendar);
 			
+			//System.out.println(currentDate+"   "+hourDatetime);
+			
 			String temp = "CREATE TEMPORARY TABLE IF NOT EXISTS equip SELECT eq.equip_id, eq.visible, CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4) THEN 5 " +
-				"WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3) THEN 4 " +
-				"WHEN (eq.dir_lane1 = eq.dir_lane2) THEN 3 " +
-				"ELSE 2 END 'sentido' FROM sat_equipment eq; ";  // initialize variable	
-				
+					"WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3) THEN 4 " +
+					"WHEN (eq.dir_lane1 = eq.dir_lane2) THEN 3 " +
+					"ELSE 2 END 'sentido' FROM sat_equipment eq; ";  // initialize variable
+							
+			String last7days = "CREATE TEMPORARY TABLE IF NOT EXISTS last_7_days " +
+					"SELECT ld.NOME_ESTACAO, SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN ld.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_7_DAYS_S1', " + 
+					"SUM(CASE WHEN ld.NOME_FAIXA < eq.sentido THEN (ld.VOLUME_COM + ld.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_7_DAYS_S1', " +
+					"SUM(CASE WHEN ld.NOME_FAIXA < eq.sentido THEN ld.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_7_DAYS_S1', " +
+					"SUM(CASE WHEN ld.NOME_FAIXA < eq.sentido THEN ld.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_7_DAYS_S1', " +
+	
+					"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido  THEN ld.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_7_DAYS_S2', " +
+					"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido THEN (ld.VOLUME_COM + ld.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_7_DAYS_S2', " +
+					"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido THEN ld.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_7_DAYS_S2', " +
+					"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido THEN ld.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_7_DAYS_S2' " +
+	
+					"FROM tb_dados15 ld " +
+					"LEFT JOIN equip eq ON (ld.NOME_ESTACAO = eq.equip_id) " +
+					"WHERE ld.DATA_HORA BETWEEN DATE_SUB(?, INTERVAL 7 DAY) AND DATE_SUB(DATE_ADD(DATE_SUB(?, INTERVAL 7 DAY), INTERVAL 1 HOUR), INTERVAL 1 SECOND) GROUP BY ld.NOME_ESTACAO LIMIT 9";
+
+			String lastHour = "CREATE TEMPORARY TABLE IF NOT EXISTS last_hour " +
+					"SELECT lh.NOME_ESTACAO, SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN lh.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_HOUR_S1', " + 
+					"SUM(CASE WHEN lh.NOME_FAIXA < eq.sentido THEN (lh.VOLUME_COM + lh.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_HOUR_S1', " +
+					"SUM(CASE WHEN lh.NOME_FAIXA < eq.sentido THEN lh.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_HOUR_S1', " +
+					"SUM(CASE WHEN lh.NOME_FAIXA < eq.sentido THEN lh.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_HOUR_S1', " +
+		
+					"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido  THEN lh.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_HOUR_S2', " +
+					"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido THEN (lh.VOLUME_COM + lh.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_HOUR_S2', " +
+					"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido THEN lh.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_HOUR_S2', " +
+					"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido THEN lh.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_HOUR_S2' " +
+		
+					"FROM tb_dados15 lh " +
+					"LEFT JOIN equip eq ON (lh.NOME_ESTACAO = eq.equip_id) " +
+					"WHERE lh.DATA_HORA BETWEEN DATE_SUB(?, INTERVAL 1 HOUR) AND DATE_SUB(?, INTERVAL 1 SECOND) GROUP BY lh.NOME_ESTACAO LIMIT 9";
+
+			String maxDate = "CREATE TEMPORARY TABLE IF NOT EXISTS maxDate " +
+					"SELECT siteID, MAX(data) maxDate FROM tb_vbv GROUP BY siteID LIMIT 9";
+							
 			String select = "SELECT d.NOME_ESTACAO AS ESTACAO, nt.online_status AS ESTADO_ATUAL, " +
 				"IFNULL(CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE CASE WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), " +
 				"DATE_FORMAT(DATE_ADD(d.DATA_HORA ,INTERVAL 14 MINUTE), ' %H:%i')) ELSE CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 15 MINUTE), ' %H:%i')) END END, '07/01/2000 07:00') 'PACOTE_HORA', " +
@@ -51,31 +86,31 @@ public class DataSatDAO {
 				
 				/* 7 DAYS COLUMNS VALUE S1 */
 				
-				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN sd.volumeAutos_7_days ELSE 0 END) 'VOLUME_AUTO_LAST_7_DAYS_S1', " +
-				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN (sd.volumeCom_7_days + sd.volumeLongo_7_days) ELSE 0 END) 'VOLUME_COM_LAST_7_DAYS_S1', " +
-				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN sd.volumeMoto_7_days ELSE 0 END) 'VOLUME_MOTO_LAST_7_DAYS_S1', " +
-				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN sd.volumeTotal_7_days ELSE 0 END) 'VOLUME_TOTAL_LAST_7_DAYS_S1', " +
+				"VOLUME_AUTO_LAST_7_DAYS_S1, " +
+			    "VOLUME_COM_LAST_7_DAYS_S1, " +
+			    "VOLUME_MOTO_LAST_7_DAYS_S1, " +
+				"VOLUME_TOTAL_LAST_7_DAYS_S1, " +
 				
 				/* 1 HOUR COLUMNS VALUE S1 */
 				
-				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN lh.volumeAutos_1_hour ELSE 0 END) 'VOLUME_AUTO_LAST_HOUR_S1', " +
-				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN (lh.volumeCom_1_hour + lh.volumeLongo_1_hour) ELSE 0 END) 'VOLUME_COM_LAST_HOUR_S1', " +
-				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN lh.volumeMoto_1_hour ELSE 0 END) 'VOLUME_MOTO_LAST_HOUR_S1', " + 
-				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN lh.volumeTotal_1_hour ELSE 0 END) 'VOLUME_TOTAL_LAST_HOUR_S1', " + 
+				"VOLUME_AUTO_LAST_HOUR_S1, " +
+				"VOLUME_COM_LAST_HOUR_S1, " +
+				"VOLUME_MOTO_LAST_HOUR_S1, " +
+				"VOLUME_TOTAL_LAST_HOUR_S1, " +
 				
 				/* VOLUME S1 */
 				
-				"@autoS1 := SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_S1', " +
-				"@comS1 := SUM(CASE WHEN d.NOME_FAIXA < sentido THEN (d.VOLUME_COM + d.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_S1', " +
-				"@motoS1 := SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_S1', " +
-				"@totalS1 := SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_S1', " +
+				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_S1', " +
+				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN (d.VOLUME_COM + d.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_S1', " +
+				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_S1', " +
+				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_S1', " +
 				
 				/* PROJECTION S1 */
 				
-				"ROUND((@autoS1 * 4), 0) 'VOLUME_AUTO_PROJECTION_S1', " +
-				"ROUND((@comS1 * 4), 0) 'VOLUME_COM_PROJECTION_S1', " +
-				"ROUND((@motoS1 * 4), 0) 'VOLUME_MOTO_PROJECTION_S1', " +
-				"ROUND((@totalS1 * 4), 0) 'VOLUME_TOTAL_PROJECTION_S1', " +
+				"ROUND((SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_AUTO ELSE 0 END) * 4), 0) 'VOLUME_AUTO_PROJECTION_S1', " +
+				"ROUND((SUM(CASE WHEN d.NOME_FAIXA < sentido THEN (d.VOLUME_COM + d.VOLUME_LONGO) ELSE 0 END) * 4), 0) 'VOLUME_COM_PROJECTION_S1', " +
+				"ROUND((SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_MOTOS ELSE 0 END)  * 4), 0) 'VOLUME_MOTO_PROJECTION_S1', " +
+				"ROUND((SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_TOTAL ELSE 0 END) * 4), 0) 'VOLUME_TOTAL_PROJECTION_S1', " +
 				
 				 /* TAXA OCUPACAO S1 */  
 				 
@@ -90,31 +125,31 @@ public class DataSatDAO {
 				
 				/* 7 DAYS COLUMNS VALUE S2 */
 				
-				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN sd.volumeAutos_7_days ELSE 0 END) 'VOLUME_AUTO_LAST_7_DAYS_S2', " +
-				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN (sd.volumeCom_7_days + sd.volumeLongo_7_days) ELSE 0 END) 'VOLUME_COM_LAST_7_DAYS_S2', " +
-				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN sd.volumeMoto_7_days ELSE 0 END) 'VOLUME_MOTO_LAST_7_DAYS_S2', " +
-				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN sd.volumeTotal_7_days ELSE 0 END) 'VOLUME_TOTAL_LAST_7_DAYS_S2', " +
+				"VOLUME_AUTO_LAST_7_DAYS_S2, " +
+				"VOLUME_COM_LAST_7_DAYS_S2, " +
+				"VOLUME_MOTO_LAST_7_DAYS_S2, " +
+				"VOLUME_TOTAL_LAST_7_DAYS_S2, " +
 				
 				/* 1 HOUR COLUMNS VALUE S2*/
 				
-				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN lh.volumeAutos_1_hour ELSE 0 END) 'VOLUME_AUTO_LAST_HOUR_S2', " +
-				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN (lh.volumeCom_1_hour + lh.volumeLongo_1_hour) ELSE 0 END) 'VOLUME_COM_LAST_HOUR_S2', " +
-				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN lh.volumeMoto_1_hour ELSE 0 END) 'VOLUME_MOTO_LAST_HOUR_S2', " +
-				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN lh.volumeTotal_1_hour ELSE 0 END) 'VOLUME_TOTAL_LAST_HOUR_S2', " +
+				"VOLUME_AUTO_LAST_HOUR_S2, " +
+				"VOLUME_COM_LAST_HOUR_S2, " +
+				"VOLUME_MOTO_LAST_HOUR_S2, " +
+				"VOLUME_TOTAL_LAST_HOUR_S2, " +
 				
 				/* VOLUME S2 */
 				
-				"@autoS2 := SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_S2', " +
-				"@comS2 := SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN (d.VOLUME_COM + d.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_S2', " +
-				"@motoS2 := SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_S2', " +
-				"@totalS2 := SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_S2', " +
+				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_S2', " +
+				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN (d.VOLUME_COM + d.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_S2', " +
+				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_S2', " +
+				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_S2', " +
 				
 				/* PROJECTION S2 */
 				
-				"ROUND((@autoS2 * 4), 0) 'VOLUME_AUTO_PROJECTION_S2', " +
-				"ROUND((@comS2 * 4), 0) 'VOLUME_COM_PROJECTION_S2', " +
-				"ROUND((@motoS2 * 4), 0) 'VOLUME_MOTO_PROJECTION_S2', " +
-				"ROUND((@totalS2 * 4), 0) 'VOLUME_TOTAL_PROJECTION_S2', " +
+				"ROUND((SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_AUTO ELSE 0 END) * 4), 0) 'VOLUME_AUTO_PROJECTION_S2', " +
+				"ROUND((SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN (d.VOLUME_COM + d.VOLUME_LONGO) ELSE 0 END) * 4), 0) 'VOLUME_COM_PROJECTION_S2', " +
+				"ROUND((SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_MOTOS ELSE 0 END) * 4), 0) 'VOLUME_MOTO_PROJECTION_S2', " +
+				"ROUND((SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_TOTAL ELSE 0 END) * 4), 0) 'VOLUME_TOTAL_PROJECTION_S2', " +
 				
 				 /* TAXA OCUPACAO S2 */ 
 				 
@@ -129,35 +164,14 @@ public class DataSatDAO {
 				
 				"FROM "+RoadConcessionaire.tableDados15+" d " +
 				"LEFT JOIN equip eq ON (d.NOME_ESTACAO = eq.equip_id) " +
+				"LEFT JOIN maxDate md ON md.siteID = d.NOME_ESTACAO " +
+				"LEFT JOIN last_7_days dy ON (d.NOME_ESTACAO = dy.NOME_ESTACAO) " +
+				"LEFT JOIN last_hour lh ON (d.NOME_ESTACAO = lh.NOME_ESTACAO) " +
 				"LEFT JOIN notifications_status nt ON (d.NOME_ESTACAO = nt.equip_id) AND 'SAT' = nt.equip_type " +
 				
-				"LEFT JOIN " +
-				"( " +
-				    "SELECT siteID, MAX(data) maxDate FROM tb_vbv " +
-				    "GROUP BY siteID LIMIT "+ limit +   // LIMIT == NUMBER OF EQUIPS
-				") md ON md.siteID = eq.equip_id " +
-				
-				"LEFT JOIN " +
-				"( " +
-				    "SELECT NOME_ESTACAO, NOME_FAIXA faixa_7_days, SUM(VOLUME_AUTO) volumeAutos_7_days, SUM(VOLUME_COM) volumeCom_7_days, SUM(VOLUME_LONGO) volumeLongo_7_days, SUM(VOLUME_MOTOS) volumeMoto_7_days, " +
-				    "SUM(VOLUME_TOTAL) volumeTotal_7_days FROM "+RoadConcessionaire.tableDados15+" " +
-					"WHERE DATA_HORA BETWEEN DATE_SUB(?, INTERVAL 7 DAY) AND DATE_SUB(DATE_ADD(DATE_SUB(?, INTERVAL 7 DAY), INTERVAL 1 HOUR), INTERVAL 1 SECOND) " +
-				    "GROUP BY NOME_ESTACAO, NOME_FAIXA " +
-				    
-				") sd ON sd.NOME_ESTACAO = d.NOME_ESTACAO AND sd.faixa_7_days = d.NOME_FAIXA " +
-				
-				"LEFT JOIN " +
-				"( " +
-					"SELECT NOME_ESTACAO, DATA_HORA datetime_1_hour, NOME_FAIXA faixa_1_hour, SUM(VOLUME_AUTO) volumeAutos_1_hour, SUM(VOLUME_COM) volumeCom_1_hour, SUM(VOLUME_LONGO) volumeLongo_1_hour, SUM(VOLUME_MOTOS) volumeMoto_1_hour, " + 
-				    "SUM(VOLUME_TOTAL) volumeTotal_1_hour FROM "+RoadConcessionaire.tableDados15+" " +
-				    "WHERE DATA_HORA BETWEEN DATE_SUB(?, INTERVAL 1 HOUR) AND DATE_SUB(?, INTERVAL 1 SECOND) " + 
-				    "GROUP BY NOME_ESTACAO, NOME_FAIXA " +
-				    
-				") lh ON lh.NOME_ESTACAO = d.NOME_ESTACAO AND lh.faixa_1_hour = d.NOME_FAIXA " +
-				
-		   "WHERE d.DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 " +
-		   "GROUP BY d.NOME_ESTACAO " +	
-	 	   "ORDER BY d.DATA_HORA DESC ";
+			    "WHERE d.DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 " +
+			    "GROUP BY d.NOME_ESTACAO " +	
+		 	    "ORDER BY d.DATA_HORA DESC ";
 	 
 	 try {
 			
@@ -166,6 +180,27 @@ public class DataSatDAO {
 			conn.prepare(temp);
 			conn.executeUpdate();
 			
+			// ------------------------------
+			
+			conn.prepare(last7days);
+			conn.setString(1, hourDatetime);		
+			conn.setString(2, hourDatetime);
+			conn.executeUpdate();
+			
+			// ------------------------------
+			
+			conn.prepare(lastHour);
+			conn.setString(1, hourDatetime);		
+			conn.setString(2, hourDatetime);
+			conn.executeUpdate();
+			
+			// ------------------------------
+						
+			conn.prepare(maxDate);
+			conn.executeUpdate();
+			
+			// ------------------------------
+						
 			conn.prepare_my(select.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)) + " LIMIT " + limit);
  			conn.prepare_ms(select
 			 	.replace("date_format", "FORMAT")
@@ -173,17 +208,13 @@ public class DataSatDAO {
 			 	.replace("IFNULL", "ISNULL")
 				.replaceFirst("SELECT", "SELECT TOP " + limit)
 				.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(%s, -%s, ? ", interval, time)));		
-			 			
- 			conn.setString(1, hourDatetime);		
-			conn.setString(2, hourDatetime);
-			conn.setString(3, hourDatetime);		
-			conn.setString(4, hourDatetime);
-			conn.setString(5, currentDate);		
-			conn.setString(6, currentDate);
+			 				
+			conn.setString(1, currentDate);		
+			conn.setString(2, currentDate);
 			
 			MapResult result = conn.executeQuery();
 			
-			// System.out.println("ORIGIN: "+select);		 	
+			//System.out.println("ORIGIN: "+select);		 	
 			
 			if (result.hasNext()) {
 				for (RowResult rs : result) {

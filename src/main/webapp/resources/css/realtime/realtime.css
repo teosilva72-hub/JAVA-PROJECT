@@ -574,6 +574,7 @@ table.table-bordered{
 
 table.table-bordered > thead > tr > th, table.table-bordered > tbody > tr > td, table.table-bordered > tbody > tr > th{
     border:1px solid #696969;
+    background-color: #DCDCDC;
 }
 
 .popover-font-min{
