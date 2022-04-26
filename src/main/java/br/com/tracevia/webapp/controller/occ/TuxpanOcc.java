@@ -41,8 +41,6 @@ public class TuxpanOcc{
 		data = new TuxpanOccModel();
 	}
 
-
-
 	public boolean update() {
 		boolean check = false;
 
@@ -114,11 +112,11 @@ public class TuxpanOcc{
 		//RequestContext.getCurrentInstance().execute("saveSin();");
 		return check;
 	}
-	public boolean saveOcc() throws ServletException, IOException {
+	public boolean saveOcc() {
 		boolean check = false;
-		dao = new TuxpanDAO();
-		String filter = filter(reporte, siniestro, folio_sec);
-		System.out.println(file + " <<");
+		dao = new TuxpanDAO();		
+		System.out.println("passp 1" + reporte + " > " + siniestro + " > "+ folio_sec);
+		//RequestContext.getCurrentInstance().execute("setFile();");
 		//copy(File filter, File filer);
 		try {
 			check = dao.registerOcc(data, typeReport);
@@ -133,8 +131,10 @@ public class TuxpanOcc{
 					//type occ
 					scriptsOcc();
 				}else if(typeReport.equals("2")){
+					if(reporte.equals(null) || reporte.equals(reporte)) reporte = "-";
 					//type sin
 				}
+				filter(reporte, siniestro, folio_sec);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -156,8 +156,8 @@ public class TuxpanOcc{
 			System.out.println("ERROR");
 		}
 	}*/
-	public String filter(String reporte, String siniestro, String folio) throws ServletException, IOException {
-
+	public String filter(String reporte, String siniestro, String folio) {
+		System.out.println("passo 2");
 		reporte = reporte.replace(" ", ""); siniestro = siniestro.replace(" ", ""); folio = folio.replace(" ", "");
 		reporte = reporte.replace(",", ""); siniestro = siniestro.replace(",", ""); folio = folio.replace(",", "");
 		reporte = reporte.replace("-", "");	siniestro = siniestro.replace("-", ""); folio = folio.replace("-", "");
@@ -167,27 +167,33 @@ public class TuxpanOcc{
 		reporte = reporte.replace("|", "");	siniestro = siniestro.replace("|", ""); folio = folio.replace("|", "");
 		reporte = reporte.replace("?", ""); siniestro = siniestro.replace("?", ""); folio = folio.replace("?", "");
 		String result = reporte+siniestro+folio;
-		createFolder(result);
+		
+			createFolder(result);
+		
 
 		return result;
 	}
-	public String createFolder(String date) throws ServletException, IOException {
+	public String createFolder(String date){
+		System.out.println("passo 3");
 		DateTimeApplication dta = new DateTimeApplication();
 		LocalDate local = dta.localeDate();
-		mainPath = "C:\\Report_ocurrencias\\"+local.getYear()+"\\"+local.getMonthValue()+"\\"+date+"\\";
+		mainPath = "C:\\Report_ocurrencias\\"+date+"\\";
 		File directory = new File(mainPath);
-		String x = "";
 		if (!directory.exists())
-			directory.mkdirs();
-		
-			uploadBean up = new uploadBean();
-			
-				up.upload(file, mainPath, x);
-			
-
+			directory.mkdirs();			
 		return mainPath;
 	}
-
+	
+	public void uploadFile() throws Exception {
+		uploadBean up = new uploadBean();	
+		String space = "";
+		System.out.println("metodo arquivo");
+		String filter = filter(reporte, siniestro, folio_sec);
+		mainPath = createFolder(filter);
+		//passando variavel para uploadFile
+		up.upload(file, mainPath, space);	
+	}
+	
 	public boolean listTable() {
 		boolean check = false;
 		try {

@@ -7,78 +7,111 @@ $(init => {
     clickUpdate()
     blockVirgula()
     formSin()
-    scann()
     divFile()
+    saveSin()
+   
     setTimeout(a => {
         vehOcupSin()
     }, 100)
-	$('#modalOcc, #modalSin').on("hidden.bs.modal", () => {
-		$("#resetFormSin, #resetFormOcc").click()
-		scann()
-		divFile()
-	})
-	$('[id$=downloadPdf]').click(e=>{
-		setTimeout(x=>{
-			$('[id$=pdfDownload]').click()
-		},200)
-	})
-	$('#file').change(()=>{
-		$('#copyFile').val($('#file').val())
-	})
+    $('#modalOcc, #modalSin').on("hidden.bs.modal", () => {
+        $("#resetFormSin, #resetFormOcc").click()
+        scann()
+        divFile()
+         setFile()
+    })
+    $('[id$=downloadPdf]').click(e => {
+        setTimeout(x => {
+            $('[id$=pdfDownload]').click()
+        }, 200)
+    })
+    $('#file').change(() => {
+        $('#copyFile').val($('#file').val())
+    })
 })
-function divFile(){
-	
-		$('.file').click(()=>{
-			setTimeout(()=>{
-		$('.divForm').addClass('hidden')
-		$('.divFile').removeClass('hidden')
-		},100)
-	})
-	$('.tituloModal').click(()=>{
-		setTimeout(()=>{
-			$('.divForm').removeClass('hidden')
-			$('.divFile').addClass('hidden')
-		},50)
-		
-	})
-	
+
+function setFile() {
+	let file = document.querySelector('.getFile').files.length
+	let files = document.querySelector('.getFiles').files.length
+
+	if(file > 0 || files > 0){
+		$('#saveOcc').click(() => {
+        setTimeout(() => {
+            $('#setFile').click()
+        }, 150)
+        })
+        $('#sinSave').click(() => {
+        setTimeout(() => {
+            $('#setFileS').click()
+            
+        }, 150)
+
+    })
+	}
+    
 }
+
+function divFile() {
+
+    $('.file').click(() => {
+        setTimeout(() => {
+            $('.divForm').addClass('hidden')
+            $('.divFile').removeClass('hidden')
+        }, 100)
+    })
+    $('.tituloModal').click(() => {
+        setTimeout(() => {
+            $('.divForm').removeClass('hidden')
+            $('.divFile').addClass('hidden')
+        }, 50)
+
+    })
+
+}
+
 function formSin() {
     $('#type_sin').click(a => {
-		getObsSin()
+        getObsSin()
         blockVirgula()
         hiddenBts()
-		saveSin()
     })
 }
-function scann(){
-	$('#saveSin').prop('disabled', true)
-	$('#occSave').prop('disabled', true)
-	const id = $('#reporte, #siniestro, #folio_secuencial, #sinistro_sin, #folio_rsa')
-	$(id).change(e=>{
-		$('#occSave', '#saveSin').prop('disabled', true)
-		if($('#type_report').val() == "1"){
-			if($('#folio_secuencial').val() == ''.trim() || $('#siniestro').val() == ''.trim() || $('#reporte').val() ==''.trim()){
-				$('#occSave').prop('disabled', true)
-				
-			}else{
-				$('#occSave').prop('disabled', false)
-				$('#get_folio_sec').val($('#folio_secuencial').val())
-				$('#get_report').val($('#siniestro').val())
-				$('#get_siniestro').val($('#reporte').val())
-			}
-		}else if($('#type_reports').val() == "2"){
-			if($('#sinistro_sin').val() == ''.trim() || $('#folio_rsa').val() == ''.trim()){
-				$('#saveSin').prop('disabled', true)
-			}else{
-				$('#saveSin').prop('disabled', false)
-				$('#get_folio_secS').val($('#folio_rsa').val())
-				$('#get_siniestroS').val($('#sinistro_sin').val())
-			}
-		}
-		
-	})
+
+function scann() {
+	 
+    $('#saveSin').prop('disabled', true)
+    $('#occSave').prop('disabled', true)
+    const id = $('#reporte, #siniestro, #folio_secuencial, #sinistro_sin, #folio_rsa')
+    $(id).change(e => {
+        $('#occSave', '#saveSin').prop('disabled', true)
+        if ($('#type_report').val() == "1") {
+            if ($('#folio_secuencial').val() == ''.trim() || $('#siniestro').val() == ''.trim() || $('#reporte').val() == ''.trim()) {
+                $('#occSave').prop('disabled', true)
+            } else {
+                $('#occSave').prop('disabled', false)
+                $('#get_folio_sec').val($('#folio_secuencial').val())
+                $('#get_report').val($('#reporte').val())
+                $('#get_siniestro').val($('#siniestro').val())
+                //
+                 $('#folio_secFile').val($('#folio_secuencial').val())
+                $('#reporteFile').val($('#reporte').val())
+                $('#siniestroFile').val($('#siniestro').val())
+            }
+        } else if ($('#type_reports').val() == "2") {
+            if ($('#sinistro_sin').val() == ''.trim() || $('#folio_rsa').val() == ''.trim()) {
+                $('#saveSin').prop('disabled', true)
+            } else {
+                $('#saveSin').prop('disabled', false)
+                $('#get_folio_secS').val($('#folio_rsa').val())
+                $('#get_siniestroS').val($('#sinistro_sin').val())
+                 $('#get_folio_secs').val($('#folio_rsa').val())
+                $('#get_siniestros').val($('#sinistro_sin').val())
+                
+            }
+        }
+
+    })
 }
+
 function blockVirgula() {
     $('#vehInv_append input').on("input", function(a) {
         $(this).val($(this).val().replace(/,/g, ""));
@@ -127,6 +160,7 @@ function hiddenBts() {
         $('#saveSin').removeClass('hidden')
         $('#saveUpdate').addClass('hidden')
         scann()
+
     })
 }
 
@@ -170,13 +204,16 @@ function clickSave() {
 }
 
 function saveSin() {
+	console.log('*')
     $('#saveSin').click(a => {
         getVehOcupSin()
-		getObsSin()
+        getObsSin()
+         
         setTimeout(b => {
             $('#sinSave').click()
+           
             listSin()
-        }, 100)
+        }, 50)
     })
 }
 
@@ -211,16 +248,16 @@ function getVehInv() {
     let input = $('#vehInv_append .tipo_veh_inv')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#tipo_veh_inv').val(dados)
         //
     input = $('#vehInv_append .ejes')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#num_eje_veh_inv').val(dados)
         //
@@ -232,8 +269,8 @@ function getVehOcup() {
     let input = $('#add_append_sin input')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
 
     }
     return dados
@@ -244,48 +281,48 @@ function getTipoVeh() {
     let input = $('#tiposVeh .num_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#num_veh').val(dados)
         //
     input = $('#tiposVeh .marca_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#marca_veh').val(dados)
         //
     input = $('#tiposVeh .tipo_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#tipo_veh').val(dados)
         //
     input = $('#tiposVeh .modelo_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#modelo_veh').val(dados)
         //
     input = $('#tiposVeh .color_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#cor_veh').val(dados)
         //
     input = $('#tiposVeh .placa_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#placa_veh').val(dados)
 
@@ -293,8 +330,8 @@ function getTipoVeh() {
     input = $('#tiposVeh .tel_')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#tel_veh').val(dados)
         //
@@ -306,32 +343,32 @@ function getPerson() {
     let input = $('#datos_person .id_person')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#id_person').val(dados)
         //
     input = $('#datos_person .nombre_person')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#nombre_person').val(dados)
         //
     input = $('#datos_person .edad_person')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#edad_person').val(dados)
         //
     input = $('#datos_person .cond_person')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#condiciones_person').val(dados)
         //
@@ -344,16 +381,16 @@ function getVehOcupSin() {
     let input = $('#add_append_sin .ocupSin')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#ocupantesSIN').val(dados)
         //
     input = $('#add_append_sin .vehSin')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#vehOcupantesSIN').val(dados)
         //
@@ -365,12 +402,12 @@ function getObsSin() {
     let input = $('#getObs .obs_val')
     for (var i = 0; i < input.length; i++) {
         dados[i] = input.get(i).value
-		if(dados[i] == "")
-			dados[i] = "-"
+        if (dados[i] == "")
+            dados[i] = "-"
     }
     $('#obsGets').val(dados)
- 
-        //
+
+    //
     return dados
 }
 
@@ -531,10 +568,10 @@ function plusInputSin(ocupantes, vehiculo, Obs) {
     setObsSin(obs)
 }
 
-function setObsSin(obs){
-	for(var i = 0; i < obs.length; i++){
-		$(`.obs${i}`).val(obs[i])
-	}
+function setObsSin(obs) {
+    for (var i = 0; i < obs.length; i++) {
+        $(`.obs${i}`).val(obs[i])
+    }
 }
 
 function addChildSin(ocup, veh) {

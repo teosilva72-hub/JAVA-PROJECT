@@ -74,10 +74,12 @@ public class uploadBean {
 	
 	//enviar novo arquivo para a pasta
 	public String upload(Part file, String mainPath, String localPath)  throws ServletException,  IOException {
-        					
+        					System.out.println("passo 2");
     	//armazenando o arquivo pelo nome no local escolhido
     
     	    directory = mainPath.concat(localPath);
+    	    System.out.println(directory + " < diretorio");
+    	    System.out.println(file + " < file");
     	    
     	    //criando segundos dentro da variavel
     	    int second = LocalDateTime.now().getSecond();
