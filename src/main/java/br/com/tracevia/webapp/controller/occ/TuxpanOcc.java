@@ -117,7 +117,6 @@ public class TuxpanOcc{
 	public boolean saveOcc() {
 		boolean check = false;
 		dao = new TuxpanDAO();		
-		System.out.println("passp 1" + reporte + " > " + siniestro + " > "+ folio_sec);
 		//RequestContext.getCurrentInstance().execute("setFile();");
 		//copy(File filter, File filer);
 		try {
@@ -146,7 +145,6 @@ public class TuxpanOcc{
 	}	
 	
 	public String filter(String reporte, String siniestro, String folio) {
-		System.out.println("passo 2");
 		reporte = reporte.replace(" ", ""); siniestro = siniestro.replace(" ", ""); folio = folio.replace(" ", "");
 		reporte = reporte.replace(",", ""); siniestro = siniestro.replace(",", ""); folio = folio.replace(",", "");
 		reporte = reporte.replace("-", "");	siniestro = siniestro.replace("-", ""); folio = folio.replace("-", "");
@@ -160,7 +158,6 @@ public class TuxpanOcc{
 		return result;
 	}
 	public String createFolder(String date){
-		System.out.println("passo 3");
 		DateTimeApplication dta = new DateTimeApplication();
 		LocalDate local = dta.localeDate();
 		mainPath = "C:\\Report_ocurrencias\\"+date+"\\";
@@ -182,7 +179,6 @@ public class TuxpanOcc{
 	public void uploadFile() throws Exception {
 		uploadBean up = new uploadBean();	
 		String space = "";
-		System.out.println("metodo arquivo");
 		String filter = filter(reporte, siniestro, folio_sec);
 		mainPath = createFolder(filter);
 		//passando variavel para uploadFile

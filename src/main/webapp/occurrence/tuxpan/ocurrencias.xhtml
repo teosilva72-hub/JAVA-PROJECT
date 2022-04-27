@@ -66,12 +66,6 @@
 							<f:facet name="header">Folio Secuencial</f:facet>
 							<h:outputText value="#{date.folio_sec}" style="font-size: 12px;" />
 						</h:column>
-
-						<h:column>
-							<f:facet name="header">Reporte</f:facet>
-							<h:outputText value="#{date.reporte}" style="font-size: 12px;" />
-						</h:column>
-
 						<h:column>
 							<f:facet name="header">Siniestro</f:facet>
 							<h:outputText value="#{date.siniestro}" style="font-size: 12px;" />
@@ -265,8 +259,12 @@
 									<div class="col-4">Defensa Metálica</div>
 
 									<div class="col-4">
-										<h:inputText name="def_met" id="def_met" class="form-control"
-											value="#{OccController.data.def_metal}" />
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccController.data.def_metal}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="Si" itemValue="1" />
+											<f:selectItem itemLabel="No" itemValue="2" />
+										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
 										<input type="text" name="def_met_obs"
@@ -275,8 +273,12 @@
 
 									<div class="col-4">Señalamiento</div>
 									<div class="col-4">
-										<h:inputText name="senal" id="senal" class="form-control"
-											value="#{OccController.data.senal}" />
+											<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccController.data.senal}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="Si" itemValue="1" />
+											<f:selectItem itemLabel="No" itemValue="2" />
+										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
 										<input type="text" name="senal_obs"
@@ -285,8 +287,12 @@
 
 									<div class="col-4">Daño en Pavimento</div>
 									<div class="col-4">
-										<h:inputText name="pavim" id="pavim" class="form-control"
-											value="#{OccController.data.dano_pav}" />
+											<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccController.data.dano_pav}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="Si" itemValue="1" />
+											<f:selectItem itemLabel="No" itemValue="2" />
+										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
 										<input type="text" name="pavim_obs"
@@ -295,8 +301,12 @@
 
 									<div class="col-4">Daños en Cortes Terraplenas</div>
 									<div class="col-4">
-										<h:inputText name="terrapl" id="terrapl" class="form-control"
-											value="#{OccController.data.danos_cort_trr}" />
+											<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccController.data.danos_cort_trr}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="Si" itemValue="1" />
+											<f:selectItem itemLabel="No" itemValue="2" />
+										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
 										<input type="text" name="terrapl_obs" value=""
@@ -305,8 +315,12 @@
 
 									<div class="col-4">Daño en Obra Complementaria</div>
 									<div class="col-4">
-										<h:inputText name="comple" id="comple" class="form-control"
-											value="#{OccController.data.danos_obr_compl}" />
+											<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccController.data.danos_obr_compl}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="Si" itemValue="1" />
+											<f:selectItem itemLabel="No" itemValue="2" />
+										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
 										<input type="text" name="comple_obs"
@@ -315,8 +329,12 @@
 
 									<div class="col-4">Daño en Plazas de Cobro</div>
 									<div class="col-4">
-										<h:inputText name="plaza" id="plaza" class="form-control"
-											value="#{OccController.data.dano_plz_cobro}" />
+											<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccController.data.dano_plz_cobro}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="Si" itemValue="1" />
+											<f:selectItem itemLabel="No" itemValue="2" />
+										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
 										<input type="text" name="plaza_obs"
@@ -325,8 +343,12 @@
 
 									<div class="col-4">Otros</div>
 									<div class="col-4">
-										<h:inputText name="otros" id="otros" class="form-control"
-											value="#{OccController.data.otros_sin}" />
+											<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccController.data.otros_sin}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="Si" itemValue="1" />
+											<f:selectItem itemLabel="No" itemValue="2" />
+										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
 										<input type="text" name="otros_obs"

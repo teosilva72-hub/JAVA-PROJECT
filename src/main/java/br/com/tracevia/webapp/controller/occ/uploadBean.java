@@ -61,9 +61,7 @@ public class uploadBean {
  	        InputStream fileContent = part.getInputStream();
  	        //System.out.println("Arquivo "+fileName +"> "+file);
  	        Files.copy(fileContent, new File(directoryDate, minute+second+"_"+fileNameDate).toPath());
- 	       
- 	        System.out.println("Arquivo enviado com sucesso: "+minute+second+"-"+fileNameDate);
- 	        
+ 	        	        
  	        //teste list files
  	        
  	    }
@@ -74,12 +72,9 @@ public class uploadBean {
 	
 	//enviar novo arquivo para a pasta
 	public String upload(Part file, String mainPath, String localPath)  throws ServletException,  IOException {
-        					System.out.println("passo 2");
     	//armazenando o arquivo pelo nome no local escolhido
     
     	    directory = mainPath.concat(localPath);
-    	    System.out.println(directory + " < diretorio");
-    	    System.out.println(file + " < file");
     	    
     	    //criando segundos dentro da variavel
     	    int second = LocalDateTime.now().getSecond();
@@ -91,11 +86,6 @@ public class uploadBean {
     	        InputStream fileContent = part.getInputStream();
     	        //System.out.println("Arquivo "+fileName +"> "+file);
     	        Files.copy(fileContent, new File(directory, minute+second+"_"+fileName).toPath());
-    	       
-    	        System.out.println("Arquivo enviado com sucesso: "+minute+"-"+second+"-"+fileName);
-    	        
-    	        //teste list files
-    	        
     	    }
 
         return null;

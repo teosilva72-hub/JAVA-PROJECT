@@ -1,7 +1,9 @@
 package br.com.tracevia.webapp.controller.occ;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,6 +16,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import org.apache.poi.ss.util.ImageUtils;
+import org.apache.poi.util.IOUtils;
+import org.apache.xmlbeans.impl.common.IOUtil;
 import org.primefaces.context.RequestContext;
 
 import com.groupdocs.conversion.internal.c.a.c.Border;
@@ -347,8 +352,8 @@ public class PDF {
 			logo = ImageUtil.getInternalImagePath("images", "files", RoadConcessionaire.externalImagePath);
 			if(!logo.equals("")) {
 				Image tuxpanL = Image.getInstance(logo);
-				tuxpanL.setAbsolutePosition(20, 770);
-				tuxpanL.scaleAbsolute (80, 30);
+				tuxpanL.setAbsolutePosition(30, 770);
+				tuxpanL.scaleAbsolute (90, 30);
 				document.add(tuxpanL);
 			}
 			Font formatText = new Font(Font.FontFamily.TIMES_ROMAN, 10f, Font.BOLD);
@@ -406,6 +411,7 @@ public class PDF {
 			table2.addCell(new PdfPCell(new Phrase("KM / Sentido ", formatText))).setBorderColor(BaseColor.WHITE);
 			table2.addCell(new PdfPCell(new Phrase(model().getKm_reg()+" / "+model().getDireccion(), formatText))).setBorder(Rectangle.BOTTOM);
 			table2.addCell(new PdfPCell(new Phrase("", formatText))).setBorderColor(BaseColor.WHITE);
+			
 			table2.addCell(new PdfPCell(new Phrase("               Causas:", formatText))).setBorderColor(BaseColor.WHITE);
 			table2.addCell(new PdfPCell(new Phrase(model().getCausas_sin(), formatText))).setBorder(Rectangle.BOTTOM);
 			table2.addCell(new PdfPCell(new Phrase("Lesionados: ", formatText))).setBorderColor(BaseColor.WHITE);
@@ -413,9 +419,16 @@ public class PDF {
 			table2.addCell(new PdfPCell(new Phrase("", formatText))).setBorderColor(BaseColor.WHITE);
 			table2.addCell(new PdfPCell(new Phrase("            Muertos: ", formatText))).setBorderColor(BaseColor.WHITE);
 			table2.addCell(new PdfPCell(new Phrase(model().getMortos(), formatText))).setBorder(Rectangle.BOTTOM);
-			table2.addCell(new PdfPCell(new Phrase("Folio RSA: ", formatText))).setBorderColor(BaseColor.WHITE);
-			table2.addCell(new PdfPCell(new Phrase(model().getFolio_sec(), formatText))).setBorder(Rectangle.BOTTOM);
+			
 			document.add(table2);
+			document.add(conteudo);
+			
+			PdfPTable rsa = new PdfPTable(1);
+			rsa.setTotalWidth(500);
+			rsa.setTotalWidth(new float[]{ 500 });
+			rsa.setLockedWidth(true);
+			rsa.addCell(new PdfPCell(new Phrase("Folio RSA: "+model().getFolio_sec(), formatText))).setBorderColor(BaseColor.WHITE);
+			document.add(rsa);
 			document.add(conteudo);
 			
 			PdfPTable table3 = new PdfPTable(1);
@@ -466,24 +479,31 @@ public class PDF {
 			document.add(table4);
 			document.add(conteudo);
 			
-			PdfPTable table5 = new PdfPTable(2);
-			table5.setTotalWidth(500);
-			table5.setTotalWidth(new float[]{250,250});
-			table5.setLockedWidth(true);
+			
 			TuxpanOcc method = new TuxpanOcc();
 			String filter = method.filter(model().getReporte(), model().getSiniestro(), model().getFolio_sec());
 			String mainPath = method.createFolder(filter);
 			String[] imgs = method.listarFiles(mainPath);
 			String[] x = new String[imgs.length];
+			PdfPTable table5 = new PdfPTable(2);
+			table5.setTotalWidth(500);
+			table5.setTotalWidth(new float[]{250, 250});
+			
+			table5.setLockedWidth(true);
 			for(int i=0;i<imgs.length;i++) {
 				x[i] = mainPath+imgs[i];
-				System.out.println(x[i]);
-				table5.addCell(x[i]);
+				img = x[i];
+				Image imgP = Image.getInstance(img);
+				imgP.setAbsolutePosition(30, 770);
+				imgP.scaleAbsolute (100,100);
+				
+				System.out.println(imgs.length + " < tamnaho");
+				if(imgs.length == 1) {table5.addCell(imgP);table5.addCell("");}
+				else table5.addCell(imgP);
+				
+				
 			}
 			
-			
-	        
-	        
 	        document.add(table5);
 
 
