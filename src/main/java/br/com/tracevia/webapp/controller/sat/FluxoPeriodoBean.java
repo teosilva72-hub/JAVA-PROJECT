@@ -117,7 +117,7 @@ public class FluxoPeriodoBean implements Serializable {
 	
 	int minuto, iterator, pos, hr, lin, col, p, empty, inc, index;
 		
-	@ManagedProperty("#{listEquips}")
+	@ManagedProperty("#{listEquipsBean}")
 	private ListEquipments listEquips;
 				
 	public ListEquipments getListEquips() {

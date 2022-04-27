@@ -69,8 +69,12 @@ const init = () => {
 			initGPS();
 
 		if (window.initMeteo)
-			initMeteo();
-	})
+			initMeteo();		
+	})	
+	
+	 // if any popover is opened then it's closed on page load
+	 $('[data-toggle=popover-d]').popover('hide')
+		
 }
 
 const onEventMapFunction = data => {
@@ -125,7 +129,7 @@ const setInfoEquip = () => {
 	$('[data-toggle=popover-d]').popover({
 		html: true,
 		trigger: 'click',		
-		template: '<div class="popover"><div class="arrow red"></div><div class="popover-body p-0"></div></div>',
+		template: '<div class="popover custom-detail"><div class="arrow"></div><div class="popover-body p-0"></div></div>',
 		content: function () {
 			let content = $(this).attr("data-popover-content");
 			return $(content).children(".popover-body").html();
@@ -153,7 +157,7 @@ const setInfoEquip = () => {
 	            $(this).popover('hide');
 	        }
 	    });
-	});
+	});	
 	
 	// -------------------------------------------------------------------------------------------------------------------
 }

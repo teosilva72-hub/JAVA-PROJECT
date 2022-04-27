@@ -115,7 +115,7 @@ public class FluxoMensalBean {
 	
 	int fssi_value = 100, fa_value = 0;
 		
-	@ManagedProperty("#{listEquips}")
+	@ManagedProperty("#{listEquipsBean}")
 	private ListEquipments listEquips;
 			
 	public ListEquipments getListEquips() {

@@ -15,6 +15,8 @@
         <title>#{mapLabels.$label_map_home}</title>
         
         <h:outputStylesheet name="form-style.css" library="css/forms" />
+        <h:outputStylesheet name="popover.css" library="css/util/popover" /> <!-- INSERT POPOVER -->
+        <h:outputStylesheet name="tooltip.css" library="css/util/tooltip" /> <!-- INSERT TOOLTIP -->
                       
         <c:if test="#{ CFTV }">
              <h:outputStylesheet name="cftv.css" library="css/map" />
@@ -78,6 +80,7 @@
     <ui:param name="SOS" value="#{ loginAccount.load.en_sos }" />
     <ui:param name="SPEED" value="#{ loginAccount.load.en_speed }" />
     <ui:param name="WIM" value="#{ loginAccount.load.en_wim }" />
+    <ui:param name="DIVIDED" value="#{ loginAccount.mapDivided }" />
             
     <!---->
  
@@ -97,10 +100,16 @@
 
         <div class="map-options">
             <div id="topButtons">
+            
+            	<ui:fragment rendered="#{loginAccount.mapDivided}" > <!-- CASO EXISTIR MAPA DIVIDO -->
 
-                <button type="button" id="divide" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Divide Screen">
-					<span><i class="fas fa-object-group fa-2x"></i></span>
-				</button>
+	                <button type="button" id="divide" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Divide Screen">
+						<span><i class="fas fa-object-group fa-2x"></i></span>
+					</button>
+				
+				</ui:fragment>
+				
+				<!---->
 
                 <button type="button" id="zoomIn" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
 					<span><i class="fas fa-plus-square fa-2x"></i></span>
@@ -181,27 +190,33 @@
 					</div>
 				</div> -->
 
-                <div class="linesbox d-none">
+                <div class="linesbox d-none"> <!-- Linhas dos equipamentos -->
                     <div>
                         <input type="checkbox" id="visiblelines" name="visiblelines" checked=""></input> <label for="visiblelines">#{mapLabels.$label_map_option_btn_lines_equips}</label>
                     </div>
                 </div>
 
                 <!---->
+                
+                <ui:fragment rendered="#{loginAccount.darkMap}"> <!-- DARK MODE ENABLED FOR MAP -->
+                
+                <!-- DARK MODE BUTTON -->
 
-                <div class="darkmodebox">
-                    <input type="checkbox" id="darkmode" name="darkmode"></input>
-                    <label for="darkmode">
-					      <div class="scenary">
-						   <div class="moon">
-			                 <img id="dark-icon" src="/resources/images/dark-light/moon.webp" />						
-						  </div>
-						    <div class="sun">
-						       <img id="light-icon" src="/resources/images/dark-light/sun.webp" />		
-						    </div>						
-						  </div>							
-						</label>
-                </div>
+	                 <div class="darkmodebox">
+	                    <input type="checkbox" id="darkmode" name="darkmode"></input>
+	                    <label for="darkmode">
+						      <div class="scenary">
+							   <div class="moon">
+				                 <img id="dark-icon" src="/resources/images/dark-light/moon.webp" />						
+							  </div>
+							    <div class="sun">
+							       <img id="light-icon" src="/resources/images/dark-light/sun.webp" />		
+							    </div>						
+							  </div>							
+							</label>
+	                	</div> 
+	                
+                </ui:fragment>
             </div>
 
             <c:if test="#{ SuperAdmin || VideoWall }">
@@ -325,66 +340,81 @@
         </div>
         
         <!-- =========================================================================================================== -->
-                
-        <!-- DropDown Equip Size Menu END -->
-
-        <!-- WEB ZOOM DIVIDE BUTTON -->
+                  
+        <ui:fragment rendered="#{loginAccount.mapDivided}" > <!-- CASO EXISTIR MAPA DIVIDO -->
         
-        <div class="map-full-option" style="display: none;">
-
-            <button type="button" id="full" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Full Map View">
-				<span><i class="fas fa-expand fa-2x"></i></span>
-			</button>
-        </div>
+          <!-- WEB ZOOM DIVIDE BUTTON -->
         
-        <!---->
+	        <div class="map-full-option" style="display: none;">
+	
+	            <button type="button" id="full" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Full Map View">
+					<span><i class="fas fa-expand fa-2x"></i></span>
+				</button>
+	        </div>
+	        
+	        <!---->
+	        
+	        <!-- MAP DIVIDE -->
+	        
+	       <div id="mapDivide" class="row" style="display: none">
+		        
+	            <div class="squarebox" id="divs">
+	                <section id="zoomDivs1"> <iframe class="grid-img" id="frame1" src="" /> </section>
+	                	<!---->
+	                	<button type="button" id="zoomIn1" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
+							<span><i class="fas fa-plus-square fa-1x"></i></span>
+						</button>
+						<!---->
+		                <button type="button" id="zoomOut1" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom Out" data-trigger="hover">
+							<span><i class="fas fa-minus-square fa-1x"></i></span>
+						</button>
+						<!---->
+		                <button type="button" id="fulldiv1" class="zoomFull" data-toggle="tooltip" data-placement="bottom" title="Reset View" data-trigger="hover">
+							<span> <i class="fas fa-expand-arrows-alt"></i></span>
+						</button>
+					    <!---->
+	            	</div>	
+	            
+	            <div class="squarebox" id="divs1">
+	                <section id="zoomDivs2"> <iframe class="grid-img" id="frame2" src="" /> </section>
+	                	<!---->
+		                <button type="button" id="zoomIn2" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
+							<span><i class="fas fa-plus-square fa-1x"></i></span>
+						</button>
+						<!---->
+		                <button type="button" id="zoomOut2" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom Out" data-trigger="hover">
+							<span><i class="fas fa-minus-square fa-1x"></i></span>
+						</button>
+						<!---->
+		                <button type="button" id="fulldiv2" class="zoomFull" target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png" data-toggle="tooltip" data-placement="bottom" title="Reset View" data-trigger="hover">
+							<span> <i class="fas fa-expand-arrows-alt"></i></span>
+						</button>
+						<!---->
+	             </div>
+	
+				<!---->
+	          
+	            <div class="squarebox" id="divs2">
+	                <section id="zoomDivs3"> <iframe class="grid-img" id="frame3" src="" /> </section>
+	                	<!---->
+		                <button type="button" id="zoomIn3" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
+							<span><i class="fas fa-plus-square fa-1x"></i></span>
+						</button>
+						<!---->
+		                <button type="button" id="zoomOut3" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom Out" data-trigger="hover">
+							<span><i class="fas fa-minus-square fa-1x"></i></span>
+						</button>
+						<!---->
+		                <button type="button" id="fulldiv3" class="zoomFull" target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" data-toggle="tooltip" data-placement="bottom" title="Reset View" data-trigger="hover">
+							<span> <i class="fas fa-expand-arrows-alt"></i></span>
+						</button>
+						<!---->
+	            	</div>
+	        	</div>
+	        	
+	        	<!---->
         
-        <!-- MAP DIVIDE -->
-        
-        <!--   <div id="mapDivide" class="row" style="display: none">
-
-        
-            <div class="squarebox" id="divs">
-                <section id="zoomDivs1"> <iframe class="grid-img" id="frame1" src="" /> </section>
-                <button type="button" id="zoomIn1" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
-					<span><i class="fas fa-plus-square fa-1x"></i></span>
-				</button>
-                <button type="button" id="zoomOut1" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom Out" data-trigger="hover">
-					<span><i class="fas fa-minus-square fa-1x"></i></span>
-				</button>
-                <button type="button" id="fulldiv1" class="zoomFull" data-toggle="tooltip" data-placement="bottom" title="Reset View" data-trigger="hover">
-					<span> <i class="fas fa-expand-arrows-alt"></i></span>
-				</button>
-            </div>
-
-            
-            <div class="squarebox" id="divs1">
-                <section id="zoomDivs2"> <iframe class="grid-img" id="frame2" src="" /> </section>
-                <button type="button" id="zoomIn2" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
-					<span><i class="fas fa-plus-square fa-1x"></i></span>
-				</button>
-                <button type="button" id="zoomOut2" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom Out" data-trigger="hover">
-					<span><i class="fas fa-minus-square fa-1x"></i></span>
-				</button>
-                <button type="button" id="fulldiv2" class="zoomFull" target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png" data-toggle="tooltip" data-placement="bottom" title="Reset View" data-trigger="hover">
-					<span> <i class="fas fa-expand-arrows-alt"></i></span>
-				</button>
-            </div>
-
-          
-            <div class="squarebox" id="divs2">
-                <section id="zoomDivs3"> <iframe class="grid-img" id="frame3" src="" /> </section>
-                <button type="button" id="zoomIn3" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
-					<span><i class="fas fa-plus-square fa-1x"></i></span>
-				</button>
-                <button type="button" id="zoomOut3" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom Out" data-trigger="hover">
-					<span><i class="fas fa-minus-square fa-1x"></i></span>
-				</button>
-                <button type="button" id="fulldiv3" class="zoomFull" target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" data-toggle="tooltip" data-placement="bottom" title="Reset View" data-trigger="hover">
-					<span> <i class="fas fa-expand-arrows-alt"></i></span>
-				</button>
-            </div>
-        </div>-->
+        </ui:fragment>
                 
         <!-- =========================================================================================================== -->
       

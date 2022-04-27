@@ -1181,25 +1181,3 @@ right:-300px;
 }
 
 /* PANEL RIGHT SIDE [END]*/
-
-/* POPOVER INFO HEADER START */
-
-.popover-header {
-  background: #007bff !important;
-  color: white;
-  font-size: 12px;
-}
-
-.popover-body {
-  font-size: 12px;
-}
-
-.equip-label-left {
-  margin-left: 10px;
-}
-
-.on-mouse-hover {
-  cursor: pointer;
-}
-
-/* POPOVER INFO HEADER END */

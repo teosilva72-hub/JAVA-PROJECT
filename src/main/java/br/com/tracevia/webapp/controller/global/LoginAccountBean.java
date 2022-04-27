@@ -57,7 +57,7 @@ public class LoginAccountBean implements Serializable {
 	String mapUI, darkMapUI, linearMapUI;
 	String plaque;
 	String logo;
-	boolean mapEnabled, reportsLLEnabled;
+	boolean mapEnabled, mapDivided, darkMap, reportsLLEnabled;
 	
 	@ManagedProperty("#{language}")
 	private LanguageBean language;
@@ -148,6 +148,22 @@ public class LoginAccountBean implements Serializable {
 
 	public void setMapEnabled(boolean mapEnabled) {
 		this.mapEnabled = mapEnabled;
+	}
+	
+	public boolean isMapDivided() {
+		return mapDivided;
+	}
+
+	public void setMapDivided(boolean mapDivided) {
+		this.mapDivided = mapDivided;
+	}
+	
+	public boolean isDarkMap() {
+		return darkMap;
+	}
+
+	public void setDarkMap(boolean darkMap) {
+		this.darkMap = darkMap;
 	}
 
 	public boolean getReportsLLEnabled() {
@@ -274,6 +290,8 @@ public class LoginAccountBean implements Serializable {
 					darkMapUI = RoadConcessionaire.darkMapUI;
 					linearMapUI = RoadConcessionaire.linearMapUI;
 					mapEnabled = RoadConcessionaire.mapEnabled;
+					mapDivided = RoadConcessionaire.mapDivided;
+					darkMap = RoadConcessionaire.darkMap;
 					reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;
 
 					plaque = RoadConcessionaire.plaque;
@@ -316,8 +334,11 @@ public class LoginAccountBean implements Serializable {
 							load.startupComponents(); // Inicializar Componentes
 						
 							mapUI = RoadConcessionaire.mapUI; // Load Map
+							darkMapUI = RoadConcessionaire.darkMapUI;
 							linearMapUI = RoadConcessionaire.linearMapUI;
 							mapEnabled = RoadConcessionaire.mapEnabled;
+							mapDivided = RoadConcessionaire.mapDivided;
+							darkMap = RoadConcessionaire.darkMap;
 							reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;
 
 							plaque = RoadConcessionaire.plaque;

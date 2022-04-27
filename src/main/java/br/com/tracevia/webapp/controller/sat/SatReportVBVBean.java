@@ -55,7 +55,7 @@ public class SatReportVBVBean {
 	
 	// --------------------------------------------------------------------------------------------------------------
 	
-	@ManagedProperty("#{listEquips}")
+	@ManagedProperty("#{listEquipsBean}")
 	private ListEquipments listEquips;
 	
 	public ListEquipments getListEquips() {

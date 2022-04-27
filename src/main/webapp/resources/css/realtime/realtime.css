@@ -555,32 +555,6 @@ input#configId-edit:disabled, select#meteoType-edit:disabled {
 	margin-left: 20%;
 }
 
-/* **********************  POPOVER & TOOLTIP ***********************************/
-
-.tooltip > .tooltip-inner {background-color: #007bff;}
-
-.tooltip.show {
-    opacity: 1;
-}
-
-.popover{
-	z-index: 10040;	
-	max-width: 614px;
-}
-
-table.table-bordered{
-    border:1px solid #696969;
-}
-
-table.table-bordered > thead > tr > th, table.table-bordered > tbody > tr > td, table.table-bordered > tbody > tr > th{
-    border:1px solid #696969;
-    background-color: #DCDCDC;
-}
-
-.popover-font-min{
-	font-size: 10px !important;
-}
-
 /* **********************  DMS ***********************************/
 
 .driver3.equip-info .padding-dms, .driver3 .equip-info .padding-dms {

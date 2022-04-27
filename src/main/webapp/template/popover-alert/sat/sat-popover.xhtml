@@ -53,7 +53,7 @@
                                                              
                            <div class="p-0 popover-body" >
                           		                            
-                             <table id="tab#{item.table_id}#{item.equip_id}" class="m-0 popover-d popover-table table table-bordered text-center popover-font-min w-75 h-75 ">								 									  
+                             <table id="tab#{item.table_id}#{item.equip_id}" class="m-0 popover-d popover-table table table-bordered text-center text-dark popover-font-min w-75 h-75 ">								 									  
 								  <thead class="thead-dark">
 								   <tr>
 								      <th scope="col" colspan="8"> #{item.nome} &nbsp;:&nbsp;  #{satMapsView.satListValues.get(loop.index).currentDatetime} </th>									      
@@ -107,12 +107,12 @@
 								    </tr>
 								     <tr>
 								      <th scope="row" class="bg-dark text-white" >#{realtimeLabels.$label_realtime_sat_additional_info_total}</th>
-								      <td class="font-weight-bold font-italic">#{satMapsView.satListValues.get(loop.index).total7days1hS1}</td>
-								      <td class="font-weight-bold font-italic">#{satMapsView.satListValues.get(loop.index).totalCurrent1hS1}</td>
-								      <td class="font-weight-bold font-italic">#{satMapsView.satListValues.get(loop.index).totalProjection1hS1}</td>									      
-								      <td class="font-weight-bold font-italic">#{satMapsView.satListValues.get(loop.index).totalVolumeS1}</td>
-								      <td class="font-weight-bold font-italic">#{satMapsView.satListValues.get(loop.index).totalVelMedS1}</td>
-								      <td class="font-weight-bold font-italic">#{satMapsView.satListValues.get(loop.index).occupancyRateS1}</td>								      
+								      <td class="font-weight-bold font-italic bg-popover-total-color">#{satMapsView.satListValues.get(loop.index).total7days1hS1}</td>
+								      <td class="font-weight-bold font-italic bg-popover-total-color">#{satMapsView.satListValues.get(loop.index).totalCurrent1hS1}</td>
+								      <td class="font-weight-bold font-italic bg-popover-total-color">#{satMapsView.satListValues.get(loop.index).totalProjection1hS1}</td>									      
+								      <td class="font-weight-bold font-italic bg-popover-total-color">#{satMapsView.satListValues.get(loop.index).totalVolumeS1}</td>
+								      <td class="font-weight-bold font-italic bg-popover-total-color">#{satMapsView.satListValues.get(loop.index).totalVelMedS1}</td>
+								      <td class="font-weight-bold font-italic bg-popover-total-color">#{satMapsView.satListValues.get(loop.index).occupancyRateS1}</td>								      
 								    </tr>
 								    
 								    <!---->
@@ -140,7 +140,7 @@
 								    </tr>
 								     <tr>
 								      <th scope="row" class="bg-dark text-white" >#{realtimeLabels.$label_realtime_sat_additional_info_motorcycle}</th>									    
-								      <td class="font-weight-bold">#{satMapsView.satListValues.get(loop.index).moto7days1hS2}</td>
+								      <td class="font-weight-bold" >#{satMapsView.satListValues.get(loop.index).moto7days1hS2}</td>
 								      <td class="font-weight-bold">#{satMapsView.satListValues.get(loop.index).motoCurrent1hS2}</td>
 								      <td class="font-weight-bold">#{satMapsView.satListValues.get(loop.index).motoProjection1hS2}</td>									      
 								      <td class="font-weight-bold">#{satMapsView.satListValues.get(loop.index).motoVolumeS2}</td>
@@ -149,12 +149,12 @@
 								    </tr>
 								     <tr>
 								      <th scope="row" class="bg-dark text-white">#{realtimeLabels.$label_realtime_sat_additional_info_total}</th>
-								      <td class="font-weight-bold font-italic">#{satMapsView.satListValues.get(loop.index).total7days1hS2}</td>
-								      <td class="font-weight-bold font-italic">#{satMapsView.satListValues.get(loop.index).totalCurrent1hS2}</td>
-								      <td class="font-weight-bold font-italic">#{satMapsView.satListValues.get(loop.index).totalProjection1hS2}</td>										      
-								      <td class="font-weight-bold font-italic">#{satMapsView.satListValues.get(loop.index).totalVolumeS2}</td>
-								      <td class="font-weight-bold font-italic">#{satMapsView.satListValues.get(loop.index).totalVelMedS2}</td>
-								      <td class="font-weight-bold font-italic">#{satMapsView.satListValues.get(loop.index).occupancyRateS2}</td>						      
+								      <td class="font-weight-bold font-italic bg-popover-total-color">#{satMapsView.satListValues.get(loop.index).total7days1hS2}</td>
+								      <td class="font-weight-bold font-italic bg-popover-total-color">#{satMapsView.satListValues.get(loop.index).totalCurrent1hS2}</td>
+								      <td class="font-weight-bold font-italic bg-popover-total-color">#{satMapsView.satListValues.get(loop.index).totalProjection1hS2}</td>										      
+								      <td class="font-weight-bold font-italic bg-popover-total-color">#{satMapsView.satListValues.get(loop.index).totalVolumeS2}</td>
+								      <td class="font-weight-bold font-italic bg-popover-total-color">#{satMapsView.satListValues.get(loop.index).totalVelMedS2}</td>
+								      <td class="font-weight-bold font-italic bg-popover-total-color">#{satMapsView.satListValues.get(loop.index).occupancyRateS2}</td>						      
 								    </tr>									    			    									    									    									    
 								  </tbody>
 								</table>             

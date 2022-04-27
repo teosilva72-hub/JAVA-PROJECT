@@ -21,7 +21,7 @@ public class DMSBuildMaps implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@ManagedProperty("#{listEquips}")
+	@ManagedProperty("#{listEquipsBean}")
 	private ListEquipments equips;			
 	
 	List<Messages> messagesDisplay;

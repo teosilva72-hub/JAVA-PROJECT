@@ -28,7 +28,7 @@ public class MeteoPanelController {
 	
 	private String station, stationName, type;
 		
-	@ManagedProperty("#{listEquips}")
+	@ManagedProperty("#{listEquipsBean}")
 	private ListEquipments listEquips;
 	
 	public ListEquipments getListEquips() {

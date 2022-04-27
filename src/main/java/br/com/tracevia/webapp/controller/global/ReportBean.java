@@ -106,7 +106,7 @@ public class ReportBean implements Serializable{
 
 	List<? extends Equipments> listEquips;  
 	
-	@ManagedProperty("#{listEquips}")
+	@ManagedProperty("#{listEquipsBean}")
 	private ListEquipments equips;
 
 	@ManagedProperty("#{language}")

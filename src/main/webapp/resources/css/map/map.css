@@ -1135,36 +1135,6 @@ input#configId-edit:disabled, select#meteoType-edit:disabled {
 	margin-left: 20%;
 }
 
-/* **********************  POPOVER & TOOLTIP ***********************************/
-
-.tooltip.show {
-	opacity: 1;
-}
-
-.popover {
-	z-index: 10040;
-	max-width: 614px;
-}
-
-table.table-bordered{
-    border:1px solid #696969;
-}
-
-table.table-bordered > thead > tr > th, table.table-bordered > tbody > tr > td, table.table-bordered > tbody > tr > th{
-    border:1px solid #696969;
-    background-color: #DCDCDC;
-}
-
-/*.popover .bs-popover-right > .arrow::after, .bs-popover-auto[x-placement^="right"] > .arrow::after {
-  left: 1px;
-  border-width: 0.5rem 0.5rem 0.5rem 0;
-  border-right-color: #343a40;
-}*/
-
-.popover-font-min{
-	font-size: 10px !important;
-}
-
 /* ******************************************** */
 
 .teste {
