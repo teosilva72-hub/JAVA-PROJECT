@@ -9,7 +9,8 @@ $(init => {
     formSin()
     divFile()
     saveSin()
-   
+
+    pdf()
     setTimeout(a => {
         vehOcupSin()
     }, 100)
@@ -17,37 +18,48 @@ $(init => {
         $("#resetFormSin, #resetFormOcc").click()
         scann()
         divFile()
-         setFile()
+        setFile()
     })
-    $('[id$=downloadPdf]').click(e => {
-        setTimeout(x => {
-            $('[id$=pdfDownload]').click()
-        }, 200)
-    })
+
     $('#file').change(() => {
         $('#copyFile').val($('#file').val())
     })
 })
 
-function setFile() {
-	let file = document.querySelector('.getFile').files.length
-	let files = document.querySelector('.getFiles').files.length
+function pdf() {
 
-	if(file > 0 || files > 0){
-		$('#saveOcc').click(() => {
-        setTimeout(() => {
-            $('#setFile').click()
-        }, 150)
-        })
-        $('#sinSave').click(() => {
-        setTimeout(() => {
-            $('#setFileS').click()
-            
-        }, 150)
-
+    $('[id$=downloadPdf]').click(e => {
+        setTimeout(x => {
+            $('[id$=pdfDownload]').click()
+            $('#type_occ, #type_sin').click(() => {
+                appendOcc()
+                vehOcupSin()
+            })
+        }, 200)
     })
-	}
-    
+}
+
+function setFile() {
+    let file = document.querySelector('.getFile').files.length
+    let files = document.querySelector('.getFiles').files.length
+    $('.getFile, .getFiles').change(() => {
+        if (file > 0 || files > 0) {
+            $('#saveOcc').click(() => {
+                setTimeout(() => {
+                    $('#setFile').click()
+                }, 150)
+            })
+            $('#sinSave').click(() => {
+                setTimeout(() => {
+                    $('#setFileS').click()
+
+                }, 150)
+            })
+
+        }
+    })
+
+
 }
 
 function divFile() {
@@ -76,8 +88,31 @@ function formSin() {
     })
 }
 
+function editInfos() {
+    //sin
+    $('#get_folio_secS').val($('#folio_rsa').val())
+    $('#get_siniestroS').val($('#sinistro_sin').val())
+    $('#get_folio_secs').val($('#folio_rsa').val())
+    $('#get_siniestros').val($('#sinistro_sin').val())
+    $('#sinReporte').val("-")
+        //occ
+    $('#get_folio_sec').val($('#folio_secuencial').val())
+    $('#get_report').val($('#reporte').val())
+    $('#get_siniestro').val($('#siniestro').val())
+        //
+    $('#folio_secFile').val($('#folio_secuencial').val())
+    $('#reporteFile').val($('#reporte').val())
+    $('#siniestroFile').val($('#siniestro').val())
+
+    $("#sinistro_sin").prop('readonly', true);
+    $("#folio_rsa").prop('readonly', true);
+    $("#folio_secuencial").prop('readonly', true);
+    $("#reporte").prop('readonly', true);
+    $("#siniestro").prop('readonly', true);
+}
+
 function scann() {
-	 
+
     $('#saveSin').prop('disabled', true)
     $('#occSave').prop('disabled', true)
     const id = $('#reporte, #siniestro, #folio_secuencial, #sinistro_sin, #folio_rsa')
@@ -91,8 +126,8 @@ function scann() {
                 $('#get_folio_sec').val($('#folio_secuencial').val())
                 $('#get_report').val($('#reporte').val())
                 $('#get_siniestro').val($('#siniestro').val())
-                //
-                 $('#folio_secFile').val($('#folio_secuencial').val())
+                    //
+                $('#folio_secFile').val($('#folio_secuencial').val())
                 $('#reporteFile').val($('#reporte').val())
                 $('#siniestroFile').val($('#siniestro').val())
             }
@@ -103,10 +138,10 @@ function scann() {
                 $('#saveSin').prop('disabled', false)
                 $('#get_folio_secS').val($('#folio_rsa').val())
                 $('#get_siniestroS').val($('#sinistro_sin').val())
-                 $('#get_folio_secs').val($('#folio_rsa').val())
+                $('#get_folio_secs').val($('#folio_rsa').val())
                 $('#get_siniestros').val($('#sinistro_sin').val())
                 $('#sinReporte').val("-")
-                
+
             }
         }
 
@@ -148,7 +183,9 @@ function hiddenBts() {
     $('[id$=editocc]').click(a => {
         $('#updateOcc').removeClass('hidden')
         $('#occSave').addClass('hidden')
-
+        setTimeout(() => {
+            editInfos()
+        }, 200)
 
     })
     $('[id$=type_occ]').click(b => {
@@ -170,14 +207,21 @@ function clickUpdate() {
         getVehInvChilds()
         setTimeout(b => {
             $('[id$=OccUpdate]').click()
+            setTimeout(() => {
+                $('#setFile').click()
+            }, 150)
         }, 100)
     })
     $('#saveUpdate').click(c => {
         getVehOcupSin()
         getObsSin()
-        //setTimeout(d => {
-            $('[id$=updateSin]').click()
-        //}, 100)
+            //setTimeout(d => {
+        $('[id$=updateSin]').click()
+        setTimeout(() => {
+                $('#setFileS').click()
+
+            }, 150)
+            //}, 100)
     })
 }
 
@@ -205,14 +249,14 @@ function clickSave() {
 }
 
 function saveSin() {
-	console.log('*')
+    console.log('*')
     $('#saveSin').click(a => {
         getVehOcupSin()
         getObsSin()
-         
+
         setTimeout(b => {
             $('#sinSave').click()
-           
+
             listSin()
         }, 50)
     })

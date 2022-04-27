@@ -39,6 +39,7 @@ public class TuxpanOcc{
 	}
 	public void initializeData() {
 		data = new TuxpanOccModel();
+		listarAqr = null;
 	}
 
 	public boolean update() {
@@ -47,6 +48,8 @@ public class TuxpanOcc{
 		dao = new TuxpanDAO();
 		try {
 			check = dao.update(data, Integer.parseInt(idTable));
+			String filter = filter(data.getReporte(), data.getSiniestro(), data.getFolio_sec());
+			createFolder(filter);
 			if(check == false) {
 				//error
 				listTable();
@@ -65,7 +68,7 @@ public class TuxpanOcc{
 	public boolean select() {
 		boolean check = false;
 		dao = new TuxpanDAO();
-
+		//RequestContext.getCurrentInstance().execute("setFile()");
 		try {
 
 			data = dao.select(idTable);
@@ -136,6 +139,7 @@ public class TuxpanOcc{
 					//type sin
 				}
 				filter(reporte, siniestro, folio_sec);
+				listarAqr = null;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -66,14 +66,13 @@ public class PDF {
 		}
 		return date;
 	}
-	public void whichPdf() throws IOException {
+	public void whichPdf() throws Exception {
 		if(model().getType_report().equals("1"))
 			pdfOcc();
 		else if(model().getType_report().equals("2"))
 			pdfSin();
 	}
-	public void pdfOcc() throws IOException {
-
+	public void pdfOcc() throws Exception {
 		Document document = new Document();
 		TranslationMethods trad = new TranslationMethods();
 
@@ -331,8 +330,7 @@ public class PDF {
 
 	}
 
-	public boolean pdfSin() throws IOException {
-
+	public boolean pdfSin() throws Exception {
 		Document document = new Document();
 		TranslationMethods trad = new TranslationMethods();
 
@@ -394,7 +392,7 @@ public class PDF {
 			String[] veh = model().getVeh_sin().split(",");
 			String[] ocup = model().getOcupantes_sin().split(",");
 			for(int i=0; i< veh.length;i++) {
-				
+
 				table1.addCell(new PdfPCell(new Phrase("Vehículo " + i, formatText))).setBorderColor(BaseColor.WHITE);
 				table1.addCell(new PdfPCell(new Phrase(veh[i],formatText))).setBorder(Rectangle.BOTTOM);
 				table1.addCell(new PdfPCell(new Phrase("", formatText))).setBorderColor(BaseColor.WHITE);
@@ -411,7 +409,7 @@ public class PDF {
 			table2.addCell(new PdfPCell(new Phrase("KM / Sentido ", formatText))).setBorderColor(BaseColor.WHITE);
 			table2.addCell(new PdfPCell(new Phrase(model().getKm_reg()+" / "+model().getDireccion(), formatText))).setBorder(Rectangle.BOTTOM);
 			table2.addCell(new PdfPCell(new Phrase("", formatText))).setBorderColor(BaseColor.WHITE);
-			
+
 			table2.addCell(new PdfPCell(new Phrase("               Causas:", formatText))).setBorderColor(BaseColor.WHITE);
 			table2.addCell(new PdfPCell(new Phrase(model().getCausas_sin(), formatText))).setBorder(Rectangle.BOTTOM);
 			table2.addCell(new PdfPCell(new Phrase("Lesionados: ", formatText))).setBorderColor(BaseColor.WHITE);
@@ -419,10 +417,10 @@ public class PDF {
 			table2.addCell(new PdfPCell(new Phrase("", formatText))).setBorderColor(BaseColor.WHITE);
 			table2.addCell(new PdfPCell(new Phrase("            Muertos: ", formatText))).setBorderColor(BaseColor.WHITE);
 			table2.addCell(new PdfPCell(new Phrase(model().getMortos(), formatText))).setBorder(Rectangle.BOTTOM);
-			
+
 			document.add(table2);
 			document.add(conteudo);
-			
+
 			PdfPTable rsa = new PdfPTable(1);
 			rsa.setTotalWidth(500);
 			rsa.setTotalWidth(new float[]{ 500 });
@@ -430,7 +428,7 @@ public class PDF {
 			rsa.addCell(new PdfPCell(new Phrase("Folio RSA: "+model().getFolio_sec(), formatText))).setBorderColor(BaseColor.WHITE);
 			document.add(rsa);
 			document.add(conteudo);
-			
+
 			PdfPTable table3 = new PdfPTable(1);
 			table3.setTotalWidth(500);
 			table3.setTotalWidth(new float[]{500});
@@ -438,7 +436,7 @@ public class PDF {
 			title.addCell(new PdfPCell(new Phrase("DAÑOS EN INFRAESTRUCTURA", formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			document.add(table3);
 			document.add(conteudo);
-			
+
 			PdfPTable table4 = new PdfPTable(3);
 			table4.setTotalWidth(500);
 			table4.setTotalWidth(new float[]{ 250, 125, 125 });
@@ -448,7 +446,7 @@ public class PDF {
 			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN", formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase("SI/NO",formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase("OBSERVACIONES", formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
-			
+
 			table4.addCell(new PdfPCell(new Phrase("DEFENSA METÁLIZA", formatText)));
 			table4.addCell(new PdfPCell(new Phrase(model().getDef_metal(),formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase(obs[0], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -456,30 +454,30 @@ public class PDF {
 			table4.addCell(new PdfPCell(new Phrase("SEÑALAMIENTO", formatText)));
 			table4.addCell(new PdfPCell(new Phrase(model().getSenal(),formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase(obs[1], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
-			
+
 			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN PAVIMENTO", formatText)));
 			table4.addCell(new PdfPCell(new Phrase(model().getDano_pav(),formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase(obs[2], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
-			
+
 			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN CORTES O TERRAPLENES", formatText)));
 			table4.addCell(new PdfPCell(new Phrase(model().getDanos_cort_trr(),formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase(obs[3], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
-			
+
 			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN OBRA COMPLEMENTARIA", formatText)));
 			table4.addCell(new PdfPCell(new Phrase(model().getDanos_obr_compl(),formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase(obs[4], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
-			
+
 			table4.addCell(new PdfPCell(new Phrase("DAÑOS EN PLAZAS DE COBRO", formatText)));
 			table4.addCell(new PdfPCell(new Phrase(model().getPlz_cobro(),formatText)));
 			table4.addCell(new PdfPCell(new Phrase(obs[5], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
-			
+
 			table4.addCell(new PdfPCell(new Phrase("OTROS (AMBULANCIA, ABANDERAMIENTO OPERADORA", formatText)));
 			table4.addCell(new PdfPCell(new Phrase(model().getOtros_sin(),formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			table4.addCell(new PdfPCell(new Phrase(obs[6], formatText))).setHorizontalAlignment(Element.ALIGN_CENTER);
 			document.add(table4);
 			document.add(conteudo);
-			
-			
+
+
 			TuxpanOcc method = new TuxpanOcc();
 			String filter = method.filter(model().getReporte(), model().getSiniestro(), model().getFolio_sec());
 			String mainPath = method.createFolder(filter);
@@ -488,7 +486,7 @@ public class PDF {
 			PdfPTable table5 = new PdfPTable(2);
 			table5.setTotalWidth(500);
 			table5.setTotalWidth(new float[]{250, 250});
-			
+
 			table5.setLockedWidth(true);
 			for(int i=0;i<imgs.length;i++) {
 				x[i] = mainPath+imgs[i];
@@ -496,16 +494,12 @@ public class PDF {
 				Image imgP = Image.getInstance(img);
 				imgP.setAbsolutePosition(30, 770);
 				imgP.scaleAbsolute (100,100);
-				
-				System.out.println(imgs.length + " < tamnaho");
+
 				if(imgs.length == 1) {table5.addCell(imgP);table5.addCell("");}
 				else table5.addCell(imgP);
-				
-				
 			}
-			
-	        document.add(table5);
 
+			document.add(table5);
 
 		}
 		catch(DocumentException de) {
