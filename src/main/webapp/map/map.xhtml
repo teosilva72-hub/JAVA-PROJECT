@@ -17,6 +17,7 @@
         <h:outputStylesheet name="form-style.css" library="css/forms" />
         <h:outputStylesheet name="popover.css" library="css/util/popover" /> <!-- INSERT POPOVER -->
         <h:outputStylesheet name="tooltip.css" library="css/util/tooltip" /> <!-- INSERT TOOLTIP -->
+        <h:outputStylesheet name="preloader.css" library="css/util/preloader" /> <!-- INSERT PRELOADER -->
                       
         <c:if test="#{ CFTV }">
              <h:outputStylesheet name="cftv.css" library="css/map" />
@@ -85,6 +86,12 @@
     <!---->
  
     <ui:define name="main-content">
+    
+    	<!-- ======================== PRE LOADER ======================== -->
+	
+		<ui:include src="/template/util/preloader/preloader.xhtml" />
+		
+		<!---->
 
  		  <c:if test="#{ SuperAdmin || VideoWall }">
 

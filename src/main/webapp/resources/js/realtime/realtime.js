@@ -20,11 +20,14 @@ setInterval(() => {
 
 // *********************************************************** //
 
-const init = () => {
+const init = () => {	
+	
+	$('#preloader').removeClass('d-none') // PRE LOADER CLASS
+				
 	$('#equipAll').load('/realtime/realtimeEquip.xhtml', () => {
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))
-
+		
 		$('.equip-box, .equip-info, .equip-box-sat, .equip-box-speed, .plaque').each(function () {
 			let equip = $(this)
 

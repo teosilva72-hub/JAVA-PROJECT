@@ -77,7 +77,7 @@ public class NotificationsBean implements Serializable {
 						  updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), eq.getEquip_id(),
 								NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
 				}
-		}
+		}	
 	}
 	
 	// ---------------------------------------------------------------------------------

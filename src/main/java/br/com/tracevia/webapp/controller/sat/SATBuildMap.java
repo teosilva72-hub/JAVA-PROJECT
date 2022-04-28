@@ -16,6 +16,7 @@ import br.com.tracevia.webapp.controller.global.ListEquipments;
 import br.com.tracevia.webapp.controller.global.NotificationsBean;
 import br.com.tracevia.webapp.dao.sat.DataSatDAO;
 import br.com.tracevia.webapp.model.sat.SAT;
+import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name = "satMapsView")
 @ViewScoped
@@ -78,7 +79,7 @@ public class SATBuildMap implements Serializable {
 
 		DataSatDAO dao = new DataSatDAO();
 		
-		//System.out.println("DATA");		
+		// System.out.println("DATA");		
 		
 		List<SAT> satListValuesAux = new ArrayList<SAT>();	
 		
@@ -91,28 +92,29 @@ public class SATBuildMap implements Serializable {
 			try {
 				
 				// LIMIT SEARCH				
-				int limit = equips.getSatList().size();
-				int countLimit = 0;
+				int limit = equips.getSatList().size();								
+				System.out.println("INI: "+limit);
 	
 				// LISTAR AUXILIARES											
 				List<SAT> data15MinList = new ArrayList<SAT>();
 				List<SAT> data30MinList = new ArrayList<SAT>();
 				List<SAT> data03HourList = new ArrayList<SAT>();
 				List<SAT> data06HourList = new ArrayList<SAT>();
-				List<SAT> noDataList = new ArrayList<SAT>();
-				List<SAT> noDataAllList = new ArrayList<SAT>();
-				List<Integer> equipIdList = new ArrayList<Integer>();	
-				List<Integer> equipIdListAux = new ArrayList<Integer>();				
-				List<Integer> valuesAuxList = new ArrayList<Integer>();
+				List<SAT> noDataList = new ArrayList<SAT>();			
+				List<Integer> equipIdList = new ArrayList<Integer>();			
+				List<Integer> availableAuxList = new ArrayList<Integer>();
+				List<Integer> unavailableAuxList = new ArrayList<Integer>();
 										
 				// INIT SAT LIST IDS
 				equips.getSatList().forEach(item -> equipIdList.add(item.getEquip_id()));
-				
+							
 				///////////////////////////////
 				// SAT EQUIPMENTS
 				//////////////////////////////
+				
+				//SessionUtil.executeScript("$('#preloader').removeClass('d-none')");
 
-				 data15MinList = dao.dataInterval(limit, "MINUTE", 15);
+				 data15MinList = dao.dataInterval(limit, "MINUTE", 15, availabilityList);
 				
 					if(!data15MinList.isEmpty()) {
 												
@@ -121,6 +123,10 @@ public class SATBuildMap implements Serializable {
 						satListValuesAux.addAll(data15MinList);		
 						
 					    limit = limit - data15MinList.size();
+					   					    
+					    System.out.println("15X: "+data15MinList.size());
+					    
+					    System.out.println("15: "+limit);
 																								
 					}
 					
@@ -128,22 +134,23 @@ public class SATBuildMap implements Serializable {
 					
 					if(limit > 0) {
 						
-						 data30MinList = dao.dataInterval(limit, "MINUTE", 30);
+						 data30MinList = dao.dataInterval(limit, "MINUTE", 30, availabilityList);
 								
 								if(!data30MinList.isEmpty()) {
 									
+								    System.out.println("30X: "+data30MinList.size());
+									
 									if(!data15MinList.isEmpty()) {
 									
-										for(SAT value : data30MinList) {
-											
-											if(!availabilityList.contains(value.getEquip_id())) { 
-													availabilityList.add(value.getEquip_id());										
-													satListValuesAux.add(value);
-													countLimit++;
-											}					
+										for(SAT value : data30MinList) {											
+										
+												availabilityList.add(value.getEquip_id());										
+												satListValuesAux.add(value);																									
 										 }	
 										
-											limit = limit - countLimit;
+											limit = limit - data30MinList.size();
+											
+											  System.out.println("30: "+limit);
 																																				
 										} else {
 											
@@ -152,7 +159,9 @@ public class SATBuildMap implements Serializable {
 											
 											limit = limit - data30MinList.size();
 											
-										}																									
+											  System.out.println("30: "+limit);
+											
+										}							
 									}							
 							    }
 					
@@ -160,31 +169,35 @@ public class SATBuildMap implements Serializable {
 					
 							if(limit > 0) {
 								
-								 data03HourList = dao.dataInterval(limit, "HOUR", 3);
+								 data03HourList = dao.dataInterval(limit, "HOUR", 3, availabilityList);
 										
 										if(!data03HourList.isEmpty()) {
 											
+										    System.out.println("03X: "+data03HourList.size());
+											
 											if(!data30MinList.isEmpty()) {
 											
-												for(SAT value : data03HourList) {
+												for(SAT value : data03HourList) {													
 													
-													if(!availabilityList.contains(value.getEquip_id())) { 
-															availabilityList.add(value.getEquip_id());										
-															satListValuesAux.add(value);	
-															countLimit++;
-													}					
+														availabilityList.add(value.getEquip_id());										
+														satListValuesAux.add(value);	
+																																
 												 }	
 												
-													limit = limit - countLimit;
+													limit = limit - data03HourList.size();
+													
+													System.out.println("03: "+limit);
 																																						
 												} else {
 													
 													data03HourList.forEach(item -> availabilityList.add(item.getEquip_id()));																											
 													satListValuesAux.addAll(data03HourList);	
 													
-													limit = limit - data03HourList.size();	
+													limit = limit - data03HourList.size();
 													
-												}																																		
+													System.out.println("03: "+limit);
+													
+												}										
 											}							
 									    }
 							
@@ -192,22 +205,23 @@ public class SATBuildMap implements Serializable {
 							
 							if(limit > 0) {
 								
-								 data06HourList = dao.dataInterval(limit, "HOUR", 6);
+								 data06HourList = dao.dataInterval(limit, "HOUR", 6, availabilityList);
 										
 										if(!data06HourList.isEmpty()) {
 											
+										    System.out.println("06X: "+data15MinList.size());
+											
 											if(!data03HourList.isEmpty()) {
 											
-												for(SAT value : data06HourList) {
+												for(SAT value : data06HourList) {													
 													
-													if(!availabilityList.contains(value.getEquip_id())) { 
-															availabilityList.add(value.getEquip_id());										
-															satListValuesAux.add(value);
-															countLimit++;
-													}					
+														availabilityList.add(value.getEquip_id());										
+														satListValuesAux.add(value);																												
 												 }	
 												
-													limit = limit - countLimit;
+													limit = limit - data06HourList.size();
+													
+													System.out.println("06: "+limit);
 																																						
 												} else {
 													
@@ -216,56 +230,69 @@ public class SATBuildMap implements Serializable {
 													
 													limit = limit - data06HourList.size();
 													
-												}																					
+													System.out.println("06: "+limit);
+													
+												}							
 											}							
 									    }
 							
 							// ----------------------------------------------------------------------- 
 							
-							if(limit > 0 && !availabilityList.isEmpty()) {
+							if(limit > 0 && !availabilityList.isEmpty()) { // CASO NÃO EXISTA NAS VALORES
+																																												
+								noDataList = dao.noDataInterval(limit, availabilityList);
 								
-								for(int value : equipIdList) {									
-									if(!availabilityList.contains(value)) { 
-											unavailabilityList.add(value);																												
-									}					
-								 }		
-																												
-								noDataList = dao.noDataInterval(limit, unavailabilityList);
-								
-								// COMPARE IF EXIST VALUES IN DATABASE
-								satListValuesAux.forEach(item -> valuesAuxList.add(item.getEquip_id())); // ADD VALUES TO AUX LIST
-								noDataList.forEach(item -> valuesAuxList.add(item.getEquip_id())); // ADD NO VALUES TO AUX LIST
-																								
-								// VERIFICA SE A LISTA POSSUI TODOS OS IDS INDISPONIVEIS
-								
-								for(int id : equipIdList) {					
-									if(!valuesAuxList.contains(id))
-										 equipIdListAux.add(id);					
-								}
-								
-								// CASO NÃO TENHA TODOS REGISTROS
-								if(!equipIdListAux.isEmpty()) {
-									
-									noDataAllList.addAll(noDataList);
-									noDataAllList.addAll(completeAllEquips(equipIdListAux));
-																												
-									satListValuesAux.addAll(noDataAllList); // ADD DATA TO A LIST
-									
-								} else {										
-									
-									satListValuesAux.addAll(noDataList); // ADD DATA TO A LIST
-								}
+								if(!noDataList.isEmpty()) {
 																							
-								limit = 0; // AQUI ZERA O LIMIT
-																
-							} else if(availabilityList.isEmpty()) satListValuesAux = intializeNullList(equipIdList);
-							
-							// ----------------------------------------------------------------------- 
-							
-							Collections.sort(satListValuesAux); // ORDER SAT LIST
-							
-							// -----------------------------------------------------------------------												
+									noDataList.forEach(item -> unavailabilityList.add(item.getEquip_id())); // ADD NO VALUES TO AUX LIST																								
+									satListValuesAux.addAll(noDataList); // ADD DATA TO A LIST
+																																
+									limit =  limit - noDataList.size(); // LIMIT											
+									
+										if(limit > 0) {	// CASO O LIMITE AINDA SEJA MAIOR QUE ZERO ENTRA NA PROXIMA CONDICAO
+																											
+											availabilityList.forEach(item -> availableAuxList.add(item));
+											unavailabilityList.forEach(item -> availableAuxList.add(item));
 											
+											for(int id : equipIdList) {		
+												if(!availableAuxList.contains(id)) 
+													 unavailableAuxList.add(id);								
+											 
+											 }
+											
+										    satListValuesAux.addAll(completeAllEquips(unavailableAuxList));	// COMPLETA OS EQUIPAMENTOS
+										  
+										    limit = 0;									    
+										   
+										}						
+																		
+								} else { // CASO NAO EXISTA VALORES NA LISTA ENTRA AQUI
+									
+									for(int id : equipIdList) {			
+										if(!availabilityList.contains(id)) 
+											unavailabilityList.add(id);																		
+									}
+																																
+									satListValuesAux.addAll(completeAllEquips(unavailabilityList));	
+							  
+									limit = 0;
+							    
+									System.out.println("HERE");
+							}														
+							
+						} else if(availabilityList.isEmpty())								
+						{							
+							satListValuesAux = intializeNullList(limit, equipIdList);
+							
+							System.out.println("HERE 2");
+						}
+							
+						// ----------------------------------------------------------------------- 
+						
+						Collections.sort(satListValuesAux); // ORDER SAT LIST
+						
+						// -----------------------------------------------------------------------												
+										
 			} catch (IndexOutOfBoundsException ex) {
 
 				ex.printStackTrace();
@@ -277,57 +304,63 @@ public class SATBuildMap implements Serializable {
 
 		FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(":navbarDropdown2");
 		
+		SessionUtil.executeScript("$('#preloader').addClass('d-none')");
+		
 		return satListValuesAux;
 	
 	}
 
 	// ----------------------------------------------------------------------------------------------------
 
-	public List<SAT> intializeNullList(List<Integer> satList) throws Exception {
-		
+	public List<SAT> intializeNullList(int limit, List<Integer> equipIdList) throws Exception {
+				
 		// LISTS
 		unavailabilityList = new ArrayList<Integer>();
 		
 		// AUX LISTS
 		List<SAT> satListValuesAux = new ArrayList<SAT>();
-		List<SAT> noDataList = new ArrayList<SAT>();
-		List<SAT> noDataAllList = new ArrayList<SAT>();
-		List<Integer> equipIdList = new ArrayList<Integer>();	
+		List<SAT> noDataList = new ArrayList<SAT>();	
 		List<Integer> noDataAuxList = new ArrayList<Integer>();	
-		
-		// INIT SAT LIST IDS
-		equips.getSatList().forEach(item -> equipIdList.add(item.getEquip_id()));
-		
+				
 		DataSatDAO dao = new DataSatDAO();
 		
-		noDataList = dao.noDataInterval(2, satList);
+		noDataList = dao.noDataInterval(limit, equipIdList);
+		
+		if(!noDataList.isEmpty()) {
+			
+			// COMPARE IF EXIST VALUES IN DATABASE								
+			noDataList.forEach(item -> unavailabilityList.add(item.getEquip_id())); // ADD NO VALUES TO AUX LIST																								
+			satListValuesAux.addAll(noDataList); // ADD DATA TO A LIST
+																										
+			limit =  limit - noDataList.size(); // LIMIT
+			
+			 System.out.println("TESTE");
+			
+			if(limit > 0) {
 				
-		noDataList.forEach(item -> noDataAuxList.add(item.getEquip_id())); // CONVERT ID TO INTEGER TYPE
-			
-		// VERIFICA SE A LISTA POSSUI TODOS OS IDS DISPONIVEIS				
-		for(int id : equipIdList) {			
-			if(!noDataAuxList.contains(id)) {
-				 unavailabilityList.add(id);
+				for(int id : equipIdList) {			
+					if(!unavailabilityList.contains(id))
+						 noDataAuxList.add(id);					
+				}
+				
+			  satListValuesAux.addAll(completeAllEquips(noDataAuxList));
+			  
+			  limit = 0;
+			  
+			  System.out.println("TESTE1");
+										
 			}
-		}		
-			
-		// CASO NÃO TENHA TODOS REGISTROS
-		if(!unavailabilityList.isEmpty()) {
-			
-			noDataAllList.addAll(noDataList);
-			noDataAllList.addAll(completeAllEquips(unavailabilityList));
-			
-			Collections.sort(noDataAllList); // ORDER SAT LIST			
-			satListValuesAux.addAll(noDataAllList); // ADD DATA TO A LIST
-			
+												
 		} else {
 			
-			 Collections.sort(noDataList); // ORDER SAT LIST
-			 satListValuesAux.addAll(noDataList); // ADD DATA TO A LIST
-		}	
-		
-		// -----------------------------------------------------------------------		
+			  satListValuesAux.addAll(completeAllEquips(equipIdList));
+			  
+			  limit = 0;
+			  
+			  System.out.println("TESTE2");
 			
+		}
+						
 		return satListValuesAux;
 	}
 
@@ -336,7 +369,7 @@ public class SATBuildMap implements Serializable {
 	public List<SAT> completeAllEquips(List<Integer> equips){
 		
 		List<SAT> list = new ArrayList<SAT>();
-		
+			
 		for(int i = 0; i < equips.size(); i++) {
 		
 		SAT sat = new SAT();

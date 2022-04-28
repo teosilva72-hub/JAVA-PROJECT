@@ -15,7 +15,9 @@ public class DataSatDAO {
 			
 	SQL_Tracevia conn = new SQL_Tracevia();
 		
-	public List<SAT> dataInterval(int limit, String interval, int time) throws Exception {
+	public List<SAT> dataInterval(int limit, String interval, int time, List<Integer> availabilityList) throws Exception {
+		
+		System.out.println("AVAI: "+availabilityList.size()); // MESTRE
 						
 		List<SAT> list = new ArrayList<SAT>();
 		DateTimeApplication dta = new DateTimeApplication();
@@ -53,7 +55,7 @@ public class DataSatDAO {
 	
 					"FROM tb_dados15 ld " +
 					"LEFT JOIN equip eq ON (ld.NOME_ESTACAO = eq.equip_id) " +
-					"WHERE ld.DATA_HORA BETWEEN DATE_SUB(?, INTERVAL 7 DAY) AND DATE_SUB(DATE_ADD(DATE_SUB(?, INTERVAL 7 DAY), INTERVAL 1 HOUR), INTERVAL 1 SECOND) GROUP BY ld.NOME_ESTACAO LIMIT 9";
+					"WHERE ld.DATA_HORA BETWEEN DATE_SUB(?, INTERVAL 7 DAY) AND DATE_SUB(DATE_ADD(DATE_SUB(?, INTERVAL 7 DAY), INTERVAL 1 HOUR), INTERVAL 1 SECOND) GROUP BY ld.NOME_ESTACAO LIMIT "+limit;
 
 			String lastHour = "CREATE TEMPORARY TABLE IF NOT EXISTS last_hour " +
 					"SELECT lh.NOME_ESTACAO, SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN lh.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_HOUR_S1', " + 
@@ -68,10 +70,10 @@ public class DataSatDAO {
 		
 					"FROM tb_dados15 lh " +
 					"LEFT JOIN equip eq ON (lh.NOME_ESTACAO = eq.equip_id) " +
-					"WHERE lh.DATA_HORA BETWEEN DATE_SUB(?, INTERVAL 1 HOUR) AND DATE_SUB(?, INTERVAL 1 SECOND) GROUP BY lh.NOME_ESTACAO LIMIT 9";
+					"WHERE lh.DATA_HORA BETWEEN DATE_SUB(?, INTERVAL 1 HOUR) AND DATE_SUB(?, INTERVAL 1 SECOND) GROUP BY lh.NOME_ESTACAO LIMIT "+limit;
 
 			String maxDate = "CREATE TEMPORARY TABLE IF NOT EXISTS maxDate " +
-					"SELECT siteID, MAX(data) maxDate FROM tb_vbv GROUP BY siteID LIMIT 9";
+					"SELECT siteID, MAX(data) maxDate FROM tb_vbv GROUP BY siteID LIMIT " + limit;
 							
 			String select = "SELECT d.NOME_ESTACAO AS ESTACAO, nt.online_status AS ESTADO_ATUAL, " +
 				"IFNULL(CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE CASE WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), " +
@@ -169,9 +171,31 @@ public class DataSatDAO {
 				"LEFT JOIN last_hour lh ON (d.NOME_ESTACAO = lh.NOME_ESTACAO) " +
 				"LEFT JOIN notifications_status nt ON (d.NOME_ESTACAO = nt.equip_id) AND 'SAT' = nt.equip_type " +
 				
-			    "WHERE d.DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 " +
-			    "GROUP BY d.NOME_ESTACAO " +	
-		 	    "ORDER BY d.DATA_HORA DESC ";
+			    "WHERE d.DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? ";
+			
+				// --------------------------------------------------------------------
+									
+				   if(!availabilityList.isEmpty()) {
+					   
+					   select += "AND d.NOME_ESTACAO NOT IN(";
+				 		
+				 		for(int i = 0; i < availabilityList.size(); i++) {
+				 			
+				 			select += availabilityList.get(i);
+				 			
+				 			if(i < (availabilityList.size() - 1))
+				 				select +=", ";
+				 					
+				 		}
+				 		
+				 		select += ") ";				   
+				   	}
+				   
+				// -------------------------------------------------------------------
+			
+			   select += "AND eq.visible = 1 " +
+					   "GROUP BY d.NOME_ESTACAO " +	
+					   "ORDER BY d.DATA_HORA DESC ";
 	 
 	 try {
 			
@@ -214,7 +238,7 @@ public class DataSatDAO {
 			
 			MapResult result = conn.executeQuery();
 			
-			//System.out.println("ORIGIN: "+select);		 	
+			System.out.println("ORIGIN: "+select);		 	
 			
 			if (result.hasNext()) {
 				for (RowResult rs : result) {
@@ -340,7 +364,7 @@ public class DataSatDAO {
 	public List<SAT> noDataInterval(int limit, List<Integer> equips) throws Exception {
   		
   		List<SAT> list = new ArrayList<SAT>();
- 		 		 	 	 		 					
+  		 		 		 	 	 		 					
  		String select = "SELECT d.NOME_ESTACAO AS ESTACAO, nt.online_status AS ESTADO_ATUAL, " +
  				  "IFNULL(CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE " + 			
  				  "CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE CASE WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), " + 
@@ -357,21 +381,21 @@ public class DataSatDAO {
 					    "GROUP BY siteID LIMIT "+ limit +   // LIMIT == NUMBER OF EQUIPS
 					") md ON md.siteID = eq.equip_id " +
 					    
-			 	  "WHERE d.NOME_ESTACAO IN(";
+			 	  "WHERE d.NOME_ESTACAO NOT IN(";
  		
- 		for(int i = 0; i < equips.size(); i++) {
- 			
- 			select += equips.get(i);
- 			
- 			if(i < (equips.size() - 1))
- 				select +=", ";
- 					
- 		}
- 		
- 		select += ") AND eq.visible = 1 " +
- 				  "GROUP BY d.NOME_ESTACAO, d.DATA_HORA " +
- 	              "ORDER BY d.DATA_HORA DESC ";
- 	 	 					
+		 		for(int i = 0; i < equips.size(); i++) {
+		 			
+		 			select += equips.get(i);
+		 			
+		 			if(i < (equips.size() - 1))
+		 				select +=", ";
+		 					
+		 		}
+		 		
+		 		select += ") AND eq.visible = 1 " +
+		 				  "GROUP BY d.NOME_ESTACAO, d.DATA_HORA " +
+		 	              "ORDER BY d.DATA_HORA DESC ";
+			 	 	 					
  	 try {
  			
  		 conn.start(1);
@@ -387,20 +411,18 @@ public class DataSatDAO {
  			 						
  			MapResult result = conn.executeQuery();
  			
- 			// System.out.println(select);
+ 			 System.out.println(select);
  			  			 
  			 List<Integer> checkList = new ArrayList<Integer>(); // LISTA PARA VERIFICAR O ULTIMO ID
  			  			 		 			
  			if (result.hasNext()) {
- 				for (RowResult rs : result) { 		
- 					
- 					 if(!checkList.contains(rs.getInt("ESTACAO"))) { 					    	   	
+ 				for (RowResult rs : result) { 								    	   	
  					
 	 					SAT sat = new SAT();
 	 					
 	 					sat.setEquip_id(rs.getInt("ESTACAO"));
-	 					sat.setLastPackage(rs.getString("PACOTE_HORA"));		
-	 					sat.setLastRegister(rs.getString("DADO_HORA")); 					
+	 					sat.setLastPackage(rs.getString("PACOTE_HORA") == "" ? "00:00" :  rs.getString("PACOTE_HORA"));		
+	 					sat.setLastRegister(rs.getString("DADO_HORA") == "" ? "00:00" :  rs.getString("PACOTE_HORA")); 					
 	 					sat.setQuantidadeS1(0);
 	 					sat.setVelocidadeS1(0);
 	 					sat.setQuantidadeS2(0);
@@ -496,8 +518,7 @@ public class DataSatDAO {
 						checkList.add(rs.getInt("ESTACAO"));
 						
 	 					}				
- 				    } 			 					
- 				}	
+ 				    }		
  			
  		} catch (Exception e) {
  			e.printStackTrace();
