@@ -102,7 +102,7 @@
 										</svg>
 										<f:setPropertyActionListener value="#{date.id}"
 											target="#{OccPdf.id}" />
-										<f:ajax execute="@form" listener="#{OccPdf.model}"
+										<f:ajax execute="@form" listener="#{OccPdf.model}" onevent="pdf()"
 											render=":form_occ :form-sin :edit-form :download_Pdf" />
 									</h:commandLink>
 								</div>

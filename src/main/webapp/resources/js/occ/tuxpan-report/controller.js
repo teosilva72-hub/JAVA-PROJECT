@@ -1,6 +1,6 @@
 $((init) => {
     table();
-    appendOcc();
+   
     clickSave();
     getTypeReport();
     hiddenBts();
@@ -13,10 +13,10 @@ $((init) => {
     pdf();
 	$('#type_occ, #type_sin').click(()=>{
 	    $('.divFile').addClass('hidden')
+ 		appendOcc();
+	vehOcupSin();
 	})
-    setTimeout((a) => {
-        vehOcupSin();
-    }, 100);
+
     $("#modalOcc, #modalSin").on("hidden.bs.modal", () => {
         $("#resetFormSin, #resetFormOcc").click();
         scann();
@@ -33,8 +33,7 @@ function pdf() {
         setTimeout((x) => {
             $("[id$=pdfDownload]").click();
             $("#type_occ, #type_sin").click(() => {
-                appendOcc();
-                vehOcupSin();
+                
             });
         }, 200);
     });
@@ -219,10 +218,12 @@ function clickUpdate() {
         getObsSin();
         //setTimeout(d => {
         $("[id$=updateSin]").click();
+
         setTimeout(() => {
             if (files > 0) {
                 $("#setFileS").click();
             }
+
         }, 150);
         //}, 100)
     });
@@ -244,7 +245,6 @@ function clickSave() {
         getPerson();
         setTimeout((f) => {
             $("[id$=saveOcc]").click();
-            appendOcc();
             listOcc();
         }, 100);
     });

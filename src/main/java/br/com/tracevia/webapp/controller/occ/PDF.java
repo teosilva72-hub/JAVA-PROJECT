@@ -15,6 +15,7 @@ import javax.enterprise.inject.Model;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.swing.GroupLayout.Alignment;
 
 import org.apache.poi.ss.util.ImageUtils;
 import org.apache.poi.util.IOUtils;
@@ -350,8 +351,9 @@ public class PDF {
 			logo = ImageUtil.getInternalImagePath("images", "files", RoadConcessionaire.externalImagePath);
 			if(!logo.equals("")) {
 				Image tuxpanL = Image.getInstance(logo);
-				tuxpanL.setAbsolutePosition(30, 770);
-				tuxpanL.scaleAbsolute (90, 30);
+				tuxpanL.setAbsolutePosition(200, 770);
+				tuxpanL.scaleAbsolute (120, 60);
+
 				document.add(tuxpanL);
 			}
 			Font formatText = new Font(Font.FontFamily.TIMES_ROMAN, 10f, Font.BOLD);
@@ -486,19 +488,24 @@ public class PDF {
 			PdfPTable table5 = new PdfPTable(2);
 			table5.setTotalWidth(500);
 			table5.setTotalWidth(new float[]{250, 250});
-
 			table5.setLockedWidth(true);
+			
 			for(int i=0;i<imgs.length;i++) {
 				x[i] = mainPath+imgs[i];
 				img = x[i];
 				Image imgP = Image.getInstance(img);
 				imgP.setAbsolutePosition(30, 770);
 				imgP.scaleAbsolute (100,100);
-
-				if(imgs.length == 1) {table5.addCell(imgP);table5.addCell("");}
-				else table5.addCell(imgP);
+				
+					table5.addCell(imgP);
 			}
-
+			for(int a=0;a<1;a++) {
+				unknown = "C:\\Users\\trace\\eclipse workspace 2020\\tracevia-application\\src\\main\\webapp\\resources\\images\\unknown\\no-image.jpg";
+				Image unk = Image.getInstance(unknown);
+				unk.setAbsolutePosition(30, 770);
+				unk.scaleAbsolute (100,100);
+				table5.addCell(unk);
+			}
 			document.add(table5);
 
 		}
@@ -529,7 +536,7 @@ public class PDF {
 	}
 
 	private boolean check = false;
-	private String logo, id, img;
+	private String logo, id, img, unknown;
 	private TuxpanOccModel date;
 	private TuxpanDAO dao;
 	public String getLogo() {
@@ -544,6 +551,15 @@ public class PDF {
 	public String getImg() {
 		try {
 			Path path = Paths.get(img);
+			byte[] file = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(file);
+		}catch (Exception e) {
+			return "";
+		}
+	}
+	public String getUnknown() {
+		try {
+			Path path = Paths.get(unknown);
 			byte[] file = Files.readAllBytes(path);
 			return Base64.getEncoder().encodeToString(file);
 		}catch (Exception e) {
