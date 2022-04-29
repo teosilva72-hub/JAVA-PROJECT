@@ -9,8 +9,11 @@ $((init) => {
     formSin();
     divFile();
     saveSin();
-
+	setFile()
     pdf();
+	$('#type_occ, #type_sin').click(()=>{
+	    $('.divFile').addClass('hidden')
+	})
     setTimeout((a) => {
         vehOcupSin();
     }, 100);
@@ -18,7 +21,6 @@ $((init) => {
         $("#resetFormSin, #resetFormOcc").click();
         scann();
         divFile();
-        setFile();
     });
 
     $("#file").change(() => {
@@ -39,9 +41,10 @@ function pdf() {
 }
 
 function setFile() {
-    let file = document.querySelector(".getFile").files.length;
-    let files = document.querySelector(".getFiles").files.length;
+
     $(".getFile, .getFiles").change(() => {
+	    let file = document.querySelector(".getFile").files.length;
+	    let files = document.querySelector(".getFiles").files.length;
         if (file > 0 || files > 0) {
             $("#saveOcc").click(() => {
                 setTimeout(() => {
