@@ -6,7 +6,6 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
 import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
-import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.occ.TuxpanOccModel;
 
 public class TuxpanDAO{
@@ -16,9 +15,10 @@ public class TuxpanDAO{
 		boolean check = false;
 		
 		String query = "UPDATE occ_tuxpan SET cobro = ?, folio_secuencial = ?, reporte = ?, siniestro = ?, fecha = ?, direccion = ?, km_reg = ?, km_inicial = ?, km_final = ?, poliza = ?,"+
-				"hora_reg_cab = ?, hora_arr_aju = ?, semoviente = ?, trabajo_cons = ?, tiempo = ?, neblina = ?, vandalismo = ?, otro = ?, obs, tipo_veh = ?, tipo_veh_eje = ?,"+
-				"num_veh_inv = ?, marca_veh_inv = ?, tipo_veh_inv = ?, modelo_veh_inv = ?, color_veh_inv = ?, placa_est_veh_inv = ?, tel_veh_inv = ?, num_person = ?,"+
-				"nombre_person = ?, edad_person = ?, condiccion_person = ?, hora = ? WHERE id ='"+id+"'";
+				"hora_reg_cab = ?, hora_arr_aju = ?, semoviente = ?, trabajo_cons = ?, tiempo = ?, neblina = ?, vandalismo = ?, otro = ?, obs = ?, tipo_veh = ?,"+
+				"tipo_veh_eje = ?, num_veh_inv = ?, marca_veh_inv = ?, tipo_veh_inv = ?, modelo_veh_inv = ?, color_veh_inv = ?, placa_est_veh_inv = ?, tel_veh_inv = ?, num_person = ?, nombre_person = ?,"+
+				"edad_person = ?, condiccion_person = ?, hora = ?, lesionado = ?, causas = ?, ocupantes_vh = ?, vh_ocupantes = ?, def_metal = ?, sinal = ?, dano_pav = ?, dano_cor_ter = ?, dano_obr = ?,"+
+				"dano_plz = ?, otros_sin = ?, muerto = ?, obs_sin = ? WHERE id ="+id+"";
 		
 		try {
 			conn.start(1);
@@ -59,6 +59,19 @@ public class TuxpanDAO{
 					conn.setString(31, data.getEdad());
 					conn.setString(32, data.getCondiciones());
 					conn.setString(33, data.getHora());
+					conn.setString(34, data.getLesionados());
+					conn.setString(35, data.getCausas_sin());
+					conn.setString(36, data.getOcupantes_sin());
+					conn.setString(37, data.getVeh_sin());
+					conn.setString(38, data.getDef_metal());
+					conn.setString(39, data.getSenal());
+					conn.setString(40, data.getDano_pav());
+					conn.setString(41, data.getDanos_cort_trr());
+					conn.setString(42, data.getDanos_obr_compl());
+					conn.setString(43, data.getDano_plz_cobro());
+					conn.setString(44, data.getOtros_sin());
+					conn.setString(45, data.getMortos());
+					conn.setString(46, data.getObs_sin());
 					
 					long occ = conn.executeUpdate();
 					if(occ > 0)
@@ -80,7 +93,8 @@ public class TuxpanDAO{
 		String query = "SELECT cobro, folio_secuencial, reporte, siniestro, fecha, direccion, km_reg, km_inicial, km_final, poliza,"+
 				"hora_reg_cab, hora_arr_aju, semoviente, trabajo_cons, tiempo, neblina, vandalismo, otro, obs, tipo_veh, tipo_veh_eje,"+
 				"num_veh_inv, marca_veh_inv, tipo_veh_inv, modelo_veh_inv, color_veh_inv, placa_est_veh_inv, tel_veh_inv, num_person,"+
-				"nombre_person, edad_person, condiccion_person, hora, type_report, id FROM occ_tuxpan WHERE id ='"+id+"'";
+				"nombre_person, edad_person, condiccion_person, hora, type_report, id, lesionado, causas, ocupantes_vh, vh_ocupantes,"+
+				"def_metal, sinal, dano_pav, dano_cor_ter, dano_obr, dano_plz, otros_sin, muerto, obs_sin FROM occ_tuxpan WHERE id ='"+id+"'";
 		try {
 			conn.start(1);
 			conn.prepare(query);
@@ -122,9 +136,21 @@ public class TuxpanDAO{
 					report.setHora(rs.getString(33));
 					report.setType_report(rs.getString(34));
 					report.setId(rs.getString(35));
+					report.setLesionados(rs.getString(36));
+					report.setCausas_sin(rs.getString(37));
+					report.setOcupantes_sin(rs.getString(38));
+					report.setVeh_sin(rs.getString(39));
+					report.setDef_metal(rs.getString(40));
+					report.setSenal(rs.getString(41));
+					report.setDano_pav(rs.getString(42));
+					report.setDanos_cort_trr(rs.getString(43));
+					report.setDanos_obr_compl(rs.getString(44));
+					report.setDano_plz_cobro(rs.getString(45));
+					report.setOtros_sin(rs.getString(46));
+					report.setMortos(rs.getString(47));
+					report.setObs_sin(rs.getString(48));
 					
-					long occ = conn.executeUpdate();
-					System.out.println(occ);
+					conn.executeUpdate();
 				}
 			}
 
@@ -141,8 +167,9 @@ public class TuxpanDAO{
 		String query = "INSERT INTO occ_tuxpan(cobro, folio_secuencial, reporte, siniestro, fecha, direccion, km_reg, km_inicial, km_final, poliza,"+
 				"hora_reg_cab, hora_arr_aju, semoviente, trabajo_cons, tiempo, neblina, vandalismo, otro, obs, tipo_veh, tipo_veh_eje,"+
 				"num_veh_inv, marca_veh_inv, tipo_veh_inv, modelo_veh_inv, color_veh_inv, placa_est_veh_inv, tel_veh_inv, num_person,"+
-				"nombre_person, edad_person, condiccion_person, hora, type_report)"+
-				" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				"nombre_person, edad_person, condiccion_person, hora, type_report, "+
+				"def_metal, sinal, dano_pav, dano_cor_ter, dano_obr, dano_plz, otros_sin, ocupantes_vh, vh_ocupantes, lesionado, muerto, causas, obs_sin)"+
+				" VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		try {
 			conn.start(1);
@@ -181,6 +208,19 @@ public class TuxpanDAO{
 			conn.setString(32, data.getCondiciones());
 			conn.setString(33, data.getHora());
 			conn.setString(34, type_report);
+			conn.setString(35, data.getDef_metal());
+			conn.setString(36, data.getSenal());
+			conn.setString(37, data.getDano_pav());
+			conn.setString(38, data.getDanos_cort_trr());
+			conn.setString(39, data.getDanos_obr_compl());
+			conn.setString(40, data.getDano_plz_cobro());
+			conn.setString(41, data.getOtros_sin());
+			conn.setString(42, data.getOcupantes_sin());
+			conn.setString(43, data.getVeh_sin());
+			conn.setString(44, data.getLesionados());
+			conn.setString(45, data.getMortos());
+			conn.setString(46, data.getCausas_sin());
+			conn.setString(47, data.getObs_sin());
 			long occ = conn.executeUpdate();
 			System.out.println(occ);
 			if(occ > 0) {
@@ -194,12 +234,11 @@ public class TuxpanDAO{
 		return saveOcc;
 	}
 	public ArrayList<TuxpanOccModel> listarOcorrencias() throws Exception {
-		String query = "SELECT id, folio_secuencial, reporte, siniestro, fecha, hora FROM occ_tuxpan";	
+		String query = "SELECT id, folio_secuencial, reporte, siniestro, fecha, hora, type_report FROM occ_tuxpan";	
 
 		ArrayList<TuxpanOccModel> listarOcc = new ArrayList<TuxpanOccModel>();
 		//System.out.println(query);
 		try {
-			TranslationMethods occTranslation = new TranslationMethods();
 			conn.start(1);
 			conn.prepare(query);
 			MapResult result = conn.executeQuery();
@@ -213,6 +252,7 @@ public class TuxpanDAO{
 					occ.setSiniestro(ifEmpty(rs.getString(4)));;
 					occ.setFecha(ifEmpty(rs.getString(5)));
 					occ.setHora(ifEmpty(rs.getString(6)));
+					occ.setType_report(type(rs.getString(7)));
 
 					listarOcc.add(occ);
 				}
@@ -222,7 +262,18 @@ public class TuxpanDAO{
 		}
 		return listarOcc;
 	}
-
+	public String type(String val) {
+		switch (val) {
+			case "1":
+				return "OCC";
+				
+			case "2":
+				return "SIN";
+			
+			default:
+				return "Error";
+		}
+	}
 	public String ifEmpty(String val) {
 		return val != null ? val.isEmpty() ? "----------" : val : "----------";
 	}
