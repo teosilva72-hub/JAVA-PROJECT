@@ -11,6 +11,8 @@ $((init) => {
     saveSin();
 	setFile()
     pdf();
+	$(".fecha").mask("99/99/9999");
+	$(".hora").mask("00:00");
 	$('#type_occ, #type_sin').click(()=>{
 	    $('.divFile').addClass('hidden')
  		appendOcc();

@@ -164,7 +164,7 @@ public class TuxpanOcc{
 	public String createFolder(String date){
 		DateTimeApplication dta = new DateTimeApplication();
 		LocalDate local = dta.localeDate();
-		mainPath = "C:\\Report_ocurrencias\\"+date+"\\";
+		mainPath = "C:\\Cameras\\Report_ocurrencias\\"+date+"\\";
 		File directory = new File(mainPath);
 		if (!directory.exists())
 			directory.mkdirs();			

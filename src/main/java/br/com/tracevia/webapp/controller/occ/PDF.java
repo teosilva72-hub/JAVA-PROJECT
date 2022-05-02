@@ -500,7 +500,7 @@ public class PDF {
 					table5.addCell(imgP);
 			}
 			for(int a=0;a<1;a++) {
-				unknown = "C:\\Users\\trace\\eclipse workspace 2020\\tracevia-application\\src\\main\\webapp\\resources\\images\\unknown\\no-image.jpg";
+				unknown = ImageUtil.getInternalImagePath("images", "unknown", "no-image.jpg");
 				Image unk = Image.getInstance(unknown);
 				unk.setAbsolutePosition(30, 770);
 				unk.scaleAbsolute (100,100);

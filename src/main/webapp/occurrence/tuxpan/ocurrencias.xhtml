@@ -168,11 +168,7 @@
 									<p class="text-center">#{tuxpan_trad.report_preliminary}</p>
 									<hr></hr>
 								</div>
-								<div class="col-2">
-									<span>#{tuxpan_trad.table_id}</span>
-									<h:inputText class="form-control"
-										value="#{OccController.data.id}" />
-								</div>
+								
 								<div class="col-2">
 									<span>#{tuxpan_trad.siniestro}</span>
 									<h:inputText class="form-control" id="sinistro_sin"
@@ -180,12 +176,12 @@
 								</div>
 								<div class="col-2">
 									<span>#{tuxpan_trad.table_hora}</span>
-									<h:inputText class="form-control"
+									<h:inputText class="form-control hora"
 										value="#{OccController.data.hora}" />
 								</div>
 								<div class="col-2">
 									<span>#{tuxpan_trad.table_fecha}</span>
-									<h:inputText class="form-control"
+									<h:inputText class="form-control fecha"
 										value="#{OccController.data.fecha}" />
 								</div>
 								<div class="col-4">
@@ -462,11 +458,7 @@
 										<p class="text-center">#{tuxpan_trad.reg_acc}</p>
 										<hr></hr>
 									</div>
-									<div class="col-2">
-										<span>#{tuxpan_trad.table_id}</span>
-										<h:inputText name="id_occ" id="id_occ" class="form-control"
-											value="#{OccController.data.id}" />
-									</div>
+									
 									<div class="col-4">
 										<span>#{tuxpan_trad.toll}</span>
 										<h:inputText name="plaza_cobro" id="plaza_cobro"
@@ -489,12 +481,12 @@
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.date}</span>
-										<h:inputText name="fecha" id="fecha" class="form-control"
+										<h:inputText name="fecha" id="fecha" class="form-control fecha"
 											value="#{OccController.data.fecha}" />
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.hour}</span>
-										<h:inputText name="hora" id="hora" class="form-control"
+										<h:inputText name="hora" id="hora" class="form-control hora"
 											value="#{OccController.data.hora}" />
 									</div>
 									<div class="col-4">
