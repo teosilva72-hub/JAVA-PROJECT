@@ -57,6 +57,11 @@
 		<h:outputScript library="bootstrap/js" name="bootstrap-input-spinner.js?version=#{notificationsView.timestamp}" />
 		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
 		<h:outputScript library="js/validation-forms/user-interface" name="realtime-validation.js?version=#{notificationsView.timestamp}" />
+		
+		<script>
+		
+	
+		</script>
 
 	</ui:define>
 
@@ -85,11 +90,17 @@
     <!---->
 
 	<ui:define name="main-content">
+		  		
+         <c:if test="#{ SAT }">
 	
-		<!-- ======================== PRE LOADER ======================== -->
-	
-		<ui:include src="/template/util/preloader/preloader.xhtml" />
+			<!-- ======================== PRE LOADER ======================== -->
 		
+			<ui:include src="/template/util/preloader/preloader.xhtml" />
+			
+			<!---->
+		
+		</c:if>
+
 		<!---->
 			
 		<c:if test="#{ SuperAdmin || VideoWall }">

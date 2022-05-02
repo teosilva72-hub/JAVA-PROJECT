@@ -87,11 +87,15 @@
  
     <ui:define name="main-content">
     
-    	<!-- ======================== PRE LOADER ======================== -->
+     	<c:if test="#{ SAT }">
 	
-		<ui:include src="/template/util/preloader/preloader.xhtml" />
+			<!-- ======================== PRE LOADER ======================== -->
 		
-		<!---->
+			<ui:include src="/template/util/preloader/preloader.xhtml" />
+			
+			<!---->
+		
+		</c:if>
 
  		  <c:if test="#{ SuperAdmin || VideoWall }">
 

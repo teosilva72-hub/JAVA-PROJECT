@@ -142,7 +142,7 @@ const setInfoEquip = () => {
 	// -------------------------------------------------------------------------------------------------------------------
 	
 	// hide opened popover when click outside popover content
-	$('body').on('click', function (e) {
+	$('html').on('click', function (e) {
 	    $('[data-toggle=popover-d]').each(function () {	       
 	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
 	            $(this).popover('hide');

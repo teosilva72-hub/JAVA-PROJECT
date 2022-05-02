@@ -304,7 +304,7 @@ public class SatReportVBVBean {
 	 // -----------------------------------------------------------------------------------------------------------------------------------------------------   
 	 
 	 public void resetForm() {
-		 			 
+		 				 			 
 		 SessionUtil.getExternalContext().getSessionMap().remove("name_"); 	
 		 SessionUtil.getExternalContext().getSessionMap().remove("month_");	
 		 SessionUtil.getExternalContext().getSessionMap().remove("year_");
