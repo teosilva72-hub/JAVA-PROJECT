@@ -67,7 +67,7 @@ public class TranslationMethods {
 		case "Vehiculos Involucrados" : converteOcc = localeOccTuxpan.getStringKey("veh_inv"); break;
 		case "Tipo de Vehiculo" : converteOcc = localeOccTuxpan.getStringKey("type_veh"); break;
 		case "Num. Ejes" : converteOcc = localeOccTuxpan.getStringKey("num_axes"); break;
-		case "Siniestro" : converteOcc = localeOccTuxpan.getStringKey("siniestro");
+		case "Siniestro" : converteOcc = localeOccTuxpan.getStringKey("sin_link");
 		case "Marca" : converteOcc = localeOccTuxpan.getStringKey("mark"); break;
 		case "Modelo" : converteOcc = localeOccTuxpan.getStringKey("model"); break;
 		case "Color" : converteOcc = localeOccTuxpan.getStringKey("color"); break;

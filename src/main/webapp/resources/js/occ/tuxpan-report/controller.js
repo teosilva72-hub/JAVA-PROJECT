@@ -11,10 +11,12 @@ $((init) => {
     saveSin();
 	setFile()
     pdf();
-	$(".fecha").mask("99/99/9999");
-	$(".hora").mask("00:00");
+	
 	$('#type_occ, #type_sin').click(()=>{
 	    $('.divFile').addClass('hidden')
+		$(".fecha").mask("99/99/9999");
+		$(".hora").mask("00:00");
+		$(".km").mask("000+000");
  		appendOcc();
 	vehOcupSin();
 	})
@@ -177,6 +179,9 @@ function appendOcc() {
 function hiddenBtnSin() {
     $("#saveSin").addClass("hidden");
     $("#saveUpdate").removeClass("hidden");
+	$(".fecha").mask("99/99/9999");
+	$(".hora").mask("00:00");
+	$(".km").mask("000+000");
     blockVirgula();
 }
 
@@ -184,7 +189,11 @@ function hiddenBts() {
     $("[id$=editocc]").click((a) => {
         $("#updateOcc").removeClass("hidden");
         $("#occSave").addClass("hidden");
+		
         setTimeout(() => {
+			$(".fecha").mask("99/99/9999");
+			$(".hora").mask("00:00");
+			$(".km").mask("000+000");
             editInfos();
         }, 200);
     });
@@ -220,7 +229,6 @@ function clickUpdate() {
         getObsSin();
         //setTimeout(d => {
         $("[id$=updateSin]").click();
-
         setTimeout(() => {
             if (files > 0) {
                 $("#setFileS").click();

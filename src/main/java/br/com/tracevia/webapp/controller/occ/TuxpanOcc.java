@@ -63,6 +63,7 @@ public class TuxpanOcc{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		listarAqr = null;
 		return check;
 	}
 	public boolean select() {

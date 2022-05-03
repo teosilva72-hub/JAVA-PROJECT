@@ -374,10 +374,10 @@ public class PDF {
 			table0.setTotalWidth(500);
 			table0.setTotalWidth(new float[]{ 50, 120, 50, 130, 150 });
 			table0.setLockedWidth(true);
-			table0.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Siniestro"), formatText))).setBorderColor(BaseColor.WHITE);
+			table0.addCell(new PdfPCell(new Phrase("Siniestro", formatText))).setBorderColor(BaseColor.WHITE);
 			table0.addCell(new PdfPCell(new Phrase(model().getSiniestro(), formatText))).setBorder(Rectangle.BOTTOM);
 			table0.addCell(new PdfPCell(new Phrase("", formatText))).setBorderColor(BaseColor.WHITE);
-			table0.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("          "+"Poliza Aplicada"), formatText))).setBorderColor(BaseColor.WHITE);
+			table0.addCell(new PdfPCell(new Phrase("                "+trad.TuxpanReport("Poliza Aplicada"), formatText))).setBorderColor(BaseColor.WHITE);
 			table0.addCell(new PdfPCell(new Phrase(model().getPoliza(), formatText))).setBorder(Rectangle.BOTTOM);
 			table0.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Hora"), formatText))).setBorderColor(BaseColor.WHITE);
 			table0.addCell(new PdfPCell(new Phrase(model().getHora(), formatText))).setBorder(Rectangle.BOTTOM);
@@ -408,7 +408,7 @@ public class PDF {
 			table2.setTotalWidth(500);
 			table2.setTotalWidth(new float[]{ 70, 130, 50, 100, 150 });
 			table2.setLockedWidth(true);
-			table2.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("KM")+" / "+trad.TuxpanReport("Sentido"), formatText))).setBorderColor(BaseColor.WHITE);
+			table2.addCell(new PdfPCell(new Phrase("KM/SENTIDO", formatText))).setBorderColor(BaseColor.WHITE);
 			table2.addCell(new PdfPCell(new Phrase(model().getKm_reg()+" / "+model().getDireccion(), formatText))).setBorder(Rectangle.BOTTOM);
 			table2.addCell(new PdfPCell(new Phrase("", formatText))).setBorderColor(BaseColor.WHITE);
 
@@ -427,7 +427,7 @@ public class PDF {
 			rsa.setTotalWidth(500);
 			rsa.setTotalWidth(new float[]{ 500 });
 			rsa.setLockedWidth(true);
-			rsa.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Folio RSA")+model().getFolio_sec(), formatText))).setBorderColor(BaseColor.WHITE);
+			rsa.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Folio RSA")+":    "+model().getFolio_sec(), formatText))).setBorder(Rectangle.BOTTOM);
 			document.add(rsa);
 			document.add(conteudo);
 
