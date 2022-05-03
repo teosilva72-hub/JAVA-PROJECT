@@ -1006,7 +1006,7 @@ public class FluxoPeriodoBean implements Serializable {
 			utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 51, dados[idx][42] == null ? 0 : Integer.parseInt(dados[idx][42])); // LIGHT S1
 		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 52, dados[idx][43] == null ? 0 : Integer.parseInt(dados[idx][43])); // COM S1
 		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 53, dados[idx][44] == null ? 0 : Integer.parseInt(dados[idx][44])); // MOTO S1
-		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 51, dados[idx][45] == null ? 0 : Integer.parseInt(dados[idx][45])); // TOTAL S1
+		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 54, dados[idx][45] == null ? 0 : Integer.parseInt(dados[idx][45])); // TOTAL S1
 		 		   
 		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 55, dados[idx][46] == null ? 0 : Integer.parseInt(dados[idx][46])); // LIGHT S2
 		    utilSheet.createCellWithValueAndStyle(sheet, row, style1, rowIndex, 56, dados[idx][47] == null ? 0 : Integer.parseInt(dados[idx][47])); // COM S2
