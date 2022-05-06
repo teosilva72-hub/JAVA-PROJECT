@@ -214,10 +214,16 @@
 			<!-- OCC REPORT MENU -->
 			<ui:fragment rendered="#{loginAccount.load.en_occ}">
 				<li class="nav-item"><h:commandLink class="nav-link"
-						action="#{navigationController.redirectToURL('/occurrence/tuxpan/ocurrencias.xhtml?faces-redirect=true')}"
+						action="#{navigationController.redirectToURL('/occurrence/tuxpan/accidente.xhtml?faces-redirect=true')}"
 						value="" data-toggle="collapse" aria-expanded="false">
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_occ}</span>
+						<span class="text-sub">#{tuxpan_trad.occ_link}</span>
+					</h:commandLink></li>
+					<li class="nav-item"><h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/occurrence/tuxpan/preliminar.xhtml?faces-redirect=true')}"
+						value="" data-toggle="collapse" aria-expanded="false">
+						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+						<span class="text-sub">#{tuxpan_trad.sin_link}</span>
 					</h:commandLink></li>
 				<!---->
 			</ui:fragment>

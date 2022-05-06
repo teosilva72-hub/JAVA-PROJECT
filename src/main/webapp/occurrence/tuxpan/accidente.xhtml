@@ -1,0 +1,972 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://jcp.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+
+
+	<ui:define name="loading"></ui:define>
+
+	<ui:define name="head">
+		<title>#{tuxpan_trad.title_page}</title>
+		<!-- Style -->
+		<h:outputStylesheet library="css/datatables/custom"
+			name="table-style.css" />
+		<h:outputStylesheet library="css/occ" name="report_tuxpan.css" />
+		<h:outputStylesheet library="css/global" name="global.css" />
+		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
+		<h:outputStylesheet library="css/commom" name="commons.css" />
+		<h:outputStylesheet library="css/forms" name="form-style.css" />
+		<!-- FONTAWESOME JS IMPORT -->
+
+	</ui:define>
+	<ui:define name="default-content">
+
+		<div class="row">
+			<div class="col-2">
+				<div class="row">
+					<div class="col-12">
+						<button type="button" class="btn btn-dark btn-modal"
+							data-toggle="modal" data-target="#modalOcc" id="type_occ">#{tuxpan_trad.btn_occ}</button>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-8">
+				<h:form prependId="false" id="list-table">
+					<h:dataTable id="occurrence-table" var="date" disabled="true"
+						value="#{OccAccidente.listar}" class="text-center"
+						styleClass="table table-sm custom-table table-striped table-dark table-hover"
+						cellspacing="0" width="100%" headerClass="custom-table-header"
+						columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn, text-center justify-content-center">
+
+						<h:column>
+							<f:facet name="header">#{tuxpan_trad.table_id}</f:facet>
+							<h:outputText value="#{date.id}" class="text-center"
+								style="font-size: 12px; " />
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{tuxpan_trad.table_folio}</f:facet>
+							<h:outputText value="#{date.folio_sec}" style="font-size: 12px;" />
+						</h:column>
+						<h:column>
+							<f:facet name="header">#{tuxpan_trad.table_siniestro}</f:facet>
+							<h:outputText value="#{date.siniestro}" style="font-size: 12px;" />
+						</h:column>
+
+						<h:column>
+							<f:facet class="barraTable text-center" name="header">#{tuxpan_trad.table_fecha}</f:facet>
+							<h:outputText value="#{date.fecha}" style="font-size: 12px;" />
+						</h:column>
+						<h:column>
+							<f:facet class="barraTable text-center" name="header">#{tuxpan_trad.table_hora}</f:facet>
+							<h:outputText value="#{date.hora}" style="font-size: 12px;" />
+						</h:column>
+						<h:column>
+
+							<f:facet name="header"></f:facet>
+							<h:form prependId="false" id="edit-form">
+								<h:inputHidden value="#{OccAccidente.idTable}" name="idTable"
+									id="idTable" />
+								<div class="dropdown">
+									<!-- Edit -->
+									<h:commandLink id="editocc" action="#{OccAccidente.select}">
+										<i class="fas fa-edit" style="color: gray;"></i>
+										<f:setPropertyActionListener value="#{date.id}"
+											target="#{OccAccidente.idTable}" />
+										<f:ajax execute="@form"
+											render=":form_occ :form-sin :edit-form :formFileSin :formFile" />
+									</h:commandLink>
+									<h:commandLink id="downloadPdf">
+										<svg width="16" height="16" fill="currentColor"
+											class="bi bi-file-earmark-pdf-fill" viewBox="0 0 16 16">
+										<path
+											d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z" />
+										<path fill-rule="evenodd"
+											d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z" />
+										</svg>
+										<f:setPropertyActionListener value="#{date.id}"
+											target="#{accPdf.id}" />
+										<f:ajax execute="@form" listener="#{accPdf.model}"
+											onevent="pdf()"
+											render=":form_occ :form-sin :edit-form :download_Pdf" />
+									</h:commandLink>
+									<h:commandLink id="deleteLine">
+										<svg width="16" height="16" fill="currentColor"
+											class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path
+											d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+										</svg>
+										<f:setPropertyActionListener value="#{date.id}"
+											target="#{OccAccidente.idTable}" />
+										<f:ajax execute="@form"
+											listener="#{OccAccidente.deleteRegister}"
+											render=":form_occ :form-sin :edit-form :formFileSin :formFile" />
+									</h:commandLink>
+								</div>
+							</h:form>
+						</h:column>
+					</h:dataTable>
+				</h:form>
+			</div>
+		</div>
+		<h:form prependId="false" id="download_Pdf">
+			<h:commandButton action="#{accPdf.whichPdf}" id="pdfDownload"
+				style="display:none;"></h:commandButton>
+			<h:inputText value="#{accPdf.id}" style="display:none;" />
+		</h:form>
+
+		<!-- MODAL  OCC-->
+		<div class="modal fade" id="modalOcc" tabindex="-1"
+			data-keyboard="false" data-backdrop="static"
+			aria-labelledby="modalOcc" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title tituloModal">
+							<a href="#" class="alert-link TitleModal">#{tuxpan_trad.occ_link}</a>
+							<!--  / <a
+								href="#" class="alert-link file">#{tuxpan_trad.file_link}</a>-->
+						</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<!-- START INPUTS -->
+						<h:form id="formFile" enctype="multipart/form-data"
+							prependId="false">
+							<div class="divFile hidden">
+								<h:inputFile value="#{OccAccidente.file}" name="file"
+									class="getFile" a:multiple="true" />
+								<h:commandButton style="display:none;"
+									action="#{OccAccidente.uploadFile}" id="setFile"></h:commandButton>
+								<h:inputHidden value="#{OccAccidente.reporte}" id="reporteFile" />
+								<h:inputHidden value="#{OccAccidente.siniestro}"
+									id="siniestroFile" />
+								<h:inputHidden value="#{OccAccidente.folio_sec}"
+									id="folio_secFile" />
+								<div class="row">
+									<div class="col-12">
+										<hr />
+										#{occLabels.occ_list_files}
+									</div>
+									<c:forEach items="#{OccAccidente.listarAqr}" var="item"
+										class="listandoFile" varStatus="loop">
+										<div class="col-12">
+											<span>#{item}</span>
+										</div>
+									</c:forEach>
+								</div>
+							</div>
+						</h:form>
+						<h:form prependId="false" id="form_occ">
+
+							<div class="divForm">
+								<div class="row rowFile">
+									<div class="col-12">
+										<hr></hr>
+										<p class="text-center">#{tuxpan_trad.reg_acc}</p>
+										<hr></hr>
+									</div>
+
+									<div class="col-4">
+										<span>#{tuxpan_trad.toll}</span>
+										<h:selectOneMenu type="text" class="form-control"
+											value="#{OccAccidente.data.plz_cobro}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="Naranjos" itemValue="Naranjos" />
+											<f:selectItem itemLabel="Los Gil" itemValue="Los Gil" />
+										</h:selectOneMenu>
+									</div>
+									<div class="col-4">
+										<span>#{tuxpan_trad.folio}</span>
+										<h:inputText name="folio_secuencial" id="folio_secuencial"
+											class="form-control" value="#{OccAccidente.data.folio_sec}" />
+									</div>
+									<div class="col-4">
+										<span>#{tuxpan_trad.report}</span>
+										<h:inputText name="reporte" id="reporte" class="form-control"
+											value="#{OccAccidente.data.reporte}" />
+									</div>
+									<div class="col-4">
+										<span>#{tuxpan_trad.siniestro}</span>
+										<h:inputText name="siniestro" id="siniestro"
+											class="form-control" value="#{OccAccidente.data.siniestro}" />
+									</div>
+									<div class="col-4">
+										<span>#{tuxpan_trad.date}</span>
+										<h:inputText name="fecha" id="fecha"
+											class="form-control fecha" value="#{OccAccidente.data.fecha}" />
+									</div>
+									<div class="col-4">
+										<span>#{tuxpan_trad.hour}</span>
+										<h:inputText name="hora" id="hora" class="form-control hora"
+											value="#{OccAccidente.data.hora}" />
+									</div>
+									<div class="col-4">
+										<span>#{tuxpan_trad.direction}</span>
+										<h:selectOneMenu class="form-control" name="direccion_tray"
+											id="direccion_tray" value="#{OccAccidente.data.direccion}">
+											<f:selectItem itemLabel="select" itemValue="" />
+
+											<f:selectItem itemLabel="Los Gil - Buenos Aires"
+												itemValue="Los Gil - Buenos Aires" />
+
+											<f:selectItem itemLabel="Buenos Aires - Los Gil"
+												itemValue="Buenos Aires - Los Gil" />
+
+											<f:selectItem itemLabel="Buenos Aires - Naranjos "
+												itemValue="Buenos Aires - Naranjos " />
+
+											<f:selectItem itemLabel="Naranjos - Buenos Aires"
+												itemValue="Naranjos - Buenos Aires" />
+
+											<f:selectItem itemLabel="Naranjos - Ozuluama"
+												itemValue="Naranjos - Ozuluama" />
+
+											<f:selectItem itemLabel="Ozuluama - Naranjos"
+												itemValue="Ozuluama - Naranjos" />
+										</h:selectOneMenu>
+									</div>
+									<div class="col-4">
+										<span>#{tuxpan_trad.km_reg}</span>
+										<h:inputText name="km_reg" id="km_reg" class="form-control km"
+											value="#{OccAccidente.data.km_reg}" />
+									</div>
+									<div class="col-4">
+										<span>#{tuxpan_trad.km_init}</span>
+										<h:inputText name="km_inicial" id="km_inicial"
+											class="form-control km"
+											value="#{OccAccidente.data.km_inicial}" />
+									</div>
+									<div class="col-4">
+										<span>#{tuxpan_trad.km_end}</span>
+										<h:inputText name="km_final" id="km_final"
+											class="form-control km" value="#{OccAccidente.data.km_final}" />
+									</div>
+									<div class="col-4">
+										<span>#{tuxpan_trad.policy}</span>
+										<h:inputText name="poliza_afectar" id="poliza_afectar"
+											class="form-control" value="#{OccAccidente.data.poliza}" />
+									</div>
+									<div class="col-4">
+										<span>#{tuxpan_trad.hour_reg}</span>
+										<h:inputText name="hora_reg_cabina" id="hora_reg_cabina"
+											class="form-control hora"
+											value="#{OccAccidente.data.fecha_cab}" />
+									</div>
+									<div class="col-4">
+										<span>#{tuxpan_trad.hour_ajus}</span>
+										<h:inputText name="hora_ajustador" id="hora_ajustador"
+											class="form-control hora"
+											value="#{OccAccidente.data.hora_ajust}" />
+									</div>
+								</div>
+								<div>
+									<div class="row" id="vehInv_append">
+										<div class="col-12 text-center">
+											<hr></hr>
+											<p>#{tuxpan_trad.veh_inv}</p>
+											<hr></hr>
+										</div>
+										<div class="col-5">
+											<div class="input-group has-validation">
+												<div class="input-group-prepend">
+													<span class="input-group-text">#{tuxpan_trad.type_veh}</span>
+												</div>
+												<input type="text" class="form-control tipo_veh_inv"
+													id="tp_veh0" value="" />
+
+											</div>
+										</div>
+										<div class="col-5">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">#{tuxpan_trad.num_axes}</span>
+												</div>
+												<input type="text" class="form-control ejes" id="eje_veh0"
+													value="" />
+
+											</div>
+										</div>
+										<div class="col-2">
+											<a id="btn_append"><svg width="16" height="16"
+													fill="currentColor" class="bi bi-plus-circle"
+													viewBox="0 0 16 16"> <path
+													d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+												<path
+													d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+												</svg> </a>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div class="row" id="tiposVeh">
+										<div class="col-12">
+											<hr></hr>
+										</div>
+										<div class="col-1 addNum">
+											<span>#{tuxpan_trad.num}</span> <input type="text"
+												class="form-control num_" id="num0" value="" />
+
+										</div>
+										<div class="col-1 addMarca">
+											<span>#{tuxpan_trad.mark}</span> <input type="text"
+												class="form-control marca_" value="" id="marca0" />
+
+										</div>
+										<div class="col-1 addTipo">
+											<span>#{tuxpan_trad.type}</span> <input type="text"
+												class="form-control tipo_" value="" id="tipo0" />
+
+										</div>
+										<div class="col-2 addModelo">
+											<span>#{tuxpan_trad.model}</span> <input type="text"
+												class="form-control modelo_" value="" id="modelo0" />
+
+										</div>
+										<div class="col-2 addCor">
+											<span>#{tuxpan_trad.color}</span> <input type="text"
+												class="form-control color_" value="" id="cor0" />
+
+										</div>
+										<div class="col-2 addPlaca">
+											<span>#{tuxpan_trad.plate_state}</span> <input type="text"
+												class="form-control placa_" value="" id="placa0" />
+
+										</div>
+										<div class="col-2 addTel">
+											<span>#{tuxpan_trad.phone}</span> <input type="text"
+												class="form-control tel_" value="" id="tel0" />
+
+										</div>
+										<div class="col-1">
+											<a id="btn_append_veh"><svg width="16" height="16"
+													fill="currentColor" class="bi bi-plus-circle"
+													viewBox="0 0 16 16"> <path
+													d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+												<path
+													d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+												</svg> </a>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div class="row">
+										<div class="col-12">
+											<hr></hr>
+											<p class="text-center">Datos de Personas</p>
+											<hr></hr>
+										</div>
+										<div class="col-1">
+											<span>#{tuxpan_trad.num}</span>
+										</div>
+										<div class="col-4">
+											<span>#{tuxpan_trad.name_cond}</span>
+										</div>
+										<div class="col-2">
+											<span>#{tuxpan_trad.age}</span>
+										</div>
+										<div class="col-3">
+											<span>#{tuxpan_trad.condition}</span>
+										</div>
+										<div class="col-1"></div>
+									</div>
+									<div>
+										<div class="row container-fluid" id="datos_person">
+											<div class="col-1">
+												<input type="text" class="form-control id_person" value=""
+													id="id0" />
+
+											</div>
+											<div class="col-4">
+												<input type="text" class="form-control nombre_person"
+													value="" id="nombre0" />
+
+											</div>
+											<div class="col-2">
+												<input type="text" class="form-control edad_person" value=""
+													id="edad0" />
+
+											</div>
+											<div class="col-4">
+												<input type="text" class="form-control cond_person" value=""
+													id="cond0" />
+
+											</div>
+											<div class="col-1">
+												<a id="btn_append_person"><svg width="16" height="16"
+														fill="currentColor" class="bi bi-plus-circle"
+														viewBox="0 0 16 16"> <path
+														d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+													<path
+														d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+													</svg> </a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div class="row">
+										<div class="col-12">
+											<hr></hr>
+											<p class="text-center">#{tuxpan_trad.reason_acc}</p>
+											<hr></hr>
+										</div>
+										<div class="col-12">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">A</span>
+												</div>
+												<div class="input-group-prepend">
+													<span class="input-group-text">#{tuxpan_trad.semoviente}</span>
+												</div>
+												<h:inputText type="text" class="form-control"
+													value="#{OccAccidente.data.semoviente}" />
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">B</span>
+												</div>
+												<div class="input-group-prepend">
+													<span class="input-group-text">#{tuxpan_trad.worked}</span>
+												</div>
+												<h:inputText type="text" class="form-control"
+													value="#{OccAccidente.data.trab_conserv}" />
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">C</span>
+												</div>
+												<div class="input-group-prepend">
+													<span class="input-group-text">#{tuxpan_trad.rain_hail}</span>
+												</div>
+												<h:inputText type="text" class="form-control"
+													value="#{OccAccidente.data.lluvia_granizo}" />
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">D</span>
+												</div>
+												<div class="input-group-prepend">
+													<span class="input-group-text">#{tuxpan_trad.fog}</span>
+												</div>
+												<h:inputText type="text" class="form-control"
+													value="#{OccAccidente.data.neblina}" />
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">E</span>
+												</div>
+												<div class="input-group-prepend">
+													<span class="input-group-text">#{tuxpan_trad.vandalism}</span>
+												</div>
+												<h:inputText type="text" class="form-control"
+													value="#{OccAccidente.data.vandalismo}" />
+											</div>
+										</div>
+										<div class="col-12">
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span class="input-group-text">F</span>
+												</div>
+												<div class="input-group-prepend">
+													<span class="input-group-text">#{tuxpan_trad.other}</span>
+												</div>
+												<h:inputText type="text" class="form-control"
+													value="#{OccAccidente.data.otro}" />
+											</div>
+										</div>
+										<div class="col-12">
+											<hr></hr>
+											<span class="text-center">#{tuxpan_trad.obs}</span>
+											<h:inputTextarea class="form-control"
+												value="#{OccAccidente.data.obs_occ}"></h:inputTextarea>
+										</div>
+									</div>
+								</div>
+								<!-- INPUTS HIDDEN -->
+								<h:inputHidden value="#{OccAccidente.folio_sec}"
+									name="get_folio_sec" id="get_folio_sec" />
+								<h:inputHidden value="#{OccAccidente.reporte}" name="get_report"
+									id="get_report" />
+								<h:inputHidden value="#{OccAccidente.siniestro}"
+									name="get_siniestro" id="get_siniestro" />
+								<!-- VEH INV AND EJE -->
+								<h:inputHidden value="#{OccAccidente.idTable}" />
+								<h:inputHidden class="form-control" name="tipo_veh_inv"
+									id="tipo_veh_inv" value="#{OccAccidente.data.tipo_veh_inv}" />
+
+								<h:inputHidden class="form-control" name="num_eje_veh_inv"
+									id="num_eje_veh_inv"
+									value="#{OccAccidente.data.num_eje_veh_inv}" />
+
+								<!-- VEH INV TIPO -->
+								<h:inputHidden id="num_veh" name="num_veh" class="form-control"
+									value="#{OccAccidente.data.num_tp_veh}" />
+
+								<h:inputHidden id="marca_veh" name="marca_veh"
+									class="form-control" value="#{OccAccidente.data.marca_tp_veh}" />
+
+								<h:inputHidden id="tipo_veh" name="tipo_veh"
+									class="form-control" value="#{OccAccidente.data.tipo_tp_veh}" />
+
+								<h:inputHidden id="modelo_veh" name="modelo_veh"
+									class="form-control" value="#{OccAccidente.data.model_tp_veh}" />
+
+								<h:inputHidden id="cor_veh" name="cor_veh" class="form-control"
+									value="#{OccAccidente.data.color}" />
+
+								<h:inputHidden id="placa_veh" name="placa_veh"
+									class="form-control" value="#{OccAccidente.data.placa_estado}" />
+
+								<h:inputHidden id="tel_veh" name="tel_veh" class="form-control"
+									value="#{OccAccidente.data.tel}" />
+
+								<!-- DATOS PERSON -->
+								<h:inputHidden name="id_person" id="id_person"
+									class="form-control" value="#{OccAccidente.data.id_person}" />
+
+								<h:inputHidden name="nombre_person" id="nombre_person"
+									class="form-control" value="#{OccAccidente.data.nombre}" />
+
+								<h:inputHidden name="edad_person" id="edad_person"
+									class="form-control" value="#{OccAccidente.data.edad}" />
+
+								<h:inputHidden name="codiciones_person" id="condiciones_person"
+									class="form-control" value="#{OccAccidente.data.condiciones}" />
+
+								<h:inputHidden name="type_report" id="type_report"
+									value="#{OccAccidente.typeReport}"></h:inputHidden>
+
+								<!-- BTN SAVE OCC -->
+								<h:commandButton type="button" style="display:none;"
+									class="btn btn-primary" id="saveOcc">
+									<f:ajax execute="@form" render=":list-table :form_occ"
+										listener="#{OccAccidente.saveOcc}" />
+								</h:commandButton>
+								<!-- update occ -->
+								<h:commandButton style="display:none;" id="OccUpdate">
+									<f:ajax execute="@form" render=":list-table :form_occ"
+										listener="#{OccAccidente.update}" />
+								</h:commandButton>
+								<!-- BTN LISTAR OCC -->
+								<h:commandButton type="button" style="display:none;"
+									class="btn btn-primary" id="list_occ">
+									<f:ajax execute="@form" render=":list-table :form_occ"
+										listener="#{OccAccidente.listTable}" />
+								</h:commandButton>
+								<h:commandButton style="display:none;" id="resetFormOcc">
+									<f:ajax execute="@form" render=":form_occ"
+										listener="#{OccAccidente.initializeData}" />
+								</h:commandButton>
+							</div>
+						</h:form>
+						<!-- END INPUTS -->
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">#{tuxpan_trad.brn_cancel}</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal" id="occSave">#{tuxpan_trad.btn_save}</button>
+						<button type="button" class="btn btn-secondary hidden"
+							data-dismiss="modal" id="updateOcc">#{tuxpan_trad.btn_update}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal Sin-->
+		<div class="modal fade" id="modalSin" data-backdrop="static"
+			data-keyboard="false" tabindex="-1" aria-labelledby="modalSin"
+			aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel">
+							<a href="#" class="tituloModal">#{tuxpan_trad.sin_link}</a> / <a
+								href="#" class="file">#{tuxpan_trad.file_link}</a>
+						</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+
+					<div class="modal-body">
+						<h:form prependId="false" id="formFileSin"
+							enctype="multipart/form-data">
+							<div class="divFile hidden">
+								<h:inputFile value="#{OccPreliminar.file}" name="files"
+									class="getFiles" a:multiple="true" accept="image/*" />
+								<h:commandButton style="display:none;"
+									action="#{OccPreliminar.uploadFile}" id="setFileS"></h:commandButton>
+								<h:inputHidden value="#{OccPreliminar.siniestro}"
+									id="get_siniestros" />
+								<h:inputHidden value="#{OccPreliminar.folio_sec}"
+									id="get_folio_secs" />
+								<h:inputHidden value="#{OccPreliminar.reporte}" id="sinReporte" />
+
+								<div class="row">
+									<div class="col-12">
+										<hr />
+										#{occLabels.occ_list_files}
+										<hr />
+									</div>
+									<div class="col-12">
+										<div class="row">
+											<div class="col-8">
+												<c:forEach items="#{OccPreliminar.listarAqr}" var="item"
+													class="listandoFile" varStatus="loop">
+													<div class="col-12">
+														<span id="nameFile_#{loop.index}"
+															class="btnDel_#{loop.index}">#{item}</span>
+														<hr />
+													</div>
+												</c:forEach>
+											</div>
+											<div class="col-4">
+												<c:forEach begin="0" end="#{OccPreliminar.totalFile}"
+													var="value">
+													<div class="col-12">
+														<div class="dropdown">
+															<button class=" dropdown-toggle" type="button"
+																id="dropdownMenuButton" data-toggle="dropdown"
+																aria-expanded="false">
+																<i class="far fa-trash-alt"></i>
+															</button>
+															<ul class="dropdown-menu" id="btnsDel"
+																aria-labelledby="dropdownMenuButton">
+																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																<li id="delist"><a
+																	class="dropdown-item totalDelete" id="btnDel_#{value}"
+																	href="#" onclick="deleteFile()">#{occLabels.occ_yes}</a></li>
+															</ul>
+														</div>
+														<hr />
+													</div>
+
+												</c:forEach>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</h:form>
+
+						<h:form prependId="false" id="form-sin">
+
+							<!-- delete file -->
+							<h:inputHidden value="#{OccPreliminar.fileName}" id="setFileName" />
+							<h:commandButton style="display:none" id="btnSetFilename">
+								<f:ajax execute="@form" render=":form-sin"
+									listener="#{OccPreliminar.deleteFile}" />
+							</h:commandButton>
+							<!-- delete file -->
+
+							<div class="row divForm">
+								<div class="col-12">
+									<hr></hr>
+									<p class="text-center">#{tuxpan_trad.report_preliminary}</p>
+									<hr></hr>
+								</div>
+
+								<div class="col-2">
+									<span>#{tuxpan_trad.siniestro}</span>
+									<h:inputText class="form-control" id="sinistro_sin"
+										value="#{OccPreliminar.data.siniestro}" />
+								</div>
+								<div class="col-2">
+									<span>#{tuxpan_trad.table_hora}</span>
+									<h:inputText class="form-control hora"
+										value="#{OccPreliminar.data.hora}" />
+								</div>
+								<div class="col-2">
+									<span>#{tuxpan_trad.table_fecha}</span>
+									<h:inputText class="form-control fecha"
+										value="#{OccPreliminar.data.fecha}" />
+								</div>
+								<div class="col-4">
+									<span>#{tuxpan_trad.policy}</span>
+									<h:inputText class="form-control"
+										value="#{OccPreliminar.data.poliza}" />
+								</div>
+
+								<div class="col-2">
+									<span>#{tuxpan_trad.folio_rsa}</span>
+									<h:inputText class="form-control" id="folio_rsa"
+										value="#{OccPreliminar.data.folio_sec}" />
+								</div>
+								<div class="col-2">
+									<span>#{tuxpan_trad.lesionado}</span>
+									<h:inputText class="form-control"
+										value="#{OccPreliminar.data.lesionados}" />
+								</div>
+								<div class="col-2">
+									<span>#{tuxpan_trad.muertos}</span>
+									<h:inputText class="form-control"
+										value="#{OccPreliminar.data.mortos}" />
+								</div>
+								<div class="col-2">
+									<span>#{tuxpan_trad.km}</span>
+									<h:inputText class="form-control km"
+										value="#{OccPreliminar.data.km_reg}" />
+								</div>
+								<div class="col-2">
+									<span>#{tuxpan_trad.sense}</span>
+									<h:selectOneMenu class="form-control"
+										value="#{OccPreliminar.data.direccion}">
+										<f:selectItem itemLabel="select" itemValue="" />
+
+										<f:selectItem itemLabel="Los Gil - Buenos Aires"
+											itemValue="Los Gil - Buenos Aires" />
+
+										<f:selectItem itemLabel="Buenos Aires - Los Gil"
+											itemValue="Buenos Aires - Los Gil" />
+
+										<f:selectItem itemLabel="Buenos Aires - Naranjos "
+											itemValue="Buenos Aires - Naranjos " />
+
+										<f:selectItem itemLabel="Naranjos - Buenos Aires"
+											itemValue="Naranjos - Buenos Aires" />
+
+										<f:selectItem itemLabel="Naranjos - Ozuluama"
+											itemValue="Naranjos - Ozuluama" />
+
+										<f:selectItem itemLabel="Ozuluama - Naranjos"
+											itemValue="Ozuluama - Naranjos" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-2">
+									<span>#{tuxpan_trad.cause}</span>
+									<h:inputText class="form-control"
+										value="#{OccPreliminar.data.causas_sin}" />
+								</div>
+								<div class="row container-fluid" id="add_append_sin">
+									<div class="col-5">
+										<span>#{tuxpan_trad.ocupantes}</span> <input type="text"
+											class="form-control ocupSin ocupSin0" value="" />
+									</div>
+									<div class="col-5">
+										<span>#{tuxpan_trad.veh}</span> <input type="text"
+											class="form-control vehSin vehSin0" value="" />
+									</div>
+									<div class="col-2">
+										<svg id="btn_veh_ocup" width="16" height="16"
+											fill="currentColor" class="bi bi-plus-circle"
+											viewBox="0 0 16 16"> <path
+											d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+										<path
+											d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" /></svg>
+
+									</div>
+								</div>
+
+								<div class="col-12">
+									<hr></hr>
+									<p class="text-center">#{tuxpan_trad.damage_infra}</p>
+									<hr></hr>
+								</div>
+
+								<div class="col-4"></div>
+								<div class="col-4 text-center">#{tuxpan_trad.yes_not}</div>
+								<div class="col-4">#{tuxpan_trad.obs}</div>
+								<div class="row obss" id="getObs">
+									<div class="col-4">#{tuxpan_trad.metal_defesa}</div>
+
+									<div class="col-4">
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccPreliminar.data.def_metal}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
+										</h:selectOneMenu>
+									</div>
+									<div class="col-4">
+										<input type="text" name="def_met_obs"
+											class="form-control obs_val obs0" value="" />
+									</div>
+
+									<div class="col-4">#{tuxpan_trad.sign}</div>
+									<div class="col-4">
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccPreliminar.data.senal}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
+										</h:selectOneMenu>
+									</div>
+									<div class="col-4">
+										<input type="text" name="senal_obs"
+											class="form-control obs_val obs1" value="" />
+									</div>
+
+									<div class="col-4">#{tuxpan_trad.pavement_damage}</div>
+									<div class="col-4">
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccPreliminar.data.dano_pav}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
+										</h:selectOneMenu>
+									</div>
+									<div class="col-4">
+										<input type="text" name="pavim_obs"
+											class="form-control obs_val obs2" value="" />
+									</div>
+
+									<div class="col-4">#{tuxpan_trad.cut_damage}</div>
+									<div class="col-4">
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccPreliminar.data.danos_cort_trr}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
+										</h:selectOneMenu>
+									</div>
+									<div class="col-4">
+										<input type="text" name="terrapl_obs" value=""
+											class="form-control obs_val obs3" />
+									</div>
+
+									<div class="col-4">#{tuxpan_trad.damage_works}</div>
+									<div class="col-4">
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal"
+											value="#{OccPreliminar.data.danos_obr_compl}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
+										</h:selectOneMenu>
+									</div>
+									<div class="col-4">
+										<input type="text" name="comple_obs"
+											class="form-control obs_val obs4" value="" />
+									</div>
+
+									<div class="col-4">#{tuxpan_trad.damage_toll}</div>
+									<div class="col-4">
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccPreliminar.data.dano_plz_cobro}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
+										</h:selectOneMenu>
+									</div>
+									<div class="col-4">
+										<input type="text" name="plaza_obs"
+											class="form-control obs_val obs5" value="" />
+									</div>
+
+									<div class="col-4">#{tuxpan_trad.others}</div>
+									<div class="col-4">
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccPreliminar.data.otros_sin}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
+										</h:selectOneMenu>
+									</div>
+									<div class="col-4">
+										<input type="text" name="otros_obs"
+											class="form-control obs_val obs6" value="" />
+									</div>
+								</div>
+							</div>
+							<h:inputHidden value="#{OccPreliminar.folio_sec}"
+								name="get_folio_secS" id="get_folio_secS" />
+							<h:inputHidden value="#{OccPreliminar.reporte}"
+								name="get_reportS" id="get_reportS" />
+							<h:inputHidden value="#{OccPreliminar.siniestro}"
+								name="get_siniestroS" id="get_siniestroS" />
+
+							<h:inputHidden value="#{OccPreliminar.data.obs_sin}" id="obsGets" />
+							<h:inputHidden value="#{OccPreliminar.typeReport}"
+								id="type_reports"></h:inputHidden>
+							<h:inputHidden value="#{OccPreliminar.idTable}" />
+							<h:inputHidden value="#{OccPreliminar.data.ocupantes_sin}"
+								id="ocupantesSIN" />
+							<h:inputHidden value="#{OccPreliminar.data.veh_sin}"
+								id="vehOcupantesSIN" />
+							<h:commandButton style="display:none" id="sinSave"
+								data-dismiss="modal">
+
+								<f:ajax execute="@form" render=":form-sin :list-table"
+									listener="#{OccPreliminar.saveOcc}" />
+							</h:commandButton>
+							<h:commandButton style="display:none;" id="updateSin"
+								data-dismiss="modal">
+								<f:ajax execute="@form" render=":form-sin :list-table"
+									listener="#{OccPreliminar.update}" />
+							</h:commandButton>
+							<h:commandButton type="button" style="display:none;"
+								class="btn btn-primary" id="list_sin">
+								<f:ajax execute="@form" render=":list-table :form-sin"
+									listener="#{OccPreliminar.listTable}" />
+							</h:commandButton>
+							<h:commandButton style="display:none;" id="resetFormSin">
+								<f:ajax execute="@form" render=":form-sin"
+									listener="#{OccPreliminar.initializeData}" />
+							</h:commandButton>
+						</h:form>
+					</div>
+
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">#{tuxpan_trad.brn_cancel}</button>
+						<button type="button" data-dismiss="modal" class="btn btn-primary"
+							id="saveSin">#{tuxpan_trad.btn_save}</button>
+						<button type="button" data-dismiss="modal" class="btn btn-primary"
+							id="saveUpdate">#{tuxpan_trad.btn_update}</button>
+					</div>
+
+
+					<!--  -->
+
+				</div>
+			</div>
+		</div>
+		<!-- Script -->
+		<h:outputScript name="controller.js" library="js/occ/tuxpan-report" />
+		<h:outputScript name="datepicker.js" library="js/datepicker" />
+		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
+		<h:outputScript name="jquery.validate.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="additional-methods.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
+		<script>
+        </script>
+	</ui:define>
+</ui:composition>

@@ -33,10 +33,6 @@
 			<div class="col-2">
 				<div class="row">
 					<div class="col-12">
-						<button type="button" class="btn btn-dark btn-modal"
-							data-toggle="modal" data-target="#modalOcc" id="type_occ">#{tuxpan_trad.btn_occ}</button>
-					</div>
-					<div class="col-12">
 						<button type="button" class="btn btn-warning btn-modal"
 							data-toggle="modal" data-target="#modalSin" id="type_sin">#{tuxpan_trad.btn_sin}</button>
 					</div>
@@ -45,7 +41,7 @@
 			<div class="col-8">
 				<h:form prependId="false" id="list-table">
 					<h:dataTable id="occurrence-table" var="date" disabled="true"
-						value="#{OccController.listar}" class="text-center"
+						value="#{OccPreliminar.listar}" class="text-center"
 						styleClass="table table-sm custom-table table-striped table-dark table-hover"
 						cellspacing="0" width="100%" headerClass="custom-table-header"
 						columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn, text-center justify-content-center">
@@ -54,11 +50,6 @@
 							<f:facet name="header">#{tuxpan_trad.table_id}</f:facet>
 							<h:outputText value="#{date.id}" class="text-center"
 								style="font-size: 12px; " />
-						</h:column>
-						<h:column>
-							<f:facet name="header">#{tuxpan_trad.table_type}</f:facet>
-							<h:outputText value="#{date.type_report}"
-								style="font-size: 12px;" />
 						</h:column>
 						<h:column>
 							<f:facet name="header">#{tuxpan_trad.table_folio}</f:facet>
@@ -81,14 +72,14 @@
 
 							<f:facet name="header"></f:facet>
 							<h:form prependId="false" id="edit-form">
-								<h:inputHidden value="#{OccController.idTable}" name="idTable"
+								<h:inputHidden value="#{OccPreliminar.idTable}" name="idTable"
 									id="idTable" />
 								<div class="dropdown">
 									<!-- Edit -->
-									<h:commandLink id="editocc" action="#{OccController.select}">
+									<h:commandLink id="editocc" action="#{OccPreliminar.select}">
 										<i class="fas fa-edit" style="color: gray;"></i>
 										<f:setPropertyActionListener value="#{date.id}"
-											target="#{OccController.idTable}" />
+											target="#{OccPreliminar.idTable}" />
 										<f:ajax execute="@form"
 											render=":form_occ :form-sin :edit-form :formFileSin :formFile" />
 									</h:commandLink>
@@ -101,9 +92,21 @@
 											d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z" />
 										</svg>
 										<f:setPropertyActionListener value="#{date.id}"
-											target="#{OccPdf.id}" />
-										<f:ajax execute="@form" listener="#{OccPdf.model}" onevent="pdf()"
+											target="#{prePdf.id}" />
+										<f:ajax execute="@form" listener="#{prePdf.model}"
+											onevent="pdf()"
 											render=":form_occ :form-sin :edit-form :download_Pdf" />
+									</h:commandLink>
+									<h:commandLink id="deleteLine">
+										<svg width="16" height="16" fill="currentColor"
+											class="bi bi-trash3-fill" viewBox="0 0 16 16"> <path
+											d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+										</svg>
+										<f:setPropertyActionListener value="#{date.id}"
+											target="#{OccPreliminar.idTable}" />
+										<f:ajax execute="@form"
+											listener="#{OccPreliminar.deleteRegister}"
+											render=":form_occ :form-sin :edit-form :formFileSin :formFile" />
 									</h:commandLink>
 								</div>
 							</h:form>
@@ -113,9 +116,9 @@
 			</div>
 		</div>
 		<h:form prependId="false" id="download_Pdf">
-			<h:commandButton action="#{OccPdf.whichPdf}" id="pdfDownload"
+			<h:commandButton action="#{prePdf.whichPdf}" id="pdfDownload"
 				style="display:none;"></h:commandButton>
-			<h:inputText value="#{OccPdf.id}" style="display:none;" />
+			<h:inputText value="#{prePdf.id}" style="display:none;" />
 		</h:form>
 		<!-- Modal Sin-->
 		<div class="modal fade" id="modalSin" data-backdrop="static"
@@ -126,99 +129,164 @@
 
 					<div class="modal-header">
 						<h5 class="modal-title" id="staticBackdropLabel">
-							<a href="#" class="tituloModal">#{tuxpan_trad.sin_link}</a> / <a href="#"
-								class="file">#{tuxpan_trad.file_link}</a>
+							<a href="#" class="tituloModal">#{tuxpan_trad.sin_link}</a> / <a
+								href="#" class="file">#{tuxpan_trad.file_link}</a>
 						</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
+
 					<div class="modal-body">
 						<h:form prependId="false" id="formFileSin"
 							enctype="multipart/form-data">
 							<div class="divFile hidden">
-								<h:inputFile value="#{OccController.file}" name="files"
-									class="getFiles" a:multiple="true" />
+								<h:inputFile value="#{OccPreliminar.file}" name="files" id="inputFileSin"
+									class="getFiles" a:multiple="true" accept="image/*" />
 								<h:commandButton style="display:none;"
-									action="#{OccController.uploadFile}" id="setFileS"></h:commandButton>
-								<h:inputHidden value="#{OccController.siniestro}"
+									action="#{OccPreliminar.uploadFile}" id="setFileS"></h:commandButton>
+								<h:inputHidden value="#{OccPreliminar.siniestro}"
 									id="get_siniestros" />
-								<h:inputHidden value="#{OccController.folio_sec}"
+								<h:inputHidden value="#{OccPreliminar.folio_sec}"
 									id="get_folio_secs" />
-								<h:inputHidden value="#{OccController.reporte}" id="sinReporte" />
+								<h:inputHidden value="#{OccPreliminar.reporte}" id="sinReporte" />
+								<h:inputHidden value="#{OccPreliminar.idTable}"/>
+
 								<div class="row">
 									<div class="col-12">
 										<hr />
 										#{occLabels.occ_list_files}
+										<hr />
 									</div>
-									<c:forEach items="#{OccController.listarAqr}" var="item"
-										class="listandoFile" varStatus="loop">
-										<div class="col-12">
-											<span>#{item}</span>
+									<div class="col-12">
+										<div class="row">
+											<div class="col-8">
+												<c:forEach items="#{OccPreliminar.listarAqr}" var="item"
+													class="listandoFile" varStatus="loop">
+													<div class="col-12">
+														<span id="nameFile_#{loop.index}"
+															class="btnDel_#{loop.index}">#{item}</span>
+														<hr />
+													</div>
+												</c:forEach>
+											</div>
+											<div class="col-4">
+												<c:forEach begin="0" end="#{OccPreliminar.totalFile}"
+													var="value">
+													<div class="col-12">
+														<div class="dropdown">
+															<button class=" dropdown-toggle" type="button"
+																id="dropdownMenuButton" data-toggle="dropdown"
+																aria-expanded="false">
+																<i class="far fa-trash-alt"></i>
+															</button>
+															<ul class="dropdown-menu" id="btnsDel"
+																aria-labelledby="dropdownMenuButton">
+																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																<li id="delist"><a
+																	class="dropdown-item totalDelete" id="btnDel_#{value}"
+																	href="#" onclick="deleteFile()">#{occLabels.occ_yes}</a></li>
+															</ul>
+														</div>
+														<hr />
+													</div>
+
+												</c:forEach>
+											</div>
 										</div>
-									</c:forEach>
+									</div>
 								</div>
 							</div>
 						</h:form>
+
 						<h:form prependId="false" id="form-sin">
+
+							<!-- delete file -->
+							<h:inputHidden value="#{OccPreliminar.fileName}" id="setFileName" />
+							<h:commandButton style="display:none" id="btnSetFilename">
+								<f:ajax execute="@form" render=":form-sin"
+									listener="#{OccPreliminar.deleteFile}" />
+							</h:commandButton>
+							<!-- delete file -->
+
 							<div class="row divForm">
 								<div class="col-12">
 									<hr></hr>
 									<p class="text-center">#{tuxpan_trad.report_preliminary}</p>
 									<hr></hr>
 								</div>
-								
+
 								<div class="col-2">
 									<span>#{tuxpan_trad.siniestro}</span>
 									<h:inputText class="form-control" id="sinistro_sin"
-										value="#{OccController.data.siniestro}" />
+										value="#{OccPreliminar.data.siniestro}" />
 								</div>
 								<div class="col-2">
 									<span>#{tuxpan_trad.table_hora}</span>
 									<h:inputText class="form-control hora"
-										value="#{OccController.data.hora}" />
+										value="#{OccPreliminar.data.hora}" />
 								</div>
 								<div class="col-2">
 									<span>#{tuxpan_trad.table_fecha}</span>
 									<h:inputText class="form-control fecha"
-										value="#{OccController.data.fecha}" />
+										value="#{OccPreliminar.data.fecha}" />
 								</div>
 								<div class="col-4">
 									<span>#{tuxpan_trad.policy}</span>
 									<h:inputText class="form-control"
-										value="#{OccController.data.poliza}" />
+										value="#{OccPreliminar.data.poliza}" />
 								</div>
 
 								<div class="col-2">
 									<span>#{tuxpan_trad.folio_rsa}</span>
 									<h:inputText class="form-control" id="folio_rsa"
-										value="#{OccController.data.folio_sec}" />
+										value="#{OccPreliminar.data.folio_sec}" />
 								</div>
 								<div class="col-2">
 									<span>#{tuxpan_trad.lesionado}</span>
 									<h:inputText class="form-control"
-										value="#{OccController.data.lesionados}" />
+										value="#{OccPreliminar.data.lesionados}" />
 								</div>
 								<div class="col-2">
 									<span>#{tuxpan_trad.muertos}</span>
 									<h:inputText class="form-control"
-										value="#{OccController.data.mortos}" />
+										value="#{OccPreliminar.data.mortos}" />
 								</div>
 								<div class="col-2">
 									<span>#{tuxpan_trad.km}</span>
 									<h:inputText class="form-control km"
-										value="#{OccController.data.km_reg}" />
+										value="#{OccPreliminar.data.km_reg}" />
 								</div>
 								<div class="col-2">
 									<span>#{tuxpan_trad.sense}</span>
-									<h:inputText class="form-control"
-										value="#{OccController.data.direccion}" />
+									<h:selectOneMenu class="form-control"
+										value="#{OccPreliminar.data.direccion}">
+										<f:selectItem itemLabel="select" itemValue="" />
+
+										<f:selectItem itemLabel="Los Gil - Buenos Aires"
+											itemValue="Los Gil - Buenos Aires" />
+
+										<f:selectItem itemLabel="Buenos Aires - Los Gil"
+											itemValue="Buenos Aires - Los Gil" />
+
+										<f:selectItem itemLabel="Buenos Aires - Naranjos "
+											itemValue="Buenos Aires - Naranjos " />
+
+										<f:selectItem itemLabel="Naranjos - Buenos Aires"
+											itemValue="Naranjos - Buenos Aires" />
+
+										<f:selectItem itemLabel="Naranjos - Ozuluama"
+											itemValue="Naranjos - Ozuluama" />
+
+										<f:selectItem itemLabel="Ozuluama - Naranjos"
+											itemValue="Ozuluama - Naranjos" />
+									</h:selectOneMenu>
 								</div>
 								<div class="col-2">
 									<span>#{tuxpan_trad.cause}</span>
 									<h:inputText class="form-control"
-										value="#{OccController.data.causas_sin}" />
+										value="#{OccPreliminar.data.causas_sin}" />
 								</div>
 								<div class="row container-fluid" id="add_append_sin">
 									<div class="col-5">
@@ -254,10 +322,12 @@
 
 									<div class="col-4">
 										<h:selectOneMenu type="text" class="form-control"
-											name="def_metal" value="#{OccController.data.def_metal}">
+											name="def_metal" value="#{OccPreliminar.data.def_metal}">
 											<f:selectItem itemLabel="select" itemValue="" />
-											<f:selectItem itemLabel="#{tuxpan_trad.yes}" itemValue="#{tuxpan_trad.yes}" />
-											<f:selectItem itemLabel="#{tuxpan_trad.nott}" itemValue="#{tuxpan_trad.nott}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
 										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
@@ -267,11 +337,13 @@
 
 									<div class="col-4">#{tuxpan_trad.sign}</div>
 									<div class="col-4">
-											<h:selectOneMenu type="text" class="form-control"
-											name="def_metal" value="#{OccController.data.senal}">
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccPreliminar.data.senal}">
 											<f:selectItem itemLabel="select" itemValue="" />
-											<f:selectItem itemLabel="#{tuxpan_trad.yes}" itemValue="#{tuxpan_trad.yes}" />
-											<f:selectItem itemLabel="#{tuxpan_trad.nott}" itemValue="#{tuxpan_trad.nott}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
 										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
@@ -281,11 +353,13 @@
 
 									<div class="col-4">#{tuxpan_trad.pavement_damage}</div>
 									<div class="col-4">
-											<h:selectOneMenu type="text" class="form-control"
-											name="def_metal" value="#{OccController.data.dano_pav}">
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccPreliminar.data.dano_pav}">
 											<f:selectItem itemLabel="select" itemValue="" />
-											<f:selectItem itemLabel="#{tuxpan_trad.yes}" itemValue="#{tuxpan_trad.yes}" />
-											<f:selectItem itemLabel="#{tuxpan_trad.nott}" itemValue="#{tuxpan_trad.nott}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
 										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
@@ -295,11 +369,13 @@
 
 									<div class="col-4">#{tuxpan_trad.cut_damage}</div>
 									<div class="col-4">
-											<h:selectOneMenu type="text" class="form-control"
-											name="def_metal" value="#{OccController.data.danos_cort_trr}">
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccPreliminar.data.danos_cort_trr}">
 											<f:selectItem itemLabel="select" itemValue="" />
-											<f:selectItem itemLabel="#{tuxpan_trad.yes}" itemValue="#{tuxpan_trad.yes}" />
-											<f:selectItem itemLabel="#{tuxpan_trad.nott}" itemValue="#{tuxpan_trad.nott}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
 										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
@@ -309,11 +385,14 @@
 
 									<div class="col-4">#{tuxpan_trad.damage_works}</div>
 									<div class="col-4">
-											<h:selectOneMenu type="text" class="form-control"
-											name="def_metal" value="#{OccController.data.danos_obr_compl}">
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal"
+											value="#{OccPreliminar.data.danos_obr_compl}">
 											<f:selectItem itemLabel="select" itemValue="" />
-											<f:selectItem itemLabel="#{tuxpan_trad.yes}" itemValue="#{tuxpan_trad.yes}" />
-											<f:selectItem itemLabel="#{tuxpan_trad.nott}" itemValue="#{tuxpan_trad.nott}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
 										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
@@ -323,11 +402,13 @@
 
 									<div class="col-4">#{tuxpan_trad.damage_toll}</div>
 									<div class="col-4">
-											<h:selectOneMenu type="text" class="form-control"
-											name="def_metal" value="#{OccController.data.dano_plz_cobro}">
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccPreliminar.data.dano_plz_cobro}">
 											<f:selectItem itemLabel="select" itemValue="" />
-											<f:selectItem itemLabel="#{tuxpan_trad.yes}" itemValue="#{tuxpan_trad.yes}" />
-											<f:selectItem itemLabel="#{tuxpan_trad.nott}" itemValue="#{tuxpan_trad.nott}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
 										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
@@ -337,11 +418,13 @@
 
 									<div class="col-4">#{tuxpan_trad.others}</div>
 									<div class="col-4">
-											<h:selectOneMenu type="text" class="form-control"
-											name="def_metal" value="#{OccController.data.otros_sin}">
+										<h:selectOneMenu type="text" class="form-control"
+											name="def_metal" value="#{OccPreliminar.data.otros_sin}">
 											<f:selectItem itemLabel="select" itemValue="" />
-											<f:selectItem itemLabel="#{tuxpan_trad.yes}" itemValue="#{tuxpan_trad.yes}" />
-											<f:selectItem itemLabel="#{tuxpan_trad.nott}" itemValue="#{tuxpan_trad.nott}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.yes}"
+												itemValue="#{tuxpan_trad.yes}" />
+											<f:selectItem itemLabel="#{tuxpan_trad.nott}"
+												itemValue="#{tuxpan_trad.nott}" />
 										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
@@ -350,40 +433,40 @@
 									</div>
 								</div>
 							</div>
-							<h:inputHidden value="#{OccController.folio_sec}"
+							<h:inputHidden value="#{OccPreliminar.folio_sec}"
 								name="get_folio_secS" id="get_folio_secS" />
-							<h:inputHidden value="#{OccController.reporte}"
+							<h:inputHidden value="#{OccPreliminar.reporte}"
 								name="get_reportS" id="get_reportS" />
-							<h:inputHidden value="#{OccController.siniestro}"
+							<h:inputHidden value="#{OccPreliminar.siniestro}"
 								name="get_siniestroS" id="get_siniestroS" />
 
-							<h:inputHidden value="#{OccController.data.obs_sin}" id="obsGets" />
-							<h:inputHidden value="#{OccController.typeReport}"
+							<h:inputHidden value="#{OccPreliminar.data.obs_sin}" id="obsGets" />
+							<h:inputHidden value="#{OccPreliminar.typeReport}"
 								id="type_reports"></h:inputHidden>
-							<h:inputHidden value="#{OccController.idTable}" />
-							<h:inputHidden value="#{OccController.data.ocupantes_sin}"
+							<h:inputHidden value="#{OccPreliminar.idTable}" />
+							<h:inputHidden value="#{OccPreliminar.data.ocupantes_sin}"
 								id="ocupantesSIN" />
-							<h:inputHidden value="#{OccController.data.veh_sin}"
+							<h:inputHidden value="#{OccPreliminar.data.veh_sin}"
 								id="vehOcupantesSIN" />
 							<h:commandButton style="display:none" id="sinSave"
 								data-dismiss="modal">
 
 								<f:ajax execute="@form" render=":form-sin :list-table"
-									listener="#{OccController.saveOcc}" />
+									listener="#{OccPreliminar.saveOcc}" />
 							</h:commandButton>
 							<h:commandButton style="display:none;" id="updateSin"
 								data-dismiss="modal">
 								<f:ajax execute="@form" render=":form-sin :list-table"
-									listener="#{OccController.update}" />
+									listener="#{OccPreliminar.update}" />
 							</h:commandButton>
 							<h:commandButton type="button" style="display:none;"
 								class="btn btn-primary" id="list_sin">
 								<f:ajax execute="@form" render=":list-table :form-sin"
-									listener="#{OccController.listTable}" />
+									listener="#{OccPreliminar.listTable}"/>
 							</h:commandButton>
 							<h:commandButton style="display:none;" id="resetFormSin">
 								<f:ajax execute="@form" render=":form-sin"
-									listener="#{OccController.initializeData}" />
+									listener="#{OccPreliminar.initializeData}" />
 							</h:commandButton>
 						</h:form>
 					</div>
@@ -404,7 +487,6 @@
 				</div>
 			</div>
 		</div>
-
 		<!-- MODAL  OCC-->
 		<div class="modal fade" id="modalOcc" tabindex="-1"
 			data-keyboard="false" data-backdrop="static"
@@ -413,7 +495,8 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title tituloModal">
-							<a href="#" class="alert-link TitleModal">#{tuxpan_trad.occ_link}</a><!--  / <a
+							<a href="#" class="alert-link TitleModal">#{tuxpan_trad.occ_link}</a>
+							<!--  / <a
 								href="#" class="alert-link file">#{tuxpan_trad.file_link}</a>-->
 						</h5>
 						<button type="button" class="close" data-dismiss="modal"
@@ -426,21 +509,21 @@
 						<h:form id="formFile" enctype="multipart/form-data"
 							prependId="false">
 							<div class="divFile hidden">
-								<h:inputFile value="#{OccController.file}" name="file"
-									class="getFile" a:multiple="true" />
+								<h:inputFile value="#{OccAccidente.file}" name="file"
+									class="getFile" a:multiple="true"/>
 								<h:commandButton style="display:none;"
-									action="#{OccController.uploadFile}" id="setFile"></h:commandButton>
-								<h:inputHidden value="#{OccController.reporte}" id="reporteFile" />
-								<h:inputHidden value="#{OccController.siniestro}"
+									action="#{OccAccidente.uploadFile}" id="setFile"></h:commandButton>
+								<h:inputHidden value="#{OccAccidente.reporte}" id="reporteFile" />
+								<h:inputHidden value="#{OccAccidente.siniestro}"
 									id="siniestroFile" />
-								<h:inputHidden value="#{OccController.folio_sec}"
+								<h:inputHidden value="#{OccAccidente.folio_sec}"
 									id="folio_secFile" />
 								<div class="row">
 									<div class="col-12">
 										<hr />
 										#{occLabels.occ_list_files}
 									</div>
-									<c:forEach items="#{OccController.listarAqr}" var="item"
+									<c:forEach items="#{OccAccidente.listarAqr}" var="item"
 										class="listandoFile" varStatus="loop">
 										<div class="col-12">
 											<span>#{item}</span>
@@ -458,71 +541,98 @@
 										<p class="text-center">#{tuxpan_trad.reg_acc}</p>
 										<hr></hr>
 									</div>
-									
+
 									<div class="col-4">
 										<span>#{tuxpan_trad.toll}</span>
-										<h:inputText name="plaza_cobro" id="plaza_cobro"
-											class="form-control" value="#{OccController.data.plz_cobro}" />
+										<h:selectOneMenu type="text" class="form-control"
+											value="#{OccAccidente.data.plz_cobro}">
+											<f:selectItem itemLabel="select" itemValue="" />
+											<f:selectItem itemLabel="Naranjos" itemValue="Naranjos" />
+											<f:selectItem itemLabel="Los Gil" itemValue="Los Gil" />
+										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.folio}</span>
 										<h:inputText name="folio_secuencial" id="folio_secuencial"
-											class="form-control" value="#{OccController.data.folio_sec}" />
+											class="form-control" value="#{OccAccidente.data.folio_sec}" />
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.report}</span>
 										<h:inputText name="reporte" id="reporte" class="form-control"
-											value="#{OccController.data.reporte}" />
+											value="#{OccAccidente.data.reporte}" />
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.siniestro}</span>
 										<h:inputText name="siniestro" id="siniestro"
-											class="form-control" value="#{OccController.data.siniestro}" />
+											class="form-control" value="#{OccAccidente.data.siniestro}" />
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.date}</span>
-										<h:inputText name="fecha" id="fecha" class="form-control fecha"
-											value="#{OccController.data.fecha}" />
+										<h:inputText name="fecha" id="fecha"
+											class="form-control fecha" value="#{OccAccidente.data.fecha}" />
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.hour}</span>
 										<h:inputText name="hora" id="hora" class="form-control hora"
-											value="#{OccController.data.hora}" />
+											value="#{OccAccidente.data.hora}" />
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.direction}</span>
-										<h:inputText name="direccion_tray" id="direccion_tray"
-											class="form-control" value="#{OccController.data.direccion}" />
+										<h:selectOneMenu class="form-control" name="direccion_tray"
+											id="direccion_tray" value="#{OccAccidente.data.direccion}">
+											<f:selectItem itemLabel="select" itemValue="" />
+
+											<f:selectItem itemLabel="Los Gil - Buenos Aires"
+												itemValue="Los Gil - Buenos Aires" />
+
+											<f:selectItem itemLabel="Buenos Aires - Los Gil"
+												itemValue="Buenos Aires - Los Gil" />
+
+											<f:selectItem itemLabel="Buenos Aires - Naranjos "
+												itemValue="Buenos Aires - Naranjos " />
+
+											<f:selectItem itemLabel="Naranjos - Buenos Aires"
+												itemValue="Naranjos - Buenos Aires" />
+
+											<f:selectItem itemLabel="Naranjos - Ozuluama"
+												itemValue="Naranjos - Ozuluama" />
+
+											<f:selectItem itemLabel="Ozuluama - Naranjos"
+												itemValue="Ozuluama - Naranjos" />
+										</h:selectOneMenu>
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.km_reg}</span>
 										<h:inputText name="km_reg" id="km_reg" class="form-control km"
-											value="#{OccController.data.km_reg}" />
+											value="#{OccAccidente.data.km_reg}" />
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.km_init}</span>
 										<h:inputText name="km_inicial" id="km_inicial"
-											class="form-control km" value="#{OccController.data.km_inicial}" />
+											class="form-control km"
+											value="#{OccAccidente.data.km_inicial}" />
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.km_end}</span>
 										<h:inputText name="km_final" id="km_final"
-											class="form-control km" value="#{OccController.data.km_final}" />
+											class="form-control km" value="#{OccAccidente.data.km_final}" />
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.policy}</span>
 										<h:inputText name="poliza_afectar" id="poliza_afectar"
-											class="form-control" value="#{OccController.data.poliza}" />
+											class="form-control" value="#{OccAccidente.data.poliza}" />
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.hour_reg}</span>
 										<h:inputText name="hora_reg_cabina" id="hora_reg_cabina"
-											class="form-control" value="#{OccController.data.fecha_cab}" />
+											class="form-control hora"
+											value="#{OccAccidente.data.fecha_cab}" />
 									</div>
 									<div class="col-4">
 										<span>#{tuxpan_trad.hour_ajus}</span>
 										<h:inputText name="hora_ajustador" id="hora_ajustador"
-											class="form-control" value="#{OccController.data.hora_ajust}" />
+											class="form-control hora"
+											value="#{OccAccidente.data.hora_ajust}" />
 									</div>
 								</div>
 								<div>
@@ -685,7 +795,7 @@
 													<span class="input-group-text">#{tuxpan_trad.semoviente}</span>
 												</div>
 												<h:inputText type="text" class="form-control"
-													value="#{OccController.data.semoviente}" />
+													value="#{OccAccidente.data.semoviente}" />
 											</div>
 										</div>
 										<div class="col-12">
@@ -697,7 +807,7 @@
 													<span class="input-group-text">#{tuxpan_trad.worked}</span>
 												</div>
 												<h:inputText type="text" class="form-control"
-													value="#{OccController.data.trab_conserv}" />
+													value="#{OccAccidente.data.trab_conserv}" />
 											</div>
 										</div>
 										<div class="col-12">
@@ -709,7 +819,7 @@
 													<span class="input-group-text">#{tuxpan_trad.rain_hail}</span>
 												</div>
 												<h:inputText type="text" class="form-control"
-													value="#{OccController.data.lluvia_granizo}" />
+													value="#{OccAccidente.data.lluvia_granizo}" />
 											</div>
 										</div>
 										<div class="col-12">
@@ -721,7 +831,7 @@
 													<span class="input-group-text">#{tuxpan_trad.fog}</span>
 												</div>
 												<h:inputText type="text" class="form-control"
-													value="#{OccController.data.neblina}" />
+													value="#{OccAccidente.data.neblina}" />
 											</div>
 										</div>
 										<div class="col-12">
@@ -733,7 +843,7 @@
 													<span class="input-group-text">#{tuxpan_trad.vandalism}</span>
 												</div>
 												<h:inputText type="text" class="form-control"
-													value="#{OccController.data.vandalismo}" />
+													value="#{OccAccidente.data.vandalismo}" />
 											</div>
 										</div>
 										<div class="col-12">
@@ -745,91 +855,91 @@
 													<span class="input-group-text">#{tuxpan_trad.other}</span>
 												</div>
 												<h:inputText type="text" class="form-control"
-													value="#{OccController.data.otro}" />
+													value="#{OccAccidente.data.otro}" />
 											</div>
 										</div>
 										<div class="col-12">
 											<hr></hr>
 											<span class="text-center">#{tuxpan_trad.obs}</span>
 											<h:inputTextarea class="form-control"
-												value="#{OccController.data.obs_occ}"></h:inputTextarea>
+												value="#{OccAccidente.data.obs_occ}"></h:inputTextarea>
 										</div>
 									</div>
 								</div>
 								<!-- INPUTS HIDDEN -->
-								<h:inputHidden value="#{OccController.folio_sec}"
+								<h:inputHidden value="#{OccAccidente.folio_sec}"
 									name="get_folio_sec" id="get_folio_sec" />
-								<h:inputHidden value="#{OccController.reporte}"
-									name="get_report" id="get_report" />
-								<h:inputHidden value="#{OccController.siniestro}"
+								<h:inputHidden value="#{OccAccidente.reporte}" name="get_report"
+									id="get_report" />
+								<h:inputHidden value="#{OccAccidente.siniestro}"
 									name="get_siniestro" id="get_siniestro" />
 								<!-- VEH INV AND EJE -->
-								<h:inputHidden value="#{OccController.idTable}" />
+								<h:inputHidden value="#{OccAccidente.idTable}" />
 								<h:inputHidden class="form-control" name="tipo_veh_inv"
-									id="tipo_veh_inv" value="#{OccController.data.tipo_veh_inv}" />
+									id="tipo_veh_inv" value="#{OccAccidente.data.tipo_veh_inv}" />
 
 								<h:inputHidden class="form-control" name="num_eje_veh_inv"
 									id="num_eje_veh_inv"
-									value="#{OccController.data.num_eje_veh_inv}" />
+									value="#{OccAccidente.data.num_eje_veh_inv}" />
 
 								<!-- VEH INV TIPO -->
 								<h:inputHidden id="num_veh" name="num_veh" class="form-control"
-									value="#{OccController.data.num_tp_veh}" />
+									value="#{OccAccidente.data.num_tp_veh}" />
 
 								<h:inputHidden id="marca_veh" name="marca_veh"
-									class="form-control" value="#{OccController.data.marca_tp_veh}" />
+									class="form-control" value="#{OccAccidente.data.marca_tp_veh}" />
 
 								<h:inputHidden id="tipo_veh" name="tipo_veh"
-									class="form-control" value="#{OccController.data.tipo_tp_veh}" />
+									class="form-control" value="#{OccAccidente.data.tipo_tp_veh}" />
 
 								<h:inputHidden id="modelo_veh" name="modelo_veh"
-									class="form-control" value="#{OccController.data.model_tp_veh}" />
+									class="form-control" value="#{OccAccidente.data.model_tp_veh}" />
 
 								<h:inputHidden id="cor_veh" name="cor_veh" class="form-control"
-									value="#{OccController.data.color}" />
+									value="#{OccAccidente.data.color}" />
 
 								<h:inputHidden id="placa_veh" name="placa_veh"
-									class="form-control" value="#{OccController.data.placa_estado}" />
+									class="form-control" value="#{OccAccidente.data.placa_estado}" />
 
 								<h:inputHidden id="tel_veh" name="tel_veh" class="form-control"
-									value="#{OccController.data.tel}" />
+									value="#{OccAccidente.data.tel}" />
 
 								<!-- DATOS PERSON -->
 								<h:inputHidden name="id_person" id="id_person"
-									class="form-control" value="#{OccController.data.id_person}" />
+									class="form-control" value="#{OccAccidente.data.id_person}" />
 
 								<h:inputHidden name="nombre_person" id="nombre_person"
-									class="form-control" value="#{OccController.data.nombre}" />
+									class="form-control" value="#{OccAccidente.data.nombre}" />
 
 								<h:inputHidden name="edad_person" id="edad_person"
-									class="form-control" value="#{OccController.data.edad}" />
+									class="form-control" value="#{OccAccidente.data.edad}" />
 
 								<h:inputHidden name="codiciones_person" id="condiciones_person"
-									class="form-control" value="#{OccController.data.condiciones}" />
+									class="form-control" value="#{OccAccidente.data.condiciones}" />
 
 								<h:inputHidden name="type_report" id="type_report"
-									value="#{OccController.typeReport}"></h:inputHidden>
+									value="#{OccAccidente.typeReport}"></h:inputHidden>
 
 								<!-- BTN SAVE OCC -->
 								<h:commandButton type="button" style="display:none;"
 									class="btn btn-primary" id="saveOcc">
 									<f:ajax execute="@form" render=":list-table :form_occ"
-										listener="#{OccController.saveOcc}" />
+										listener="#{OccAccidente.saveOcc}" />
 								</h:commandButton>
 								<!-- update occ -->
 								<h:commandButton style="display:none;" id="OccUpdate">
 									<f:ajax execute="@form" render=":list-table :form_occ"
-										listener="#{OccController.update}" />
+										listener="#{OccAccidente.update}" />
 								</h:commandButton>
 								<!-- BTN LISTAR OCC -->
 								<h:commandButton type="button" style="display:none;"
 									class="btn btn-primary" id="list_occ">
 									<f:ajax execute="@form" render=":list-table :form_occ"
-										listener="#{OccController.listTable}" />
+										listener="#{OccAccidente.listTable}" />
 								</h:commandButton>
 								<h:commandButton style="display:none;" id="resetFormOcc">
 									<f:ajax execute="@form" render=":form_occ"
-										listener="#{OccController.initializeData}" />
+										listener="#{OccAccidente.initializeData}" />
 								</h:commandButton>
 							</div>
 						</h:form>

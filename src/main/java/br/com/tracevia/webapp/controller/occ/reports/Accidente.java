@@ -1,28 +1,24 @@
-package br.com.tracevia.webapp.controller.occ;
-
+package br.com.tracevia.webapp.controller.occ.reports;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.servlet.ServletException;
+import javax.faces.context.FacesContext;
 import javax.servlet.http.Part;
 
 import org.primefaces.context.RequestContext;
 
-import com.groupdocs.conversion.internal.c.a.s.internal.nx.ma;
-
+import br.com.tracevia.webapp.controller.occ.uploadBean;
 import br.com.tracevia.webapp.dao.occ.TuxpanDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.occ.TuxpanOccModel;
 
-@ManagedBean(name="OccController")
-public class TuxpanOcc{
-
+@ManagedBean(name="OccAccidente")
+public class Accidente {
 	@PostConstruct
 	public void init() {
 		initializeData();
@@ -30,7 +26,7 @@ public class TuxpanOcc{
 		listar = new ArrayList<TuxpanOccModel>();
 
 		try {
-			listar = dao.listarOcorrencias();
+			listar = dao.listAccidentes();
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -47,7 +43,8 @@ public class TuxpanOcc{
 
 		dao = new TuxpanDAO();
 		try {
-			check = dao.update(data, Integer.parseInt(idTable));
+			String val = "1";
+			check = dao.update(data, Integer.parseInt(idTable), val);
 			String filter = filter(data.getReporte(), data.getSiniestro(), data.getFolio_sec());
 			createFolder(filter);
 			if(check == false) {
@@ -65,13 +62,30 @@ public class TuxpanOcc{
 		}
 		return check;
 	}
+	public void deleteRegister() {
+
+		nivelAcesso = (int) facesContext.getExternalContext().getSessionMap().get("nivel");
+		dao = new TuxpanDAO();
+		String type = "1";
+		boolean check = false;
+		try {
+			if(nivelAcesso == 1 || nivelAcesso == 6) {
+				check = dao.deleteRegister(idTable, type);
+			}
+			//listTable();
+			RequestContext.getCurrentInstance().execute("table()");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public boolean select() {
 		boolean check = false;
 		dao = new TuxpanDAO();
 		//RequestContext.getCurrentInstance().execute("setFile()");
 		try {
 
-			data = dao.select(idTable);
+			data = dao.selectAccidente(idTable);
 			String filter = filter(data.getReporte(), data.getSiniestro(), data.getFolio_sec());
 			mainPath = createFolder(filter);
 			listarAqr = listarFiles(mainPath);
@@ -85,12 +99,6 @@ public class TuxpanOcc{
 						data.getColor(), data.getPlaca_estado(), data.getTel(), data.getId_person(),
 						data.getNombre(), data.getEdad(), data.getCondiciones());
 
-			}else if(data.getType_report().equals("2")) {
-				//message type report two
-				scriptsSin();
-				RequestContext.getCurrentInstance().execute("$('#modalSin').modal('show')");
-				//
-				ocup_veh_sin(data.getOcupantes_sin(), data.getVeh_sin(), data.getObs_sin());
 			}else {
 				//error type report
 			}
@@ -123,7 +131,8 @@ public class TuxpanOcc{
 		//RequestContext.getCurrentInstance().execute("setFile();");
 		//copy(File filter, File filer);
 		try {
-			check = dao.registerOcc(data, typeReport);
+			String idPasta = "-";
+			check = dao.registerOcc(data, typeReport, idPasta);
 
 			if(check == false) {
 				//message error
@@ -147,7 +156,7 @@ public class TuxpanOcc{
 		}
 		return check;
 	}	
-	
+
 	public String filter(String reporte, String siniestro, String folio) {
 		reporte = reporte.replace(" ", ""); siniestro = siniestro.replace(" ", ""); folio = folio.replace(" ", "");
 		reporte = reporte.replace(",", ""); siniestro = siniestro.replace(",", ""); folio = folio.replace(",", "");
@@ -171,7 +180,7 @@ public class TuxpanOcc{
 		return mainPath;
 	}
 	public String[] listarFiles(String date) {
-		
+
 		File dir = new File(date);
 		File[] arq = dir.listFiles();
 		listarAqr = new String[arq.length];
@@ -192,7 +201,7 @@ public class TuxpanOcc{
 	public boolean listTable() {
 		boolean check = false;
 		try {
-			listar = dao.listarOcorrencias();
+			listar = dao.listAccidentes();
 			if(listar.size() > 0) {
 				RequestContext.getCurrentInstance().execute("table()");
 				check = true;
@@ -217,6 +226,8 @@ public class TuxpanOcc{
 	}
 	//variables
 	private String typeReport, idTable, reportType, folio_sec, reporte, siniestro, mainPath = "";
+	private int nivelAcesso;
+	private FacesContext facesContext = FacesContext.getCurrentInstance();
 	private String[] listarAqr = null;
 	private Part file = null, dst = null;
 	private TuxpanDAO dao;
@@ -287,5 +298,4 @@ public class TuxpanOcc{
 	public void setSiniestro(String siniestro) {
 		this.siniestro = siniestro;
 	}
-
 }

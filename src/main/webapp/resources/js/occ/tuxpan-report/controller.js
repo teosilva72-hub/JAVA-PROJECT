@@ -1,6 +1,6 @@
 $((init) => {
     table();
-   
+    updateType()
     clickSave();
     getTypeReport();
     hiddenBts();
@@ -9,21 +9,28 @@ $((init) => {
     formSin();
     divFile();
     saveSin();
-	setFile()
+    setFile()
     pdf();
-	
-	$('#type_occ, #type_sin').click(()=>{
-	    $('.divFile').addClass('hidden')
-		$(".fecha").mask("99/99/9999");
-		$(".hora").mask("00:00");
-		$(".km").mask("000+000");
- 		appendOcc();
-	vehOcupSin();
+	$('[id$=deleteLine]').click(()=>{
+		setTimeout(()=>{
+			table();
+		},150)
 	})
+    $('#type_occ, #type_sin').click(() => {
+        $('.divFile').addClass('hidden')
+        $(".fecha").mask("99/99/9999");
+        $(".hora").mask("00:00");
+        $(".km").mask("000+000");
+        appendOcc();
+        vehOcupSin();
+        setFile()
+        $('#inputFileSin').prop('accept', 'image/*')
+        $("#resetFormSin, #resetFormOcc").click()
+		
+    })
 
     $("#modalOcc, #modalSin").on("hidden.bs.modal", () => {
         $("#resetFormSin, #resetFormOcc").click();
-        scann();
         divFile();
     });
 
@@ -32,12 +39,35 @@ $((init) => {
     });
 });
 
+function deleteFile(){
+	$('#delist a').click(function(){
+        var id = $(this).attr('id');
+        let value = $(`.${id}`).text()
+        $('#setFileName').val(value)
+        setTimeout(()=>{
+		 $('#btnSetFilename').click()
+		 setTimeout(()=>{
+			$(`#${id}`).addClass('hidden')
+			$(`.${id}`).text('Excluido')
+			},100)
+		  
+		},100)
+    });
+}
+function updateType() {
+    let path = window.location.pathname
+    if (path == "/occurrence/tuxpan/accidente.xhtml")
+        $('#type_report').val('1')
+    else if (path == "/occurrence/tuxpan/preliminar.xhtml")
+        $('#type_reports').val('2')
+}
+
 function pdf() {
     $("[id$=downloadPdf]").click((e) => {
         setTimeout((x) => {
             $("[id$=pdfDownload]").click();
             $("#type_occ, #type_sin").click(() => {
-                
+
             });
         }, 200);
     });
@@ -46,8 +76,8 @@ function pdf() {
 function setFile() {
 
     $(".getFile, .getFiles").change(() => {
-	    let file = document.querySelector(".getFile").files.length;
-	    let files = document.querySelector(".getFiles").files.length;
+        let file = document.querySelector(".getFile").files.length;
+        let files = document.querySelector(".getFiles").files.length;
         if (file > 0 || files > 0) {
             $("#saveOcc").click(() => {
                 setTimeout(() => {
@@ -110,22 +140,18 @@ function editInfos() {
 }
 
 function scann() {
-    $("#saveSin").prop("disabled", true);
-    $("#occSave").prop("disabled", true);
+
     const id = $(
         "#reporte, #siniestro, #folio_secuencial, #sinistro_sin, #folio_rsa"
     );
     $(id).change((e) => {
-        $("#occSave", "#saveSin").prop("disabled", true);
         if ($("#type_report").val() == "1") {
             if (
                 $("#folio_secuencial").val() == "".trim() ||
                 $("#siniestro").val() == "".trim() ||
                 $("#reporte").val() == "".trim()
             ) {
-                $("#occSave").prop("disabled", true);
             } else {
-                $("#occSave").prop("disabled", false);
                 $("#get_folio_sec").val($("#folio_secuencial").val());
                 $("#get_report").val($("#reporte").val());
                 $("#get_siniestro").val($("#siniestro").val());
@@ -139,9 +165,7 @@ function scann() {
                 $("#sinistro_sin").val() == "".trim() ||
                 $("#folio_rsa").val() == "".trim()
             ) {
-                $("#saveSin").prop("disabled", true);
             } else {
-                $("#saveSin").prop("disabled", false);
                 $("#get_folio_secS").val($("#folio_rsa").val());
                 $("#get_siniestroS").val($("#sinistro_sin").val());
                 $("#get_folio_secs").val($("#folio_rsa").val());
@@ -179,9 +203,9 @@ function appendOcc() {
 function hiddenBtnSin() {
     $("#saveSin").addClass("hidden");
     $("#saveUpdate").removeClass("hidden");
-	$(".fecha").mask("99/99/9999");
-	$(".hora").mask("00:00");
-	$(".km").mask("000+000");
+    $(".fecha").mask("99/99/9999");
+    $(".hora").mask("00:00");
+    $(".km").mask("000+000");
     blockVirgula();
 }
 
@@ -189,11 +213,11 @@ function hiddenBts() {
     $("[id$=editocc]").click((a) => {
         $("#updateOcc").removeClass("hidden");
         $("#occSave").addClass("hidden");
-		
+
         setTimeout(() => {
-			$(".fecha").mask("99/99/9999");
-			$(".hora").mask("00:00");
-			$(".km").mask("000+000");
+            $(".fecha").mask("99/99/9999");
+            $(".hora").mask("00:00");
+            $(".km").mask("000+000");
             editInfos();
         }, 200);
     });
@@ -201,12 +225,10 @@ function hiddenBts() {
         //$('[id$=form_occ] input').val('')
         $("#updateOcc").addClass("hidden");
         $("#occSave").removeClass("hidden");
-        scann();
     });
     $("[id$=type_sin]").click((c) => {
         $("#saveSin").removeClass("hidden");
         $("#saveUpdate").addClass("hidden");
-        scann();
     });
 }
 
@@ -215,13 +237,13 @@ function clickUpdate() {
         getVehInvChilds();
         let file = document.querySelector(".getFile").files.length;
         //setTimeout(() => {
-            $("[id$=OccUpdate]").click();
-            setTimeout(() => {
-                if (file > 0) {
-                    $("#setFile").click();
-                }
-            }, 150);
-       // }, 100);
+        $("[id$=OccUpdate]").click();
+        setTimeout(() => {
+            if (file > 0) {
+                $("#setFile").click();
+            }
+        }, 150);
+        // }, 100);
     });
     $("#saveUpdate").click(() => {
         let files = document.querySelector(".getFiles").files.length;
@@ -268,8 +290,10 @@ function saveSin() {
 
         setTimeout((b) => {
             $("#sinSave").click();
-
-            listSin();
+		setTimeout(e=>{
+			 //listSin();
+		},1000)
+           
         }, 50);
     });
 }
