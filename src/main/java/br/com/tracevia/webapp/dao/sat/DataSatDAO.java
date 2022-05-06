@@ -30,7 +30,7 @@ public class DataSatDAO {
 			// Obter datas formatadas para os dados
 			currentDate = dta.getDataInterval15Min(calendar, minute);							
 			
-			//System.out.println(currentDate);		
+			System.out.println(currentDate);		
 			
 			String temp = "CREATE TEMPORARY TABLE IF NOT EXISTS equip SELECT eq.equip_id, eq.visible, CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4) THEN 5 " +
 					"WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3) THEN 4 " +
@@ -60,7 +60,7 @@ public class DataSatDAO {
 			
 					"GROUP BY siteID LIMIT "+limit;*/
 							
-			String last7days = "CREATE TEMPORARY TABLE IF NOT EXISTS last_7_days " +
+		/*	String last7days = "CREATE TEMPORARY TABLE IF NOT EXISTS last_7_days " +
 					"SELECT ld.NOME_ESTACAO, SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN ld.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_7_DAYS_S1', " + 
 					"SUM(CASE WHEN ld.NOME_FAIXA < eq.sentido THEN (ld.VOLUME_COM + ld.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_7_DAYS_S1', " +
 					"SUM(CASE WHEN ld.NOME_FAIXA < eq.sentido THEN ld.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_7_DAYS_S1', " +
@@ -97,10 +97,10 @@ public class DataSatDAO {
 					// -------------------------------------------------------------------
 					   
 					last7days += "AND eq.visible = 1 " +					
-							"GROUP BY ld.NOME_ESTACAO LIMIT " + limit;
+							"GROUP BY ld.NOME_ESTACAO LIMIT " + limit;*/
 					
 
-			String lastHour = "CREATE TEMPORARY TABLE IF NOT EXISTS last_hour " +
+			/*String lastHour = "CREATE TEMPORARY TABLE IF NOT EXISTS last_hour " +
 					"SELECT lh.NOME_ESTACAO, SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN lh.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_HOUR_S1', " + 
 					"SUM(CASE WHEN lh.NOME_FAIXA < eq.sentido THEN (lh.VOLUME_COM + lh.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_HOUR_S1', " +
 					"SUM(CASE WHEN lh.NOME_FAIXA < eq.sentido THEN lh.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_HOUR_S1', " +
@@ -136,108 +136,108 @@ public class DataSatDAO {
 					// -------------------------------------------------------------------
 					   
 				   lastHour += "AND eq.visible = 1 " +					
-							   "GROUP BY lh.NOME_ESTACAO LIMIT " + limit;					
+							   "GROUP BY lh.NOME_ESTACAO LIMIT " + limit;*/					
 										
 			String select = "SELECT d.NOME_ESTACAO AS ESTACAO, nt.online_status AS ESTADO_ATUAL, " +
 				"IFNULL(CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE CASE WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), " +
 				"DATE_FORMAT(DATE_ADD(d.DATA_HORA ,INTERVAL 14 MINUTE), ' %H:%i')) ELSE CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 15 MINUTE), ' %H:%i')) END END, '07/01/2000 07:00') 'PACOTE_HORA', " +
-				"IFNULL(CASE WHEN DATEDIFF(NOW(), md.maxDate) > 0 THEN date_format(md.maxDate, '%d/%m/%y %H:%i') ELSE date_format(md.maxDate, '%H:%i') END, '00:00') 'DADO_HORA', " +
+				//"IFNULL(CASE WHEN DATEDIFF(NOW(), md.maxDate) > 0 THEN date_format(md.maxDate, '%d/%m/%y %H:%i') ELSE date_format(md.maxDate, '%H:%i') END, '00:00') 'DADO_HORA', " +
 				
 				/* COLUMN DATETIME HEADER */
 				
-				"IFNULL(DATE_FORMAT(DATE_SUB(d.DATA_HORA, INTERVAL 7 DAY),  '%d/%m/%Y  %H:00'), '01/01/2000 07:00') '7_DAYS_HEADER', " +
+				/*"IFNULL(DATE_FORMAT(DATE_SUB(d.DATA_HORA, INTERVAL 7 DAY),  '%d/%m/%Y  %H:00'), '01/01/2000 07:00') '7_DAYS_HEADER', " +
 				"IFNULL(DATE_FORMAT(DATE_SUB(d.DATA_HORA, INTERVAL 1 HOUR), '%d/%m/%Y %H:00'), '07/01/2000 06:00') 'LAST_HOUR_HEADER', " +
-				"IFNULL(DATE_FORMAT(d.DATA_HORA, '%d/%m/%Y %H:00'), '07/01/2000 07:00') 'PROJECTION_HEADER', " +
+				"IFNULL(DATE_FORMAT(d.DATA_HORA, '%d/%m/%Y %H:00'), '07/01/2000 07:00') 'PROJECTION_HEADER', " +*/
 				
 				/* 7 DAYS COLUMNS VALUE S1 */
 				
-				"VOLUME_AUTO_LAST_7_DAYS_S1, " +
+				/*"VOLUME_AUTO_LAST_7_DAYS_S1, " +
 			    "VOLUME_COM_LAST_7_DAYS_S1, " +
 			    "VOLUME_MOTO_LAST_7_DAYS_S1, " +
-				"VOLUME_TOTAL_LAST_7_DAYS_S1, " +
+				"VOLUME_TOTAL_LAST_7_DAYS_S1, " +*/
 				
 				/* 1 HOUR COLUMNS VALUE S1 */
 				
-				"VOLUME_AUTO_LAST_HOUR_S1, " +
+				/*"VOLUME_AUTO_LAST_HOUR_S1, " +
 				"VOLUME_COM_LAST_HOUR_S1, " +
 				"VOLUME_MOTO_LAST_HOUR_S1, " +
-				"VOLUME_TOTAL_LAST_HOUR_S1, " +
+				"VOLUME_TOTAL_LAST_HOUR_S1, " +*/
 				
 				/* VOLUME S1 */
 				
-				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_S1', " +
+				/*"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_S1', " +
 				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN (d.VOLUME_COM + d.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_S1', " +
-				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_S1', " +
+				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_S1', " +*/
 				"SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_S1', " +
 				
 				/* PROJECTION S1 */
 				
-				"ROUND((SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_AUTO ELSE 0 END) * 4), 0) 'VOLUME_AUTO_PROJECTION_S1', " +
+				/*"ROUND((SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_AUTO ELSE 0 END) * 4), 0) 'VOLUME_AUTO_PROJECTION_S1', " +
 				"ROUND((SUM(CASE WHEN d.NOME_FAIXA < sentido THEN (d.VOLUME_COM + d.VOLUME_LONGO) ELSE 0 END) * 4), 0) 'VOLUME_COM_PROJECTION_S1', " +
 				"ROUND((SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_MOTOS ELSE 0 END)  * 4), 0) 'VOLUME_MOTO_PROJECTION_S1', " +
-				"ROUND((SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_TOTAL ELSE 0 END) * 4), 0) 'VOLUME_TOTAL_PROJECTION_S1', " +
+				"ROUND((SUM(CASE WHEN d.NOME_FAIXA < sentido THEN d.VOLUME_TOTAL ELSE 0 END) * 4), 0) 'VOLUME_TOTAL_PROJECTION_S1', " +*/
 				
 				 /* TAXA OCUPACAO S1 */  
 				 
-				"IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA < sentido THEN (d.TAXA_OCUPACAO * 100) ELSE 0 END), 2), 0) 'TAXA_OCUPACAO_S1', " +
+				//"IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA < sentido THEN (d.TAXA_OCUPACAO * 100) ELSE 0 END), 2), 0) 'TAXA_OCUPACAO_S1', " +
 				
 				/* VELOCIDADE S1 */
 				
-				"CASE WHEN d.NOME_FAIXA < sentido THEN ROUND(AVG(NULLIF(d.VEL_MEDIA_AUTOS, 0)), 0) ELSE 0 END 'VEL_MEDIA_AUTOS_S1', " +
+				/*"CASE WHEN d.NOME_FAIXA < sentido THEN ROUND(AVG(NULLIF(d.VEL_MEDIA_AUTOS, 0)), 0) ELSE 0 END 'VEL_MEDIA_AUTOS_S1', " +
 				"ROUND(NULLIF(AVG(CASE WHEN d.NOME_FAIXA  < sentido THEN (d.VOLUME_COM * d.VEL_MEDIA_COM + d.VOLUME_LONGO * d.VEL_MEDIA_LONGO) / (d.VOLUME_COM + d.VOLUME_LONGO) ELSE NULL END), 0), 0) 'VEL_MEDIA_COM_S1', " +
-				"CASE WHEN d.NOME_FAIXA < sentido THEN ROUND(AVG(NULLIF(d.VEL_MEDIA_MOTOS, 0)), 0) ELSE 0 END 'VEL_MEDIA_MOTO_S1', " + 
-				"CASE WHEN d.NOME_FAIXA < sentido THEN ROUND(AVG(NULLIF(d.VEL_MEDIA_TOTAL, 0)), 0) ELSE 0 END 'VEL_MEDIA_TOTAL_S1', " +
+				"CASE WHEN d.NOME_FAIXA < sentido THEN ROUND(AVG(NULLIF(d.VEL_MEDIA_MOTOS, 0)), 0) ELSE 0 END 'VEL_MEDIA_MOTO_S1', " + */
+				"ROUND(AVG(NULLIF(CASE WHEN d.NOME_FAIXA < sentido THEN d.VEL_MEDIA_TOTAL ELSE 0 END, 0)), 0) 'VEL_MEDIA_TOTAL_S1', " +
 				
 				/* 7 DAYS COLUMNS VALUE S2 */
 				
-				"VOLUME_AUTO_LAST_7_DAYS_S2, " +
+				/*"VOLUME_AUTO_LAST_7_DAYS_S2, " +
 				"VOLUME_COM_LAST_7_DAYS_S2, " +
 				"VOLUME_MOTO_LAST_7_DAYS_S2, " +
-				"VOLUME_TOTAL_LAST_7_DAYS_S2, " +
+				"VOLUME_TOTAL_LAST_7_DAYS_S2, " +*/
 				
 				/* 1 HOUR COLUMNS VALUE S2*/
 				
-				"VOLUME_AUTO_LAST_HOUR_S2, " +
+				/*"VOLUME_AUTO_LAST_HOUR_S2, " +
 				"VOLUME_COM_LAST_HOUR_S2, " +
 				"VOLUME_MOTO_LAST_HOUR_S2, " +
-				"VOLUME_TOTAL_LAST_HOUR_S2, " +
+				"VOLUME_TOTAL_LAST_HOUR_S2, " +*/
 				
 				/* VOLUME S2 */
 				
-				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_S2', " +
+				/*"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_S2', " +
 				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN (d.VOLUME_COM + d.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_S2', " +
-				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_S2', " +
+				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_S2', " +*/
 				"SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_S2', " +
 				
 				/* PROJECTION S2 */
 				
-				"ROUND((SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_AUTO ELSE 0 END) * 4), 0) 'VOLUME_AUTO_PROJECTION_S2', " +
+				/*"ROUND((SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_AUTO ELSE 0 END) * 4), 0) 'VOLUME_AUTO_PROJECTION_S2', " +
 				"ROUND((SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN (d.VOLUME_COM + d.VOLUME_LONGO) ELSE 0 END) * 4), 0) 'VOLUME_COM_PROJECTION_S2', " +
 				"ROUND((SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_MOTOS ELSE 0 END) * 4), 0) 'VOLUME_MOTO_PROJECTION_S2', " +
-				"ROUND((SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_TOTAL ELSE 0 END) * 4), 0) 'VOLUME_TOTAL_PROJECTION_S2', " +
+				"ROUND((SUM(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VOLUME_TOTAL ELSE 0 END) * 4), 0) 'VOLUME_TOTAL_PROJECTION_S2', " +*/
 				
 				 /* TAXA OCUPACAO S2 */ 
 				 
-				"IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA >= sentido THEN (d.TAXA_OCUPACAO * 100) ELSE 0 END), 2),0) 'TAXA_OCUPACAO_S2', " +
+				//"IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA >= sentido THEN (d.TAXA_OCUPACAO * 100) ELSE 0 END), 2),0) 'TAXA_OCUPACAO_S2', " +
 				
 				/* VELOCIDADE S2 */
 				
-				"ROUND(AVG(NULLIF(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VEL_MEDIA_AUTOS ELSE 0 END, 0)), 0) 'VEL_MEDIA_AUTOS_S2', " +
+				/*"ROUND(AVG(NULLIF(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VEL_MEDIA_AUTOS ELSE 0 END, 0)), 0) 'VEL_MEDIA_AUTOS_S2', " +
 				"ROUND(NULLIF(AVG(CASE WHEN d.NOME_FAIXA >= sentido THEN (d.VOLUME_COM * d.VEL_MEDIA_COM + d.VOLUME_LONGO * d.VEL_MEDIA_LONGO) / (d.VOLUME_COM + d.VOLUME_LONGO) ELSE NULL END), 0), 0) 'VEL_MEDIA_COM_S2', " +
-				"ROUND(AVG(NULLIF(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VEL_MEDIA_MOTOS ELSE 0 END, 0)), 0) 'VEL_MEDIA_MOTO_S2', " +
+				"ROUND(AVG(NULLIF(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VEL_MEDIA_MOTOS ELSE 0 END, 0)), 0) 'VEL_MEDIA_MOTO_S2', " + */
 				"ROUND(AVG(NULLIF(CASE WHEN d.NOME_FAIXA >= sentido THEN d.VEL_MEDIA_TOTAL ELSE 0 END, 0)), 0) 'VEL_MEDIA_TOTAL_S2' " +
 				
 				"FROM "+RoadConcessionaire.tableDados15+" d " +
 				"LEFT JOIN equip eq ON (d.NOME_ESTACAO = eq.equip_id) " +				
 				
-				"LEFT JOIN " +
+				/*"LEFT JOIN " +
 				"( " +
 				"  SELECT siteID, MAX(data) maxDate FROM tb_vbv WHERE siteID NOT IN(222, 340) " +
 				"  GROUP BY siteID " +
 				") md ON md.siteID = eq.equip_id " +					
 				
 				"LEFT JOIN last_7_days dy ON (d.NOME_ESTACAO = dy.NOME_ESTACAO) " +
-				"LEFT JOIN last_hour lh ON (d.NOME_ESTACAO = lh.NOME_ESTACAO) " +
+				"LEFT JOIN last_hour lh ON (d.NOME_ESTACAO = lh.NOME_ESTACAO) " +*/
 				"LEFT JOIN notifications_status nt ON (d.NOME_ESTACAO = nt.equip_id) AND 'SAT' = nt.equip_type " +						  
 			    "WHERE d.DATA_HORA = DATE_SUB($INTERVAL$) ";
 			    
@@ -280,17 +280,17 @@ public class DataSatDAO {
 			
 			// ------------------------------
 			
-			conn.prepare_my(last7days.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
+			/*conn.prepare_my(last7days.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
 			conn.setString(1, currentDate);	
 			conn.setString(2, currentDate);	
-			conn.executeUpdate();
+			conn.executeUpdate();*/
 			
 			// ------------------------------
 			
-			conn.prepare_my(lastHour.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));	
+			/*conn.prepare_my(lastHour.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));	
 			conn.setString(1, currentDate);	
 			conn.setString(2, currentDate);	
-			conn.executeUpdate();
+			conn.executeUpdate();*/
 			
 			// ------------------------------
 									
@@ -306,7 +306,7 @@ public class DataSatDAO {
 						
 			MapResult result = conn.executeQuery();
 			
-			//System.out.println("ORIGIN: "+select);		 	
+			System.out.println("ORIGIN: "+select);		 	
 			
 			if (result.hasNext()) {
 				for (RowResult rs : result) {
@@ -317,7 +317,7 @@ public class DataSatDAO {
 
 					sat.setEquip_id(rs.getInt("ESTACAO"));
 					sat.setLastPackage(rs.getString("PACOTE_HORA"));
-					sat.setLastRegister(rs.getString("DADO_HORA"));	
+					//sat.setLastRegister(rs.getString("DADO_HORA"));	
 					sat.setQuantidadeS1(rs.getInt("VOLUME_TOTAL_S1"));						
 					sat.setVelocidadeS1(rs.getInt("VEL_MEDIA_TOTAL_S1"));
 					sat.setQuantidadeS2(rs.getInt("VOLUME_TOTAL_S2"));
@@ -331,10 +331,10 @@ public class DataSatDAO {
 					
 					// TABLE HEADERS 
 					
-					sat.setCurrentDatetime(rs.getString("PACOTE_HORA")); //  MAIN HEADER					
+					/*sat.setCurrentDatetime(rs.getString("PACOTE_HORA")); //  MAIN HEADER					
 					sat.setSevenDaysDatetime(rs.getString("7_DAYS_HEADER")); // 7 DAYS HEADER
 					sat.setLastOneDatetime(rs.getString("LAST_HOUR_HEADER")); // LAST HOUR HEADER
-					sat.setProjectionDatetime(rs.getString("PROJECTION_HEADER")); // PROJECTION HEADER	
+					sat.setProjectionDatetime(rs.getString("PROJECTION_HEADER")); */ // PROJECTION HEADER	
 					
 					// -------------------------------
 					// DIRECTION S1
@@ -342,21 +342,21 @@ public class DataSatDAO {
 					
 					// LAST 7 DAYS AND HOUR
 					
-					sat.setAutos7days1hS1(rs.getInt("VOLUME_AUTO_LAST_7_DAYS_S1"));
+					/*sat.setAutos7days1hS1(rs.getInt("VOLUME_AUTO_LAST_7_DAYS_S1"));
 					sat.setCom7days1hS1(rs.getInt("VOLUME_COM_LAST_7_DAYS_S1"));
 					sat.setMoto7days1hS1(rs.getInt("VOLUME_MOTO_LAST_7_DAYS_S1"));
-					sat.setTotal7days1hS1(rs.getInt("VOLUME_TOTAL_LAST_7_DAYS_S1"));
+					sat.setTotal7days1hS1(rs.getInt("VOLUME_TOTAL_LAST_7_DAYS_S1"));*/
 					
 					// CURRENT LAST HOUR
 					
-					sat.setAutosCurrent1hS1(rs.getInt("VOLUME_AUTO_LAST_HOUR_S1"));
+					/*sat.setAutosCurrent1hS1(rs.getInt("VOLUME_AUTO_LAST_HOUR_S1"));
 					sat.setComCurrent1hS1(rs.getInt("VOLUME_COM_LAST_HOUR_S1"));
 					sat.setMotoCurrent1hS1(rs.getInt("VOLUME_MOTO_LAST_HOUR_S1"));
-					sat.setTotalCurrent1hS1(rs.getInt("VOLUME_TOTAL_LAST_HOUR_S1"));
+					sat.setTotalCurrent1hS1(rs.getInt("VOLUME_TOTAL_LAST_HOUR_S1"));*/
 														
 					// CURRENT STATE
 										
-					sat.setAutosVolumeS1(rs.getInt("VOLUME_AUTO_S1"));
+					/*sat.setAutosVolumeS1(rs.getInt("VOLUME_AUTO_S1"));
 					sat.setComVolumeS1(rs.getInt("VOLUME_COM_S1"));
 					sat.setMotoVolumeS1(rs.getInt("VOLUME_MOTO_S1"));
 					sat.setTotalVolumeS1(rs.getInt("VOLUME_TOTAL_S1"));
@@ -364,14 +364,14 @@ public class DataSatDAO {
 					sat.setComVelMedS1(rs.getInt("VEL_MEDIA_COM_S1"));
 					sat.setMotoVelMedS1(rs.getInt("VEL_MEDIA_MOTO_S1"));
 					sat.setTotalVelMedS1(rs.getInt("VEL_MEDIA_TOTAL_S1"));					
-					sat.setOccupancyRateS1(rs.getDouble("TAXA_OCUPACAO_S1"));
+					sat.setOccupancyRateS1(rs.getDouble("TAXA_OCUPACAO_S1"));*/
 					
 				    // PROJECTION
 					
-					sat.setAutosProjection1hS1(rs.getInt("VOLUME_AUTO_PROJECTION_S1"));
+					/*sat.setAutosProjection1hS1(rs.getInt("VOLUME_AUTO_PROJECTION_S1"));
 					sat.setComProjection1hS1(rs.getInt("VOLUME_COM_PROJECTION_S1"));
 					sat.setMotoProjection1hS1(rs.getInt("VOLUME_MOTO_PROJECTION_S1"));
-					sat.setTotalProjection1hS1(rs.getInt("VOLUME_TOTAL_PROJECTION_S1"));
+					sat.setTotalProjection1hS1(rs.getInt("VOLUME_TOTAL_PROJECTION_S1"));*/
 					
 					// -------------------------------
 					// DIRECTION S2
@@ -379,19 +379,19 @@ public class DataSatDAO {
 					
 					// LAST 7 DAYS AND HOUR
 					
-					sat.setAutos7days1hS2(rs.getInt("VOLUME_AUTO_LAST_7_DAYS_S2"));
+					/*sat.setAutos7days1hS2(rs.getInt("VOLUME_AUTO_LAST_7_DAYS_S2"));
 					sat.setCom7days1hS2(rs.getInt("VOLUME_COM_LAST_7_DAYS_S2"));
 					sat.setMoto7days1hS2(rs.getInt("VOLUME_MOTO_LAST_7_DAYS_S2"));
-					sat.setTotal7days1hS2(rs.getInt("VOLUME_TOTAL_LAST_7_DAYS_S2"));
+					sat.setTotal7days1hS2(rs.getInt("VOLUME_TOTAL_LAST_7_DAYS_S2"));*/
 					
 					// CURRENT LAST HOUR
 					
-					sat.setAutosCurrent1hS2(rs.getInt("VOLUME_AUTO_LAST_HOUR_S2"));
+				/*	sat.setAutosCurrent1hS2(rs.getInt("VOLUME_AUTO_LAST_HOUR_S2"));
 					sat.setComCurrent1hS2(rs.getInt("VOLUME_COM_LAST_HOUR_S2"));
 					sat.setMotoCurrent1hS2(rs.getInt("VOLUME_MOTO_LAST_HOUR_S2"));
-					sat.setTotalCurrent1hS2(rs.getInt("VOLUME_TOTAL_LAST_HOUR_S2"));
+					sat.setTotalCurrent1hS2(rs.getInt("VOLUME_TOTAL_LAST_HOUR_S2"));*/
 																				
-					sat.setAutosVolumeS2(rs.getInt("VOLUME_AUTO_S2"));
+					/*sat.setAutosVolumeS2(rs.getInt("VOLUME_AUTO_S2"));
 					sat.setComVolumeS2(rs.getInt("VOLUME_COM_S2"));
 					sat.setMotoVolumeS2(rs.getInt("VOLUME_MOTO_S2"));
 					sat.setTotalVolumeS2(rs.getInt("VOLUME_TOTAL_S2"));
@@ -399,14 +399,14 @@ public class DataSatDAO {
 					sat.setComVelMedS2(rs.getInt("VEL_MEDIA_COM_S2"));
 					sat.setMotoVelMedS2(rs.getInt("VEL_MEDIA_MOTO_S2"));
 					sat.setTotalVelMedS2(rs.getInt("VEL_MEDIA_TOTAL_S2"));
-					sat.setOccupancyRateS2(rs.getDouble("TAXA_OCUPACAO_S2"));
+					sat.setOccupancyRateS2(rs.getDouble("TAXA_OCUPACAO_S2"));*/
 					
 				    // PROJECTION 
 					
-					sat.setAutosProjection1hS2(rs.getInt("VOLUME_AUTO_PROJECTION_S2"));
+					/*sat.setAutosProjection1hS2(rs.getInt("VOLUME_AUTO_PROJECTION_S2"));
 					sat.setComProjection1hS2(rs.getInt("VOLUME_COM_PROJECTION_S2"));
 					sat.setMotoProjection1hS2(rs.getInt("VOLUME_MOTO_PROJECTION_S2"));
-					sat.setTotalProjection1hS2(rs.getInt("VOLUME_TOTAL_PROJECTION_S2"));
+					sat.setTotalProjection1hS2(rs.getInt("VOLUME_TOTAL_PROJECTION_S2"));*/
 																															
 					list.add(sat);
 					
@@ -429,62 +429,49 @@ public class DataSatDAO {
 			 			
   // -------------------------------------------------------------------------------------------------------------------------------------------------
   
-	public List<SAT> noDataInterval(int limit, List<Integer> availabilityList) throws Exception {
+	public List<SAT> noDataInterval(int limit, List<Integer> availabilityList, boolean isInitializeNull) throws Exception {
   		
   		List<SAT> list = new ArrayList<SAT>();
-  		
-  	/*	String maxDate = "CREATE TEMPORARY TABLE IF NOT EXISTS maxDatetime " +
-				"SELECT siteID, MAX(data) maxDate FROM tb_vbv WHERE siteID NOT IN(222, 340";
-							
-			   if(!availabilityList.isEmpty()) {
-				   
-				   maxDate += ", ";
-			 		
-			 		for(int i = 0; i < availabilityList.size(); i++) {
-			 			
-			 			maxDate += availabilityList.get(i);
-			 			
-			 			if(i < (availabilityList.size() - 1))
-			 				maxDate +=", ";
-			 					
-			 		}
-			 		
-			 		maxDate += ") ";				   
-			   	}
-		
-			   else maxDate += ") " +
-				
-				"GROUP BY siteID LIMIT "+limit; */
-  		 		 		 	 	 		 					
+  	  		 		 		 	 	 		 					
  		String select = "SELECT d.NOME_ESTACAO AS ESTACAO, nt.online_status AS ESTADO_ATUAL, " +
  				  "IFNULL(CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE " + 			
  				  "CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE CASE WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), " + 
-				  "DATE_FORMAT(DATE_ADD(d.DATA_HORA ,INTERVAL 14 MINUTE), ' %H:%i')) ELSE CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 15 MINUTE), ' %H:%i')) END END END, '00:00') 'PACOTE_HORA', " +
-				  "IFNULL(CASE WHEN DATEDIFF(NOW(), md.maxDate) > 0 THEN date_format(md.maxDate, '%d/%m/%y %H:%i') ELSE date_format(md.maxDate, '%H:%i') END, '00:00') 'DADO_HORA' " +
+				  "DATE_FORMAT(DATE_ADD(d.DATA_HORA ,INTERVAL 14 MINUTE), ' %H:%i')) ELSE CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 15 MINUTE), ' %H:%i')) END END END, '00:00') 'PACOTE_HORA' " +
+				 // "IFNULL(CASE WHEN DATEDIFF(NOW(), md.maxDate) > 0 THEN date_format(md.maxDate, '%d/%m/%y %H:%i') ELSE date_format(md.maxDate, '%H:%i') END, '00:00') 'DADO_HORA' " +
 										
 			 	  "FROM "+RoadConcessionaire.tableDados15+" d " +
 			 	  "LEFT JOIN sat_equipment eq ON (d.NOME_ESTACAO = eq.equip_id) " +	
-			 	  "LEFT JOIN notifications_status nt ON (d.NOME_ESTACAO = nt.equip_id) AND 'SAT' = nt.equip_type " +
+			 	  "LEFT JOIN notifications_status nt ON (d.NOME_ESTACAO = nt.equip_id) AND 'SAT' = nt.equip_type ";
 			 				 	  
-				  "LEFT JOIN " +
+				  /*"LEFT JOIN " +
 				  "( " +
 				  "  SELECT siteID, MAX(data) maxDate FROM tb_vbv WHERE siteID NOT IN(222, 340) " +
 				  "  GROUP BY siteID " +
-				  ") md ON md.siteID = eq.equip_id " +
-					    
-			 	  "WHERE d.NOME_ESTACAO NOT IN(";
+				  ") md ON md.siteID = eq.equip_id " + */
+				  
+				  if(!isInitializeNull) {
+				  					    
+				   select += "WHERE d.NOME_ESTACAO NOT IN(";
+	 		
+			 		for(int i = 0; i < availabilityList.size(); i++) {
+			 			
+			 			select += availabilityList.get(i);
+			 			
+			 			if(i < (availabilityList.size() - 1))
+			 				select +=", ";
+			 					
+			 		}	
+			 		
+			 		select += ") AND eq.visible = 1 ";
+			 		
+				  } else {
+					  
+					  select += "WHERE eq.visible = 1 ";
+				  }
  		
-		 		for(int i = 0; i < availabilityList.size(); i++) {
-		 			
-		 			select += availabilityList.get(i);
-		 			
-		 			if(i < (availabilityList.size() - 1))
-		 				select +=", ";
-		 					
-		 		}
-		 		
-		 		select += ") AND eq.visible = 1 " +
-		 				  "GROUP BY d.NOME_ESTACAO " +
+ 				// -----------------------------------------------------
+				  		 		
+		 		select += "GROUP BY d.NOME_ESTACAO " +
 		 	              "ORDER BY d.DATA_HORA DESC ";
 			 	 	 					
  	 try {
@@ -509,7 +496,7 @@ public class DataSatDAO {
  			 						
  			MapResult result = conn.executeQuery();
  			
- 			// System.out.println(select); 			  		 
+ 			System.out.println(select); 			  		 
  			 			  			 		 			
  			if (result.hasNext()) {
  				for (RowResult rs : result) { 								    	   	
@@ -518,7 +505,7 @@ public class DataSatDAO {
 	 					
 	 					sat.setEquip_id(rs.getInt("ESTACAO"));
 	 					sat.setLastPackage(rs.getString("PACOTE_HORA") == "" ? "00:00" :  rs.getString("PACOTE_HORA"));		
-	 					sat.setLastRegister(rs.getString("DADO_HORA") == "" ? "00:00" :  rs.getString("DADO_HORA")); 					
+	 				//	sat.setLastRegister(rs.getString("DADO_HORA") == "" ? "00:00" :  rs.getString("DADO_HORA")); 					
 	 					sat.setQuantidadeS1(0);
 	 					sat.setVelocidadeS1(0);
 	 					sat.setQuantidadeS2(0);
@@ -532,10 +519,10 @@ public class DataSatDAO {
 						
 						// TABLE HEADERS 
 						
-						sat.setCurrentDatetime("07/01/2000 07:00"); //  MAIN HEADER					
+						/*sat.setCurrentDatetime("07/01/2000 07:00"); //  MAIN HEADER					
 						sat.setSevenDaysDatetime("01/01/2000 07:00"); // 7 DAYS HEADER
 						sat.setLastOneDatetime("07/01/2000 06:00"); // LAST HOUR HEADER
-						sat.setProjectionDatetime("07/01/2000 07:00"); // PROJECTION HEADER	
+						sat.setProjectionDatetime("07/01/2000 07:00");*/ // PROJECTION HEADER	
 						
 						// -------------------------------
 						// DIRECTION S1
@@ -543,21 +530,21 @@ public class DataSatDAO {
 						
 						// LAST 7 DAYS AND HOUR
 						
-						sat.setAutos7days1hS1(0);
+						/*sat.setAutos7days1hS1(0);
 						sat.setCom7days1hS1(0);
 						sat.setMoto7days1hS1(0);
-						sat.setTotal7days1hS1(0);
+						sat.setTotal7days1hS1(0);*/
 						
 						// CURRENT LAST HOUR
 						
-						sat.setAutosCurrent1hS1(0);
+						/*sat.setAutosCurrent1hS1(0);
 						sat.setComCurrent1hS1(0);
 						sat.setMotoCurrent1hS1(0);
-						sat.setTotalCurrent1hS1(0);
+						sat.setTotalCurrent1hS1(0);*/
 															
 						// CURRENT STATE
 											
-						sat.setAutosVolumeS1(0);
+						/*sat.setAutosVolumeS1(0);
 						sat.setComVolumeS1(0);
 						sat.setMotoVolumeS1(0);
 						sat.setTotalVolumeS1(0);
@@ -565,14 +552,14 @@ public class DataSatDAO {
 						sat.setComVelMedS1(0);
 						sat.setMotoVelMedS1(0);
 						sat.setTotalVelMedS1(0);					
-						sat.setOccupancyRateS1(0.00);
+						sat.setOccupancyRateS1(0.00);*/
 						
 					    // PROJECTION
 						
-						sat.setAutosProjection1hS1(0);
+						/*sat.setAutosProjection1hS1(0);
 						sat.setComProjection1hS1(0);
 						sat.setMotoProjection1hS1(0);
-						sat.setTotalProjection1hS1(0);
+						sat.setTotalProjection1hS1(0);*/
 						
 						// -------------------------------
 						// DIRECTION S2
@@ -580,19 +567,19 @@ public class DataSatDAO {
 						
 						// LAST 7 DAYS AND HOUR
 						
-						sat.setAutos7days1hS2(0);
+						/*sat.setAutos7days1hS2(0);
 						sat.setCom7days1hS2(0);
 						sat.setMoto7days1hS2(0);
-						sat.setTotal7days1hS2(0);
+						sat.setTotal7days1hS2(0);*/
 						
 						// CURRENT LAST HOUR
 						
-						sat.setAutosCurrent1hS2(0);
+						/*sat.setAutosCurrent1hS2(0);
 						sat.setComCurrent1hS2(0);
 						sat.setMotoCurrent1hS2(0);
-						sat.setTotalCurrent1hS2(0);
+						sat.setTotalCurrent1hS2(0);*/
 																					
-						sat.setAutosVolumeS2(0);
+						/*sat.setAutosVolumeS2(0);
 						sat.setComVolumeS2(0);
 						sat.setMotoVolumeS2(0);
 						sat.setTotalVolumeS2(0);
@@ -600,14 +587,14 @@ public class DataSatDAO {
 						sat.setComVelMedS2(0);
 						sat.setMotoVelMedS2(0);
 						sat.setTotalVelMedS2(0);
-						sat.setOccupancyRateS2(0.00);
+						sat.setOccupancyRateS2(0.00);*/
 						
 					    // PROJECTION 
 						
-						sat.setAutosProjection1hS2(0);
+						/*sat.setAutosProjection1hS2(0);
 						sat.setComProjection1hS2(0);
 						sat.setMotoProjection1hS2(0);
-						sat.setTotalProjection1hS2(0);
+						sat.setTotalProjection1hS2(0);*/
 																																
 						list.add(sat);
 										

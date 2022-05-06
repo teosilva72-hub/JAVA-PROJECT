@@ -55,24 +55,28 @@ public class NotificationsBean implements Serializable {
 	
 		// SWITCH NOTIFICATION STATUS
 		
+		System.out.println("AV: "+available.size());
+		System.out.println("UN: "+unavailable.size());
+		
 		if(!available.isEmpty()) {
 							
-			for(Equipments eq : values) {															
-								
+			for(Equipments eq : values) {
+											
 				if(available.contains(eq.getEquip_id()) && eq.getStatus() == 0)
 					  updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), eq.getEquip_id(), typeEquip,
 							dt.currentDateTime(), true, false);
 															
-				else if(unavailable.contains(eq.getEquip_id()) && eq.getStatus() == 1)
+				else if(unavailable.contains(eq.getEquip_id()) && eq.getStatus() == 1) {
 					  updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), eq.getEquip_id(),
 							  typeEquip, dt.currentDateTime(), false, true);																				
-				
+									  					  
+				 }
 			}
 												
 		} else {
 			
 				for(Equipments eq  : values) {	
-				
+								
 					if(eq.getStatus() == 1) 
 						  updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), eq.getEquip_id(),
 								NotificationType.SAT.getType(), dt.currentDateTime(), false, true);

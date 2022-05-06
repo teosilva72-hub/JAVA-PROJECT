@@ -71,10 +71,7 @@ public class SATBuildMap implements Serializable {
 			
 		} catch (Exception e) {			
 			e.printStackTrace();
-		}
-		
-		
-	   				
+		}			   				
 	}
 				
 	public List<SAT> BuildSAT() {
@@ -95,7 +92,7 @@ public class SATBuildMap implements Serializable {
 				
 				// LIMIT SEARCH				
 				int limit = equips.getSatList().size();								
-				//System.out.println("INI: "+limit);
+				System.out.println("INI: "+limit);
 	
 				// LISTAR AUXILIARES											
 				List<SAT> data15MinList = new ArrayList<SAT>();
@@ -126,9 +123,9 @@ public class SATBuildMap implements Serializable {
 						
 					    limit = limit - data15MinList.size();
 					   					    
-					   // System.out.println("15X: "+data15MinList.size());
+					    System.out.println("15 SIZE: "+data15MinList.size());
 					    
-					   // System.out.println("15: "+limit);
+					    System.out.println("15 limit: "+limit);
 																								
 					}
 					
@@ -140,7 +137,7 @@ public class SATBuildMap implements Serializable {
 													
 								if(!data30MinList.isEmpty()) {
 									
-								   // System.out.println("30X: "+data30MinList.size());
+								    System.out.println("30 Size: "+data30MinList.size());
 									
 									if(!data15MinList.isEmpty()) {
 									
@@ -152,7 +149,7 @@ public class SATBuildMap implements Serializable {
 										
 											limit = limit - data30MinList.size();
 											
-											//  System.out.println("30: "+limit);
+											  System.out.println("30 limit: "+limit);
 																																				
 										} else {
 											
@@ -161,7 +158,7 @@ public class SATBuildMap implements Serializable {
 											
 											limit = limit - data30MinList.size();
 											
-											//  System.out.println("30: "+limit);
+											  System.out.println("30 limit: "+limit);
 											
 										}							
 									}							
@@ -175,7 +172,7 @@ public class SATBuildMap implements Serializable {
 																		
 										if(!data03HourList.isEmpty()) {
 											
-										 //   System.out.println("03X: "+data03HourList.size());
+										    System.out.println("03 Size: "+data03HourList.size());
 											
 											if(!data30MinList.isEmpty()) {
 											
@@ -188,7 +185,7 @@ public class SATBuildMap implements Serializable {
 												
 													limit = limit - data03HourList.size();
 													
-												//	System.out.println("03: "+limit);
+													System.out.println("03 limit: "+limit);
 																																						
 												} else {
 													
@@ -197,7 +194,7 @@ public class SATBuildMap implements Serializable {
 													
 													limit = limit - data03HourList.size();
 													
-												//	System.out.println("03: "+limit);
+													System.out.println("03 limit: "+limit);
 													
 												}										
 											}							
@@ -211,7 +208,7 @@ public class SATBuildMap implements Serializable {
 								 																
 										if(!data06HourList.isEmpty()) {
 											
-										   // System.out.println("06X: "+data06HourList.size());
+										    System.out.println("06 Size: "+data06HourList.size());
 											
 											if(!data03HourList.isEmpty()) {
 											
@@ -223,7 +220,7 @@ public class SATBuildMap implements Serializable {
 												
 													limit = limit - data06HourList.size();
 													
-													//System.out.println("06: "+limit);
+													System.out.println("06 limit: "+limit);
 																																						
 												} else {
 													
@@ -232,7 +229,7 @@ public class SATBuildMap implements Serializable {
 													
 													limit = limit - data06HourList.size();
 													
-													//System.out.println("06: "+limit);
+													System.out.println("06 limit: "+limit);
 													
 												}							
 											}							
@@ -242,7 +239,7 @@ public class SATBuildMap implements Serializable {
 							
 							if(limit > 0 && !availabilityList.isEmpty()) { // CASO NÃO EXISTA NAS VALORES
 																																												
-								noDataList = dao.noDataInterval(limit, availabilityList);
+								noDataList = dao.noDataInterval(limit, availabilityList, false);
 								
 								if(!noDataList.isEmpty()) {
 																			
@@ -280,14 +277,14 @@ public class SATBuildMap implements Serializable {
 							  
 									limit = 0;
 							    
-									//System.out.println("HERE");
+									System.out.println("HERE");
 							}														
 							
 						} else if(availabilityList.isEmpty())								
 						{							
 							satListValuesAux = intializeNullList(limit, equipIdList);
 							
-							//System.out.println("HERE 2");
+							System.out.println("HERE 2");
 						}
 							
 						// ----------------------------------------------------------------------- 
@@ -333,7 +330,7 @@ public class SATBuildMap implements Serializable {
 				
 		DataSatDAO dao = new DataSatDAO();
 		
-		noDataList = dao.noDataInterval(limit, equipIdList);
+		noDataList = dao.noDataInterval(limit, equipIdList, true);
 		
 		if(!noDataList.isEmpty()) {
 			
@@ -356,7 +353,7 @@ public class SATBuildMap implements Serializable {
 			  
 			  limit = 0;
 			  
-			  //System.out.println("TESTE1");
+			  System.out.println("TESTE1");
 										
 			}
 												
@@ -366,7 +363,7 @@ public class SATBuildMap implements Serializable {
 			  
 			  limit = 0;
 			  
-			 // System.out.println("TESTE2");
+			  System.out.println("TESTE2");
 			
 		}
 						
@@ -385,7 +382,7 @@ public class SATBuildMap implements Serializable {
 			
 		sat.setEquip_id(equips.get(i));
 		sat.setLastPackage("00:00");		
-		sat.setLastRegister("00:00"); 					
+		//sat.setLastRegister("00:00"); 					
 		sat.setQuantidadeS1(0);
 		sat.setVelocidadeS1(0);
 		sat.setQuantidadeS2(0);
@@ -399,10 +396,10 @@ public class SATBuildMap implements Serializable {
 		
 		// TABLE HEADERS 
 		
-		sat.setCurrentDatetime("07/01/2000 07:00"); //  MAIN HEADER					
+		/*sat.setCurrentDatetime("07/01/2000 07:00"); //  MAIN HEADER					
 		sat.setSevenDaysDatetime("01/01/2000 07:00"); // 7 DAYS HEADER
 		sat.setLastOneDatetime("07/01/2000 06:00"); // LAST HOUR HEADER
-		sat.setProjectionDatetime("07/01/2000 07:00"); // PROJECTION HEADER	
+		sat.setProjectionDatetime("07/01/2000 07:00");*/ // PROJECTION HEADER	
 		
 		// -------------------------------
 		// DIRECTION S1
@@ -410,17 +407,17 @@ public class SATBuildMap implements Serializable {
 		
 		// LAST 7 DAYS AND HOUR
 		
-		sat.setAutos7days1hS1(0);
+		/*sat.setAutos7days1hS1(0);
 		sat.setCom7days1hS1(0);
 		sat.setMoto7days1hS1(0);
-		sat.setTotal7days1hS1(0);
+		sat.setTotal7days1hS1(0);*/
 		
 		// CURRENT LAST HOUR
 		
-		sat.setAutosCurrent1hS1(0);
+		/*sat.setAutosCurrent1hS1(0);
 		sat.setComCurrent1hS1(0);
 		sat.setMotoCurrent1hS1(0);
-		sat.setTotalCurrent1hS1(0);
+		sat.setTotalCurrent1hS1(0);*/
 											
 		// CURRENT STATE
 							
@@ -432,14 +429,14 @@ public class SATBuildMap implements Serializable {
 		sat.setComVelMedS1(0);
 		sat.setMotoVelMedS1(0);
 		sat.setTotalVelMedS1(0);					
-		sat.setOccupancyRateS1(0.00);
+		//sat.setOccupancyRateS1(0.00);
 		
 	    // PROJECTION
 		
-		sat.setAutosProjection1hS1(0);
+		/*sat.setAutosProjection1hS1(0);
 		sat.setComProjection1hS1(0);
 		sat.setMotoProjection1hS1(0);
-		sat.setTotalProjection1hS1(0);
+		sat.setTotalProjection1hS1(0);*/
 		
 		// -------------------------------
 		// DIRECTION S2
@@ -447,17 +444,17 @@ public class SATBuildMap implements Serializable {
 		
 		// LAST 7 DAYS AND HOUR
 		
-		sat.setAutos7days1hS2(0);
+		/*sat.setAutos7days1hS2(0);
 		sat.setCom7days1hS2(0);
 		sat.setMoto7days1hS2(0);
-		sat.setTotal7days1hS2(0);
+		sat.setTotal7days1hS2(0);*/
 		
 		// CURRENT LAST HOUR
 		
-		sat.setAutosCurrent1hS2(0);
+		/*sat.setAutosCurrent1hS2(0);
 		sat.setComCurrent1hS2(0);
 		sat.setMotoCurrent1hS2(0);
-		sat.setTotalCurrent1hS2(0);
+		sat.setTotalCurrent1hS2(0);*/
 																	
 		sat.setAutosVolumeS2(0);
 		sat.setComVolumeS2(0);
@@ -467,14 +464,14 @@ public class SATBuildMap implements Serializable {
 		sat.setComVelMedS2(0);
 		sat.setMotoVelMedS2(0);
 		sat.setTotalVelMedS2(0);
-		sat.setOccupancyRateS2(0.00);
+		//sat.setOccupancyRateS2(0.00);
 		
 	    // PROJECTION 
 		
-		sat.setAutosProjection1hS2(0);
+		/*sat.setAutosProjection1hS2(0);
 		sat.setComProjection1hS2(0);
 		sat.setMotoProjection1hS2(0);
-		sat.setTotalProjection1hS2(0);
+		sat.setTotalProjection1hS2(0);*/
 																												
 		list.add(sat);
 		
