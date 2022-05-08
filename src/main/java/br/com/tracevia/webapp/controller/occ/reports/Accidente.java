@@ -72,8 +72,8 @@ public class Accidente {
 			if(nivelAcesso == 1 || nivelAcesso == 6) {
 				check = dao.deleteRegister(idTable, type);
 			}
-			//listTable();
-			RequestContext.getCurrentInstance().execute("table()");
+			listTable();
+			//RequestContext.getCurrentInstance().execute("table()");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

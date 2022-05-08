@@ -11,10 +11,11 @@ $((init) => {
     saveSin();
     setFile()
     pdf();
-	$('[id$=deleteLine]').click(()=>{
-		setTimeout(()=>{
-			table();
-		},150)
+
+	$('[id$=editocc]').click(()=>{
+		$(".fecha").mask("99/99/9999");
+        $(".hora").mask("00:00");
+        $(".km").mask("000+000");
 	})
     $('#type_occ, #type_sin').click(() => {
         $('.divFile').addClass('hidden')
@@ -134,11 +135,6 @@ function editInfos() {
     $("#reporteFile").val($("#reporte").val());
     $("#siniestroFile").val($("#siniestro").val());
 
-    $("#sinistro_sin").prop("readonly", true);
-    $("#folio_rsa").prop("readonly", true);
-    $("#folio_secuencial").prop("readonly", true);
-    $("#reporte").prop("readonly", true);
-    $("#siniestro").prop("readonly", true);
 }
 
 function scann() {

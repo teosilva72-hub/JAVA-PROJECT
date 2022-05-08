@@ -197,7 +197,6 @@ public class Preliminar {
 				check = dao.deleteRegister(idTable, type);
 			}
 			listTable();
-			RequestContext.getCurrentInstance().execute("table()");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

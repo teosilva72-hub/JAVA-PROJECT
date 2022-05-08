@@ -23,7 +23,9 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -287,7 +289,24 @@ public class pdfAccidente {
 			table_ass.addCell(new PdfPCell(new Phrase("\nNOMBRE: ______________________", formatText1)));
 			table_ass.addCell(new PdfPCell(new Phrase("\nFIRMA:  ______________________", formatText1)));
 			table_ass.addCell(new PdfPCell(new Phrase("\nFIRMA:  ______________________", formatText1)));
-			document.add(table_ass);			
+			document.add(table_ass);		
+			
+	        PdfPTable footer = new PdfPTable(1);
+	        footer.setWidths(new int[]{100});
+	        footer.setTotalWidth(527);
+	        footer.setLockedWidth(false);
+	        footer.getDefaultCell().setFixedHeight(40);
+	        footer.getDefaultCell().setBorder(Rectangle.TOP);
+	        footer.getDefaultCell().setBorderColor(BaseColor.LIGHT_GRAY);
+
+	        // add current page count
+	        footer.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
+	        footer.addCell(new Phrase(String.format( "OTT-F-CC-01 Rev 01") , new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+
+	        // write page
+	        canvas.beginMarkedContentSequence(PdfName.ARTIFACT);
+	        footer.writeSelectedRows(0, -1, 34, 50, canvas);
+	        canvas.endMarkedContentSequence();
 
 		}
 		catch(DocumentException de) {
