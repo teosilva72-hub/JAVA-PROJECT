@@ -18,9 +18,11 @@ $((init) => {
 	})
     $('#type_occ, #type_sin').click(() => {
         $('.divFile').addClass('hidden')
-        $(".fecha").mask("99/99/9999");
+       setTimeout(()=>{
+	 $(".fecha").mask("99/99/9999");
         $(".hora").mask("00:00");
         $(".km").mask("000+000");
+},1000)
         appendOcc();
         vehOcupSin();
         setFile()

@@ -70,7 +70,7 @@ public class Preliminar {
 	public boolean select() {
 		boolean check = false;
 		dao = new TuxpanDAO();
-		RequestContext.getCurrentInstance().execute("editInfos()");
+		RequestContext.getCurrentInstance().execute("editInfos();deleteFile()");
 		try {
 
 			data = dao.selectPreliminar(idTable);
@@ -214,7 +214,6 @@ public class Preliminar {
 		uploadBean up = new uploadBean();	
 		String space = "";
 		data = dao.selectPreliminar(idTable);
-		System.out.println(data.getIdPasta() + " <<<");
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		Date date = new Date();
 		String idPasta = dateFormat.format(date);
@@ -236,7 +235,6 @@ public class Preliminar {
 			String filter = filter(reporte, siniestro, folio_sec);
 			mainPath = createFolder(filter);
 			up.upload(file, mainPath, space);
-			System.out.println("77777777777777777777777");
 		}
 		
 		//passando variavel para uploadFile
