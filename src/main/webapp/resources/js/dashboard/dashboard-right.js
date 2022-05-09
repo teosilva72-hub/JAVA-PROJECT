@@ -119,7 +119,7 @@ const TestCert = async (c) => {
     return
   let uri = ''
   try {
-    if (c.ws != "http" || c.ws != "https") {
+    if (c.ws != "http") {
       uri = `${c.address}:${c.port}/ws`
       let request = new WebSocket(`wss://${uri}`, c.ws != 'null' ? c.ws : undefined);
       while (request.readyState == 0) {

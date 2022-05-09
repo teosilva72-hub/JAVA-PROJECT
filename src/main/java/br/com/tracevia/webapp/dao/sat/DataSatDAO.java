@@ -306,12 +306,14 @@ public class DataSatDAO {
 						
 			MapResult result = conn.executeQuery();
 			
-		  System.out.println("ORIGIN: "+select);		 	
+			//System.out.println("ORIGIN: "+select);		 	
 			
 			if (result.hasNext()) {
 				for (RowResult rs : result) {
 					
 					SAT sat = new SAT();
+					
+					// PRIMARY INFORMATION
 
 					sat.setEquip_id(rs.getInt("ESTACAO"));
 					sat.setLastPackage(rs.getString("PACOTE_HORA"));
@@ -407,6 +409,11 @@ public class DataSatDAO {
 					sat.setTotalProjection1hS2(rs.getInt("VOLUME_TOTAL_PROJECTION_S2"));*/
 																															
 					list.add(sat);
+					
+					// -------------------------------
+					// TABLE INFO
+					// -------------------------------
+					
 				}
 			 }			
 
@@ -415,7 +422,6 @@ public class DataSatDAO {
 		}finally {
 			conn.close();
 		}
-
 				
 		return list;
 		
