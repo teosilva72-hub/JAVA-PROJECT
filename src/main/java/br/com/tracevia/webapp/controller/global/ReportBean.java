@@ -1168,13 +1168,13 @@ public class ReportBean implements Serializable{
 			try {
 				
 				if (isSpecialPDF()) {
-					generateSpecialPDFFile(specialPDF, new String[] { dateStart, dateEnd }, columnsInUse, report.lines, report.secondaryLines, module, selectedLane, directions, equipIDs, dateStart, dateEnd, period, sheetName + "PDF", fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
+					generateSpecialFile(specialPDF, new String[] { dateStart, dateEnd }, period);
 					SessionUtil.getExternalContext().getSessionMap().put(fileName + "PDF", model.ToPDF());
 					model = new ExcelTemplate();
 				}
 				if(!special)										
 					model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, selectedLane, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
-				else generateSpecialFile(model, specialName, new String[] { dateStart, dateEnd }, period);
+				else generateSpecialFile(specialName, new String[] { dateStart, dateEnd }, period);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -1739,33 +1739,18 @@ public class ReportBean implements Serializable{
 	    
 	// --------------------------------------------------------------------------------------------	
 	   
-		public void generateSpecialFile(ExcelTemplate model, String name, String[] date, String[] period) throws Exception {
+		public void generateSpecialFile(String name, String[] date, String[] period) throws Exception {
 				switch(name) {
 					case "counting-flow":
 						model.generateCountFlow(columnsInUse, report.lines, sheetName, satTab);
+						break;
+					case "vehicle-count-eco101":
+						model.generateVehicleCountEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
 						break;
 					case "vehicle-count-category-eco101":
 						model.generateVehicleCountCategoryEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
 						break;
 				}
-		}
-		
-		// --------------------------------------------------------------------------------------------	
-		
-		public void generateSpecialPDFFile(String name, String[] date, List<String> columns, List<String[]> lines, List<Pair<String, List<String[]>>> secondRows, String module, String filterLane, List<String> directions, List<String> equips, 
-				String startDate, String endDate, String[] period, String sheetName, String fileTitle, String totalType, boolean isSat, boolean isTotal, boolean isMultiSheet, boolean isEquipNameSheet, boolean isDirectionsOnSheet, boolean division, String classSubHeader) throws Exception {
-			switch(name) {
-			case "vehicle-count-eco101":
-				int start = 8;
-				List<String> cols = columns.subList(start, columns.size());
-				List<String[]> lins = new ArrayList<>();
-				for (String[] line : lines) {					
-					line[start] = line[start - 1] + " " + line[start];
-					lins.add(Arrays.copyOfRange(line, start, line.length));
-				}
-				model.generateExcelFile(cols, lins, null, module, filterLane, directions, equips, date[0], date[1], period, sheetName, fileTitle, totalType, isSat, isTotal, isMultiSheet, isEquipNameSheet, isDirectionsOnSheet, division, classSubHeader);
-				break;
-			}
 		}
 		
 		// --------------------------------------------------------------------------------------------	

@@ -814,10 +814,15 @@ public class EquipmentsDAO {
 	 */
 
 	public List<SAT> SATReportInfo(String equip_id) {
+		return SATReportInfo("equip_id", equip_id);
+	}
+	
+		public List<SAT> SATReportInfo(String field, String equip_id) {
 
 		List<SAT> list = new ArrayList<>();
 
-		String sql = "SELECT st.name, c.city_name, r.road_name, st.km, st.number_lanes, "
+		String sql = "SELECT st.name, c.city_name, r.road_name, st.km, "
+				+ "CAST(CONCAT(SUM(f.direction in ('N', 'O')), '+', SUM(f.direction in ('S', 'L'))) as CHAR), "
 				+ "CASE "
 				+ "WHEN dir_lane1 = 'N' THEN 'NORTH / SOUTH' "
 				+ "WHEN dir_lane1 = 'S' THEN 'SOUTH / NORTH' "
@@ -828,7 +833,9 @@ public class EquipmentsDAO {
 				+ "FROM sat_equipment st "
 				+ "INNER JOIN concessionaire_cities c ON c.city_id = st.city "
 				+ "INNER JOIN concessionaire_roads r ON r.road_id = st.road "
-				+ "WHERE st.equip_id = '" + equip_id + "' AND st.visible = 1";
+				+ "INNER JOIN filter_directions f ON f.equip_id = st.equip_id "
+				+ "WHERE st." + field + " = '" + equip_id + "' AND st.visible = 1 "
+				+ "GROUP BY st.equip_id";
 
 		try {
 			conn.start(1);
