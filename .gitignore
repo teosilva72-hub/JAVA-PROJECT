@@ -1,3 +1,6 @@
-/target/
+target/
 .vscode/
-/bin/
+bin/
+pom.xml
+.team-project
+.metadata/
