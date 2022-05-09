@@ -337,8 +337,8 @@ public class pdfPreliminar {
 			logo = ImageUtil.getInternalImagePath("images", "files", RoadConcessionaire.externalImagePath);
 			if(!logo.equals("")) {
 				Image tuxpanL = Image.getInstance(logo);
-				tuxpanL.setAbsolutePosition(90, 770);
-				tuxpanL.scaleAbsolute (120, 60);
+				tuxpanL.setAbsolutePosition(80, 770);
+				tuxpanL.scaleAbsolute (90, 30);
 
 				document.add(tuxpanL);
 			}
