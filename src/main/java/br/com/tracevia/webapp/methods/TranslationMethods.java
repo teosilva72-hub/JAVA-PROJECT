@@ -843,77 +843,114 @@ public class TranslationMethods {
 		return dir;	
 
 	}
-
-	// -------------------------------------------------------------------------------------------------------
-
-
-	public String oppositeDirectionTab(String direction) {
-
-		String dir = "";		
-
-		switch(direction) {
-
-		case "N": dir = localeDirections.getStringKey("directions_tab_south"); break;
-		case "S": dir = localeDirections.getStringKey("directions_tab_north"); break;
-		case "L": dir = localeDirections.getStringKey("directions_tab_west"); break;
-		case "O": dir = localeDirections.getStringKey("directions_tab_east"); break;		
-
-		}		
-
-		return dir;	
-
-	}
-
-	// -------------------------------------------------------------------------------------------------------
-
-	public String directionAbbreviation(String direction) {
-
-		String dir = "";		
-
-		switch(direction) {
-
-		case "N": dir = localeDirections.getStringKey("directions_north_abbr"); break;
-		case "S": dir = localeDirections.getStringKey("directions_south_abbr"); break;
-		case "L": dir = localeDirections.getStringKey("directions_east_abbr"); break;
-		case "O": dir = localeDirections.getStringKey("directions_west_abbr"); break;		
-
-		}		
-
-		return dir;	
-
-	}
-
-	// -------------------------------------------------------------------------------------------------------
-
-	public String oppositeDirectionAbbreviation(String direction) {
-
-		String dir = "";		
-
-		switch(direction) {
-
-		case "N": dir = localeDirections.getStringKey("directions_south_abbr"); break;
-		case "S": dir = localeDirections.getStringKey("directions_north_abbr"); break;
-		case "L": dir = localeDirections.getStringKey("directions_west_abbr"); break;
-		case "O": dir = localeDirections.getStringKey("directions_east_abbr"); break;		
-
-		}		
-
-		return dir;	
-
-	}
-
-	// -------------------------------------------------------------------------------------------------------
-
-
-	public String verticalAxisTranslate(String vAxis) {
-
-		LocaleUtil locale = new LocaleUtil();
-		locale.getResourceBundle(LocaleUtil.LABELS_CHARTS);
-
-		return locale.getStringKey(vAxis);
-
-	}
-
-	// -------------------------------------------------------------------------------------------------------
-
-}
+     
+  // -------------------------------------------------------------------------------------------------------
+     
+     public String direction(String direction) {
+ 		
+ 		String dir = "";		
+ 		
+ 		switch(direction) {
+ 		
+ 		case "N": dir = localeDirections.getStringKey("directions_north"); break;
+ 		case "S": dir = localeDirections.getStringKey("directions_south"); break;
+ 		case "L": dir = localeDirections.getStringKey("directions_east"); break;
+ 		case "O": dir = localeDirections.getStringKey("directions_west"); break;		
+ 		
+ 		}		
+ 		
+ 		return dir;	
+ 		
+ 	}
+      
+   // -------------------------------------------------------------------------------------------------------
+     
+     
+     public String directionTab(String direction) {
+ 		
+ 		String dir = "";		
+ 		
+ 		switch(direction) {
+ 		
+ 		case "N": dir = localeDirections.getStringKey("directions_tab_north"); break;
+ 		case "S": dir = localeDirections.getStringKey("directions_tab_south"); break;
+ 		case "L": dir = localeDirections.getStringKey("directions_tab_east"); break;
+ 		case "O": dir = localeDirections.getStringKey("directions_tab_west"); break;		
+ 		
+ 		}
+ 		
+ 		return dir;
+ 		
+ 	}
+      
+   // -------------------------------------------------------------------------------------------------------
+          
+     public String oppositeDirectionTab(String direction) {
+  		
+  		String dir = "";		
+  		
+  		switch(direction) {
+  		
+  		case "N": dir = localeDirections.getStringKey("directions_tab_south"); break;
+  		case "S": dir = localeDirections.getStringKey("directions_tab_north"); break;
+  		case "L": dir = localeDirections.getStringKey("directions_tab_west"); break;
+  		case "O": dir = localeDirections.getStringKey("directions_tab_east"); break;		
+  		
+  		}		
+  		
+  		return dir;	
+  		
+  	}
+       
+    // -------------------------------------------------------------------------------------------------------
+     
+     public String directionAbbreviation(String direction) {
+  		
+  		String dir = "";		
+  		
+  		switch(direction) {
+  		
+  		case "N": dir = localeDirections.getStringKey("directions_north_abbr"); break;
+  		case "S": dir = localeDirections.getStringKey("directions_south_abbr"); break;
+  		case "L": dir = localeDirections.getStringKey("directions_east_abbr"); break;
+  		case "O": dir = localeDirections.getStringKey("directions_west_abbr"); break;		
+  		
+  		}		
+  		
+  		return dir;	
+  		
+  	}
+       
+    // -------------------------------------------------------------------------------------------------------
+      
+      public String oppositeDirectionAbbreviation(String direction) {
+   		
+   		String dir = "";		
+   		
+   		switch(direction) {
+   		
+   		case "N": dir = localeDirections.getStringKey("directions_south_abbr"); break;
+   		case "S": dir = localeDirections.getStringKey("directions_north_abbr"); break;
+   		case "L": dir = localeDirections.getStringKey("directions_west_abbr"); break;
+   		case "O": dir = localeDirections.getStringKey("directions_east_abbr"); break;		
+   		
+   		}		
+   		
+   		return dir;	
+   		
+   	}
+        
+     // -------------------------------------------------------------------------------------------------------
+    
+     public String verticalAxisTranslate(String vAxis) {
+	    	
+	    	LocaleUtil locale = new LocaleUtil();
+	    	locale.getResourceBundle(LocaleUtil.LABELS_CHARTS);
+	    	    		    		    	   	    		    	
+	    	return locale.getStringKey(vAxis);
+	    	
+	    }
+     
+     // -------------------------------------------------------------------------------------------------------
+     
+ }

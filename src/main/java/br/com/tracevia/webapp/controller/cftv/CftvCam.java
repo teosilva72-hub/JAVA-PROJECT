@@ -1,5 +1,6 @@
 package br.com.tracevia.webapp.controller.cftv;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,7 +21,13 @@ import br.com.tracevia.webapp.util.ImageUtil;
 
 @ManagedBean(name="CftvCam")
 @ViewScoped
-public class CftvCam {
+public class CftvCam implements Serializable{
+	
+	/**
+	 * SERIAL ID
+	 */
+	
+	private static final long serialVersionUID = -7210283715776020583L;
 	
 	Equipments equip;	
 	private int id, idTotal, sumId;

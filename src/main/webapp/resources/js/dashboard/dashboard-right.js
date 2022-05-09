@@ -359,7 +359,7 @@ $('[toggle]').click(function () {
 
 // LOAD FUNCTION FOR NOTIFICATIONS
 
-$(function () { 
+$(function () { 	
   
     // GET VALUES FROM FORM NOTIFY
     let notify = document.forms.notifyForm;

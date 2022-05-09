@@ -1,9 +1,6 @@
 package br.com.tracevia.webapp.controller.occ;
 
-
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDate;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +18,12 @@ import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.occ.TuxpanOccModel;
 
 @ManagedBean(name="OccController")
-public class TuxpanOcc{
+public class TuxpanOcc implements Serializable{
+	
+	/**
+	 * SERIAL ID
+	 */
+	private static final long serialVersionUID = -1758316549584598394L;
 
 	@PostConstruct
 	public void init() {

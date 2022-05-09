@@ -1952,6 +1952,16 @@ public class ExcelTemplate {
 					alt = !alt;
 				}
 			}
+		}
+		for (List<String> temp : tempLine) {
+			int sum = 0;
+			for (int s = 1; s < temp.size(); s++)
+				sum += Integer.parseInt(temp.get(s));
+			temp.add(String.valueOf(sum));
+			newLine.add(temp.toArray(String[]::new));
+		}
+		
+		utilSheet.setCellValue(sheet, row, 12, len, "Total");
 			
 			for (Entry<String, List<String[]>> equip : newLines.entrySet()) {
 				IDs.clear();

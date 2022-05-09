@@ -1,6 +1,5 @@
 package br.com.tracevia.webapp.controller.sat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -9,9 +8,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import br.com.tracevia.webapp.controller.global.ListEquipments;
 import br.com.tracevia.webapp.dao.sat.MaintenanceDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.sat.Maintenance;
 import br.com.tracevia.webapp.model.sat.SAT;
 
@@ -26,7 +25,7 @@ private String[] days;
 
 List<Maintenance> satListLanes, satStatus;
 
-@ManagedProperty("#{listEquips}")
+@ManagedProperty("#{listEquipsBean}")
 private ListEquipments equips;
 
 public ListEquipments getEquips() {

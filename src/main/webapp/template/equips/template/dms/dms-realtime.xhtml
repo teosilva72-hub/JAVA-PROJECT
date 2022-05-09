@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+    xmlns:jsf="http://xmlns.jcp.org/jsf" >
+    
+   <h:body> 
+   
+   	 		<div id="listDMS#{item.equip_id}" type="#{item.message.tipo}" name="#{item.nome}" driver="#{item.message.driver}">
+
+                 <input type="hiden" name="page1" imageId="#{item.message.pages[0].id_image}" image="#{item.message.pages[0].image}" imageId2="#{item.message.pages[0].id_image2}" image2="#{item.message.pages[0].image2}" line1="#{item.message.pages[0].text1}" line2="#{item.message.pages[0].text2}"
+                     line3="#{item.message.pages[0].text3}" timer="#{item.message.pages[0].timer}" /> <input type="hiden" name="page2" imageId="#{item.message.pages[1].id_image}" image="#{item.message.pages[1].image}"
+                     imageId2="#{item.message.pages[1].id_image2}" image2="#{item.message.pages[1].image2}" line1="#{item.message.pages[1].text1}" line2="#{item.message.pages[1].text2}" line3="#{item.message.pages[1].text3}" timer="#{item.message.pages[1].timer}" />
+                    <input type="hiden" name="page3" imageId="#{item.message.pages[2].id_image}" image="#{item.message.pages[2].image}" imageId2="#{item.message.pages[2].id_image2}" image2="#{item.message.pages[2].image2}" line1="#{item.message.pages[2].text1}"
+                     line2="#{item.message.pages[2].text2}" line3="#{item.message.pages[2].text3}" timer="#{item.message.pages[2].timer}" /> <input type="hiden" name="page4" imageId="#{item.message.pages[3].id_image}" image="#{item.message.pages[3].image}"
+                     imageId2="#{item.message.pages[3].id_image2}" image2="#{item.message.pages[3].image2}" line1="#{item.message.pages[3].text1}" line2="#{item.message.pages[3].text2}" line3="#{item.message.pages[3].text3}" timer="#{item.message.pages[3].timer}" />
+                    <input type="hiden" name="page5" imageId="#{item.message.pages[4].id_image}" image="#{item.message.pages[4].image}" imageId2="#{item.message.pages[4].id_image2}" image2="#{item.message.pages[4].image2}" line1="#{item.message.pages[4].text1}"
+                     line2="#{item.message.pages[4].text2}" line3="#{item.message.pages[4].text3}" timer="#{item.message.pages[4].timer}" />
+      	   </div> 
+   
+   		<!---->
+   		
+   		 <div id="#{item.table_id}#{item.equip_id}" class="equip-info #{item.table_id}" posX="#{item.linearPosX}" posY="#{item.linearPosY}" item-km="#{item.km}" item-width="#{item.linearWidth}" direction="#{item.direction}" longitude="#{item.longitude}" latitude="#{item.latitude}">
+   		
+   		  <!-- ======================== BODY ======================== -->
+                     
+           	<ui:include src="/template/equips/body/dms/dms-body.xhtml" />  
+                     
+       	 <!---->
+   		
+   		</div>
+   		
+   		  <!-- ======================== POPOVER ======================== -->
+		
+			<ui:include src="/template/popover-alert/dms/dms-popover.xhtml" />  
+   	
+		 <!---->   
+     
+  </h:body> 
+      
+</html>
