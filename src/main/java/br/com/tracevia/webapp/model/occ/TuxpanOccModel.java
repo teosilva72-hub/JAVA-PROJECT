@@ -41,19 +41,20 @@ public class TuxpanOccModel{
 	private String obs_occ;
 	private String type_report;
 	//siniestro
-	private String ocupantes_sin;
-	private String veh_sin;
-	private String causas_sin;
-	private String def_metal;
-	private String senal;
-	private String dano_pav;
-	private String danos_cort_trr;
-	private String danos_obr_compl;
-	private String dano_plz_cobro;
-	private String otros_sin;
-	private String obs_sin;
-	private String lesionados;
-	private String mortos;
+	private String ocupantes_sin = new String();
+	private String veh_sin = new String();
+	private String causas_sin = new String();
+	private String def_metal = new String();
+	private String senal = new String();
+	private String dano_pav = new String();
+	private String danos_cort_trr = new String();
+	private String danos_obr_compl = new String();
+	private String dano_plz_cobro = new String();
+	private String otros_sin = new String();
+	private String obs_sin = new String();
+	private String lesionados = new String();
+	private String mortos = new String();
+	private String idPasta = new String();
 	
 	public TuxpanOccModel(String id, String plz_cobro, String folio_sec, String reporte, String siniestro,
 			String fecha, String hora, String direccion, String km_reg, String km_inicial, String km_final,
@@ -63,8 +64,9 @@ public class TuxpanOccModel{
 			String semoviente, String trab_conserv, String lluvia_granizo, String neblina, String vandalismo,
 			String otro, String obs_occ, String ocupantes_sin, String veh_sin, String causas_sin, String def_metal,
 			String senal, String dano_pav, String danos_cort_trr, String danos_obr_compl, String dano_plz_cobro,
-			String otros_sin, String[] obs_sin, String lesionados, String mortos, String type_report) {
+			String otros_sin, String obs_sin, String lesionados, String mortos, String type_report, String idPasta) {
 		
+		this.idPasta = idPasta;
 		this.type_report = type_report;
 		this.id = id;
 		this.plz_cobro = plz_cobro;
@@ -118,6 +120,12 @@ public class TuxpanOccModel{
 		return id;
 	}
 	
+	public String getIdPasta() {
+		return idPasta;
+	}
+	public void setIdPasta(String idPasta) {
+		this.idPasta = idPasta;
+	}
 	public String getType_report() {
 		return type_report;
 	}

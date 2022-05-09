@@ -1,9 +1,9 @@
 let phoneWindow = {};
 
-/*(() => {
+(() => {
   if (location.protocol != "https:" && location.hostname != "localhost")
     location.href = location.href.replace(location.protocol, "https:")
-})()*/
+})()
 
 $(async function () {
   $('.sideMenuToggler').on('click', function () {
@@ -119,7 +119,7 @@ const TestCert = async (c) => {
     return
   let uri = ''
   try {
-    if (c.ws != "http") {
+    if (c.ws != "http" && c.ws != "https") {
       uri = `${c.address}:${c.port}/ws`
       let request = new WebSocket(`wss://${uri}`, c.ws != 'null' ? c.ws : undefined);
       while (request.readyState == 0) {

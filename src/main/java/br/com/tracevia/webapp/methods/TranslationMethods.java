@@ -5,7 +5,7 @@ import br.com.tracevia.webapp.util.LocaleUtil;
 public class TranslationMethods {
 
 	LocaleUtil locale, localePeriod, localeSat, localeDirections, localeCalendar, localeOcc, localeEmail, localeWim, localeDai,
-	localeReports;
+	localeReports, localeOccTuxpan;
 
 	public TranslationMethods() {
 
@@ -36,6 +36,81 @@ public class TranslationMethods {
 		localeReports = new LocaleUtil();
 		localeReports.getResourceBundle(LocaleUtil.LABELS_REPORTS);
 
+		localeOccTuxpan = new LocaleUtil();
+		localeOccTuxpan.getResourceBundle(LocaleUtil.LABELS_REPORT_TUXPAN);
+
+	}
+	public String TuxpanReport(String occ) {
+
+		String converteOcc = "";
+
+		switch(occ){
+
+		case "Codigo" : converteOcc = localeOccTuxpan.getStringKey("table_id"); break;
+		case "Tipo" : converteOcc = localeOccTuxpan.getStringKey("table_type"); break;
+		case "Folio Sec." : converteOcc = localeOccTuxpan.getStringKey("table_folio"); break;
+		case "Fecha" : converteOcc = localeOccTuxpan.getStringKey("table_fecha"); break;
+		case "Hora" : converteOcc = localeOccTuxpan.getStringKey("hour"); break;
+		case "Registro de accidentes" : converteOcc = localeOccTuxpan.getStringKey("reg_acc"); break;
+		case "Num." : converteOcc = localeOccTuxpan.getStringKey("num"); break;
+		case "Plaza de Cobro" : converteOcc = localeOccTuxpan.getStringKey("toll"); break;
+		case "Folio Secuencial" : converteOcc = localeOccTuxpan.getStringKey("folio"); break;
+		case "Reporte" : converteOcc = localeOccTuxpan.getStringKey("report"); break;
+		case "Data" : converteOcc = localeOccTuxpan.getStringKey("date"); break;
+		case "Direcci�n Y/O Trayectoria" : converteOcc = localeOccTuxpan.getStringKey("direction"); break;
+		case "KM de Registro" : converteOcc = localeOccTuxpan.getStringKey("km_reg"); break;
+		case "KM Inicial" : converteOcc = localeOccTuxpan.getStringKey("km_init"); break;
+		case "KM Final" : converteOcc = localeOccTuxpan.getStringKey("km_end"); break;
+		case "Poliza por afectar" : converteOcc = localeOccTuxpan.getStringKey("policy"); break;
+		case "Hora de Registro Cabina" : converteOcc = localeOccTuxpan.getStringKey("hour_reg"); break;
+		case "Hora de Arribo de Ajustador" : converteOcc = localeOccTuxpan.getStringKey("hour_ajus"); break;
+		case "Vehiculos Involucrados" : converteOcc = localeOccTuxpan.getStringKey("veh_inv"); break;
+		case "Tipo de Vehiculo" : converteOcc = localeOccTuxpan.getStringKey("type_veh"); break;
+		case "Num. Ejes" : converteOcc = localeOccTuxpan.getStringKey("num_axes"); break;
+		case "Siniestro" : converteOcc = localeOccTuxpan.getStringKey("sin_link");
+		case "Marca" : converteOcc = localeOccTuxpan.getStringKey("mark"); break;
+		case "Modelo" : converteOcc = localeOccTuxpan.getStringKey("model"); break;
+		case "Color" : converteOcc = localeOccTuxpan.getStringKey("color"); break;
+		case "Placa/Estado " : converteOcc = localeOccTuxpan.getStringKey("plate_state"); break;
+		case "Telefono" : converteOcc = localeOccTuxpan.getStringKey("phone"); break;
+		case "Nombre del Conductor" : converteOcc = localeOccTuxpan.getStringKey("name_cond"); break;
+		case "Edad" : converteOcc = localeOccTuxpan.getStringKey("age"); break;
+		case "Condiciones de Salud" : converteOcc = localeOccTuxpan.getStringKey("condition"); break;
+		
+		case "Motivo del Accidente" : converteOcc = localeOccTuxpan.getStringKey("reason_acc"); break;
+		case "Semoviente" : converteOcc = localeOccTuxpan.getStringKey("semoviente"); break;
+		case "Trabajos de Conservaci�n" : converteOcc = localeOccTuxpan.getStringKey("worked"); break;
+		case "Reporte Preliminar de Siniestro" : converteOcc = localeOccTuxpan.getStringKey("report_preliminary"); break;
+		case "Poliza Aplicada" : converteOcc = localeOccTuxpan.getStringKey("policy_app"); break;
+		case "Lluvia, Granizo" : converteOcc = localeOccTuxpan.getStringKey("rain_hail"); break;
+		case "Neblina" : converteOcc = localeOccTuxpan.getStringKey("fog"); break;
+		case "Vandalismo" : converteOcc = localeOccTuxpan.getStringKey("vandalism"); break;
+		case "Otro" : converteOcc = localeOccTuxpan.getStringKey("other"); break;
+		case "Observaciones" : converteOcc = localeOccTuxpan.getStringKey("obs"); break;
+		case "Folio RSA" : converteOcc = localeOccTuxpan.getStringKey("folio_rsa"); break;
+		case "Lesionados" : converteOcc = localeOccTuxpan.getStringKey("lesionado"); break;
+		case "Muertos" : converteOcc = localeOccTuxpan.getStringKey("muertos"); break;
+		case "KM" : converteOcc = localeOccTuxpan.getStringKey("km"); break;
+		case "Sentido " : converteOcc = localeOccTuxpan.getStringKey("sense"); break;
+		case "Causas" : converteOcc = localeOccTuxpan.getStringKey("cause"); break;
+		case "Ocupantes" : converteOcc = localeOccTuxpan.getStringKey("ocupantes"); break;
+		case "Vehiculos" : converteOcc = localeOccTuxpan.getStringKey("veh"); break;
+		case "Danos en Infraestructura" : converteOcc = localeOccTuxpan.getStringKey("damage_infra"); break;
+		case "Danos en" :converteOcc = localeOccTuxpan.getStringKey("danos_en");
+		case "Si/No" : converteOcc = localeOccTuxpan.getStringKey("yes_not"); break;
+		case "Defensa Metalica" : converteOcc = localeOccTuxpan.getStringKey("metal_defesa"); break;
+		case "Senalamiento" : converteOcc = localeOccTuxpan.getStringKey("pavement_damage"); break;
+		case "Dano en Pavimento" : converteOcc = localeOccTuxpan.getStringKey("pavement_damage"); break;
+		case "Danos en Cortes Terraplenas" : converteOcc = localeOccTuxpan.getStringKey("cut_damage"); break;
+		case "Dano en Obra Complementaria" : converteOcc = localeOccTuxpan.getStringKey("damage_works"); break;
+		case "Dano en Plazas de Cobro" : converteOcc = localeOccTuxpan.getStringKey("damage_toll"); break;
+		case "Otros" : converteOcc = localeOccTuxpan.getStringKey("others"); break;
+		
+		case "Si" : converteOcc = localeOccTuxpan.getStringKey("yes"); break;
+		case "No": converteOcc = localeOccTuxpan.getStringKey("nott"); break;
+		
+		}
+		return converteOcc;
 	}
 	
 	public String daiLabels(String dai) {

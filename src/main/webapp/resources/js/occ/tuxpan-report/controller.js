@@ -1,50 +1,263 @@
-$(init => {
-    table()
-    appendOcc()
-    $('#add_append_sin').append(btn_sin)
-    veh_ocup_sin()
-    clickSave()
-    getTypeReport()
-    hiddenBts()
-    clickUpdate()
-    blockVirgula()
-})
-function blockVirgula(){
-	$('#vehInv_append input').on("input", function(e) {
-    	$(this).val($(this).val().replace(/,/g, ""));
-	});
-	$('#tiposVeh input').on("input", function(e) {
-    	$(this).val($(this).val().replace(/,/g, ""));
-	});
-	$('#datos_person input').on("input", function(e) {
-    	$(this).val($(this).val().replace(/,/g, ""));
-	});
+$((init) => {
+    table();
+    updateType()
+    clickSave();
+    getTypeReport();
+    hiddenBts();
+    clickUpdate();
+    blockVirgula();
+    formSin();
+    divFile();
+    saveSin();
+    setFile()
+    pdf();
+
+	$('[id$=editocc]').click(()=>{
+		$(".fecha").mask("99/99/9999");
+        $(".hora").mask("00:00");
+        $(".km").mask("000+000");
+	})
+    $('#type_occ, #type_sin').click(() => {
+        $('.divFile').addClass('hidden')
+       setTimeout(()=>{
+	 $(".fecha").mask("99/99/9999");
+        $(".hora").mask("00:00");
+        $(".km").mask("000+000");
+ 			appendOcc();
+        	vehOcupSin();
+        	setFile()
+		},1000)
+        	
+        $('#inputFileSin').prop('accept', 'image/*')
+        $("#resetFormSin, #resetFormOcc").click()
+		
+    })
+
+    $("#modalOcc, #modalSin").on("hidden.bs.modal", () => {
+        $("#resetFormSin, #resetFormOcc").click();
+        divFile();
+    });
+
+    $("#file").change(() => {
+        $("#copyFile").val($("#file").val());
+    });
+});
+
+function deleteFile(){
+	$('#delist a').click(function(){
+        var id = $(this).attr('id');
+        let value = $(`.${id}`).text()
+        $('#setFileName').val(value)
+        setTimeout(()=>{
+		 $('#btnSetFilename').click()
+		 setTimeout(()=>{
+			$(`#${id}`).addClass('hidden')
+			$(`.${id}`).text('Excluido')
+			},100)
+		  
+		},100)
+    });
 }
+function updateType() {
+    let path = window.location.pathname
+    if (path == "/occurrence/tuxpan/accidente.xhtml")
+        $('#type_report').val('1')
+    else if (path == "/occurrence/tuxpan/preliminar.xhtml")
+        $('#type_reports').val('2')
+}
+
+function pdf() {
+    $("[id$=downloadPdf]").click((e) => {
+        setTimeout((x) => {
+            $("[id$=pdfDownload]").click();
+            $("#type_occ, #type_sin").click(() => {
+
+            });
+        }, 200);
+    });
+}
+
+function setFile() {
+
+    $(".getFile, .getFiles").change(() => {
+        let file = document.querySelector(".getFile").files.length;
+        let files = document.querySelector(".getFiles").files.length;
+        if (file > 0 || files > 0) {
+            $("#saveOcc").click(() => {
+                setTimeout(() => {
+                    $("#setFile").click();
+                }, 150);
+            });
+            $("#sinSave").click(() => {
+                setTimeout(() => {
+                    $("#setFileS").click();
+                }, 150);
+            });
+        }
+    });
+}
+
+function divFile() {
+    $(".file").click(() => {
+        setTimeout(() => {
+            $(".divForm").addClass("hidden");
+            $(".divFile").removeClass("hidden");
+        }, 100);
+    });
+    $(".tituloModal").click(() => {
+        setTimeout(() => {
+            $(".divForm").removeClass("hidden");
+            $(".divFile").addClass("hidden");
+        }, 50);
+    });
+}
+
+function formSin() {
+    $("#type_sin").click((a) => {
+        getObsSin();
+        blockVirgula();
+        hiddenBts();
+    });
+}
+
+function editInfos() {
+    //sin
+    $("#get_folio_secS").val($("#folio_rsa").val());
+    $("#get_siniestroS").val($("#sinistro_sin").val());
+    $("#get_folio_secs").val($("#folio_rsa").val());
+    $("#get_siniestros").val($("#sinistro_sin").val());
+    $("#sinReporte").val("-");
+    //occ
+    $("#get_folio_sec").val($("#folio_secuencial").val());
+    $("#get_report").val($("#reporte").val());
+    $("#get_siniestro").val($("#siniestro").val());
+    //
+    $("#folio_secFile").val($("#folio_secuencial").val());
+    $("#reporteFile").val($("#reporte").val());
+    $("#siniestroFile").val($("#siniestro").val());
+
+}
+
+function scann() {
+
+    const id = $(
+        "#reporte, #siniestro, #folio_secuencial, #sinistro_sin, #folio_rsa"
+    );
+    $(id).change((e) => {
+        if ($("#type_report").val() == "1") {
+            if (
+                $("#folio_secuencial").val() == "".trim() ||
+                $("#siniestro").val() == "".trim() ||
+                $("#reporte").val() == "".trim()
+            ) {
+            } else {
+                $("#get_folio_sec").val($("#folio_secuencial").val());
+                $("#get_report").val($("#reporte").val());
+                $("#get_siniestro").val($("#siniestro").val());
+                //
+                $("#folio_secFile").val($("#folio_secuencial").val());
+                $("#reporteFile").val($("#reporte").val());
+                $("#siniestroFile").val($("#siniestro").val());
+            }
+        } else if ($("#type_reports").val() == "2") {
+            if (
+                $("#sinistro_sin").val() == "".trim() ||
+                $("#folio_rsa").val() == "".trim()
+            ) {
+            } else {
+                $("#get_folio_secS").val($("#folio_rsa").val());
+                $("#get_siniestroS").val($("#sinistro_sin").val());
+                $("#get_folio_secs").val($("#folio_rsa").val());
+                $("#get_siniestros").val($("#sinistro_sin").val());
+                $("#sinReporte").val("-");
+            }
+        }
+    });
+}
+
+function blockVirgula() {
+    $("#vehInv_append input").on("input", function(a) {
+        $(this).val($(this).val().replace(/,/g, ""));
+    });
+    $("#tiposVeh input").on("input", function(b) {
+        $(this).val($(this).val().replace(/,/g, ""));
+    });
+    $("#datos_person input").on("input", function(c) {
+        $(this).val($(this).val().replace(/,/g, ""));
+    });
+    $("#add_append_sin input").on("input", function(d) {
+        $(this).val($(this).val().replace(/,/g, ""));
+    });
+    $("#getObs input").on("input", function(d) {
+        $(this).val($(this).val().replace(/,/g, ""));
+    });
+}
+
 function appendOcc() {
-    vehInvAppend()
-    addTipo()
-    datos_person()
+    vehInvAppend();
+    addTipo();
+    datos_person();
+}
+
+function hiddenBtnSin() {
+    $("#saveSin").addClass("hidden");
+    $("#saveUpdate").removeClass("hidden");
+    $(".fecha").mask("99/99/9999");
+    $(".hora").mask("00:00");
+    $(".km").mask("000+000");
+    blockVirgula();
 }
 
 function hiddenBts() {
-    $('[id$=editocc]').click(a => {
-        $('#updateOcc').removeClass('hidden')
-        $('#occSave').addClass('hidden')
-    })
-    $('[id$=type_occ]').click(b=>{
-		//$('[id$=form_occ] input').val('')
-		$('#updateOcc').addClass('hidden')
-        $('#occSave').removeClass('hidden')
-	})
+    $("[id$=editocc]").click((a) => {
+        $("#updateOcc").removeClass("hidden");
+        $("#occSave").addClass("hidden");
+
+        setTimeout(() => {
+            $(".fecha").mask("99/99/9999");
+            $(".hora").mask("00:00");
+            $(".km").mask("000+000");
+            editInfos();
+        }, 200);
+    });
+    $("[id$=type_occ]").click((b) => {
+        //$('[id$=form_occ] input').val('')
+        $("#updateOcc").addClass("hidden");
+        $("#occSave").removeClass("hidden");
+    });
+    $("[id$=type_sin]").click((c) => {
+        $("#saveSin").removeClass("hidden");
+        $("#saveUpdate").addClass("hidden");
+    });
 }
 
 function clickUpdate() {
-    $('#updateOcc').click(a => {
-        getVehInvChilds()
-        setTimeout(b => {
-            $('[id$=OccUpdate]').click()
-        }, 100)
-    })
+    $("#updateOcc").click(() => {
+        getVehInvChilds();
+        let file = document.querySelector(".getFile").files.length;
+        //setTimeout(() => {
+        $("[id$=OccUpdate]").click();
+        setTimeout(() => {
+            if (file > 0) {
+                $("#setFile").click();
+            }
+        }, 150);
+        // }, 100);
+    });
+    $("#saveUpdate").click(() => {
+        let files = document.querySelector(".getFiles").files.length;
+        getVehOcupSin();
+        getObsSin();
+        //setTimeout(d => {
+        $("[id$=updateSin]").click();
+        setTimeout(() => {
+            if (files > 0) {
+                $("#setFileS").click();
+            }
+
+        }, 150);
+        //}, 100)
+    });
 }
 
 function getTypeReport() {
@@ -57,17 +270,24 @@ function getTypeReport() {
 
 }
 
-function clickSave() {
-    $('#occSave').click(e => {
-        getTipoVeh()
-        getVehInv()
-        getPerson()
-        setTimeout(f => {
-            $('[id$=saveOcc]').click()
-            appendOcc()
-            listOcc()
-        }, 100)
-    })
+function saveSin() {
+    console.log("*");
+    $("#saveSin").click((a) => {
+        getVehOcupSin();
+        getObsSin();
+
+        setTimeout((b) => {
+            $("#sinSave").click();
+		setTimeout(e=>{
+			 //listSin();
+		},1000)
+           
+        }, 50);
+    });
+}
+
+function listSin() {
+    $("[id$=list_sin]").click();
 }
 
 function listOcc() {
