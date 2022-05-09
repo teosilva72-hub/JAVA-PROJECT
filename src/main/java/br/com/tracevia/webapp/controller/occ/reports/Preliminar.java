@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -152,15 +153,8 @@ public class Preliminar {
 	}	
 
 	public String filter(String reporte, String siniestro, String folio) {
-		reporte = reporte.replace(" ", ""); siniestro = siniestro.replace(" ", ""); folio = folio.replace(" ", "");
-		reporte = reporte.replace(",", ""); siniestro = siniestro.replace(",", ""); folio = folio.replace(",", "");
-		reporte = reporte.replace("-", "");	siniestro = siniestro.replace("-", ""); folio = folio.replace("-", "");
-		reporte = reporte.replace("/", ""); siniestro = siniestro.replace("/", ""); folio = folio.replace("/", "");
-		reporte = reporte.replace("\\", ""); siniestro = siniestro.replace("\\", ""); folio = folio.replace("\\", "");
-		reporte = reporte.replace("*", ""); siniestro = siniestro.replace("*", ""); folio = folio.replace("*", "");
-		reporte = reporte.replace("|", "");	siniestro = siniestro.replace("|", ""); folio = folio.replace("|", "");
-		reporte = reporte.replace("?", ""); siniestro = siniestro.replace("?", ""); folio = folio.replace("?", "");
-		reporte = reporte.replace(":", ""); siniestro = siniestro.replace(":", ""); folio = folio.replace(":", "");
+		String pattern = "[\\s,-/\\\\\\*\\|\\?:<>]";
+		reporte = reporte.replaceAll(pattern, ""); siniestro = siniestro.replaceAll(pattern, ""); folio = folio.replaceAll(pattern, "");
 		String result = reporte+siniestro+folio;
 		createFolder(result);
 		return result;

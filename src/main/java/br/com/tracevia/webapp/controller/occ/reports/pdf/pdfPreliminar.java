@@ -337,7 +337,7 @@ public class pdfPreliminar {
 			logo = ImageUtil.getInternalImagePath("images", "files", RoadConcessionaire.externalImagePath);
 			if(!logo.equals("")) {
 				Image tuxpanL = Image.getInstance(logo);
-				tuxpanL.setAbsolutePosition(200, 770);
+				tuxpanL.setAbsolutePosition(90, 770);
 				tuxpanL.scaleAbsolute (120, 60);
 
 				document.add(tuxpanL);
@@ -467,7 +467,13 @@ public class pdfPreliminar {
 
 
 			Preliminar method = new Preliminar();
-			String filter = method.filter(model().getReporte(), model().getSiniestro(), model().getFolio_sec());
+			String filter = "";
+			if(model().getReporte().equals("") || model().getSiniestro().equals("") || model().getFolio_sec().equals("")) {
+				String a = "-", b ="-";
+				filter = method.filter(model().getIdPasta(),a,b);
+			}else{
+				filter = method.filter(model().getReporte(), model().getSiniestro(), model().getFolio_sec());
+			}
 			String mainPath = method.createFolder(filter);
 			System.out.println(mainPath);
 			String[] imgs = method.listarFiles(mainPath);

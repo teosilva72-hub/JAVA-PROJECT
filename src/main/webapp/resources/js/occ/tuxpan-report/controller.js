@@ -23,10 +23,11 @@ $((init) => {
 	 $(".fecha").mask("99/99/9999");
         $(".hora").mask("00:00");
         $(".km").mask("000+000");
-},1000)
-        appendOcc();
-        vehOcupSin();
-        setFile()
+ 			appendOcc();
+        	vehOcupSin();
+        	setFile()
+		},1000)
+        	
         $('#inputFileSin').prop('accept', 'image/*')
         $("#resetFormSin, #resetFormOcc").click()
 		
