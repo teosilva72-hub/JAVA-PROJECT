@@ -76,7 +76,7 @@ const init = () => {
 	})	
 	
 	 // if any popover is opened then it's closed on page load
-	 $('[data-toggle=popover-d]').popover('hide')
+	 $('[data-toggle=popover-d]').popover('hide')	
 		
 }
 
@@ -1130,6 +1130,7 @@ $(function () {
 $(function () {
 	$('#btnLayers').removeClass('hidden').addClass('show');
 	$('#btnEquips').removeClass('hidden').addClass('show');
+	$('#darkmodeItem').removeClass('hidden').addClass('show');
 });
 
 /* show hidden buttons */

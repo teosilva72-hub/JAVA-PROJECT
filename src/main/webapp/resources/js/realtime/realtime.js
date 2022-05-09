@@ -67,9 +67,8 @@ const init = () => {
 	
 	 // if any popover is opened then it's closed on page load
 	 $('[data-toggle=popover-d]').popover('hide')
+
 }
-
-
 
 const onEventMapFunction = data => {
 	var status = data.status;
@@ -1102,8 +1101,8 @@ $('#kmEdit').mask('000+000'); 	// KM MASK
 $(function () {
   $('#btnLayers').removeClass('hidden').addClass('show');  
     $('#btnEquips').removeClass('hidden').addClass('show');  
-    
-    });
+	$('#darkmodeItem').removeClass('hidden').addClass('show');
+ });
     
 /* show hidden buttons */
 
