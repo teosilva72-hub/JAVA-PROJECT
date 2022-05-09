@@ -55,23 +55,14 @@ const init = () => {
 		setEquipToolTip();
 		showGenericName();
 
-		if (window.initPMV)
-			initPMV();
+		if(window.initPMV)
+		  initPMV();
 
-		if (window.initSOS)
-			initSOS();
+		if(window.initSOS)
+		  initSOS();
 
-		if (window.initMonitor)
-			initMonitor();
-
-		if (window.initSPEED)
-			initSPEED();
-
-		if (window.initGPS)
-			initGPS();
-
-		if (window.initMeteo)
-			initMeteo();
+	    if(window.initMonitor)		
+	      initMonitor();
 	})
 	
 	 // if any popover is opened then it's closed on page load

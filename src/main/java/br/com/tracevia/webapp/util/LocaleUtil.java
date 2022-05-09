@@ -45,7 +45,6 @@ public class LocaleUtil {
 	public static final String LABELS_SPEED = "bundle.labels.speed.labels_speed_";	
 	public static final String LABELS_NOTIFICATIONS = "bundle.labels.system.notifications.labels_notifications_";
 	public static final String LABELS_REPORT = "bundle.labels.system.reports.messages_reports";
-	public static final String LABELS_REPORT_TUXPAN = "bundle.labels.occ.report.tuxpan.labels_occ_";
 	// MESSAGES RESOURCE BUNDLE
 	
 	public static final String MESSAGES_DASHBOARD = "bundle.messages.dashboard.messages_dashboard_";

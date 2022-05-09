@@ -14,13 +14,13 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{reportBean.defineFileName('Relatório de Pesagem')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle('Relatório de Pesagem')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.via_paulista_speed_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.via_paulista_speed_title)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECO 101')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineImageName('Relatório de Pesagem')}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle('Relatório de Pesagem')}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.via_paulista_speed_file_name)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.via_paulista_speed_title)}" />		
 		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
