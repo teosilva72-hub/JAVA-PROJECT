@@ -1101,7 +1101,6 @@ $('#kmEdit').mask('000+000'); 	// KM MASK
 $(function () {
   $('#btnLayers').removeClass('hidden').addClass('show');  
     $('#btnEquips').removeClass('hidden').addClass('show');  
-	$('#darkmodeItem').removeClass('hidden').addClass('show');
  });
     
 /* show hidden buttons */
