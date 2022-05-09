@@ -2,32 +2,27 @@
 
 package br.com.tracevia.webapp.controller.system;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
 import org.primefaces.context.RequestContext;
-
 import br.com.tracevia.webapp.dao.system.SupportDAO;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.system.Support;
 import br.com.tracevia.webapp.util.EmailUtil;
 import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="supportController")
-public class SupportControllerBeean implements Serializable {
+public class SupportControllerBeean {
 		
-	/**
-	 * SERIAL ID
-	 */
 	
-	private static final long serialVersionUID = 3370742031865198113L;
-	
+
 	FacesContext facesContext;
 	ExternalContext externalContext;
 	

@@ -13,11 +13,6 @@
        
        <!-- CSS -->
 		<h:outputStylesheet name="layoutBoardSAT.css" library="css/sat" />	
-		<h:outputStylesheet name="popover.css" library="css/util/popover" /> <!-- INSERT POPOVER -->
-        <h:outputStylesheet name="tooltip.css" library="css/util/tooltip" /> <!-- INSERT TOOLTIP -->
-        <h:outputStylesheet name="preloader.css" library="css/util/preloader" /> <!-- INSERT PRELOADER -->
-        
-        <!---->
 	
 		<!-- Script -->	
 		<h:outputScript library="js/board" name="board.js?version=#{notificationsView.timestamp}"  />		
@@ -25,16 +20,6 @@
 	</ui:define>
 			
 	<ui:define name="main-content">
-	
-		<!-- ======================== PRE LOADER ======================== -->
-	
-		<ui:include src="/template/util/preloader/preloader.xhtml" />
-		
-		<!---->
-	
-   		<ui:include src="/template/equips/template/sat/sat-board.xhtml" /> 
-   		
-   		<!---->   		
-   		
+   		<ui:include src="/template/equips/sat/sat-board.xhtml" /> 
 	</ui:define>
 </ui:composition>

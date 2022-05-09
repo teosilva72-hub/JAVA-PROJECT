@@ -8,9 +8,9 @@ import java.util.List;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.log.SystemLog;
 import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.VehicleByVehicle;
 import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
 import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
-import br.com.tracevia.webapp.model.sat.VehicleByVehicle;
 
 public class VehicleByVehicleDAO {
 	

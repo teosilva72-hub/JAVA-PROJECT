@@ -43,8 +43,8 @@ import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.colas.ColasQueue;
 import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments.listEquips;
 import br.com.tracevia.webapp.controller.global.LoginAccountBean;
-import br.com.tracevia.webapp.controller.global.ListEquipments.listEquips;
 import br.com.tracevia.webapp.dao.colas.ColasDAO;
 import br.com.tracevia.webapp.util.LocaleUtil;
 

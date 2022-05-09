@@ -57,8 +57,6 @@ public class OCRDAO{
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally {
-			conn.close();
 		}
 
 		return list;
@@ -168,7 +166,7 @@ public class OCRDAO{
 		String nameVeh = data.getCam().replaceAll(" ", "_");
 		
 		String sourceFolder = ftpFolder.concat(nameVeh).concat("\\"+subFolder);		
-		String vehicleImg = sourceFolder.concat("\\Plate"+nameVeh).concat("_"+dateVeh+"_").concat(data.getPlaca()+".jpg");
+		String vehicleImg = sourceFolder.concat("\\"+nameVeh).concat("_"+dateVeh+"_").concat(data.getPlaca()+".jpg");
 				
 		File image = new File(vehicleImg); // To check IF exists
 									

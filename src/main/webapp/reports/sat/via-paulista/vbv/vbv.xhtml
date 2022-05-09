@@ -149,26 +149,17 @@
 			<!-- FOOTER BUTTONS -->
 			
 			<div class="row">
-			
-			  	<!---->
-			
-				<button type="button" id="btn-form-before-submit"
-					class="btn btn-dark form-modal-draw-button submit-btn ml-5" onclick="verif('#vbv-form', '[id$=btn-form-send]')">#{satLabels.sat_reports_form_btn_send}
-				</button>
-				
-				<!---->
 	
 				<h:commandButton value="#{reportsLabels.reports_form_btn_send}"
-					id="btn-form-send" action="#{vbvReportBean.getTextFile}"
-					class="btn btn-dark form-modal-draw-button d-none" /> <!-- SEND -->
+					id="btn-send" action="#{vbvReportBean.getTextFile}"
+					class="btn btn-dark form-draw-button submit-btn" /> <!-- SEND -->
 				
                 <!---->
-                
-              	<h:commandButton value="#{reportsLabels.reports_form_btn_reset}" action="#{vbvReportBean.resetForm}" immediate="true"
-					id="btn-reset" class="btn btn-dark form-modal-draw-button ml-2 reset-btn" onclick="$('#equip').val(''); $('#month').val(''); $('#year').val('')" >
-                   	  <f:ajax render="btnText" resetValues="true"/> <!-- RESET -->	
-                </h:commandButton>	
-
+				
+				<h:commandButton value="#{reportsLabels.reports_form_btn_reset}" id="btn-form-reset"
+					immediate="true" type="reset" class="btn btn-dark form-modal-draw-button reset-btn" >
+				</h:commandButton><!-- BUTTON RESET -->
+				<!---->	
           						
 			</div>
 

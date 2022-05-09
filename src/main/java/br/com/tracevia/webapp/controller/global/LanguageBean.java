@@ -60,7 +60,7 @@ public class LanguageBean implements Serializable {
 
 	@PostConstruct
 	public void defaultLanguage() {
-				
+
 		roadConcessionaire = new RoadConcessionaire();
 		dao = new RoadConcessionaireDAO();
 

@@ -56,6 +56,7 @@ $(function () {
 
 				maxRange = Date.parse(start_date) > timestamp;
         
+
           }
         }
         let formatedDate = `${date.getDate().toString().padStart(2, 0)}/${(date.getMonth() + 1).toString().padStart(2, 0)}/${date.getFullYear().toString().padStart(4, 0)}`
@@ -87,5 +88,6 @@ $(function () {
     //Reset validation form
     //click reset button action
     resetFormValidation("#report-form", "reset-btn");
+
 
 });

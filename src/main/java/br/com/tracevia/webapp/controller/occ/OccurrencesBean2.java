@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
@@ -76,13 +75,8 @@ import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="occurrencesBean2")
 @ViewScoped
-public class OccurrencesBean2 implements Serializable{
+public class OccurrencesBean2 {
 
-	/**
-	 * SERIAL ID
-	 */
-	private static final long serialVersionUID = -5066820515588334775L;
-	
 	private OccurrencesData2 data;
 	private OccurrencesData2 getPdf;
 	private UserAccountBean userId;

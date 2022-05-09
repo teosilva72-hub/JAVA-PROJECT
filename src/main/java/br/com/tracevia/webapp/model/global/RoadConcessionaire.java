@@ -86,9 +86,7 @@ public class RoadConcessionaire {
 	public static String tableStatus;
 	public static String plaque;    
 	public static boolean mapEnabled;
-	public static boolean mapDivided;
 	public static boolean reportsLLEnabled;	
-	public static boolean darkMap;	
 	public boolean ecoviasAraguaia;	
 	public boolean ausn;	
 	public boolean cardel;	
@@ -119,10 +117,6 @@ public class RoadConcessionaire {
 		eco101 = false;
 		hasNotification = false;
 		tester = false;
-		mapEnabled = false;
-		mapDivided = false;
-	    reportsLLEnabled = false;
-	    darkMap = false;
 		
 	}
 	
@@ -187,7 +181,7 @@ public class RoadConcessionaire {
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 			plaque = "";
 			mapEnabled = true;
-			mapDivided = true;			
+			reportsLLEnabled = true;
 			cardel = true;
 		}
 		
@@ -227,7 +221,9 @@ public class RoadConcessionaire {
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
-			plaque = "";	
+			plaque = "";
+			mapEnabled = false;
+			reportsLLEnabled = false;
 			ausn = true;
 		}
 		 			
@@ -269,9 +265,8 @@ public class RoadConcessionaire {
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 			plaque = "tuxpan";
 			mapEnabled = true;
-			mapDivided = true;	
-			darkMap = true;
-			tuxpan = true;
+			reportsLLEnabled = false;
+			tuxpan = true;							
 			
 		}
        
@@ -313,7 +308,7 @@ public class RoadConcessionaire {
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 			plaque = "";
 			mapEnabled = true;
-			mapDivided = true;			
+			reportsLLEnabled = false;
 			viales = true;							
 			
 		}
@@ -356,7 +351,7 @@ public class RoadConcessionaire {
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 			plaque = "";
 			mapEnabled = true;
-			mapDivided = true;		
+			reportsLLEnabled = false;
 			viaAmericas = true;
 													
 		}
@@ -394,10 +389,11 @@ public class RoadConcessionaire {
    			tableVBV = DefaultTable.tableVBV.getTable();
    			tableDados15 = DefaultTable.tableDados15.getTable();   			
    			plaque = "";
-   			mapEnabled = true;  
-   			hasNotification = true;    		
+   			mapEnabled = true;
+   			reportsLLEnabled = false;
    			ecoviasAraguaia = true;   		
-   		   													
+   			hasNotification = true;   			
+   													
    		}       
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire())) {
@@ -434,7 +430,7 @@ public class RoadConcessionaire {
 			plaque = "";
 			linearMapUI = "/resources/images/linear-map/via-paulista/via_paulista.webp";
 			viaPaulista = true;
-			hasNotification = true;			
+			hasNotification = true;
 			
 		}
             
@@ -496,7 +492,8 @@ public class RoadConcessionaire {
 			tableStatus = ViaSulTables.ViaSulStatus.getTable();
 			tableLL = ViaSulTables.ViaSulLL.getTable();
 			tableCCR = ViaSulTables.ViaSulCCR.getTable();
-			plaque = "";			
+			plaque = "";
+			mapEnabled = false;
 			reportsLLEnabled = true;
 			viaSul = true;
 			hasNotification = true;
@@ -540,7 +537,7 @@ public class RoadConcessionaire {
 			tableLL = ViaSulTables.ViaSulLL.getTable();
 			tableCCR = ViaSulTables.ViaSulCCR.getTable();
 			plaque = "";
-			mapEnabled = true;			
+			mapEnabled = true;
 			reportsLLEnabled = true;
 			eco101 = true;
 			hasNotification = true;
@@ -581,7 +578,9 @@ public class RoadConcessionaire {
 		  tableStatus = TraceviaTables.TraceviaStatus.getTable();
 		  tableLL = TraceviaTables.TraceviaLL.getTable();
 	      tableCCR = TraceviaTables.TraceviaCCR.getTable();
-	      plaque = "";		 
+	      plaque = "";
+		  mapEnabled = false;
+		  reportsLLEnabled = false;
 		  viaSul = true;
 		  hasNotification = true;
 				  
@@ -624,7 +623,6 @@ public class RoadConcessionaire {
  	      tableCCR = TraceviaTables.TraceviaCCR.getTable();
           //plaque = "";
  		  mapEnabled = true;
- 		  mapDivided = true;
  		  reportsLLEnabled = false;
  		  tester = true;
  		  hasNotification = true;

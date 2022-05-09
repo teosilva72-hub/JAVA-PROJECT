@@ -1,6 +1,5 @@
 package br.com.tracevia.webapp.controller.dms;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,19 +8,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.controller.global.ListEquipments;
 import br.com.tracevia.webapp.model.dms.Messages;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 
 @ManagedBean(name="dmsMapsView")
 @ViewScoped
-public class DMSBuildMaps implements Serializable {
+public class DMSBuildMaps {
 	
-	/**
-	 * SERIAL ID
-	 */
-	private static final long serialVersionUID = 1L;
-
-	@ManagedProperty("#{listEquipsBean}")
+	@ManagedProperty("#{listEquips}")
 	private ListEquipments equips;			
 	
 	List<Messages> messagesDisplay;

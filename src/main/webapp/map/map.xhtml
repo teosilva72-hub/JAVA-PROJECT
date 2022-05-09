@@ -5,99 +5,52 @@
 
     <f:metadata>
 
-        <f:viewAction onPostback="true" action="#{equipsBean.defineInterfaceView('map')}" />       
-          
+        <f:viewAction onPostback="true" action="#{equipsBean.defineInterfaceView('map')}" />
+
     </f:metadata>
 
     <ui:define name="head">
 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>#{mapLabels.$label_map_home}</title>
-        
         <h:outputStylesheet name="form-style.css" library="css/forms" />
-        <h:outputStylesheet name="popover.css" library="css/util/popover" /> <!-- INSERT POPOVER -->
-        <h:outputStylesheet name="tooltip.css" library="css/util/tooltip" /> <!-- INSERT TOOLTIP -->
-        <h:outputStylesheet name="preloader.css" library="css/util/preloader" /> <!-- INSERT PRELOADER -->
-                      
-        <c:if test="#{ CFTV }">
-             <h:outputStylesheet name="cftv.css" library="css/map" />
-        </c:if>        
-        <!---->        
+        <h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
+        <h:outputStylesheet name="layoutSAT.css" library="css/sat" />
         <c:if test="#{ DMS }">
             <h:outputStylesheet name="layoutDMS.css" library="css/dms" />
-        </c:if>        
-        <!---->                
-        <c:if test="#{ HIT }">
-           <h:outputStylesheet name="layoutHit.css" library="css/hit" />
-        </c:if>                
-        <!---->               
-        <c:if test="#{ METEO }">
-            <h:outputStylesheet name="layoutMETEO.css" library="css/meteo" />
         </c:if>
-        <!---->
-         <c:if test="#{ SAT }">
-        	 <h:outputStylesheet name="layoutSAT.css" library="css/sat" />
-        </c:if>
-        <!---->        
         <c:if test="#{ SPEED }">
             <h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
         </c:if>
-        <!---->
-         <c:if test="#{ CFTV || COLAS || COMMS || DAI || OCR || SOS || WIM  }">
-            <h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
+        <c:if test="#{ METEO }">
+            <h:outputStylesheet name="layoutMETEO.css" library="css/meteo" />
         </c:if>
-        <!---->
         
-        <h:outputStylesheet name="map.css" library="css/map" />       
+        <h:outputStylesheet name="cftv.css" library="css/map" />
+        <h:outputStylesheet name="map.css" library="css/map" />
+        <h:outputStylesheet name="layoutHit.css" library="css/hit" />
         <h:outputStylesheet library="css/validation" name="validation-style.css" />
 
         <!-- Script -->
-        
         <h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
         <h:outputScript library="js/validation-forms/models" name="validation-models.js" />
         <h:outputScript library="js/validation-forms/user-interface" name="map-validation.js" />
-        <h:outputScript library="js/map/" name="mapPaleta.js" />           
+        <h:outputScript library="js/map/" name="mapPaleta.js" />
 
     </ui:define>
-    
-    <!-- PERMISSIONS AND DEFINITIONS -->
 
     <ui:param name="permission" value="#{ userAccount.userPermision() }" />
     <ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
+    <ui:param name="DMS" value="#{ loginAccount.load.en_dms }" />
+    <ui:param name="METEO" value="#{ loginAccount.load.en_meteo }" />
+    <ui:param name="CFTV" value="#{ loginAccount.load.en_cftv }" />
+    <ui:param name="SPEED" value="#{ loginAccount.load.en_speed }" />
     <ui:param name="VideoWall" value="#{ permission == 9 }" />
     <ui:param name="Map" value="map" />
-        
-    <!-- ENABLED EQUIPS -->
-    
-    <ui:param name="CFTV" value="#{ loginAccount.load.en_cftv }" />
-    <ui:param name="COLAS" value="#{ loginAccount.load.en_colas }" />
-    <ui:param name="COMMS" value="#{ loginAccount.load.en_comms }" />
-    <ui:param name="DAI" value="#{ loginAccount.load.en_dai }" />
-    <ui:param name="DMS" value="#{ loginAccount.load.en_dms }" />
-    <ui:param name="HIT" value="#{ loginAccount.load.en_hit }" />
-    <ui:param name="OCR" value="#{ loginAccount.load.en_ocr }" />
-    <ui:param name="METEO" value="#{ loginAccount.load.en_meteo }" />
-    <ui:param name="SAT" value="#{ loginAccount.load.en_sat }" />
-    <ui:param name="SOS" value="#{ loginAccount.load.en_sos }" />
-    <ui:param name="SPEED" value="#{ loginAccount.load.en_speed }" />
-    <ui:param name="WIM" value="#{ loginAccount.load.en_wim }" />
-    <ui:param name="DIVIDED" value="#{ loginAccount.mapDivided }" />
-            
-    <!---->
- 
-    <ui:define name="main-content">
-    
-     	<c:if test="#{ SAT }">
-	
-			<!-- ======================== PRE LOADER ======================== -->
-		
-			<ui:include src="/template/util/preloader/preloader.xhtml" />
-			
-			<!---->
-		
-		</c:if>
 
- 		  <c:if test="#{ SuperAdmin || VideoWall }">
+    <ui:define name="main-content">
+
+        <c:if test="#{ SuperAdmin || VideoWall }">
 
             <!-- ======================== ALERTS ======================== -->
 
@@ -105,22 +58,16 @@
 
         </c:if>
 
-         <!---->
+        <!---->
 
         <!-- WEB ZOOM -->
 
         <div class="map-options">
             <div id="topButtons">
-            
-            	<ui:fragment rendered="#{loginAccount.mapDivided}" > <!-- CASO EXISTIR MAPA DIVIDO -->
 
-	                <button type="button" id="divide" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Divide Screen">
-						<span><i class="fas fa-object-group fa-2x"></i></span>
-					</button>
-				
-				</ui:fragment>
-				
-				<!---->
+                <button type="button" id="divide" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Divide Screen">
+					<span><i class="fas fa-object-group fa-2x"></i></span>
+				</button>
 
                 <button type="button" id="zoomIn" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
 					<span><i class="fas fa-plus-square fa-2x"></i></span>
@@ -201,12 +148,27 @@
 					</div>
 				</div> -->
 
-                <div class="linesbox d-none"> <!-- Linhas dos equipamentos -->
+                <div class="linesbox d-none">
                     <div>
                         <input type="checkbox" id="visiblelines" name="visiblelines" checked=""></input> <label for="visiblelines">#{mapLabels.$label_map_option_btn_lines_equips}</label>
                     </div>
                 </div>
-         	 <!---->
+
+                <!---->
+
+                <div class="darkmodebox">
+                    <input type="checkbox" id="darkmode" name="darkmode"></input>
+                    <label for="darkmode">
+					      <div class="scenary">
+						   <div class="moon">
+			                 <img id="dark-icon" src="/resources/images/dark-light/moon.webp" />						
+						  </div>
+						    <div class="sun">
+						       <img id="light-icon" src="/resources/images/dark-light/sun.webp" />		
+						    </div>						
+						  </div>							
+						</label>
+                </div>
             </div>
 
             <c:if test="#{ SuperAdmin || VideoWall }">
@@ -239,8 +201,6 @@
             </c:if>
 
         </div>
-        
-        <!---->
 
         <!-- WEB ZOOM END -->
 
@@ -328,88 +288,65 @@
 
             <button class="btn btn-dark d-none ml-auto" title="#{mapLabels.$label_map_vehicles}" type="button" id="CarSelect">#{mapLabels.$label_map_vehicles_view}</button>
         </div>
-        
-        <!-- =========================================================================================================== -->
-                  
-        <ui:fragment rendered="#{loginAccount.mapDivided}" > <!-- CASO EXISTIR MAPA DIVIDO -->
-        
-          <!-- WEB ZOOM DIVIDE BUTTON -->
-        
-	        <div class="map-full-option" style="display: none;">
-	
-	            <button type="button" id="full" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Full Map View">
-					<span><i class="fas fa-expand fa-2x"></i></span>
+
+        <!--  ******************************************************************************************************* -->
+
+        <!-- DropDown Equip Size Menu END -->
+
+        <!-- WEB ZOOM DIVIDE -->
+        <div class="map-full-option" style="display: none;">
+
+            <button type="button" id="full" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Full Map View">
+				<span><i class="fas fa-expand fa-2x"></i></span>
+			</button>
+        </div>
+
+        <div id="mapDivide" class="row" style="display: none">
+
+            <!-- Imagem 1 -->
+            <div class="squarebox" id="divs">
+                <section id="zoomDivs1"> <iframe class="grid-img" id="frame1" src="" /> </section>
+                <button type="button" id="zoomIn1" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
+					<span><i class="fas fa-plus-square fa-1x"></i></span>
 				</button>
-	        </div>
-	        
-	        <!---->
-	        
-	        <!-- MAP DIVIDE -->
-	        
-	       <div id="mapDivide" class="row" style="display: none">
-		        
-	            <div class="squarebox" id="divs">
-	                <section id="zoomDivs1"> <iframe class="grid-img" id="frame1" src="" /> </section>
-	                	<!---->
-	                	<button type="button" id="zoomIn1" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
-							<span><i class="fas fa-plus-square fa-1x"></i></span>
-						</button>
-						<!---->
-		                <button type="button" id="zoomOut1" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom Out" data-trigger="hover">
-							<span><i class="fas fa-minus-square fa-1x"></i></span>
-						</button>
-						<!---->
-		                <button type="button" id="fulldiv1" class="zoomFull" data-toggle="tooltip" data-placement="bottom" title="Reset View" data-trigger="hover">
-							<span> <i class="fas fa-expand-arrows-alt"></i></span>
-						</button>
-					    <!---->
-	            	</div>	
-	            
-	            <div class="squarebox" id="divs1">
-	                <section id="zoomDivs2"> <iframe class="grid-img" id="frame2" src="" /> </section>
-	                	<!---->
-		                <button type="button" id="zoomIn2" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
-							<span><i class="fas fa-plus-square fa-1x"></i></span>
-						</button>
-						<!---->
-		                <button type="button" id="zoomOut2" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom Out" data-trigger="hover">
-							<span><i class="fas fa-minus-square fa-1x"></i></span>
-						</button>
-						<!---->
-		                <button type="button" id="fulldiv2" class="zoomFull" target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png" data-toggle="tooltip" data-placement="bottom" title="Reset View" data-trigger="hover">
-							<span> <i class="fas fa-expand-arrows-alt"></i></span>
-						</button>
-						<!---->
-	             </div>
-	
-				<!---->
-	          
-	            <div class="squarebox" id="divs2">
-	                <section id="zoomDivs3"> <iframe class="grid-img" id="frame3" src="" /> </section>
-	                	<!---->
-		                <button type="button" id="zoomIn3" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
-							<span><i class="fas fa-plus-square fa-1x"></i></span>
-						</button>
-						<!---->
-		                <button type="button" id="zoomOut3" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom Out" data-trigger="hover">
-							<span><i class="fas fa-minus-square fa-1x"></i></span>
-						</button>
-						<!---->
-		                <button type="button" id="fulldiv3" class="zoomFull" target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" data-toggle="tooltip" data-placement="bottom" title="Reset View" data-trigger="hover">
-							<span> <i class="fas fa-expand-arrows-alt"></i></span>
-						</button>
-						<!---->
-	            	</div>
-	        	</div>
-	        	
-	        	<!---->
-        
-        </ui:fragment>
-                
-        <!-- =========================================================================================================== -->
-      
+                <button type="button" id="zoomOut1" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom Out" data-trigger="hover">
+					<span><i class="fas fa-minus-square fa-1x"></i></span>
+				</button>
+                <button type="button" id="fulldiv1" class="zoomFull" data-toggle="tooltip" data-placement="bottom" title="Reset View" data-trigger="hover">
+					<span> <i class="fas fa-expand-arrows-alt"></i></span>
+				</button>
+            </div>
+
+            <!-- Imagem 2 -->
+            <div class="squarebox" id="divs1">
+                <section id="zoomDivs2"> <iframe class="grid-img" id="frame2" src="" /> </section>
+                <button type="button" id="zoomIn2" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
+					<span><i class="fas fa-plus-square fa-1x"></i></span>
+				</button>
+                <button type="button" id="zoomOut2" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom Out" data-trigger="hover">
+					<span><i class="fas fa-minus-square fa-1x"></i></span>
+				</button>
+                <button type="button" id="fulldiv2" class="zoomFull" target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png" data-toggle="tooltip" data-placement="bottom" title="Reset View" data-trigger="hover">
+					<span> <i class="fas fa-expand-arrows-alt"></i></span>
+				</button>
+            </div>
+
+            <!-- Imagem 3 -->
+            <div class="squarebox" id="divs2">
+                <section id="zoomDivs3"> <iframe class="grid-img" id="frame3" src="" /> </section>
+                <button type="button" id="zoomIn3" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom In" data-trigger="hover">
+					<span><i class="fas fa-plus-square fa-1x"></i></span>
+				</button>
+                <button type="button" id="zoomOut3" class="zoomButton" data-toggle="tooltip" data-placement="bottom" title="Zoom Out" data-trigger="hover">
+					<span><i class="fas fa-minus-square fa-1x"></i></span>
+				</button>
+                <button type="button" id="fulldiv3" class="zoomFull" target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" data-toggle="tooltip" data-placement="bottom" title="Reset View" data-trigger="hover">
+					<span> <i class="fas fa-expand-arrows-alt"></i></span>
+				</button>
+            </div>
+        </div>
+
         <!-- OVERFLOW -->
-        
         <section class="overflow" scroll-zoom=".5" max-scale="10" id="content">
             <!-- START SECTION -->
             <div id="zoomtext" scale="1" class="section">
@@ -461,29 +398,23 @@
                 </div>
 
             </ui:fragment>
-        </section>        
-        
-        <!-- =========================================================================================================== -->
-       
-       <!-- CONTEXT -->
-       
-      <div class="context-menu">
+        </section>
+
+        <div class="context-menu">
             <c:if test="#{ CFTV }">
                 <button type="button" class="btn btn-secondary dinamic-mouse-right" for="cftv" onclick="settingCftv()">#{mapLabels.$label_map_equipment_settings}</button>
                 <button type="button" class="btn btn-dark dinamic-mouse-right" for="cftv" onclick="windowCftvRight()">#{mapLabels.$label_map_equipment_realtime_view}</button>
             </c:if>
             <button type="button" class="btn btn-dark dinamic-mouse-right" for="carGPS" onclick="openModalGPS()">#{mapLabels.$label_map_change_vehicle}</button>
-            <c:if test="#{ SuperAdmin }">
+            <c:if test="#{ SuperAdmin || VideoWall }">
                 <button type="button" class="btn btn-secondary dinamic-mouse-right" for="all" onclick="moreOption()">#{mapLabels.$label_map_equipment_options}</button>
             </c:if>
         </div>
-        
+
     </ui:define>
-     
-    <!-- =========================================================================================================== -->
-       
-       <!-- MODAL CONTENT -->
-       
+
+    <!---->
+
     <ui:define name="modal-content">
         <c:if test="#{ SuperAdmin }">
 
@@ -537,54 +468,45 @@
 
         <!-- ======================== CFTV SETTINGS ======================== -->
 
-        <c:if test="#{ CFTV }">
+        <ui:fragment rendered="#{ CFTV }">
             <ui:include src="/template/map-modal/cftv-settings.xhtml" />
-        </c:if>
+        </ui:fragment>
         <!---->
 
     </ui:define>
 
-      <!-- =========================================================================================================== -->
-     
-     <!-- JS -->
-     
+    <!---->
+
     <ui:define name="jscript">
 
-        <!-- JS FILES -->
-
-        <h:outputScript name="gps.js" library="js/gps" />
-        <h:outputScript name="map.js" library="js/map" />
-        
-        <!---->
-        
-        <c:if test="#{ CFTV }">
-            <h:outputScript library="js/map/" name="mapCftcv.js" />
-        </c:if>
-        <!---->
-        
         <c:if test="#{ DMS }">
             <h:outputScript name="dmsAnimation.js" p:type="module" library="js/dms" />
         </c:if>
 
         <!---->
-        
-        <c:if test="#{ HIT }">
-        	<h:outputScript name="controllerHIT.js" library="js/hit" />
-        </c:if>
-        
-        <!----> 
-       
-        <c:if test="#{ METEO }">
-            <h:outputScript name="main.js" library="js/meteo" />
-        </c:if>
-        
-        <!----> 
-        
-         <c:if test="#{ SPEED }">
+
+        <c:if test="#{ SPEED }">
             <h:outputScript name="speed_event.js" library="js/speed" />
         </c:if>
 
-        <!----> 		          
+        <!---->
+
+        <c:if test="#{ METEO }">
+            <h:outputScript name="main.js" library="js/meteo" />
+        </c:if>
+
+        <!---->
+
+        <h:outputScript name="gps.js" library="js/gps" />
+        <h:outputScript name="map.js" library="js/map" />
+        <h:outputScript name="controllerHIT.js" library="js/hit" />
+        
+        
+
+        <ui:fragment rendered="#{ CFTV }">
+            <h:outputScript library="js/map/" name="mapCftcv.js" />
+        </ui:fragment>
+        <!---->
 
         <form name="roadLine">
 
@@ -633,5 +555,5 @@
 
         <!---->
 
-    </ui:define>     
+    </ui:define>
 </ui:composition>

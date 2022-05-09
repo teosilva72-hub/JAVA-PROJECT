@@ -43,7 +43,7 @@
      document.getElementById("btnLayers").classList.remove("hidden");
      document.getElementById("btnLayers").classList.add("show");
      document.getElementById("btnEquips").classList.remove("hidden");
-  
+
   }	   
   
   /* ******************************************************************************************************** */

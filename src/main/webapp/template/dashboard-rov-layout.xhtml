@@ -119,33 +119,6 @@
                 </div>
 
                 <div class="col-3 collapse navbar-collapse ms-auto ml-auto justify-content-end" id="navbarSupportedContent">
-                                
-                <!---->                
-                          
-                <!-- DARK MODE BUTTON -->
-                
-                  <ui:fragment rendered="#{loginAccount.darkMap}"> <!-- DARK MODE ENABLED FOR MAP -->
-                  
-                  	<ul id="darkmodeItem" class="navbar-nav header-menu mr-2 hidden">                  
-	
-		                 <div class="darkmodebox">
-		                    <input type="checkbox" id="darkmode" name="darkmode"></input>
-		                    <label for="darkmode">
-							      <div class="scenary">
-								   <div class="moon">
-					                 <img id="dark-icon" src="/resources/images/dark-light/moon.webp" />						
-								  </div>
-								    <div class="sun">
-								       <img id="light-icon" src="/resources/images/dark-light/sun.webp" />		
-								    </div>						
-								  </div>							
-								</label>
-		                	</div>                	
-                		</ul>
-                		                
-	                 </ui:fragment>
-	                 
-               	<!---->                
 
                     <ul class="navbar-nav header-menu">
                         <li class="nav-item dropdown">
@@ -356,24 +329,29 @@
 
                     <div class="sidebar-header">
                         <h5>#{dashboardLabels.dashboard_sidebar_layers}</h5>
-                    </div>                                                                      
-                                   
-                    <!---->				
+                    </div>
+
 
                     <div class="modules-content">
-                    		
-				               <c:forEach items="#{listEquipsBean.equips}" var="item">
-				
-				                      <div class="module" id="#{item.module}">
-				                          <div class="toggle-mod-btn">
-				                              <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">
-				                              </h:selectBooleanCheckbox>
-				                          </div>
-				                          <label class="label-module">#{listEquipsBean.translateModule(item.module)}</label>
-				                      </div>
-				                  </c:forEach>			                                   
-                    
-                    </div> <!---->
+
+                        <h:form id="layers">
+
+                            <!-- <h:messages globalOnly="true" styleClass="feedback" /> -->
+
+                            <c:forEach items="#{listEquips.equips}" var="item">
+
+                                <div class="module" id="#{item.module}">
+                                    <div class="toggle-mod-btn">
+                                        <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">
+                                        </h:selectBooleanCheckbox>
+                                    </div>
+                                    <label class="label-module">#{listEquips.translateModule(item.module)}</label>
+                                </div>
+                            </c:forEach>
+
+                        </h:form>
+
+                    </div>
 
                 </div>
             </div>
@@ -390,14 +368,15 @@
                     </div>
 
                     <div class="equips-div">
-                       <c:forEach items="#{listEquipsBean.equips}" var="loadItem" varStatus="loop2">
+
+                        <c:forEach items="#{listEquips.equips}" var="loadItem" varStatus="loop2">
                             <div class="content-module">
                                 <a class="link-show-hide text-decoration-none" onclick="clicked('div#{loadItem.module}'); toggleBtnEquips.call(this);"><span><i
 										class="text-black bg-warning fa fa-plus plusMinus"></i></span></a>
                                 <!-- <button class="btn btn-warning btn-sm btn-show-hide" onclick="clicked('mtoDIV'); toggleBtnEquips.call(this);" ><i class="fa fa-plus plusMinus" ></i></button> -->
 
 
-                                <label class="label-module">#{listEquipsBean.translateModule(loadItem.module)}</label>
+                                <label class="label-module">#{listEquips.translateModule(loadItem.module)}</label>
 
                                 <div id="div#{loadItem.module}" style="display: none;">
 
@@ -430,9 +409,10 @@
 
                                 </div>
                             </div>
-                            
-                	</c:forEach>      
-                    </div> <!---->
+
+                        </c:forEach>
+
+                    </div>
                 </div>
             </div>
 

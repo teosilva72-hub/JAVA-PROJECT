@@ -1,6 +1,5 @@
 package br.com.tracevia.webapp.controller.wimController;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -19,13 +18,8 @@ import br.com.tracevia.webapp.util.ImageUtil;
 
 @ManagedBean(name="wimController")
 @ViewScoped
-public class WimController implements Serializable {
+public class WimController {
 		
-	/**
-	 * SERIAL ID
-	 */
-	private static final long serialVersionUID = -4418207172015164448L;
-
 	private int rate;
 			
 	private WIMDAO dao;

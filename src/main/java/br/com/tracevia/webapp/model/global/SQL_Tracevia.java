@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.model.global;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -26,7 +27,7 @@ public class SQL_Tracevia {
 	    void set_int(Pointer ptr, int idx, int val);
 	    void set_float(Pointer ptr, int idx, float val);
 	    void set_double(Pointer ptr, int idx, double val);
-	    void set_string(Pointer ptr, int idx, String val);
+	    void set_string(Pointer ptr, int idx, byte[] val);
 	    void set_null(Pointer ptr, int idx);
 	}
 	
@@ -87,9 +88,14 @@ public class SQL_Tracevia {
 	}
 	
 	public void setString(int idx, String val) {
-		if (val != null)
-			inner.set_string(ptr_conn, idx, val);
-		else inner.set_null(ptr_conn, idx);
+		if (val != null) {			
+			val += "\0";
+			setString(idx, val.getBytes(StandardCharsets.UTF_8));
+		} else inner.set_null(ptr_conn, idx);
+	}
+	
+	public void setString(int idx, byte[] val) {
+		inner.set_string(ptr_conn, idx, val);
 	}
 
 	public void setNull(int idx) {

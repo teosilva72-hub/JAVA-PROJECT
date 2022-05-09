@@ -3,33 +3,40 @@ let heightMax = 1000
 let updated = '';
 let scale = 1;
 
-// RELOAD EQUIPMENTS INFORMATION
-
-setInterval(() => {
-
-	let data = new Date();
-	let n = data.getSeconds();
-	let minute = data.getMinutes();		
-
-	if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
-		if (n > 0 && n < 4)
-			init();		
-	}
-	
- }, 3000)
-
 // *********************************************************** //
 
+setTimeout(() => {
+	setInterval(() => {
+
+		let data = new Date();
+		let n = data.getSeconds();
+		let minute = data.getMinutes();
+
+		if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
+			if (n < 4){
+				init();
+
+			 location.href = location.protocol + '//' + location.host + location.pathname
+		
+		   }
+		}
+
+	}, 3000)
+}, 4000)
+
+
+// *********************************************************** //
+///////////////functions cftv/////////////////////////
+
+
+////////////////////////////////////////////////////////////////
 const init = () => {
-	
-	$('#preloader').removeClass('d-none') // PRE LOADER CLASS
-	
 	$('#equipAll').load('/map/mapEquip.xhtml', () => {
 		$('[role=tooltip]').tooltip('hide')
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))
 
-		$('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .draggable .equip-box-speed, .plaque').each(function () {
+		$('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .plaque').each(function () {
 			let equip = $(this)
 
 			posEquip(equip)
@@ -72,12 +79,8 @@ const init = () => {
 			initGPS();
 
 		if (window.initMeteo)
-			initMeteo();		
-	})	
-	
-	 // if any popover is opened then it's closed on page load
-	 $('[data-toggle=popover-d]').popover('hide')	
-		
+			initMeteo();
+	})
 }
 
 const onEventMapFunction = data => {
@@ -126,47 +129,19 @@ const setInfoEquip = () => {
 			return $(title).children(".popover-header").html();
 		}
 	});
-	
-	// -------------------------------------------------------------------------------------------------------------------
-	
 	$('[data-toggle=popover-d]').popover({
 		html: true,
-		trigger: 'click',		
-		template: '<div class="popover custom-detail"><div class="arrow"></div><div class="popover-body p-0"></div></div>',
+		trigger: 'hover',		
+		template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body p-0"></div></div>',
 		content: function () {
-			let content = $(this).attr("data-popover-content");
-			return $(content).children(".popover-body").html();
+			return $('.popover-d').parent().html();
 		},
 	});
-	
-	// -------------------------------------------------------------------------------------------------------------------
-	
-	// hide opened popover when click outside popover content
-	$('html').on('click', function (e) {
-	    $('[data-toggle=popover-d]').each(function () {	       
-	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-	            $(this).popover('hide');
-	        }
-	    });
-	});	
-	
-	// -------------------------------------------------------------------------------------------------------------------
-	
-	// hide opened popover when esc key is pressed
-	$(document).keydown(function(e){
-	   if (e.keyCode === 27)
-	      $('[data-toggle=popover-d]').each(function () {	       
-	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-	            $(this).popover('hide');
-	        }
-	    });
-	});	
-	
-	// -------------------------------------------------------------------------------------------------------------------
 }
 
 const setEquipToolTip = () => {
 	$('[data-toggle="tooltip"]').tooltip();
+
 }
 
 $(function () {
@@ -415,7 +390,7 @@ function ScrollZoom(container) {
 
 		showGenericName();
 
-		container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .draggable .equip-box-speed, .plaque').each(function () {
+		container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .plaque').each(function () {
 			let equip = $(this)
 
 			equip.css(
@@ -476,9 +451,9 @@ function barResize() {
 //RESIZE EQUIPMENT
 function resizeEquipScale(container) {
 	let max = 0;
-	let equips = container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .draggable .equip-box-speed');
+	let equips = container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat');
 	let plaque = $('.plaque');
-	let allEquip = $('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat, #equipAll .equip-box-speed');
+	let allEquip = $('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat');
 	let toolbox = $('.square_tool');
 	let barSize = Number($('#bar-size').val()) || 1
 	let scaleA;
@@ -508,7 +483,7 @@ function resizeEquipScale(container) {
 
 //RESIZE EQUIPMENT
 function resizeEquip(container) {
-	let equips = container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .draggable .equip-box-speed');
+	let equips = container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat');
 	let plaque = $('.plaque');
 	let scaleA;
 
@@ -1130,7 +1105,6 @@ $(function () {
 $(function () {
 	$('#btnLayers').removeClass('hidden').addClass('show');
 	$('#btnEquips').removeClass('hidden').addClass('show');
-	$('#darkmodeItem').removeClass('hidden').addClass('show');
 });
 
 /* show hidden buttons */
@@ -1151,7 +1125,7 @@ function cftvBottom() {
 function DirectionEquip() {
 	/* top and bottom line */
 
-	$('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction], .equip-box-speed[direction]').each(function (idx, item) {
+	$('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction]').each(function (idx, item) {
 		item = $(item)
 		if (item.attr('direction') == 'N') {
 			item.find('.equipLine').show();
@@ -1188,7 +1162,7 @@ function DirectionEquip() {
 // const setLines = () => {
 // 	let draw = $('.drawLines');
 // 	let container = $("#zoomtext.section");
-// 	let equips = $('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .draggable .equip-box-speed');
+// 	let equips = $('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat');
 
 // 	draw.css({
 // 		"width": container.css("width"),
@@ -1221,7 +1195,7 @@ const clearLines = () => {
 	let checkedLines = $("#visiblelines");
 	draw.find(".equipLine ").remove();
 	if (checkedLines.prop("checked"))
-		$('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .draggable .equip-box-speed').each(function () {
+		$('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat').each(function () {
 			let equip = $(this)
 			updateLine(equip);
 		});

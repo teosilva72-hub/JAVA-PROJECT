@@ -3,7 +3,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +38,8 @@ import br.com.tracevia.webapp.util.ImageUtil;
 
 @ManagedBean(name="wimReport")
 @ViewScoped
-public class WimReport implements Serializable {
+public class WimReport {
 
-	/**
-	 * SERIAL ID
-	 */
-	private static final long serialVersionUID = -3046472527458294603L;
-	
 	private WIMDAO dao = new WIMDAO();
 	private WimData data = new WimData();
 	private String logo;
