@@ -66,26 +66,9 @@ svg.bi.bi-circle-fill.hitCircleOne {
     right: 5px;
 }
 .hitStatus{
-position: relative;
-    top: 56px;
-    left: 58px;
+	    position: relative;
+    top: 80px;
+    left: 72px;
     width: max-content;
 }
 /*END STYLE MAP*/
-/*ANIMATION*/
-.animationHit {
-  animation: mymove 2s infinite;
-}
-
-@keyframes mymove {
-  0%, 50%, 100% {
-  	transform: translate(0, -50%) scale(1)
-  }
-  25% {
-  	transform: translate(30px, -50%) scale(1)
-  }
-  75% {
-  	transform: translate(-50px, -50%) scale(1)
-  }
-}
-/*END ANIMATION*/

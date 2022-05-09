@@ -26,12 +26,3 @@ a#btn_veh_ocup {
 .hidden{
 	display: none;
 }
-svg#btn_veh_ocup {
-    position: relative;
-    top: 40%;
-}
-.row.obss {
-    width: 80%;
-    position: relative;
-    left: 10%;
-}

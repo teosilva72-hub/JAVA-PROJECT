@@ -204,7 +204,287 @@ public class ExcelUtil {
 		row.createCell(cellNumber);	
 
 	}
+	
+	// ----------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para criar uma única célula com valor em uma planilha Excel
+	 * @author Wellington 13/04/2022
+	 * @version 1.0
+	 * @since 1.0
+	 * @param sheet - objeto de representação de alto nível de uma planilha
+	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+	 * @param rowNumber - número da linha
+	 * @param cellNumber - número da célula  
+	 * @param value - valor em String 
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+	 */
+	public void createCellWithValue(Sheet sheet, Row row, int rowNumber, int cellNumber, String value) {		
 
+		row = sheet.getRow(rowNumber);		
+		row.createCell(cellNumber).setCellValue(value);		
+
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para criar uma única célula com valor em uma planilha Excel
+	 * @author Wellington 13/04/2022
+	 * @version 1.0
+	 * @since 1.0
+	 * @param sheet - objeto de representação de alto nível de uma planilha
+	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+	 * @param rowNumber - número da linha
+	 * @param cellNumber - número da célula   
+	 * @param value - valor em inteiro   
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+	 */
+	public void createCellWithValue(Sheet sheet, Row row, int rowNumber, int cellNumber, int value) {		
+
+		row = sheet.getRow(rowNumber);		
+		row.createCell(cellNumber).setCellValue(value);		
+
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para criar uma única célula com valor em uma planilha Excel
+	 * @author Wellington 13/04/2022
+	 * @version 1.0
+	 * @since 1.0
+	 * @param sheet - objeto de representação de alto nível de uma planilha
+	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+	 * @param rowNumber - número da linha
+	 * @param cellNumber - número da célula   
+	 * @param value - valor em double  
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+	 */
+	public void createCellWithValue(Sheet sheet, Row row, int rowNumber, int cellNumber, double value) {		
+
+		row = sheet.getRow(rowNumber);		
+		row.createCell(cellNumber).setCellValue(value);		
+
+	}
+	
+	// ----------------------------------------------------------------------------------------------------------------
+	
+		/**
+		 * Método para criar uma única célula com valor em uma planilha Excel
+		 * @author Wellington 13/04/2022
+		 * @version 1.0
+		 * @since 1.0
+		 * @param sheet - objeto de representação de alto nível de uma planilha
+		 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+		 * @param rowNumber - número da linha
+		 * @param cellNumber - número da célula   
+		 * @param value - valor em boolean 
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+		 */
+		public void createCellWithValue(Sheet sheet, Row row, int rowNumber, int cellNumber, boolean value) {		
+
+			row = sheet.getRow(rowNumber);		
+			row.createCell(cellNumber).setCellValue(value);		
+
+		}
+		
+		// ----------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para criar uma única célula com valor em uma planilha Excel
+		 * @author Wellington 13/04/2022
+		 * @version 1.0
+		 * @since 1.0
+		 * @param sheet - objeto de representação de alto nível de uma planilha
+		 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+		 * @param rowNumber - número da linha
+		 * @param cellNumber - número da célula   
+		 * @param value - valor em date  
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+		 */
+		public void createCellWithValue(Sheet sheet, Row row, int rowNumber, int cellNumber, Date value) {		
+
+			row = sheet.getRow(rowNumber);		
+			row.createCell(cellNumber).setCellValue(value);		
+
+		}
+		
+		// ----------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para criar uma única célula com valor em uma planilha Excel
+		 * @author Wellington 13/04/2022
+		 * @version 1.0
+		 * @since 1.0
+		 * @param sheet - objeto de representação de alto nível de uma planilha
+		 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+		 * @param rowNumber - número da linha
+		 * @param cellNumber - número da célula   
+		 * @param value - valor em date  
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+		 */
+		public void createCellWithValue(Sheet sheet, Row row, int rowNumber, int cellNumber, String[] values) {		
+
+			for(int i = 0; i < values.length; i++) {				
+				row = sheet.getRow(rowNumber);		
+				row.createCell(cellNumber).setCellValue(values[i]);		
+			}
+
+		}
+		
+		// ----------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para criar uma única célula com valor em uma planilha Excel
+		 * @author Wellington 13/04/2022
+		 * @version 1.0
+		 * @since 1.0
+		 * @param sheet - objeto de representação de alto nível de uma planilha
+		 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+		 * @param style - estilo da célula
+		 * @param rowNumber - número da linha	
+		 * @param cellNumber - número da célula  
+		 * @param value - valor em String 
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+		 */
+		public void createCellWithValueAndStyle(Sheet sheet, Row row, CellStyle style, int rowNumber, int cellNumber, String value) {		
+
+			row = sheet.getRow(rowNumber);		
+			row.createCell(cellNumber).setCellValue(value);
+			row.getCell(cellNumber).setCellStyle(style);
+
+		}
+
+		// ----------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para criar uma única célula com valor em uma planilha Excel
+		 * @author Wellington 13/04/2022
+		 * @version 1.0
+		 * @since 1.0
+		 * @param sheet - objeto de representação de alto nível de uma planilha
+		 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+		 * @param style - estilo da célula
+		 * @param rowNumber - número da linha
+		 * @param cellNumber - número da célula   
+		 * @param value - valor em inteiro   
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+		 */
+		public void createCellWithValueAndStyle(Sheet sheet, Row row, CellStyle style, int rowNumber, int cellNumber, int value) {		
+
+			row = sheet.getRow(rowNumber);		
+			row.createCell(cellNumber).setCellValue(value);
+			row.getCell(cellNumber).setCellStyle(style);
+
+		}
+
+		// ----------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para criar uma única célula com valor em uma planilha Excel
+		 * @author Wellington 13/04/2022
+		 * @version 1.0
+		 * @since 1.0
+		 * @param sheet - objeto de representação de alto nível de uma planilha
+		 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+		 * @param style - estilo da célula
+		 * @param rowNumber - número da linha
+		 * @param cellNumber - número da célula   
+		 * @param value - valor em double  
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+		 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+		 */
+		public void createCellWithValueAndStyle(Sheet sheet, Row row,  CellStyle style, int rowNumber, int cellNumber, double value) {		
+
+			row = sheet.getRow(rowNumber);		
+			row.createCell(cellNumber).setCellValue(value);
+			row.getCell(cellNumber).setCellStyle(style);
+
+		}
+		
+		// ----------------------------------------------------------------------------------------------------------------
+		
+			/**
+			 * Método para criar uma única célula com valor em uma planilha Excel
+			 * @author Wellington 13/04/2022
+			 * @version 1.0
+			 * @since 1.0
+			 * @param sheet - objeto de representação de alto nível de uma planilha
+			 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+			 * @param style - estilo da célula
+			 * @param rowNumber - número da linha
+			 * @param cellNumber - número da célula   
+			 * @param value - valor em boolean 
+			 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+			 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+			 */
+			public void createCellWithValueAndStyle(Sheet sheet, Row row, CellStyle style, int rowNumber, int cellNumber, boolean value) {		
+
+				row = sheet.getRow(rowNumber);		
+				row.createCell(cellNumber).setCellValue(value);		
+				row.getCell(cellNumber).setCellStyle(style);
+
+			}
+			
+			// ----------------------------------------------------------------------------------------------------------------
+			
+			/**
+			 * Método para criar uma única célula com valor em uma planilha Excel
+			 * @author Wellington 13/04/2022
+			 * @version 1.0
+			 * @since 1.0
+			 * @param sheet - objeto de representação de alto nível de uma planilha
+			 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+			 * @param style - estilo da célula
+			 * @param rowNumber - número da linha
+			 * @param cellNumber - número da célula   
+			 * @param value - valor em date  
+			 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+			 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+			 */
+			public void createCellWithValueAndStyle(Sheet sheet, Row row, CellStyle style, int rowNumber, int cellNumber, Date value) {		
+
+				row = sheet.getRow(rowNumber);		
+				row.createCell(cellNumber).setCellValue(value);	
+				row.getCell(cellNumber).setCellStyle(style);
+
+			}
+			
+			// ----------------------------------------------------------------------------------------------------------------
+			
+			/**
+			 * Método para criar uma única célula com valor em uma planilha Excel
+			 * @author Wellington 13/04/2022
+			 * @version 1.0
+			 * @since 1.0
+			 * @param sheet - objeto de representação de alto nível de uma planilha
+			 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+			 * @param style - estilo da célula
+			 * @param rowNumber - número da linha
+			 * @param cellNumber - número da célula   
+			 * @param value - valor em date  
+			 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+			 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+			 */
+			public void createCellWithValueAndStyle(Sheet sheet, Row row, CellStyle style, int rowNumber, int cellNumber, String[] values) {		
+
+				for(int i = 0; i < values.length; i++) {				
+					row = sheet.getRow(rowNumber);		
+					row.createCell(cellNumber).setCellValue(values[i]);	
+					row.getCell(cellNumber).setCellStyle(style);
+				}
+
+			}			
+		
 	// ----------------------------------------------------------------------------------------------------------------
 	// ----------------------------------------------------------------------------------------------------------------
 	// SET CELL VALUES
@@ -494,7 +774,7 @@ public class ExcelUtil {
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Font.html
 	 * @return uma fonte pré configurada
 	 */
-	public Font createFont(XSSFWorkbook workbook, String fontName, int fontHeight, boolean bold, boolean italic, IndexedColors color) {
+	public Font createFont(Workbook workbook, String fontName, int fontHeight, boolean bold, boolean italic, IndexedColors color) {
 
 		Font font = workbook.createFont();			
 		font.setFontName(fontName); 
@@ -990,7 +1270,6 @@ public class ExcelUtil {
 	 * @param pattern - O valor de enumeração que indica o estilo do padrão de preenchimento
 	 * @param borderTemplate - template a ser utilizado (ALL, TOP, BOTTOM, LEFT, RIGHT)
 	 * @param borderStyle - valor de enumeração que indica o estilo de linha de uma borda
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFWorkbook.html	 
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/HorizontalAlignment.html
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/VerticalAlignment.html
@@ -998,7 +1277,7 @@ public class ExcelUtil {
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/FillPatternType.html
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/BorderStyle.html
 	 */
-	public CellStyle createCellStyle(XSSFWorkbook workbook, Font font, HorizontalAlignment horizontal, VerticalAlignment vertical,
+	public CellStyle createCellStyle(Workbook workbook, Font font, HorizontalAlignment horizontal, VerticalAlignment vertical,
 			boolean wrapText, IndexedColors backgroundColor, FillPatternType pattern, String borderTemplate, BorderStyle borderStyle) {
 
 		CellStyle style = createCellStyle(workbook);
@@ -1028,7 +1307,6 @@ public class ExcelUtil {
 	 * @param pattern - O valor de enumeração que indica o estilo do padrão de preenchimento
 	 * @param borderTemplate - template a ser utilizado (ALL, TOP, BOTTOM, LEFT, RIGHT)
 	 * @param borderStyle - valor de enumeração que indica o estilo de linha de uma borda
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFWorkbook.html 
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/HorizontalAlignment.html
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/VerticalAlignment.html
@@ -1036,7 +1314,7 @@ public class ExcelUtil {
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/FillPatternType.html 
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/BorderStyle.html
 	 */
-	public CellStyle createCellStyle(XSSFWorkbook workbook, Font font, HorizontalAlignment horizontal, VerticalAlignment vertical, IndexedColors backgroundColor, FillPatternType pattern, String borderTemplate, BorderStyle borderStyle) {
+	public CellStyle createCellStyle(Workbook workbook, Font font, HorizontalAlignment horizontal, VerticalAlignment vertical, IndexedColors backgroundColor, FillPatternType pattern, String borderTemplate, BorderStyle borderStyle) {
 
 		CellStyle style = createCellStyle(workbook);
 		setStyleHorizontalAlignment(style, horizontal);    
@@ -1049,6 +1327,40 @@ public class ExcelUtil {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
+	
+	// ----------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Método para criar uma novo estilo com bordas e alinhamento horizontal e vertical
+	 * @author Wellington 14/10/2021
+	 * @version 1.0
+	 * @since 1.0
+	 * @param workbook - objeto de representação de alto nível de uma pasta de trabalho do Excel
+	 * @param style - objeto de representação de alto nível de estilos em uma planilha
+	 * @param font - objeto do tipo Font
+	 * @param horizontal - valor de enumeração que indica o alinhamento horizontal de uma célula
+	 * @param vertical - valor de enumeração que indica o alinhamento vertical de uma célula
+	 * @param backgroundColor - objeto de indexação de cores que ainda é necessário para alguns registros (obsoleto)
+	 * @param pattern - O valor de enumeração que indica o estilo do padrão de preenchimento
+	 * @param borderTemplate - template a ser utilizado (ALL, TOP, BOTTOM, LEFT, RIGHT)
+	 * @param borderStyle - valor de enumeração que indica o estilo de linha de uma borda
+	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
+	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/HorizontalAlignment.html
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/VerticalAlignment.html
+	 * @see https://poi.apache.org/apidocs/4.0/org/apache/poi/ss/usermodel/IndexedColors.html
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/FillPatternType.html 
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/BorderStyle.html
+	 */
+	public CellStyle createCellStyle(Workbook workbook, Font font, VerticalAlignment vertical, IndexedColors backgroundColor, FillPatternType pattern, String borderTemplate, BorderStyle borderStyle) {
+
+		CellStyle style = createCellStyle(workbook);		   
+		setStyleVerticalAlignment(style, vertical);    
+		setFont(style, font);
+		setCellBackgroundColor(style, backgroundColor, pattern);   
+		borderTemplate(borderTemplate, style, borderStyle);
+		
+		return style;
+	}
 
 	/**		 
 	 * Método para criar uma novo estilo com bordas e alinhamento horizontal
@@ -1062,15 +1374,14 @@ public class ExcelUtil {
 	 * @param backgroundColor - objeto de indexação de cores que ainda é necessário para alguns registros (obsoleto)
 	 * @param pattern - O valor de enumeração que indica o estilo do padrão de preenchimento
 	 * @param borderTemplate - template a ser utilizado (ALL, TOP, BOTTOM, LEFT, RIGHT)
-	 * @param borderStyle - valor de enumeração que indica o estilo de linha de uma borda 
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFWorkbook.html	 
+	 * @param borderStyle - valor de enumeração que indica o estilo de linha de uma borda 	
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html  
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/HorizontalAlignment.html 
 	 * @see https://poi.apache.org/apidocs/4.0/org/apache/poi/ss/usermodel/IndexedColors.html
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/FillPatternType.html  
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/BorderStyle.html
 	 */
-	public CellStyle createCellStyle(XSSFWorkbook workbook, Font font, HorizontalAlignment horizontal, IndexedColors backgroundColor, FillPatternType pattern, String borderTemplate, BorderStyle borderStyle) {
+	public CellStyle createCellStyle(Workbook workbook, Font font, HorizontalAlignment horizontal, IndexedColors backgroundColor, FillPatternType pattern, String borderTemplate, BorderStyle borderStyle) {
 
 		CellStyle style = createCellStyle(workbook);
 		setStyleHorizontalAlignment(style, horizontal);

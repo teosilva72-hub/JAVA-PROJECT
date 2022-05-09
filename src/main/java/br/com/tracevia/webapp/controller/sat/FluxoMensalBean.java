@@ -50,6 +50,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTMarker;
 
+import br.com.tracevia.webapp.controller.global.ListEquipments;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.sat.FluxoVeiculosDAO;
 import br.com.tracevia.webapp.log.SystemLog;
@@ -57,7 +58,6 @@ import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.ExcelModels;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.ColumnModel;
-import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.sat.FluxoVeiculos;
@@ -115,7 +115,7 @@ public class FluxoMensalBean {
 	
 	int fssi_value = 100, fa_value = 0;
 		
-	@ManagedProperty("#{listEquips}")
+	@ManagedProperty("#{listEquipsBean}")
 	private ListEquipments listEquips;
 			
 	public ListEquipments getListEquips() {

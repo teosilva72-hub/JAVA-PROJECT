@@ -1,49 +1,45 @@
 package br.com.tracevia.webapp.model.occ;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class TuxpanOccModel{
 	
-	
-	private String id = new String();
-	private String plz_cobro = new String();
-	private String folio_sec = new String();
-	private String reporte = new String();
-	private String siniestro = new String();
-	private String fecha = new String();
-	private String hora = new String();
-	private String direccion = new String();
-	private String km_reg = new String();
-	private String km_inicial = new String();
-	private String km_final = new String();
-	private String poliza = new String();
-	private String fecha_cab = new String();
-	private String hora_ajust = new String();
-	private String tipo_veh_inv = new String();
-	private String num_eje_veh_inv = new String();
-	private String num_tp_veh = new String();
-	private String marca_tp_veh = new String();
-	private String tipo_tp_veh = new String();
-	private String model_tp_veh = new String();
-	private String color = new String();
-	private String placa_estado = new String();
-	private String tel = new String();
-	private String id_person = new String();
-	private String nombre = new String();
-	private String edad = new String();
-	private String condiciones = new String();
-	private String semoviente = new String();
-	private String trab_conserv = new String();
-	private String lluvia_granizo = new String();
-	private String neblina = new String();
-	private String vandalismo = new String();
-	private String otro = new String();
-	private String obs_occ = new String();
-	private String type_report = new String();
+	private String id;
+	private String plz_cobro;
+	private String folio_sec;
+	private String reporte;
+	private String siniestro;
+	private String fecha;
+	private String hora;
+	private String direccion;
+	private String km_reg;
+	private String km_inicial;
+	private String km_final;
+	private String poliza;
+	private String fecha_cab;
+	private String hora_ajust;
+	private String tipo_veh_inv;
+	private String num_eje_veh_inv;
+	private String num_tp_veh;
+	private String marca_tp_veh;
+	private String tipo_tp_veh;
+	private String model_tp_veh;
+	private String color;
+	private String placa_estado;
+	private String tel;
+	private String id_person;
+	private String nombre;
+	private String edad;
+	private String condiciones;
+	private String semoviente;
+	private String trab_conserv;
+	private String lluvia_granizo;
+	private String neblina;
+	private String vandalismo;
+	private String otro;
+	private String obs_occ;
+	private String type_report;
 	//siniestro
 	private String ocupantes_sin = new String();
 	private String veh_sin = new String();
@@ -416,58 +412,6 @@ public class TuxpanOccModel{
 		this.mortos = mortos;
 	}
 	
-	@Override
-	public String toString() {
-		List<String> all = Stream.of(
-            this.type_report,
-            this.id,
-            this.plz_cobro,
-            this.folio_sec,
-            this.reporte,
-            this.siniestro,
-            this.fecha,
-            this.hora,
-            this.direccion,
-            this.km_reg,
-            this.km_inicial,
-            this.poliza,
-            this.fecha_cab,
-            this.hora_ajust,
-            this.tipo_veh_inv,
-            this.num_eje_veh_inv,
-            this.num_tp_veh,
-            this.marca_tp_veh,
-            this.tipo_tp_veh,
-            this.model_tp_veh,
-            this.color,
-            this.placa_estado,
-            this.tel,
-            this.id_person,
-            this.nombre,
-            this.edad,
-            this.condiciones,
-            this.semoviente,
-            this.trab_conserv,
-            this.lluvia_granizo,
-            this.neblina,
-            this.vandalismo,
-            this.otro,
-            this.obs_occ,
-            this.ocupantes_sin,
-            this.veh_sin,
-            this.causas_sin,
-            this.def_metal,
-            this.senal,
-            this.dano_pav,
-            this.danos_cort_trr,
-            this.danos_obr_compl,
-            this.dano_plz_cobro,
-            this.otros_sin,
-            this.lesionados,
-            this.mortos
-        ).filter(val -> !val.isEmpty()).collect(Collectors.toList());
 
-		return String.join(", ", all);
-	}
 		
 }

@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+    xmlns:jsf="http://xmlns.jcp.org/jsf" >
+    
+   <h:body>    
+      			   			
+	             <a role="button" class="speed-info-bagde" data-toggle="popover" data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>
+	                  <div class="card-header py-0 text-center text-white">
+	                      <p>#{item.nome}</p>
+	                  </div>
+	                  <div class="card-body p-1 speed-limit equip-status-indicator">
+	                      <div class="speed-border rounded bg-light">
+	                          <div class="speed-mold rounded">
+	                              <div class="row text-center">
+	                                  <div class="col-12 speed-name">#{speedLabels.speed_realtime_indicator}</div>
+	                                  <div class="col-12 m-1">
+	                                      <div class="bg-secondary rounded speed-plate">
+	                                          <div class="speed-number">000</div>
+	                                      </div>
+	                                  </div>
+	                              </div>
+	                          </div>
+	                      </div>
+	                  </div>
+	                  <div class="card-body p-1 speed-speedy equip-status">
+	                      <div class="speed-border rounded speed-color">
+	                          <div class="speed-mold rounded">
+	                              <div class="row text-center">
+	                                  <div class="col-12 speed-name">#{speedLabels.speed_realtime_radar}</div>
+	                                  <div class="col-12 m-1">
+	                                      <div class="bg-secondary rounded speed-plate">
+	                                          <div class="speed-number">000</div>
+	                                      </div>
+	                                  </div>
+	                              </div>
+	                          </div>
+	                      </div>
+	                  </div>
+	                  <div class="card-footer p-0 text-center">
+	                      <small class="text-white">#{item.km}</small>
+	                  </div>
+              
+            <!---->
+  
+  </h:body>       
+</html>

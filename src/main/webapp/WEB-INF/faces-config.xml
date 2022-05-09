@@ -179,11 +179,6 @@
           <base-name>bundle.labels.system.support.labels_support</base-name>           
           <var>supportLabels</var>        
         </resource-bundle>
-
-		<resource-bundle>
-          <base-name>bundle.labels.occ.report.tuxpan.labels_occ</base-name>           
-          <var>tuxpan_trad</var>        
-        </resource-bundle>
     
         
      <!-- ********************************** -->
@@ -301,7 +296,6 @@
         <message-bundle>bundle.labels.speed.labels_speed</message-bundle>
         <message-bundle>bundle.labels.system.notifications.labels_notifications</message-bundle>        
         <message-bundle>bundle.labels.system.support.labels_support</message-bundle>
-		<message-bundle>bundle.labels.occ.report.tuxpan.labels_occ</message-bundle>
              
         <!-- CONFIG MESSAGES -->
         

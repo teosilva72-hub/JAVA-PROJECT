@@ -1,24 +1,28 @@
 package br.com.tracevia.webapp.controller.hit;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 
 import org.primefaces.context.RequestContext;
 
-import br.com.tracevia.webapp.controller.global.EquipmentsBean;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.hit.HitDAO;
-import br.com.tracevia.webapp.dao.occ.TuxpanDAO;
 import br.com.tracevia.webapp.model.global.EquipmentDataSource;
 import br.com.tracevia.webapp.model.hit.HIT;
-import br.com.tracevia.webapp.model.occ.TuxpanOccModel;
-import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="HitController")
-public class ControllerHIT {
+@ViewScoped
+public class ControllerHIT implements Serializable {
+	
+	/**
+	 * SERIAL ID
+	 */
+	private static final long serialVersionUID = -8833810376364970972L;
+	
 	private HIT hit;
 	private HitDAO hitDao;
 	private EquipmentsDAO equipDAO;
@@ -27,13 +31,16 @@ public class ControllerHIT {
 	private String msgOne, msgTwo, msgThree;
 	private int id;
 	private int equipId;
-		@PostConstruct
-		public void init() {
-			hit = new HIT();
-			hit.setEquip_type("Galibo");
-			equipDAO = new EquipmentsDAO();
-			listHit();
-		}
+	
+	@PostConstruct
+	public void init() {
+		
+		hit = new HIT();
+		hit.setEquip_type("Galibo");
+		equipDAO = new EquipmentsDAO();
+		listHit();
+	
+	}
 		public boolean listHit() {
 			boolean check = false;
 			hitDao = new HitDAO();

@@ -1,150 +1,197 @@
 <!DOCTYPE html
 	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-	xmlns:jsf="http://xmlns.jcp.org/jsf"
-	template="/template/dashboard-rov-layout.xhtml">
-
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" template="/template/dashboard-rov-layout.xhtml">
+	
 	<f:metadata>
-
-		<f:viewAction onPostback="true"
-			action="#{equipsBean.defineInterfaceView('linear')}" />
-
+	
+		<f:viewAction onPostback="true"  action="#{equipsBean.defineInterfaceView('linear')}" />  
+	
 	</f:metadata>
 
 	<ui:define name="head">
 		<title>#{abaLabels.map_linear}</title>
 
-		<h:outputStylesheet name="form-style.css" library="css/forms" />
-		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
-		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
-		<h:outputStylesheet name="layoutDMS.css" library="css/dms" />
-		<h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
-		<h:outputStylesheet name="realtime.css" library="css/realtime" />
-		<h:outputStylesheet name="cftv.css" library="css/map" />
-		<h:outputStylesheet library="css/validation"
-			name="validation-style.css" />
-
-		<!-- Script -->
-		<h:outputScript library="bootstrap/js"
-			name="bootstrap-input-spinner.js?version=#{notificationsView.timestamp}" />
-		<h:outputScript library="js/validation-forms/models"
-			name="validation-models.js" />
-		<h:outputScript library="js/validation-forms/user-interface"
-			name="realtime-validation.js?version=#{notificationsView.timestamp}" />
+        <h:outputStylesheet name="form-style.css" library="css/forms" />
+        <h:outputStylesheet name="popover.css" library="css/util/popover" /> <!-- INSERT POPOVER -->
+        <h:outputStylesheet name="tooltip.css" library="css/util/tooltip" /> <!-- INSERT TOOLTIP -->
+        <h:outputStylesheet name="preloader.css" library="css/util/preloader" /> <!-- INSERT PRELOADER -->
+        
+        <c:if test="#{ CFTV }">
+             <h:outputStylesheet name="cftv.css" library="css/map" />
+        </c:if>        
+        <!---->        
+        <c:if test="#{ DMS }">
+            <h:outputStylesheet name="layoutDMS.css" library="css/dms" />
+        </c:if>        
+        <!---->                
+        <c:if test="#{ HIT }">
+           <h:outputStylesheet name="layoutHit.css" library="css/hit" />
+        </c:if>                
+        <!---->               
+        <c:if test="#{ METEO }">
+            <h:outputStylesheet name="layoutMETEO.css" library="css/meteo" />
+        </c:if>
+        <!---->
+         <c:if test="#{ SAT }">
+        	 <h:outputStylesheet name="layoutSAT.css" library="css/sat" />
+        </c:if>
+        <!---->        
+        <c:if test="#{ SPEED }">
+            <h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
+        </c:if>
+        <!---->
+         <c:if test="#{ CFTV || COLAS || COMMS || DAI || OCR || SOS || WIM  }">
+            <h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
+        </c:if>
+        <!---->        
+        
+        <h:outputStylesheet name="realtime.css" library="css/realtime" />
+        <h:outputStylesheet library="css/validation" name="validation-style.css" />
+   
+   		<!-- Script -->
+		
+		<h:outputScript library="bootstrap/js" name="bootstrap-input-spinner.js?version=#{notificationsView.timestamp}" />
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
+		<h:outputScript library="js/validation-forms/user-interface" name="realtime-validation.js?version=#{notificationsView.timestamp}" />
+		
+		<script>
+		
+	
+		</script>
 
 	</ui:define>
 
+ 	<!-- PERMISSIONS AND DEFINITIONS -->
+ 	
 	<ui:param name="permission" value="#{ userAccount.userPermision() }" />
-	<ui:param name="SuperAdmin"
-		value="#{ permission == 1 || permission == 6 }" />
-	<ui:param name="DMS" value="#{ loginAccount.load.en_dms }" />
-	<ui:param name="SPEED" value="#{ loginAccount.load.en_speed }" />
-	<ui:param name="CFTV" value="#{ loginAccount.load.en_cftv }" />
+	<ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
 	<ui:param name="VideoWall" value="#{ permission == 9 }" />
 	<ui:param name="Map" value="linear" />
-
-	<input type="hidden" value="linear" id="interface" name="interface" />
+	
+	<!-- ENABLED EQUIPS -->
+	    
+    <ui:param name="CFTV" value="#{ loginAccount.load.en_cftv }" />
+    <ui:param name="COLAS" value="#{ loginAccount.load.en_colas }" />
+    <ui:param name="COMMS" value="#{ loginAccount.load.en_comms }" />
+    <ui:param name="DAI" value="#{ loginAccount.load.en_dai }" />
+    <ui:param name="DMS" value="#{ loginAccount.load.en_dms }" />
+    <ui:param name="HIT" value="#{ loginAccount.load.en_hit }" />
+    <ui:param name="OCR" value="#{ loginAccount.load.en_ocr }" />
+    <ui:param name="METEO" value="#{ loginAccount.load.en_meteo }" />
+    <ui:param name="SAT" value="#{ loginAccount.load.en_sat }" />
+    <ui:param name="SOS" value="#{ loginAccount.load.en_sos }" />
+    <ui:param name="SPEED" value="#{ loginAccount.load.en_speed }" />
+    <ui:param name="WIM" value="#{ loginAccount.load.en_wim }" />
+            
+    <!---->
 
 	<ui:define name="main-content">
-
-		<c:if test="#{ SuperAdmin || VideoWall }">
-
-			<!-- ======================== ALERTS ======================== -->
-
-			<ui:include src="/template/alerts/alerts.xhtml" />
-
+		  		
+         <c:if test="#{ SAT }">
+	
+			<!-- ======================== PRE LOADER ======================== -->
+		
+			<ui:include src="/template/util/preloader/preloader.xhtml" />
+			
+			<!---->
+		
 		</c:if>
 
 		<!---->
-
+			
+		<c:if test="#{ SuperAdmin || VideoWall }">
+					
+		 <!-- ======================== ALERTS ======================== -->
+			
+			<ui:include src="/template/alerts/alerts.xhtml" />  
+		
+		</c:if>
+		
+		<!---->
+		
 		<!-- WEB ZOOM -->
 		<div class="map-options">
 			<div id="topButtons">
-
-				<button type="button" id="zoomIn" class="zoomButton"
-					data-toggle="tooltip" data-placement="bottom" title="Zoom In"
-					data-trigger="hover">
+				
+				<button type="button" id="zoomIn" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+					title="Zoom In" data-trigger="hover" >
 					<span><i class="fas fa-plus-square fa-2x"></i></span>
 				</button>
 
-				<button type="button" id="zoomOut" class="zoomButton"
-					data-toggle="tooltip" data-placement="bottom" title="Zoom Out"
-					data-trigger="hover">
+				<button type="button" id="zoomOut" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+					title="Zoom Out" data-trigger="hover" >
 					<span><i class="fas fa-minus-square fa-2x"></i></span>
 				</button>
 
 				<c:if test="#{ SuperAdmin }">
 
-					<button type="button" id="addequip"
-						class="btn btn-dark form-modal-draw-button" onclick="defaultAdd()"
-						title="Add Equipment" data-toggle="modal" data-target="#modaladd">#{mapLabels.$label_map_option_btn_add_equipment}</button>
+					<button type="button" id="addequip" class="btn btn-dark form-modal-draw-button"
+						onclick="defaultAdd()"
+						title="Add Equipment" data-toggle="modal"
+						data-target="#modaladd">#{mapLabels.$label_map_option_btn_add_equipment}</button>
 
 				</c:if>
 
-
-				<!-- CFTV LIST EQUIPS TOP PAGE -->
-				<ui:fragment rendered="#{ CFTV }">
-					<h:form prependId="false" id="sumIdCftv">
-						<div class="dropdown cftv-dropdown-realtime">
-							<button class="btn btn-dark dropdown-toggle" type="button"
-								id="dropdown-cftv-btn-icone" data-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="false">
-								PTZ <i class="far fa-window-restore"></i>
-							</button>
-							<div class="dropdown-menu drop-down-ptz"
-								aria-labelledby="dropdownMenu2">
-								<div class="row">
-									<c:forEach begin="1" end="#{CftvCam.idTotal}" var="ptz">
-										<div class="col-md-6 col-dropdown-cftv">
-											<button class="dropdown-item d-cftv#{ptz} d-cftv-value"
-												type="button" value="#{ptz}" id="ptz-window#{ptz}">PTZ
-												#{ptz}</button>
-										</div>
-									</c:forEach>
-								</div>
+			
+			<!-- CFTV LIST EQUIPS TOP PAGE -->
+			 <ui:fragment  rendered="#{ CFTV }" >	
+				<h:form prependId="false" id="sumIdCftv">
+					<div class="dropdown cftv-dropdown-realtime">
+						<button class="btn btn-dark dropdown-toggle" type="button"
+							id="dropdown-cftv-btn-icone" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">
+							PTZ <i class="far fa-window-restore"></i>
+						</button>
+						<div class="dropdown-menu drop-down-ptz"
+							aria-labelledby="dropdownMenu2">
+							<div class="row">
+								<c:forEach begin="1" end="#{CftvCam.idTotal}" var="ptz">
+									<div class="col-md-6 col-dropdown-cftv">
+										<button class="dropdown-item d-cftv#{ptz} d-cftv-value"
+											type="button" value="#{ptz}" id="ptz-window#{ptz}">PTZ
+											#{ptz}</button>
+									</div>
+								</c:forEach>
 							</div>
 						</div>
-
-						<h:inputHidden value="#{CftvCam.idTotal}" id="totalIdCftv" />
-						<h:commandButton style="display:none;" id="btnCftvSumTotal">
-							<f:ajax execute="@form" render=":sumIdCftv"
-								listener="#{CftvCam.totalId}" />
-						</h:commandButton>
-					</h:form>
-					<!--  -->
-				</ui:fragment>
-
+					</div>
+					
+					<h:inputHidden value="#{CftvCam.idTotal}" id="totalIdCftv" />
+					<h:commandButton style="display:none;" id="btnCftvSumTotal">
+						<f:ajax execute="@form" render=":sumIdCftv"
+							listener="#{CftvCam.totalId}" />
+					</h:commandButton>
+				</h:form>
+				<!--  -->
+			</ui:fragment>
+			
 			</div>
 
 			<c:if test="#{ SuperAdmin || VideoWall }">
 
-				<!--  ******************************************************************************************************* -->
-
+				 <!--  ******************************************************************************************************* -->
+				
 				<h:form id="real">
-
+	
 					<h:inputHidden id="equipIdPos" value="#{equipsBean.equipId}" />
 					<h:inputHidden id="equipTablePos" value="#{equipsBean.equipTable}" />
 					<h:inputHidden id="equipPosX" value="#{equipsBean.positionX}" />
 					<h:inputHidden id="equipPosY" value="#{equipsBean.positionY}" />
-
-					<!--  ******************************************************************************************************* -->
-
+										
+				 <!--  ******************************************************************************************************* -->
+					
 					<h:commandButton id="savePos" style="display:none;"
 						class="btn btn-dark form-modal-draw-button"
-						value="#{mapLabels.$label_map_option_btn_save_position_equipment}">
-						<f:ajax execute="@form" render="@none"
-							listener="#{equipsBean.definePosition}" />
+						value="#{mapLabels.$label_map_option_btn_save_position_equipment}" >					
+						<f:ajax execute="@form" render="@none" listener="#{equipsBean.definePosition}" />
 					</h:commandButton>
-
-					<!--  ******************************************************************************************************* -->
-
+					
+				 <!--  ******************************************************************************************************* -->
+	
 					<h:commandButton id="cancelPos" style="display:none;"
 						class="btn btn-dark form-modal-draw-button"
 						value="#{mapLabels.$label_map_option_btn_cancel_position_equipment}"
@@ -153,172 +200,166 @@
 						<f:ajax render="#realcancel" onevent="onEventMapFunction" />
 					</h:commandButton>
 				</h:form>
-
-				<!--  ******************************************************************************************************* -->
-
+				
+				<!--  ******************************************************************************************************* -->						 
+				
 			</c:if>
-
+			
 		</div>
-
+		
 		<!-- OVERFLOW -->
-		<section class="overflow" scroll-zoom="0.5" max-scale="5" id="content">
-
-		<!-- START SECTION -->
-		<div id="zoomtext" scale="1" class="section">
-			<div class="boxs"></div>
-			<div class="boxs1"></div>
-			<div class="boxs2"></div>
-			<h:graphicImage class="grab-map" value="#{loginAccount.linearMapUI}" />
-			<!-- MAP FRONT IMAGE -->
-		</div>
-
-		<!-- DRAG ITEMS -->
-		<div class="draggable" id="equipAll">
-
-			<!-- Carrega os equipamentos -->
-
-		</div>
-		<!----> <!-- Plaque --> <ui:fragment
-			rendered="#{loginAccount.plaque ne ''}">
-			<div>
-				<c:forEach begin="1" end="20" var="item">
-					<div class="plaque km#{item * 5}">
-						<img width="75"
-							src="/resources/images/plaques/#{loginAccount.plaque}/#{item * 5}km.webp" />
-					</div>
-				</c:forEach>
+		<section class="overflow" scroll-zoom="0.5" max-scale="5" id="content" >			
+		
+            <!-- START SECTION -->
+			<div id="zoomtext" scale="1" class="section">	
+				<div class="boxs"></div>			
+				<div class="boxs1"></div>	
+				<div class="boxs2"></div>	
+				<h:graphicImage class="grab-map" value="#{loginAccount.linearMapUI}" /> <!-- MAP FRONT IMAGE -->
 			</div>
-		</ui:fragment> </section>
+																
+			<!-- DRAG ITEMS -->		
+			<div class="draggable" id="equipAll">
+			
+			<!-- Carrega os equipamentos -->
+			
+			</div>	<!---->	
 
-		<div class="context-menu">
-			<c:if test="#{ CFTV }">
-				<button type="button" class="btn btn-secondary dinamic-mouse-right"
-					for="cftv" onclick="settingCftv()">#{mapLabels.$label_map_equipment_settings}
-				</button>
-				<button type="button"
-					class="btn btn-dark dinamic-mouse-right window-mouse-right"
-					for="cftv" onclick="windowCftvRight()">#{mapLabels.$label_map_equipment_realtime_view}
-				</button>
-			</c:if>
-			<c:if test="#{ SuperAdmin || VideoWall }">
-				<button type="button" class="btn btn-secondary dinamic-mouse-right"
-					for="all" onclick="moreOption()">#{mapLabels.$label_map_equipment_options}</button>
-			</c:if>
-		</div>
+			<!-- Plaque -->
+
+			<ui:fragment rendered="#{loginAccount.plaque ne ''}">
+				<div>
+					<c:forEach begin="1" end="20" var="item">
+						<div class="plaque km#{item * 5}">
+							<img width="75" src="/resources/images/plaques/#{loginAccount.plaque}/#{item * 5}km.webp" />
+						</div>
+					</c:forEach>
+				</div>
+			</ui:fragment>
+				
+			</section>
+
+			<div class="context-menu">
+				<c:if test="#{ CFTV }">
+					<button type="button" class="btn btn-secondary dinamic-mouse-right" for="cftv" onclick="settingCftv()">#{mapLabels.$label_map_equipment_settings}
+					</button>
+					<button type="button" class="btn btn-dark dinamic-mouse-right window-mouse-right" for="cftv" onclick="windowCftvRight()">#{mapLabels.$label_map_equipment_realtime_view}
+					</button>
+				</c:if>
+				<button type="button" class="btn btn-secondary dinamic-mouse-right" for="all" onclick="moreOption()"> #{mapLabels.$label_map_equipment_options} </button>
+			</div>
 
 	</ui:define>
-
-	<ui:define name="modal-content">
-		<!-- MODAL CONTENT UI -->
-
+	
+	<ui:define name="modal-content"> <!-- MODAL CONTENT UI -->
+		
 		<c:if test="#{ SuperAdmin }">
-
-			<!-- ======================== CREATE ======================== -->
-
-			<ui:include src="/template/map-modal/create-map.xhtml" />
-
+		
+		 <!-- ======================== CREATE ======================== -->
+		
+       		<ui:include src="/template/map-modal/create-map.xhtml" />  
+			
 		</c:if>
-
+		
 		<!---->
-
+		
 		<c:if test="#{ SuperAdmin || VideoWall }">
-
-			<!-- ======================== OPTIONS ======================== -->
+			
+		<!-- ======================== OPTIONS ======================== -->
 
 			<ui:include src="/template/map-modal/options-map.xhtml" />
 
-			<!---->
-
-			<!-- ======================== EDIT ======================== -->
-
-			<ui:include src="/template/map-modal/edit-map.xhtml" />
-
-		</c:if>
-
 		<!---->
-
+		
+		<!-- ======================== EDIT ======================== -->
+		
+       		<ui:include src="/template/map-modal/edit-map.xhtml" />  
+					
+		</c:if>
+		
+		<!---->
+		
 		<c:if test="#{ SuperAdmin }">
-
-			<!-- ======================== DELETE ======================== -->
-
-			<ui:include src="/template/map-modal/delete-map.xhtml" />
+		        				
+		<!-- ======================== DELETE ======================== -->
+		
+       		 <ui:include src="/template/map-modal/delete-map.xhtml" />  				
 
 		</c:if>
-
+		
 		<!---->
-
+						
 		<!-- ======================== SIZE ======================== -->
-
-		<ui:include src="/template/map-modal/size-map.xhtml" />
-
-		<!---->
-
-		<!-- ======================== CFTV SETTINGS ======================== -->
-
-		<ui:fragment rendered="#{ CFTV }">
-			<ui:include src="/template/map-modal/cftv-settings.xhtml" />
+		
+        	<ui:include src="/template/map-modal/size-map.xhtml" />  
+        	
+        <!---->
+        
+        <!-- ======================== CFTV SETTINGS ======================== -->
+		
+		 <ui:fragment  rendered="#{ CFTV }" >
+			<ui:include src="/template/map-modal/cftv-settings.xhtml" />  
 		</ui:fragment>
 		<!---->
-
-	</ui:define>
+	
+	</ui:define>	
 
 	<ui:define name="jscript">
+	
+		 <!-- JS FILES -->	
+						
+		<h:outputScript library="js/realtime" name="realtime.js?version=#{notificationsView.timestamp}"  />
+	        
+        <c:if test="#{ CFTV }">
+            <h:outputScript library="js/map/" name="mapCftcv.js" />
+        </c:if>
+        <!---->
+        
+        <c:if test="#{ DMS }">
+            <h:outputScript name="dmsAnimation.js?version=#{notificationsView.timestamp}" p:type="module" library="js/dms" />
+        </c:if>
 
-		<c:if test="#{ DMS }">
-			<h:outputScript
-				name="dmsAnimation.js?version=#{notificationsView.timestamp}"
-				p:type="module" library="js/dms" />
-		</c:if>
-		<c:if test="#{ SPEED }">
-			<h:outputScript name="speed_event.js" library="js/speed" />
-		</c:if>
+        <!---->
+        
+        <c:if test="#{ HIT }">
+        	<h:outputScript name="controllerHIT.js" library="js/hit" />
+        </c:if>
+        
+        <!----> 
+       
+        <c:if test="#{ METEO }">
+            <h:outputScript name="main.js" library="js/meteo" />
+        </c:if>
+        
+        <!----> 
+        
+         <c:if test="#{ SPEED }">
+            <h:outputScript name="speed_event.js" library="js/speed" />
+        </c:if>
 
-		<h:outputScript library="js/realtime"
-			name="realtime.js?version=#{notificationsView.timestamp}" />
-
-		<ui:fragment rendered="#{ CFTV }">
-			<h:outputScript library="js/map/" name="mapCftcv.js" />
-		</ui:fragment>
-
+        <!----> 	
+			
 		<c:if test="#{ SuperAdmin }">
 
 			<!-- Mudança -->
 
-			<!-- ********************************************************************************************************************* -->
-
-			<!-- EXTERNAL SCRIPT ELEMENTS -->
-
-			<form name="validation">
-				<!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
-
-				<input type="hidden" name="requiredEquipmentsMsg"
-					value="#{requiredMessages.required_user_interface_select_equipments}" />
-				<!-- EQUIPMENT REQUIRED MESSAGE -->
-				<input type="hidden" name="requiredEquipIdMsg"
-					value="#{requiredMessages.required_user_interface_equip_id}" />
-				<!-- EQUIPMENT ID REQUIRED MESSAGE -->
-				<input type="hidden" name="validatorNumberMsg"
-					value="#{validatorMessages.validator_number_message}" />
-				<!-- EQUIPMENT ID IS NUMBER VALIDATION MESSAGE -->
-				<input type="hidden" name="validatorMaxLenght"
-					value="#{validatorMessages.validator_global_maxlength}" />
-				<!-- EQUIPMENT NAME LENGHT VALIDATION MESSAGE -->
-				<input type="hidden" name="requiredEquipmentNameMsg"
-					value="#{requiredMessages.required_user_interface_equip_name}" />
-				<!-- EQUIPMENT NAME REQUIRED MESSAGE -->
-				<input type="hidden" name="requiredCitiesMsg"
-					value="#{requiredMessages.required_user_interface_cities}" />
-				<!-- CITIES REQUIRED MESSAGE -->
-				<input type="hidden" name="requiredRoadsMsg"
-					value="#{requiredMessages.required_user_interface_roads}" />
-				<!-- ROADS REQUIRED MESSAGE -->
-				<input type="hidden" name="requiredKmMsg"
-					value="#{requiredMessages.required_user_interface_km}" />
-				<!-- KM REQUIRED MESSAGE -->
-
-			</form>
-			<!---->
-
+				<!-- ********************************************************************************************************************* -->
+										
+			<!-- EXTERNAL SCRIPT ELEMENTS -->	 	
+						
+			<form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+				
+				<input type="hidden" name="requiredEquipmentsMsg" value="#{requiredMessages.required_user_interface_select_equipments}" /> <!-- EQUIPMENT REQUIRED MESSAGE -->
+				<input type="hidden" name="requiredEquipIdMsg" value="#{requiredMessages.required_user_interface_equip_id}" /> <!-- EQUIPMENT ID REQUIRED MESSAGE -->
+				<input type="hidden" name="validatorNumberMsg" value="#{validatorMessages.validator_number_message}" /> <!-- EQUIPMENT ID IS NUMBER VALIDATION MESSAGE -->
+				<input type="hidden" name="validatorMaxLenght" value="#{validatorMessages.validator_global_maxlength}" /> <!-- EQUIPMENT NAME LENGHT VALIDATION MESSAGE -->
+				<input type="hidden" name="requiredEquipmentNameMsg" value="#{requiredMessages.required_user_interface_equip_name}" /> <!-- EQUIPMENT NAME REQUIRED MESSAGE -->
+				<input type="hidden" name="requiredCitiesMsg" value="#{requiredMessages.required_user_interface_cities}" /> <!-- CITIES REQUIRED MESSAGE -->
+				<input type="hidden" name="requiredRoadsMsg" value="#{requiredMessages.required_user_interface_roads}" /> <!-- ROADS REQUIRED MESSAGE -->
+				<input type="hidden" name="requiredKmMsg" value="#{requiredMessages.required_user_interface_km}" /> <!-- KM REQUIRED MESSAGE -->				
+				
+			</form> <!----> 
+								
 		</c:if>
 
 	</ui:define>

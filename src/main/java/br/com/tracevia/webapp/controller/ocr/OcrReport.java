@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -31,12 +32,12 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.ocr.reportDAO;
-import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.util.ImageUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
+import br.com.tracevia.webapp.util.SessionUtil;
 
 @ViewScoped
 @ManagedBean(name="OcrReport")
@@ -282,31 +283,42 @@ public class OcrReport{
 		}
 	}
 	
-	public void search() throws IOException {
+	public void search() throws IOException {		
 		
 		dao = new reportDAO();
 		data = new OCR();
+				
+		Map<String, String> map = SessionUtil.getRequestParameterMap();
+		
+		camera = (String) map.get("camera");
+		all_img = (String) map.get("img_all");
+		dtStart = (String) map.get("dateInitial");
+		hrStart = (String) map.get("hourInitial");
+		minStart = (String) map.get("minuteInitial");
+		dtFinal = (String) map.get("dateFinal");
+		hrFinal = (String) map.get("hourFinal");
+		minFinal = (String) map.get("minuteFinal");
 			
-		String start = dtStart+" "+ hrStart+":"+minStart;
-		String end = dtFinal+" "+ hrFinal+":"+minFinal;
-
-		if(camera == "Todos") camera ="";
-
+		String start = dtStart+" "+ hrStart+":"+minStart+":00";
+		String end = dtFinal+" "+ hrFinal+":"+minFinal+":59";
+		
 		String cam = camera;
+		
+		//System.out.println(all_img+" "+camera);
 		
 		String all_search = "";
 		if(all_img.equals("0")) all_search = "";
 		else if(all_img.equals("1") || all_img.equals("2")) all_search = "XXXXXXX";
-		//System.out.println(all_img);
- 		if(cam != "") {
+		// System.out.println(all_img);
+ 		
+		if(cam != "") {
 
 			try {
 				
 				list = dao.searchTable(start, end, cam, all_search, all_img);
-
-				RequestContext.getCurrentInstance().execute("getTr()");
-				RequestContext.getCurrentInstance().execute("dataPicker()");
-
+				
+				SessionUtil.executeScript("drawTable()");	
+			
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -317,11 +329,10 @@ public class OcrReport{
 			String start2 = dtStart+" "+ hrStart+":"+minStart;
 			String end2 = dtFinal+" "+ hrFinal+":"+minFinal;
 
-			RequestContext.getCurrentInstance().execute("getTr()");
-			RequestContext.getCurrentInstance().execute("dataPicker()");
+			//SessionUtil.executeScript("drawTable();");	
 
 			try {
-				list = dao.searchTable2(start2, end2, all_search, all_img);
+				list = dao.searchTable2(start2, end2, all_search, all_img);				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -518,7 +529,7 @@ public class OcrReport{
 		responseOutputStream.flush();
 		responseOutputStream.close();
 
-
 		facesContext.responseComplete();  
 	}
+	
 }

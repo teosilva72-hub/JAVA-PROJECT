@@ -6,6 +6,7 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
 import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
+import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.occ.TuxpanOccModel;
 
 public class TuxpanDAO{
@@ -388,6 +389,7 @@ public class TuxpanDAO{
 		ArrayList<TuxpanOccModel> listarOcc = new ArrayList<TuxpanOccModel>();
 		//System.out.println(query);
 		try {
+			TranslationMethods occTranslation = new TranslationMethods();
 			conn.start(1);
 			conn.prepare(query);
 			MapResult result = conn.executeQuery();
@@ -401,7 +403,6 @@ public class TuxpanDAO{
 					occ.setSiniestro(ifEmpty(rs.getString(4)));;
 					occ.setFecha(ifEmpty(rs.getString(5)));
 					occ.setHora(ifEmpty(rs.getString(6)));
-					occ.setType_report(type(rs.getString(7)));
 
 					listarOcc.add(occ);
 				}

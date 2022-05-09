@@ -24,14 +24,12 @@ import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.GlobalReportsDAO;
 import br.com.tracevia.webapp.dao.global.QueryModelsBattery;
 import br.com.tracevia.webapp.dao.sos.SOSMainQueries;
-import br.com.tracevia.webapp.dao.sos.SOSQueryModels;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.ExcelModels;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.ColumnModel;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.model.global.VBV;
 import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.model.sos.SOSReports;
 import br.com.tracevia.webapp.model.sos.SOSReports.Builder;
@@ -49,7 +47,6 @@ public class SOSReportsBean {
 	private List<SelectItem> years;	
 
 	private List<Builder> resultList;	
-	private List<VBV> resultVBV;
 	private List<String> header;  
 	private List<ColumnModel> columns;  
 	List<? extends Equipments> listSOS;  
@@ -138,10 +135,6 @@ public class SOSReportsBean {
 	public List<SelectItem> getPeriodsFlow() {
 		return periods;
 	}	
-
-	public List<VBV> getResultVBV() {
-		return resultVBV;
-	}
 
 	public String getDirectionLabel1() {
 		return directionLabel1;
