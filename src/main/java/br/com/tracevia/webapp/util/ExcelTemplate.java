@@ -1950,7 +1950,7 @@ public class ExcelTemplate {
 			for (int s = 1; s < temp.size(); s++)
 				sum += Integer.parseInt(temp.get(s));
 			temp.add(String.valueOf(sum));
-			newLine.add(temp.toArray(String[]::new));
+			newLine.add(temp.toArray(new String[temp.size()]));
 		}
 		utilSheet.setCellValue(sheet, row, 12, len, "Total");
 			
@@ -2049,7 +2049,7 @@ public class ExcelTemplate {
 			for (int s = 1; s < temp.size(); s++)
 				sum += Integer.parseInt(temp.get(s));
 			temp.add(String.valueOf(sum));
-			newLine.add(temp.toArray(String[]::new));
+			newLine.add(temp.toArray(new String[temp.size()]));
 		}
 		utilSheet.setCellValue(sheet, row, 12, len, "Total");
 		
