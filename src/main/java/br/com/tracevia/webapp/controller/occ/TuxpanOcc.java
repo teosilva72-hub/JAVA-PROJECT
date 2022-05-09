@@ -30,7 +30,7 @@ public class TuxpanOcc{
 		listar = new ArrayList<TuxpanOccModel>();
 
 		try {
-			listar = dao.listarOcorrencias();
+			//listar = dao.listarOcorrencias();
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -47,7 +47,7 @@ public class TuxpanOcc{
 
 		dao = new TuxpanDAO();
 		try {
-			check = dao.update(data, Integer.parseInt(idTable));
+			//check = dao.update(data, Integer.parseInt(idTable));
 			String filter = filter(data.getReporte(), data.getSiniestro(), data.getFolio_sec());
 			createFolder(filter);
 			if(check == false) {
@@ -71,7 +71,7 @@ public class TuxpanOcc{
 		//RequestContext.getCurrentInstance().execute("setFile()");
 		try {
 
-			data = dao.select(idTable);
+			//data = dao.select(idTable);
 			String filter = filter(data.getReporte(), data.getSiniestro(), data.getFolio_sec());
 			mainPath = createFolder(filter);
 			listarAqr = listarFiles(mainPath);
@@ -123,7 +123,7 @@ public class TuxpanOcc{
 		//RequestContext.getCurrentInstance().execute("setFile();");
 		//copy(File filter, File filer);
 		try {
-			check = dao.registerOcc(data, typeReport);
+			//check = dao.registerOcc(data, typeReport);
 
 			if(check == false) {
 				//message error
@@ -192,7 +192,7 @@ public class TuxpanOcc{
 	public boolean listTable() {
 		boolean check = false;
 		try {
-			listar = dao.listarOcorrencias();
+			//listar = dao.listarOcorrencias();
 			if(listar.size() > 0) {
 				RequestContext.getCurrentInstance().execute("table()");
 				check = true;

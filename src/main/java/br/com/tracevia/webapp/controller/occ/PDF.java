@@ -60,7 +60,7 @@ public class PDF {
 		dao = new TuxpanDAO();
 		date = new TuxpanOccModel();
 		try {
-			date = dao.select(id);
+			//date = dao.select(id);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -129,7 +129,7 @@ public class PDF {
 			table.addCell(new PdfPCell(new Phrase(model().getFecha(), formatText1)));
 			table.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Hora"), formatText1)));
 			table.addCell(new PdfPCell(new Phrase(model().getHora(), formatText1)));
-			table.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Dirección Y/O Trayectoria"), formatText1)));
+			table.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Direcciï¿½n Y/O Trayectoria"), formatText1)));
 			table.addCell(new PdfPCell(new Phrase(model().getDireccion(), formatText1)));
 			table.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("KM de Registro"), formatText1)));
 			table.addCell(new PdfPCell(new Phrase(model().getKm_reg(), formatText1)));
@@ -187,7 +187,7 @@ public class PDF {
 			table2.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Tipo"), formatText1)));
 			table2.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Modelo"), formatText1)));
 			table2.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Color"), formatText1)));
-			table2.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Dirección Y/O Trayectoria"), formatText1)));
+			table2.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Direcciï¿½n Y/O Trayectoria"), formatText1)));
 			table2.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Telefono"), formatText1)));
 			for(int a=0; a<num_veh.length;a++) {
 				table2.addCell(new PdfPCell(new Phrase(num_veh[a], formatText1)));
@@ -253,7 +253,7 @@ public class PDF {
 				}
 				if(i == 1) {
 					table5.addCell(new Phrase("B", formatText1));
-					table5.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Trabajos de Conservación"), formatText1)));
+					table5.addCell(new PdfPCell(new Phrase(trad.TuxpanReport("Trabajos de Conservaciï¿½n"), formatText1)));
 					table5.addCell(new PdfPCell(new Phrase(model().getTrab_conserv(), formatText1)));
 				}
 				if(i == 2) {

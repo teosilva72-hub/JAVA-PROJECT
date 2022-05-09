@@ -2,6 +2,7 @@ package br.com.tracevia.webapp.controller.global;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.HashMap;
 
@@ -36,8 +37,13 @@ import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name = "loginAccount")
 @SessionScoped
-public class LoginAccountBean {
+public class LoginAccountBean implements Serializable {
 
+	/**
+	 * SERIAL ID
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private UserAccount user;
 	private UserAccount login;
 	private String credentials;    
@@ -51,7 +57,7 @@ public class LoginAccountBean {
 	String mapUI, darkMapUI, linearMapUI;
 	String plaque;
 	String logo;
-	boolean mapEnabled, reportsLLEnabled;
+	boolean mapEnabled, mapDivided, darkMap, reportsLLEnabled;
 	
 	@ManagedProperty("#{language}")
 	private LanguageBean language;
@@ -143,6 +149,22 @@ public class LoginAccountBean {
 	public void setMapEnabled(boolean mapEnabled) {
 		this.mapEnabled = mapEnabled;
 	}
+	
+	public boolean isMapDivided() {
+		return mapDivided;
+	}
+
+	public void setMapDivided(boolean mapDivided) {
+		this.mapDivided = mapDivided;
+	}
+	
+	public boolean isDarkMap() {
+		return darkMap;
+	}
+
+	public void setDarkMap(boolean darkMap) {
+		this.darkMap = darkMap;
+	}
 
 	public boolean getReportsLLEnabled() {
 		return reportsLLEnabled;
@@ -202,7 +224,8 @@ public class LoginAccountBean {
 		locale1.getResourceBundle(LocaleUtil.MESSAGES_EMAIL);
 
 		locale2 = new LocaleUtil();
-		locale2.getResourceBundle(LocaleUtil.MESSAGES_REQUIRED);		
+		locale2.getResourceBundle(LocaleUtil.MESSAGES_REQUIRED);	
+			
 	}
 	
 	// --------------------------------------------------------------------------------------------
@@ -225,7 +248,7 @@ public class LoginAccountBean {
 	
 		// IF SUCCESS ON AUTH GET SERVER INFORMATION	
 		isName = road.defineConcessionarieValues(language.concessionaire);
-		
+				
 		try {
 		
 		// CHANGES
@@ -267,6 +290,8 @@ public class LoginAccountBean {
 					darkMapUI = RoadConcessionaire.darkMapUI;
 					linearMapUI = RoadConcessionaire.linearMapUI;
 					mapEnabled = RoadConcessionaire.mapEnabled;
+					mapDivided = RoadConcessionaire.mapDivided;
+					darkMap = RoadConcessionaire.darkMap;
 					reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;
 
 					plaque = RoadConcessionaire.plaque;
@@ -309,8 +334,11 @@ public class LoginAccountBean {
 							load.startupComponents(); // Inicializar Componentes
 						
 							mapUI = RoadConcessionaire.mapUI; // Load Map
+							darkMapUI = RoadConcessionaire.darkMapUI;
 							linearMapUI = RoadConcessionaire.linearMapUI;
 							mapEnabled = RoadConcessionaire.mapEnabled;
+							mapDivided = RoadConcessionaire.mapDivided;
+							darkMap = RoadConcessionaire.darkMap;
 							reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;
 
 							plaque = RoadConcessionaire.plaque;

@@ -11,13 +11,6 @@
 	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 	
-	<f:metadata>
-	
-	<!-- Create Table Header -->
-	<f:viewAction action="#{fluxoPeriodo.createFields}" />  
-		          
-    </f:metadata>
-    	
 	<ui:define name="head" >
 	
 	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
@@ -218,7 +211,7 @@
 	       					<!---->	   
 	       					
 	       					<button type="reset" id="activate-dismiss-modal"
-								class="btn btn-dark form-modal-draw-button" disabled="true" onclick="$('#dismiss-modal').click(); $('#activate-dismiss-modal').prop('disabled', true);">
+								class="btn btn-dark form-modal-draw-button" disabled="true" onclick="$('#dismiss-modal').click(); $('#activate-dismiss-modal').prop('disabled', true); PF('poll').stop();">
 								 <i class="fas fa-sign-out-alt"></i>
 								 #{reportsLabels.reports_modal_alert_btn_exit}
 							</button>    							   									

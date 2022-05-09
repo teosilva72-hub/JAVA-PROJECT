@@ -25,7 +25,6 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.ColumnModel;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.model.global.VBV;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sat.SatReports;
 import br.com.tracevia.webapp.model.sat.SatReports.Builder;
@@ -47,7 +46,6 @@ public class SatSpeedMultiReportController {
 	private List<SelectItem> axles;  
 
 	private List<Builder> resultList;	
-	private List<VBV> resultVBV;
 	private List<String> header;  
 	private List<ColumnModel> columns;  
 	List<? extends Equipments> listSats;  
@@ -142,10 +140,6 @@ public class SatSpeedMultiReportController {
 
 	public List<SelectItem> getAxles() {
 		return axles;
-	}
-
-	public List<VBV> getResultVBV() {
-		return resultVBV;
 	}
 
 	public String getDirectionLabel1() {

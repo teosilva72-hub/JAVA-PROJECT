@@ -96,7 +96,7 @@
 /*REAL TIME SAT*/
 
 .fluxo {
-  top: 77px !important;
+  top: 60px !important;
   position: absolute;
   overflow: hidden;
   width: 100%;
@@ -141,22 +141,4 @@
   margin-top: 3.5px;
   margin-left: 0.75px;
   /*color: #878d8d;*/
-}
-
-.equip-label-left {
-  margin-left: 10px;
-}
-
-.popover-header {
-  background: #007bff !important;
-  color: white;
-  font-size: 12px;
-}
-
-.popover-body {
-  font-size: 12px;
-}
-
-.on-mouse-hover {
-  cursor: pointer;
 }

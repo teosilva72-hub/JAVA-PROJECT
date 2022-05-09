@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -32,7 +31,6 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.ColumnModel;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.model.global.VBV;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sat.SatReports;
 import br.com.tracevia.webapp.model.sat.SatReports.Builder;
@@ -53,8 +51,7 @@ public class SatReportsController {
 	private List<SelectItem> classes;  
 	private List<SelectItem> axles;  
 
-	private List<Builder> resultList;	
-	private List<VBV> resultVBV;
+	private List<Builder> resultList;		
 	private List<String> header;  
 	private List<ColumnModel> columns;  
 	List<? extends Equipments> listSats;  
@@ -153,10 +150,6 @@ public class SatReportsController {
 
 	public List<SelectItem> getAxles() {
 		return axles;
-	}
-
-	public List<VBV> getResultVBV() {
-		return resultVBV;
 	}
 
 	public String getDirectionLabel1() {
@@ -1255,66 +1248,6 @@ public class SatReportsController {
      }	
 
 	///////////////////////////////////
-	//CREATE REPORTS
-	///////////////////////////////// 
-	
-	///// VBVs Txt  
-	
-	// REPORTS VBV MODEL
-	public void GetVBVReport() throws Exception{				
-
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		ExternalContext externalContext = facesContext.getExternalContext();
-
-		SatQueriesModels satModels = new SatQueriesModels();	    
-
-		GlobalReportsDAO dao = new GlobalReportsDAO();	
-
-		//Initialize List
-		resultVBV = new ArrayList<VBV>();
-
-		//Get values for fields selection						
-		Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
-
-		//Single Selection
-		satReport.setEquipment(parameterMap.get("equip"));
-
-		satReport.setMonth(parameterMap.get("month"));
-
-		satReport.setYear(parameterMap.get("year"));
-
-		satReport.setPeriod(parameterMap.get("period"));
-
-		// Quantos dias possui o respectivo ms
-		YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(parameterMap.get("year")), Integer.parseInt(parameterMap.get("month")));
-		int daysInMonth = yearMonthObject.lengthOfMonth();
-
-		satReport.setStartDate("01/"+satReport.getMonth()+"/"+satReport.getYear());
-		satReport.setEndDate(daysInMonth+"/"+satReport.getMonth()+"/"+satReport.getYear());
-
-		//Select specific query by type
-		queryCount = satModels.VBVCount();
-		query = satModels.VBVs();
-
-		//Execution of Query
-		resultVBV = dao.ExecuteQueryVBVs(query, satReport.getEquipment(), satReport.getStartDate(), satReport.getEndDate());
-
-		//Output to datatable
-		OutputVBVResult();
-
-		facesContext.getExternalContext().getSessionMap().put("selectedEquip", satReport.getEquipment()); 
-		facesContext.getExternalContext().getSessionMap().put("selectedMonth", satReport.getMonth()); 
-		facesContext.getExternalContext().getSessionMap().put("selectedYear", satReport.getYear()); 
-
-	}	
-
-	//////// VBVs txt
-	
-	
-	/**********************************************************************************************************/
-	/**********************************************************************************************************/
-
-	///////////////////////////////////
 	//QUERY FOR METHODS
 	///////////////////////////////// 
 	
@@ -1469,7 +1402,7 @@ public class SatReportsController {
 	 */
 	public String SelectQueryType(String type, QueriesReportsModels models, SatQueriesModels satModels) throws Exception {   
 
-		int lanes = 0;
+		//int lanes = 0;
 		int[] lanesEquips;
 
 		if(satReport.equipments != null)
@@ -1927,57 +1860,7 @@ public class SatReportsController {
 			
 			 
 	    }	
-		
-	//FOR VBV TEXT OUTPUT FILE
-	private void OutputVBVResult() throws IOException {
-
-		FacesContext facesContext = FacesContext.getCurrentInstance();	
-
-		byteWriter = new ByteArrayOutputStream();
-		writer = new BufferedWriter(new OutputStreamWriter(byteWriter));
-
-		for(int i = 0; i < resultVBV.size(); i++) {
-
-			writer.write(resultVBV.get(i).getSiteID() + ";");
-			writer.write(resultVBV.get(i).getSeqG() + ";");
-			writer.write(resultVBV.get(i).getSeqN() + ";");
-			writer.write(resultVBV.get(i).getDatetime() + ";");
-			writer.write(resultVBV.get(i).getClassVBV()+ ";");
-			writer.write(resultVBV.get(i).getAxlNumber() + ";");
-			writer.write(resultVBV.get(i).getAxl1W() + ";");
-			writer.write(resultVBV.get(i).getAxl2W() + ";");
-			writer.write(resultVBV.get(i).getAxl3W() + ";");
-			writer.write(resultVBV.get(i).getAxl4W() + ";");
-			writer.write(resultVBV.get(i).getAxl5W() + ";");
-			writer.write(resultVBV.get(i).getAxl6W() + ";");
-			writer.write(resultVBV.get(i).getAxl7W() + ";");
-			writer.write(resultVBV.get(i).getAxl8W() + ";");
-			writer.write(resultVBV.get(i).getAxl9W() + ";");
-			writer.write(resultVBV.get(i).getAxl2D() + ";");
-			writer.write(resultVBV.get(i).getAxl3D() + ";");
-			writer.write(resultVBV.get(i).getAxl4D() + ";");
-			writer.write(resultVBV.get(i).getAxl5D() + ";");
-			writer.write(resultVBV.get(i).getAxl6D() + ";");
-			writer.write(resultVBV.get(i).getAxl7D() + ";");
-			writer.write(resultVBV.get(i).getAxl8D() + ";");
-			writer.write(resultVBV.get(i).getAxl9D() + ";");			
-			writer.write(resultVBV.get(i).getGross() + ";");				
-			writer.write(resultVBV.get(i).getTemperature() + ";");					
-			writer.write(resultVBV.get(i).getSpeed() + ";");
-			writer.write(resultVBV.get(i).getLane() + ";");					
-
-			writer.newLine();
-		}
-
-		writer.flush();			
-		writer.close(); 
-
-		byte[] bytes = byteWriter.toByteArray();
-
-		facesContext.getExternalContext().getSessionMap().put("bytes", bytes);
-
-	}  
-
+			
 	/**********************************************************************************************************/
 
 	///////////////////////////////////
