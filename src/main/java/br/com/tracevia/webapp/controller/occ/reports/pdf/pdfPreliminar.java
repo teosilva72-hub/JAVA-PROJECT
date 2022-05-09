@@ -468,7 +468,7 @@ public class pdfPreliminar {
 
 			Preliminar method = new Preliminar();
 			String filter = "";
-			if(model().getReporte().equals("") || model().getSiniestro().equals("") || model().getFolio_sec().equals("")) {
+			if(model().getReporte().equals("") && model().getSiniestro().equals("") && model().getFolio_sec().equals("")) {
 				String a = "-", b ="-";
 				filter = method.filter(model().getIdPasta(),a,b);
 			}else{
