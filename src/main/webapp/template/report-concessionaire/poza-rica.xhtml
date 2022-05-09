@@ -206,10 +206,10 @@
 
 		</ul></li>
 	<!---->
-	
+
 	<li class="nav-item"><a href="#reportMenu" data-toggle="collapse"
 		aria-expanded="false" class="nav-link"> <i
-				class="far fa-file-alt icon"></i> <span class="text">#{dashboardLabels.dashboard_sidebar_module_occ}</span></a>
+			class="far fa-file-alt icon"></i> <span class="text">#{dashboardLabels.dashboard_sidebar_module_occ}</span></a>
 		<ul class="collapse list-unstyled" id="reportMenu">
 			<!-- OCC REPORT MENU -->
 			<ui:fragment rendered="#{loginAccount.load.en_occ}">
@@ -219,7 +219,7 @@
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 						<span class="text-sub">#{tuxpan_trad.occ_link}</span>
 					</h:commandLink></li>
-					<li class="nav-item"><h:commandLink class="nav-link"
+				<li class="nav-item"><h:commandLink class="nav-link"
 						action="#{navigationController.redirectToURL('/occurrence/tuxpan/preliminar.xhtml?faces-redirect=true')}"
 						value="" data-toggle="collapse" aria-expanded="false">
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
@@ -228,8 +228,7 @@
 				<!---->
 			</ui:fragment>
 			<!---->
-		</ul>
-	</li>
+		</ul></li>
 
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
@@ -354,7 +353,18 @@
 					</h:commandLink></li>
 			</ui:fragment>
 			<!---->
+			<ui:fragment rendered="#{loginAccount.load.en_occ}">
+				<li class="nav-item"><h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/occurrence/occurrences.xhtml')}"
+						value="">
+						<svg width="16" height="16" fill="currentColor"
+							class="bi bi-file-spreadsheet-fill icon-sub" viewBox="0 0 16 16"> <path
+							d="M12 0H4a2 2 0 0 0-2 2v4h12V2a2 2 0 0 0-2-2zm2 7h-4v2h4V7zm0 3h-4v2h4v-2zm0 3h-4v3h2a2 2 0 0 0 2-2v-1zm-5 3v-3H6v3h3zm-4 0v-3H2v1a2 2 0 0 0 2 2h1zm-3-4h3v-2H2v2zm0-3h3V7H2v2zm4 0V7h3v2H6zm0 1h3v2H6v-2z" />
+						</svg>
 
+						<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_occ_sub_menu_occurences}</span>
+					</h:commandLink></li>
+			</ui:fragment>
 			<!---->
 
 			<!-- METEO MENU -->
@@ -429,7 +439,7 @@
 
 			<!---->
 
-			
+
 
 			<!---->
 
