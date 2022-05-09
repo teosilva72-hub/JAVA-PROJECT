@@ -77,8 +77,7 @@
 					</ul> <!----></li>
 				<!---->
 			</ui:fragment>
-			
-			<!---->
+			<!--  -->
 
 			<!-- COLAS ITEM -->
 
@@ -105,7 +104,6 @@
 				class="fas fa-tv icon"></i> <span class="text">#{dashboardLabels.dashboard_sidebar_module_dms}</span></a>
 
 			<ul class="collapse list-unstyled" id="dmsUiSubmenu">
-			
 				<!-- DMS SUBMENU -->
 
 				<!-- ACTIVE MESSAGES -->
@@ -236,7 +234,6 @@
 
 
 	<!-- REPORTS MENU -->
-	
 	<li class="nav-item"><a href="#modMenu" data-toggle="collapse"
 		aria-expanded="false" class="nav-link"> <i
 			class="fas fa-file-signature icon"></i> <span class="text">#{dashboardLabels.dashboard_sidebar_menu_reports}</span></a>
@@ -291,16 +288,14 @@
 			</ui:fragment>
 
 			<!-- COLAS -->
-			
 			<ui:fragment rendered="#{loginAccount.load.en_colas}">
 
 				<li class="nav-item"><a class="nav-link" href="#colasSubmenu"
 					data-toggle="collapse" aria-expanded="false"> <i
 						class="fas fa-hourglass-half icon-sub"></i> <span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_colas}</span></a>
 					<ul class="collapse list-unstyled moduleSubMenu" id="colasSubmenu">
-												
+
 						<!---->
-						
 						<li class="nav-item"><h:commandLink class="nav-link"
 								action="#{navigationController.redirectToURL('/reports/colas/tuxpan/waiting_time/waiting_time.xhtml')}"
 								value="">
@@ -328,24 +323,12 @@
 			<!---->
 
 			<!-- DAI  -->
-			
 			<ui:fragment rendered="#{loginAccount.load.en_dai}">
 
 				<li class="nav-item"><a class="nav-link" href="#daiSubmenu"
 					data-toggle="collapse" aria-expanded="false"> <i
 						class="fas fa-video icon-sub"></i> <span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_dai}</span></a>
 					<ul class="collapse list-unstyled" id="daiSubmenu">
-					
-						<!-- DAI DETAIL -->
-			
-						<li class="nav-item"><h:commandLink class="nav-link"
-								action="#{navigationController. redirectToURL('/reports/detailed-reports/tuxpan/dai/dai-detail.xhtml?faces-redirect=true')}"
-								value="">
-								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-								<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_dai_detail_submenu}</span>
-							</h:commandLink></li>
-			
-						<!---->
 
 						<li class="nav-item"><h:commandLink class="nav-link"
 								action="#{navigationController.redirectToURL('/reports/dai/tuxpan/incidents/incidents.xhtml?faces-redirect=true')}"
@@ -362,38 +345,12 @@
 			<!---->
 
 			<ui:fragment rendered="#{loginAccount.load.en_ocr}">
-			
-				<li class="nav-item"><a class="nav-link" href="#ocrSubmenu"
-					data-toggle="collapse" aria-expanded="false">
-					 <i class="fas fa-camera-retro icon-sub"></i>
-					 <span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_ocr}</span></a>
-						
-					<ul class="collapse list-unstyled" id="ocrSubmenu">
-					
-						<!-- OCR DETAIL -->
-		
-						<li class="nav-item">
-							   <h:commandLink class="nav-link"
-								action="#{navigationController. redirectToURL('/reports/detailed-reports/tuxpan/ocr/ocr-detail.xhtml?faces-redirect=true')}"
-								value="">
-								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-								<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ocr_detail_submenu}</span>
-							  </h:commandLink>
-						 </li>
-						 
-						 <!---->
-				 			
-						<li class="nav-item">
-							<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/ocr/report-ocr-details.xhtml')}" value="">
-								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-								<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_report}</span>
-							</h:commandLink>
-						</li>
-												
-						<!---->	
-																
-					</ul>
-				</li>
+				<li class="nav-item"><h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/reports/ocr/report-ocr-details.xhtml')}"
+						value="">
+						<i class="fas fa-camera-retro icon-sub"></i>
+						<span class="text-sub-item">#{ocrLabels.ocr_report_title}</span>
+					</h:commandLink></li>
 			</ui:fragment>
 			<!---->
 			<ui:fragment rendered="#{loginAccount.load.en_occ}">
@@ -481,6 +438,7 @@
 			</ui:fragment>
 
 			<!---->
+
 
 
 			<!---->

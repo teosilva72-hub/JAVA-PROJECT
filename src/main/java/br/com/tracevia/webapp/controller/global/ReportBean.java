@@ -2,7 +2,6 @@ package br.com.tracevia.webapp.controller.global;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -31,6 +30,7 @@ import br.com.tracevia.webapp.dao.global.ReportDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.global.ReportSelection;
 import br.com.tracevia.webapp.model.sat.SatTableHeader;
@@ -41,13 +41,8 @@ import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="reportBean")
 @RequestScoped
-public class ReportBean implements Serializable{
+public class ReportBean {
 
-	/**
-	 * SERIAL ID
-	 */
-	private static final long serialVersionUID = -2613194601431027633L;
-	
 	public String table;
 	public String idTable;
 	public List<String> columnsName = new ArrayList<>(); 
@@ -88,7 +83,7 @@ public class ReportBean implements Serializable{
 	private String laneName = "";
 
 	private ExcelTemplate model;
-	//private ByteArrayOutputStream exclusivePDF;
+	private ByteArrayOutputStream exclusivePDF;
 	private List<String> columnsInUse = new ArrayList<>(); 
 	private List<String> columnsHeader = new ArrayList<>(); 
 	private HashMap<String, Integer> moreInterval = new HashMap<>();
@@ -106,7 +101,7 @@ public class ReportBean implements Serializable{
 
 	List<? extends Equipments> listEquips;  
 	
-	@ManagedProperty("#{listEquipsBean}")
+	@ManagedProperty("#{listEquips}")
 	private ListEquipments equips;
 
 	@ManagedProperty("#{language}")
@@ -624,7 +619,7 @@ public class ReportBean implements Serializable{
     	      	
     	  // UPDATE VIEW LOCALE INTO REPORTS
     	  language.updateViewLocale(Locale.getDefault()); 
-    	      	      	
+    	      	
 	 }		
 	
 	public void initiliazeSatHeader() {
@@ -807,7 +802,7 @@ public class ReportBean implements Serializable{
 		
 		Map<String, String> map = SessionUtil.getRequestParameterMap();
 		Map<String, String[]> mapArray = SessionUtil.getRequestParameterValuesMap();
-		//List<String> listAux = new ArrayList<String>();
+		List<String> listAux = new ArrayList<String>();
 		
 		String[] columns = null;
 		

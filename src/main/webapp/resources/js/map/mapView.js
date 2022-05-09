@@ -2,29 +2,37 @@ var widthMax = 1000
 var heightMax = 1000
 var scale = 1
 
-// RELOAD EQUIPMENTS INFORMATION
+// *********************************************************** //
 
-setInterval(() => {
+setTimeout(() => {
+	setInterval(() => {
 
-	let data = new Date();
-	let n = data.getSeconds();
-	let minute = data.getMinutes();		
+		let data = new Date();
+		let n = data.getSeconds();
+		let minute = data.getMinutes();
 
-	if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
-		if (n > 0 && n < 4)
-			init();		
-	}
-	
- }, 3000)
+		if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
+			if (n < 4){
+				init();
+
+			 location.href = location.protocol + '//' + location.host + location.pathname
+		
+		   }
+		}
+
+	}, 3000)
+}, 4000)
+
 
 // *********************************************************** //
 
+////////////////////////////////////////////////////////////////
 const init = () => {
 	$('#equipAll').load('/map/mapEquip.xhtml', () => {
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))
 
-		$('.equip-box, .equip-info, .equip-box-sat, .equip-box-speed, .plaque').each(function () {
+		$('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
 			let equip = $(this)
 
 			posEquip(equip)
@@ -168,7 +176,7 @@ function ScrollZoom(container) {
 
 		showGenericName();
 
-		container.find('.equip-box, .equip-info, .equip-box-sat, .equip-box-speed, .plaque').each(function () {
+		container.find('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
 			let equip = $(this)
 
 			equip.css(
@@ -189,9 +197,9 @@ function ScrollZoom(container) {
 	//RESIZE EQUIPMENT
 	function resizeEquipScale(container) {
 		let max = 0;
-		let equips = container.find('.equip-box, .equip-info, .equip-box-sat, .equip-box-speed');
+		let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
 		let plaque = $('.plaque');
-		let allEquip = $('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat, #equipAll .equip-box-speed');
+		let allEquip = $('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat');
 		let barSize = Number($('#bar-size').val()) || 1
 		let scaleA;
 
@@ -215,7 +223,7 @@ function ScrollZoom(container) {
 
 	//RESIZE EQUIPMENT
 	function resizeEquip(container) {
-		let equips = container.find('.equip-box, .equip-info, .equip-box-sat, .equip-box-speed');
+		let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
 		let plaque = $('.plaque');
 		let scaleA;
 
@@ -312,7 +320,7 @@ function ScrollZoom(container) {
 			let checkedLines = $("#visiblelines");
 			draw.find(".equipLine ").remove();
 			if (checkedLines.prop("checked"))
-				$('.equip-box, .equip-info, .equip-box-sat, .equip-box-speed').each(function () {
+				$('.equip-box, .equip-info, .equip-box-sat').each(function () {
 					let equip = $(this)
 					updateLine(equip);
 				});

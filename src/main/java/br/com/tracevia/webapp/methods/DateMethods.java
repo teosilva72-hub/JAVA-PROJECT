@@ -16,6 +16,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import br.com.tracevia.webapp.controller.global.LanguageBean;
+import br.com.tracevia.webapp.controller.global.MessagesBean;
 
 public class DateMethods {
 	
@@ -33,7 +34,8 @@ public class DateMethods {
 	private String[] intervaloSeparador;
 	private String[] intervaloSeparadorDias;
 	int maxDay, maxHour;
-		
+	
+	MessagesBean msg;
 	private ResourceBundle resourceBundle;
 	private LanguageBean lang;
 	
@@ -1810,7 +1812,9 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					 */
 					
 					public boolean limitSearch(String dtInit, String dtEnd) throws ParseException {
-																		
+						
+						
+						msg = new MessagesBean();
 						int days = 0;
 						boolean response = false;
 											

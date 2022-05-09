@@ -64,34 +64,7 @@ html, body {
     transform: unset;
     left: 25px;
 }
-
 .detailsModal{
 	color: black;
 	font-weight: 20;
 }
-
-
-#dateInitial, #dateFinal {
-    width: 100%;
-}
-
-#hourInitial, #hourFinal{
-  width: 100%;
-  padding-left: inherit !important;	
-}
-
-#minuteInitial, #minuteFinal{
-  width: 100%;
-  padding-left: inherit !important;	
-}
-
-.no-flex-wrap{
-	flex-wrap: nowrap; /* Default value */
-}
-
-.error-label{
-	top: 50px !important;
-	margin-left: 0;
-	width: max-content;
-}
-

@@ -2,7 +2,7 @@ package br.com.tracevia.webapp.model.sat;
 
 import br.com.tracevia.webapp.model.global.Equipments;
 
-public class SAT extends Equipments implements Comparable<SAT> {
+public class SAT extends Equipments {
 		
 	private int numFaixas;	
 	private int quantidadeS1;
@@ -72,7 +72,8 @@ public class SAT extends Equipments implements Comparable<SAT> {
 	private String sevenDaysDatetime;
 	private String lastOneDatetime;
 	private String projectionDatetime;
-	private String currentDatetime;				
+	private String currentDatetime;
+				
 
 	public SAT(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
@@ -158,7 +159,7 @@ public class SAT extends Equipments implements Comparable<SAT> {
 		this.sentido1 = sentido1;
 		this.sentido2 = sentido2;
 		this.sentido1Abbr = sentido1Abbr;
-		this.sentido2Abbr = sentido2Abbr;	
+		this.sentido2Abbr = sentido2Abbr;
 		this.posicao_nivel_servico = posicao_nivel_servico;
 		this.lastRegister = lastRegister;
 		this.lastPackage = lastPackage;
@@ -723,17 +724,6 @@ public class SAT extends Equipments implements Comparable<SAT> {
 	public void setCurrentDatetime(String currentDatetime) {
 		this.currentDatetime = currentDatetime;
 	}
-
-	@Override
-	public int compareTo(SAT sat) {
 		
-		if (this.getEquip_id() < sat.getEquip_id()) 
-			  return -1; 
-		
-	    if (this.getEquip_id() > sat.getEquip_id())
-	         return 1; 	    
-		
-		return 0;
-	}
-
+	
 }

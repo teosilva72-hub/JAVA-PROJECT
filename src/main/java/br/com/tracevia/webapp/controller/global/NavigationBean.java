@@ -1,7 +1,5 @@
 package br.com.tracevia.webapp.controller.global;
 
-import java.io.Serializable;
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -9,13 +7,8 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean(name = "navigationController", eager = true)
 @RequestScoped
-public class NavigationBean implements Serializable {
-		
-	/**
-	 * SERIAL ID
-	 */
-	private static final long serialVersionUID = 1L;
-	
+public class NavigationBean {
+
 	private String navigation_page;
 	private String sidebar_page;
 		
@@ -39,7 +32,7 @@ public class NavigationBean implements Serializable {
 	public void initialize(){
 		
 		sidebarSource();
-		
+
 	}
 	
 	// ----------------------------------------------------------------
