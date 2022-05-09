@@ -92,7 +92,7 @@ public class SATBuildMap implements Serializable {
 				
 				// LIMIT SEARCH				
 				int limit = equips.getSatList().size();								
-				System.out.println("INI: "+limit);
+				//System.out.println("INI: "+limit);
 	
 				// LISTAR AUXILIARES											
 				List<SAT> data15MinList = new ArrayList<SAT>();
@@ -123,9 +123,9 @@ public class SATBuildMap implements Serializable {
 						
 					    limit = limit - data15MinList.size();
 					   					    
-					    System.out.println("15 SIZE: "+data15MinList.size());
+					  //  System.out.println("15 SIZE: "+data15MinList.size());
 					    
-					    System.out.println("15 limit: "+limit);
+					   // System.out.println("15 limit: "+limit);
 																								
 					}
 					
@@ -137,7 +137,7 @@ public class SATBuildMap implements Serializable {
 													
 								if(!data30MinList.isEmpty()) {
 									
-								    System.out.println("30 Size: "+data30MinList.size());
+								  //  System.out.println("30 Size: "+data30MinList.size());
 									
 									if(!data15MinList.isEmpty()) {
 									
@@ -149,7 +149,7 @@ public class SATBuildMap implements Serializable {
 										
 											limit = limit - data30MinList.size();
 											
-											  System.out.println("30 limit: "+limit);
+											///  System.out.println("30 limit: "+limit);
 																																				
 										} else {
 											
@@ -158,7 +158,7 @@ public class SATBuildMap implements Serializable {
 											
 											limit = limit - data30MinList.size();
 											
-											  System.out.println("30 limit: "+limit);
+											//  System.out.println("30 limit: "+limit);
 											
 										}							
 									}							
@@ -172,7 +172,7 @@ public class SATBuildMap implements Serializable {
 																		
 										if(!data03HourList.isEmpty()) {
 											
-										    System.out.println("03 Size: "+data03HourList.size());
+										   // System.out.println("03 Size: "+data03HourList.size());
 											
 											if(!data30MinList.isEmpty()) {
 											
@@ -185,7 +185,7 @@ public class SATBuildMap implements Serializable {
 												
 													limit = limit - data03HourList.size();
 													
-													System.out.println("03 limit: "+limit);
+												//	System.out.println("03 limit: "+limit);
 																																						
 												} else {
 													
@@ -194,7 +194,7 @@ public class SATBuildMap implements Serializable {
 													
 													limit = limit - data03HourList.size();
 													
-													System.out.println("03 limit: "+limit);
+													//System.out.println("03 limit: "+limit);
 													
 												}										
 											}							
@@ -208,7 +208,7 @@ public class SATBuildMap implements Serializable {
 								 																
 										if(!data06HourList.isEmpty()) {
 											
-										    System.out.println("06 Size: "+data06HourList.size());
+										  //  System.out.println("06 Size: "+data06HourList.size());
 											
 											if(!data03HourList.isEmpty()) {
 											
@@ -220,7 +220,7 @@ public class SATBuildMap implements Serializable {
 												
 													limit = limit - data06HourList.size();
 													
-													System.out.println("06 limit: "+limit);
+													//System.out.println("06 limit: "+limit);
 																																						
 												} else {
 													
@@ -229,7 +229,7 @@ public class SATBuildMap implements Serializable {
 													
 													limit = limit - data06HourList.size();
 													
-													System.out.println("06 limit: "+limit);
+													//System.out.println("06 limit: "+limit);
 													
 												}							
 											}							
@@ -277,14 +277,14 @@ public class SATBuildMap implements Serializable {
 							  
 									limit = 0;
 							    
-									System.out.println("HERE");
+									//System.out.println("HERE");
 							}														
 							
 						} else if(availabilityList.isEmpty())								
 						{							
 							satListValuesAux = intializeNullList(limit, equipIdList);
 							
-							System.out.println("HERE 2");
+							//System.out.println("HERE 2");
 						}
 							
 						// ----------------------------------------------------------------------- 
@@ -353,7 +353,7 @@ public class SATBuildMap implements Serializable {
 			  
 			  limit = 0;
 			  
-			  System.out.println("TESTE1");
+			  //System.out.println("TESTE1");
 										
 			}
 												
@@ -363,7 +363,7 @@ public class SATBuildMap implements Serializable {
 			  
 			  limit = 0;
 			  
-			  System.out.println("TESTE2");
+			  //System.out.println("TESTE2");
 			
 		}
 						
@@ -421,7 +421,7 @@ public class SATBuildMap implements Serializable {
 											
 		// CURRENT STATE
 							
-		sat.setAutosVolumeS1(0);
+		/*sat.setAutosVolumeS1(0);
 		sat.setComVolumeS1(0);
 		sat.setMotoVolumeS1(0);
 		sat.setTotalVolumeS1(0);
@@ -429,7 +429,7 @@ public class SATBuildMap implements Serializable {
 		sat.setComVelMedS1(0);
 		sat.setMotoVelMedS1(0);
 		sat.setTotalVelMedS1(0);					
-		//sat.setOccupancyRateS1(0.00);
+		sat.setOccupancyRateS1(0.00);*/
 		
 	    // PROJECTION
 		
@@ -456,7 +456,7 @@ public class SATBuildMap implements Serializable {
 		sat.setMotoCurrent1hS2(0);
 		sat.setTotalCurrent1hS2(0);*/
 																	
-		sat.setAutosVolumeS2(0);
+		/*sat.setAutosVolumeS2(0);
 		sat.setComVolumeS2(0);
 		sat.setMotoVolumeS2(0);
 		sat.setTotalVolumeS2(0);
@@ -464,7 +464,7 @@ public class SATBuildMap implements Serializable {
 		sat.setComVelMedS2(0);
 		sat.setMotoVelMedS2(0);
 		sat.setTotalVelMedS2(0);
-		//sat.setOccupancyRateS2(0.00);
+		sat.setOccupancyRateS2(0.00); */
 		
 	    // PROJECTION 
 		

@@ -304,7 +304,7 @@ public class OcrReport{
 		
 		String cam = camera;
 		
-		System.out.println(all_img+" "+camera);
+		//System.out.println(all_img+" "+camera);
 		
 		String all_search = "";
 		if(all_img.equals("0")) all_search = "";
