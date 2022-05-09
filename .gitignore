@@ -1,6 +1,7 @@
 target/
 .vscode/
 bin/
-pom.xml
+.factorypath
 .team-project
 .metadata/
+.settings
