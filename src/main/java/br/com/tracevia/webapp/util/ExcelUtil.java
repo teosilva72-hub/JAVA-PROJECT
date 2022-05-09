@@ -2394,11 +2394,15 @@ public class ExcelUtil {
 	  
 	// -----------------------------------------------------------------------------------------------------------------------------------------------
 		
-		public void fileBodySimple(XSSFSheet sheet, XSSFRow row, List<String> columnName, List<String[]> values, int startCol, int endCol, int startRow) {
+	  public void fileBodySimple(XSSFSheet sheet, XSSFRow row, List<String> columnName, List<String[]> values, int startCol, int endCol, int startRow) {
+		  fileBodySimple(sheet, row, values, startCol, columnName.size(), startRow);
+	  }
+	  
+		public void fileBodySimple(XSSFSheet sheet, XSSFRow row, List<String[]> values, int startCol, int endCol, int startRow) {
 
 			int rowLenght = startRow + values.size();
 						  			
-			  for (int col = startCol; col < columnName.size(); col++) {
+			  for (int col = startCol; col < endCol; col++) {
 				  
 				  for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < values.size(); rowIndex++, lin++) {
 			 		

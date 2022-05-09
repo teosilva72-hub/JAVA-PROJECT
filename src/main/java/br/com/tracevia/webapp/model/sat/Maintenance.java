@@ -179,11 +179,11 @@ public class Maintenance {
 		Calendar now = Calendar.getInstance();
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-		now.add(Calendar.MINUTE, -15);
+		now.add(Calendar.MINUTE, -30);
 
 		try {
 			return now.getTime().before(date.parse(String.format("%s %s", data, hora)))
-				&& (statusZero[23] | statusFifteen[23] | statusThirty[23] | statusFortyFive[23]) == 1;
+				&& (statusZero[23] | statusFifteen[23] | statusThirty[23] | statusFortyFive[22]) == 1;
 		} catch (ParseException e) {
 			return false;
 		}
