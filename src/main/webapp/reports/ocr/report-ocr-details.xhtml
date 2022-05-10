@@ -14,15 +14,11 @@
 	
 	<f:metadata>
 
-	    <f:viewAction onPostback="true" action="#{reportBean.defineFileName(ocrLabels.ocr_report_title)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(ocrLabels.ocr_report_title)}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.defineFileName(ocrLabels.ocr_report_vehicles_report)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(ocrLabels.ocr_report_vehicles_report)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('TUXPAN')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineModule('meteo')}" />	    
-		<f:viewAction onPostback="true" action="#{reportBean.haveChart('false')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(ocrLabels.ocr_report_title)}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(ocrLabels.ocr_report_title)}" />		
-	    <f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartLabels.$label_chart_vertical_axis_station)}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('ocr')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />	
 		  				  
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('ocr_data')}"/>
@@ -30,12 +26,11 @@
 		<f:viewAction onPostback="true" escape="false" action="#{reportBean.setColumnsName('Data, Hora, ID, Nome, Placa, Placa?')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(datetime, `%d/%m/%Y`) as sd; DATE_FORMAT(datetime, `%H:%i:%s`); id_ocr_data; site_name; if(plate = ``, `XXXXXXX`, plate); if(plate != `XXXXXXX` AND plate != ``, `Ok`,`X`)')}" /> 
 	    <f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
-		
-	
+			
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('datetime', reportsLabels.reports_select_date, false, true)}" />	
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('site_name', reportsLabels.reports_select_equipment, 'ocr_equipment.name', true, false)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('site_name', reportsLabels.reports_select_equipment, 'ocr_equipment.name', false, false)}" />
 	
     </f:metadata>
 	
@@ -43,8 +38,8 @@
 	
 		<!-- TEMPLATE DO CABEÇALHO -->
 	
-	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
-	<title>#{ocrLabels.ocr_report_vehicles_report}</title>
+		<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
+		<title>#{ocrLabels.ocr_report_vehicles_report}</title>
 	    <!-- CCS STYLE -->
 	    
 	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
