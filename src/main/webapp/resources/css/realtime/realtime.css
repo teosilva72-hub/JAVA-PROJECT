@@ -608,7 +608,7 @@ input#configId-edit:disabled, select#meteoType-edit:disabled {
   transform-origin: 50% 80%;
 }
 
-.equip-box-speed {
+.equip-box.speed {
   transform-origin: 50% 72.5%;
 }
 

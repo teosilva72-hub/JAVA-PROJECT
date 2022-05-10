@@ -19,6 +19,10 @@
         <h:outputStylesheet name="tooltip.css" library="css/util/tooltip" /> <!-- INSERT TOOLTIP -->
         <h:outputStylesheet name="preloader.css" library="css/util/preloader" /> <!-- INSERT PRELOADER -->
                       
+         <c:if test="#{ CFTV || COLAS || COMMS || DAI || OCR || SOS || WIM  }">
+            <h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
+        </c:if>
+        <!---->
         <c:if test="#{ CFTV }">
              <h:outputStylesheet name="cftv.css" library="css/map" />
         </c:if>        
@@ -41,10 +45,6 @@
         <!---->        
         <c:if test="#{ SPEED }">
             <h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
-        </c:if>
-        <!---->
-         <c:if test="#{ CFTV || COLAS || COMMS || DAI || OCR || SOS || WIM  }">
-            <h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
         </c:if>
         <!---->
         
