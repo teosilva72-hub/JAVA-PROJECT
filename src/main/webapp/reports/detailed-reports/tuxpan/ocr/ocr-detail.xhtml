@@ -10,44 +10,25 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
-	
 	<ui:define name="head">
-	
 		<title>#{abaLabels.ocr_report}</title>
-		
-		 <!-- CCS STYLE -->
-		
-		<h:outputStylesheet library="css/datatables/custom"	name="table-style.css" />
+		<h:outputStylesheet library="css/datatables/custom"
+			name="table-style.css" />
 		<h:outputStylesheet library="css/reports" name="reports_template.css" />
 		<h:outputStylesheet library="css/forms" name="form-style.css" />
 		<h:outputStylesheet library="css/ocr" name="ocrStyle.css" />
 		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
-		
-		<!---->
-		
-		<!-- JAVASCRIPT FILE -->
-				
-		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
-		<h:outputScript library="js/ocr" name="controller_ocr.js" /> <!-- OCR CONTROLLER -->
-		<h:outputScript library="js/alert" name="alerts.js" />	<!-- ENABLE ALERTS --> 	   		
-		
-		<!---->
-		
+		<h:outputStylesheet library="bootstrap/css"
+			name="bootstrap-multiselect.css" />
+		<h:outputStylesheet library="css/occ" name="occurrences.css" />
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
+		<h:outputScript library="js/ocr" name="controller_ocr.js" />
 	</ui:define>
-	<ui:define name="main-content">	
-	
-	  	<!-- ============================================================================================================================= -->
-			        
-         <!-- ALERT MESSAGE -->
-	 
-         <ui:include src="/template/alerts/alerts.xhtml" />
-             
-       <!-- ============================================================================================================================= -->
-      
+	<ui:define name="main-content">
 		<div class="row">
 			<div class="col-md-12">
 
-				<h1 class="text-center">#{ocrLabels.ocr_report_detailed}</h1>
+				<h1 class="text-center">#{ocrLabels.ocr_report_title}</h1>
 				<hr></hr>
 			</div>
 			<div class="col-md-5">
@@ -153,162 +134,93 @@
 							</button>
 						</div>
 						<div class="modal-body">
-						
-							<!-- CAMERA OCR -->
-							
-							<div class="form-row border border-dark">
-								<div class="form-group col-sm-12 select-field">									 	
-									    <select name="camera" id="camera" class="w-100" >
-										   <option value="">#{ocrLabels.ocr_report_modal_search_all_cam}</option>
-											 <ui:repeat var="cam" value="#{OcrReport.cams}" varStatus="camStatus">
-												<option value="#{cam.value}">#{cam.label}</option>
-											</ui:repeat>
-										</select>								
+							<div class="row">
+								<div class="col-md-4">
+									<span>#{ocrLabels.ocr_report_modal_search_dateInitial}</span>
+									<h:inputText class="form-control inputDesign ll"
+										id="dateInitial" pt:placeholder="yyyy-mm-dd"
+										autocomplete="off" value="#{OcrReport.dtStart}"></h:inputText>
+								</div>
+								<div class="col-md-4">
+									<span>#{ocrLabels.ocr_report_modal_search_hourInitial}</span>
+									<h:selectOneMenu value="#{OcrReport.hrStart}"
+										class="form-control inputDesign ll" id="hourInitial">
+										<f:selectItem itemLabel="Horas" itemValue="" />
+										<f:selectItems value="#{OcrReport.horas}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-4">
+									<span>#{ocrLabels.ocr_report_modal_search_minuteInitial}</span>
+									<h:selectOneMenu value="#{OcrReport.minStart}"
+										class="form-control inputDesign ll" id="minuteInitial">
+										<f:selectItem itemLabel="Minutos" itemValue="" />
+										<f:selectItems value="#{OcrReport.minutos}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-4">
 									<hr></hr>
+									<span>#{ocrLabels.ocr_report_modal_search_dateFinal}</span>
+									<h:inputText class="form-control inputDesign ll" id="dateFinal"
+										pt:placeholder="yyyy-mm-dd" autocomplete="off"
+										value="#{OcrReport.dtFinal}"></h:inputText>
 								</div>
-								<div class="error-label position-absolute mt-2">
-									<label for="camera" class="error" id="camera-error"></label>
+								<div class="col-md-4">
+									<hr></hr>
+									<span>#{ocrLabels.ocr_report_modal_search_hourFinal}</span>
+									<h:selectOneMenu value="#{OcrReport.hrFinal}"
+										class="form-control inputDesign ll" id="hourFinal">
+										<f:selectItem itemLabel="Horas" itemValue="" />
+										<f:selectItems value="#{OcrReport.horas}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-4">
+									<hr></hr>
+									<span>#{ocrLabels.ocr_report_modal_search_minuteFinal}</span>
+									<h:selectOneMenu value="#{OcrReport.minFinal}"
+										class="form-control inputDesign ll" id="minuteFinal">
+										<f:selectItem itemLabel="Minutos" itemValue="minuteFinal" />
+										<f:selectItems value="#{OcrReport.minutos}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-12">
+									<hr></hr>
+									<span>#{ocrLabels.ocr_filter_img}</span> <select name="img_all"
+										id="img_all" class="form-control inputDesign">
+										<option value="0">#{ocrLabels.ocr_option_filter_all_img}</option>
+										<option value="1">#{ocrLabels.ocr_option_filer_img_plate}</option>
+										<option value="2">#{ocrLabels.ocr_option_filter_img}</option>
+									</select>
+									<h:inputHidden id="img_all_get" value="#{OcrReport.all_img}"></h:inputHidden>
+								</div>
+								<div class="col-md-12">
+									<hr></hr>
+									<span>#{ocrLabels.ocr_report_modal_search_camera}</span>
+									<h:selectOneMenu value="#{OcrReport.camera}"
+										class="form-control inputDesign ll" id="camera">
+										<f:selectItem
+											itemLabel="Select"
+											itemValue="" />
+										<f:selectItems value="#{OcrReport.cams}" />
+									</h:selectOneMenu>
 								</div>
 							</div>
-								
-							<!---->
-							
-							<!-- IMAGENS -->
-								
-							<div class="form-row border border-dark">
-								<div class="form-group col-sm-12 position-relative select-field">	
-									<span for="img_all" class="valid-icon-hidden"></span> 									
-										<!--  <span>#{ocrLabels.ocr_filter_img}</span> -->
-										<select name="img_all" id="img_all" class="w-100">
-											<option value="0">#{ocrLabels.ocr_option_filter_all_img}</option>
-											<option value="1">#{ocrLabels.ocr_option_filer_img_plate}</option>
-											<option value="2">#{ocrLabels.ocr_option_filter_img}</option>
-										</select>
-										<h:inputHidden id="img_all_get" value="#{OcrReport.all_img}"></h:inputHidden>
-										<hr></hr>
-								</div>
-								<div class="error-label"></div>
-							</div>
-							
-							 <!---->	
-							 
-							 <!-- START DATE -->
-							 
-							<div class="form-row no-flex-wrap">
-							   <div class="col-5 position-relative">
-								 <div class="form-group input-field">	
-									<span><i class="far fa-calendar-alt"></i></span>										
-									 <input type="text" class="datepicker" autocomplete="off" name="dateInitial" id="dateInitial"
-									  placeholder="dd/mm/yyyy" />
-								</div>
-								<div class="error-label position-absolute">
-									<label for="dateInitial" class="error" id="dateInitial-error"></label>
-								</div>
-							</div>		
-													
-							<!---->								
-									
-							<div class="col mx-1 position-relative">							
-								<div class="form-group select-field no-flex-wrap">	
-							   		<select name="hourInitial" id="hourInitial" class="text-center" >
-								   		<option value="">#{ocrLabels.ocr_report_modal_search_hourInitial}</option>
-									 		<ui:repeat var="hr" value="#{OcrReport.horas}" varStatus="hrStatus">
-										<option value="#{hr.value}">#{hr.label}</option>
-									</ui:repeat>
-								</select>	
-							</div>	
-							<div class="error-label position-absolute">
-								<label for="hourInitial" class="error" id="hourInitial-error"></label>
-							</div>
 						</div>
-								
-						<!---->	
-													
-						<div class="col position-relative mx-1">
-							<div class="form-group select-field no-flex-wrap">								
-							   	<select name="minuteInitial" id="minuteInitial" class="text-center" >
-								   <option value="">#{ocrLabels.ocr_report_modal_search_minuteInitial}</option>
-									 <ui:repeat var="min" value="#{OcrReport.minutos}" varStatus="minStatus">
-										<option value="#{min.value}">#{min.label}</option>
-									</ui:repeat>
-								</select>	
-							</div>	
-							<div class="error-label position-absolute">
-								<label for="minuteInitial" class="error" id="minuteInitial-error"></label>
-						 </div>	
-					 </div>
-					<!---->	
-				 </div>							
-											
-				<!---->
-							
-					<!-- END DATE -->
-									
-					<div class="form-row no-flex-wrap">
-					   <div class="col-5 position-relative">
-						 <div class="form-group input-field">	
-							<span><i class="far fa-calendar-alt"></i></span>										
-							 <input type="text" class="datepicker" autocomplete="off" name="dateFinal" id="dateFinal"
-							  placeholder="dd/mm/yyyy" />
-						</div>
-						<div class="error-label position-absolute">
-							<label for="dateFinal" class="error" id="dateFinal-error"></label>
-						</div>
-					</div>		
-												
-						<!---->								
-								
-						<div class="col mx-1 position-relative">							
-							<div class="form-group select-field no-flex-wrap">	
-						   		<select name="hourFinal" id="hourFinal" class="text-center" >
-							   		<option value="">#{ocrLabels.ocr_report_modal_search_hourInitial}</option>
-								 		<ui:repeat var="hr" value="#{OcrReport.horas}" varStatus="hrStatus">
-									<option value="#{hr.value}">#{hr.label}</option>
-								</ui:repeat>
-							</select>	
-						</div>	
-						<div class="error-label position-absolute">
-							<label for="hourFinal" class="error" id="hourFinal-error"></label>
+						<div class="modal-footer">
+
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">#{ocrLabels.ocr_report_modal_search_close_button}</button>
+
+							<button type="button" class="btn btn-dark" id="enviar"
+								onclick="validador()">#{ocrLabels.ocr_report_modal_search_search_button}</button>
 						</div>
 					</div>
-							
-					<!---->	
-												
-					<div class="col position-relative mx-1">
-						<div class="form-group select-field no-flex-wrap">								
-						   	<select name="minuteFinal" id="minuteFinal" class="text-center" >
-							   <option value="">#{ocrLabels.ocr_report_modal_search_minuteInitial}</option>
-								 <ui:repeat var="min" value="#{OcrReport.minutos}" varStatus="minStatus">
-									<option value="#{min.value}">#{min.label}</option>
-								</ui:repeat>
-							</select>	
-						</div>	
-						<div class="error-label position-absolute">
-							<label for="minuteFinal" class="error" id="minuteFinal-error"></label>
-					 </div>	
-				 </div>
-				<!---->	
-			 </div>							
-										
-			<!---->													
-											
-				</div>
-				<div class="modal-footer">
-
-					<button type="button" class="btn btn-secondary"
-						data-dismiss="modal">#{ocrLabels.ocr_report_modal_search_close_button}</button>
-
-					<button type="button" class="btn btn-dark" id="enviar" onclick="$('[id$=setForm]').click();">#{ocrLabels.ocr_report_modal_search_search_button}</button>
 				</div>
 			</div>
-		</div>
-	</div>
 
-			<h:commandButton class="btn btn-dark form-modal-draw-button d-none" id="setForm" 
-				 action="#{OcrReport.search}" />
-				 <!-- SEND -->
-					
-	
+			<h:commandButton style="display:none;" id="setForm">
+				<f:ajax execute="@form" listener="#{OcrReport.search}"
+					render=":pesquisar :tabela" />
+			</h:commandButton>
 
 		</h:form>
 		<!-- modal pdf -->
@@ -365,21 +277,5 @@
 		<h:outputScript name="additional-methods.min.js"
 			library="js/jquery-validation" />
 		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
-				
-	  <!-- ============================================================================================================================= -->
-	  
-	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
-		 	 	 	
-		 <form name="validation"> <!-- FORM VALIDATION  -->
-		 		   	 	
-		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
-		  <input type="hidden" name="requiredFieldMsg" value="#{requiredMessages.required_reports_select_equipments}" /> <!-- REQUIRED MESSAGE -->	
-			 
-		 </form> <!-- FORM VALIDATION END -->
-		 
-	  <!-- ============================================================================================================================= -->
-	
-		
-		
 	</ui:define>
 </ui:composition>
