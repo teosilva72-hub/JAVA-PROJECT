@@ -90,10 +90,11 @@ function validador(){
 	var dateFinal = document.getElementById("dateFinal")
 	var hourFinal = document.getElementById("hourFinal")
 	var minuteFinal = document.getElementById("minuteFinal")
+	var camera = document.getElementById("minuteFinal")
 
 	if(dtInitial.value == "" || hourInitial.value==""||
 	minuteInitial.value == ""|| dateFinal.value == ""||
-	hourFinal.value == ""|| minuteFinal.value == ""){
+	hourFinal.value == ""|| minuteFinal.value == "" ||camera == ""){
 		$('.ll').addClass('error')
 		$('.ll').removeClass('ok')
 		return false
