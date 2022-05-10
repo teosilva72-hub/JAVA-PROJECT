@@ -2729,7 +2729,13 @@ public class ExcelUtil {
 							
 					else row.getCell(col).setCellValue(values.get(lin)[col].toString());	
 									
-					}catch(NullPointerException ex) {}		
+				  }catch(NullPointerException ex) {		
+					
+				  }catch(NumberFormatException nex) {
+					  
+					  // MUDANÇA APLICADA POR CAUSA DO OCR
+					  
+				  }
 
 				}		       
 			}     	   

@@ -976,7 +976,7 @@ public class ReportBean implements Serializable{
 							if(search.left[0].equals("q.direction") || search.left[0].equals("direction"))	
 								directions.add(f);
 																			
-							if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO"))														
+							if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO") || search.left[0].equals("site_name"))														
 								equipIDs.add(f);
 							
 							if(search.left[0].equals("NOME_FAIXA"))
@@ -1005,7 +1005,7 @@ public class ReportBean implements Serializable{
 					if (search.left[0].equals(idTable))
 						 idSearch.add(f);
 										
-					if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO"))														
+					if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO") || search.left[0].equals("site_name"))														
 						 equipIDs.add(f);
 					
 					if(search.left[0].equals("NOME_FAIXA") || search.left[0].equals("lane")) {
@@ -1124,7 +1124,7 @@ public class ReportBean implements Serializable{
 					
 			// CASO NÃO EXISTA VALOR			
 			if (report.lines.isEmpty() || !hasValue) {
-				SessionUtil.executeScript("alertOptions('#info', '"+locale.getStringKey("$message_reports_record_not_found")+"');");
+				 SessionUtil.executeScript("alertOptions('#info', '"+locale.getStringKey("$message_reports_record_not_found")+"');");
 				
 				build.chartBool = true; // BOTÃO DO GRÃFICO	 
 							
@@ -1168,13 +1168,16 @@ public class ReportBean implements Serializable{
 			try {
 				
 				if (isSpecialPDF()) {
-					generateSpecialFile(specialPDF, new String[] { dateStart, dateEnd }, period);
-					SessionUtil.getExternalContext().getSessionMap().put(fileName + "PDF", model.ToPDF());
-					model = new ExcelTemplate();
-				}
+						generateSpecialFile(specialPDF, new String[] { dateStart, dateEnd }, period);
+						SessionUtil.getExternalContext().getSessionMap().put(fileName + "PDF", model.ToPDF());
+						model = new ExcelTemplate();
+					}
+				
 				if(!special)										
 					model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, selectedLane, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
+				
 				else generateSpecialFile(specialName, new String[] { dateStart, dateEnd }, period);
+			
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -1398,9 +1401,11 @@ public class ReportBean implements Serializable{
 					for (int i = 0; i < map.size(); i++)
 						list.addAll(map.get(equips.get(i)));
 					
-					secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, list));
+						secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, list));
+				
 				} else
-					secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
+						secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
+			
 			} else {
 				
 				if (!moreInterval.isEmpty()) {
