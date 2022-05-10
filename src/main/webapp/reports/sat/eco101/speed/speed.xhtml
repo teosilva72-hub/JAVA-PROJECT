@@ -49,6 +49,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions q, q.direction, direction')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
