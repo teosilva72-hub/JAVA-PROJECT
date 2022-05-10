@@ -976,7 +976,9 @@ public class ReportBean implements Serializable{
 							if(search.left[0].equals("q.direction") || search.left[0].equals("direction"))	
 								directions.add(f);
 																			
-							if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO") || search.left[0].equals("site_name"))														
+							if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO") || search.left[0].equals("site_name")
+									|| search.left[0].equals("s.equip_id"))	
+								
 								equipIDs.add(f);
 							
 							if(search.left[0].equals("NOME_FAIXA"))
@@ -1005,7 +1007,8 @@ public class ReportBean implements Serializable{
 					if (search.left[0].equals(idTable))
 						 idSearch.add(f);
 										
-					if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO") || search.left[0].equals("site_name"))														
+					if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO") || search.left[0].equals("site_name")
+							|| search.left[0].equals("s.equip_id"))														
 						 equipIDs.add(f);
 					
 					if(search.left[0].equals("NOME_FAIXA") || search.left[0].equals("lane")) {

@@ -57,8 +57,7 @@ public class SpeedBuildSpeed {
 			
 			SpeedDAO dao = new SpeedDAO();
 			
-			speedStatus = new ArrayList<Speed>();			
-			//speedStatus = dao.Status();			
+			speedStatus = new ArrayList<Speed>();					
 			listSpeed = dao.getSpeeds();			
 				
             }catch(IndexOutOfBoundsException ex) {}

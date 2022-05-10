@@ -2,8 +2,6 @@ package br.com.tracevia.webapp.controller.colas;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -16,8 +14,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -25,8 +21,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.context.RequestContext;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -38,14 +32,13 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import br.com.tracevia.webapp.controller.global.LoginAccountBean;
+import br.com.tracevia.webapp.dao.colas.ColasDAO;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.colas.ColasQueue;
-import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.global.ListEquipments.listEquips;
-import br.com.tracevia.webapp.controller.global.LoginAccountBean;
-import br.com.tracevia.webapp.dao.colas.ColasDAO;
+import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="colasBean")
@@ -141,10 +134,13 @@ public class ColasBean {
 	}
 
 	public void getAllQueue(String date) {
+		
 		ColasDAO dao = new ColasDAO();
 		
 		try {
+			
 			queues = dao.history_queue(date, 0, 0);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

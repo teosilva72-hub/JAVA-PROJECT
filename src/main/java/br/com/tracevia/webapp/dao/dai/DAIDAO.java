@@ -4,42 +4,46 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.tracevia.webapp.model.dai.DAI;
-import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.DirectionModel;
 import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 
 public class DAIDAO {
 	
-	SQL_Tracevia conn = new SQL_Tracevia();
+	SQL_Tracevia conn;
 	
-	public List<DAI> Status() throws Exception {
+	public DAIDAO() {
 		
+		conn = new SQL_Tracevia();
 		
-		List<DAI> list = new ArrayList<DAI>();		
+	}
+	
+	public List<DirectionModel> getDirectionsList() throws Exception {
+				
+		List<DirectionModel> list = new ArrayList<DirectionModel>();
 						
-		String select = "SELECT equip_id, equip_name, equip_status FROM connection_monitor WHERE equip_type = 'DAI' ";
+		String select = "SELECT equip_id, direction FROM dai_direction";
 									
 		try {
 			
 			conn.start(1);
 			
-			conn.prepare(select);			
-									
+			conn.prepare(select);	
+												
 			MapResult result = conn.executeQuery();
 			
 			if (result.hasNext()) {
 				for (RowResult rs : result) {
 					
-					DAI dai = new DAI();
-
-						dai.setEquip_id(rs.getInt("equip_id"));
-						dai.setNome(rs.getString("equip_name"));
-						dai.setStatus(rs.getInt("equip_status"));
+					DirectionModel model = new DirectionModel();
+					
+					model.setEquipId(rs.getInt("equip_id"));
+					model.setDirection(rs.getString("direction"));
 																				
-					list.add(dai);
+					list.add(model);
 				}				
-				}			
+			}			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -52,36 +56,5 @@ public class DAIDAO {
 	}
 		
 
-	public DAI getEquipment(String name) throws Exception {
-		DAI dai = new DAI();
-		String select = "SELECT equip_id, name, km FROM dai_equipment WHERE name = ? ";
-
-		try {
-			
-			conn.start(1);
-			
-			conn.prepare(select);
-			conn.setString(0, name);
-									
-			MapResult result = conn.executeQuery();
-			
-			if (result.hasNext()) {
-				RowResult rs = result.first();
-					
-
-				dai.setEquip_id(rs.getInt("equip_id"));
-				dai.setNome(rs.getString("name"));
-				dai.setKm(rs.getString("km"));
-			}			
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			conn.close();
-		}
-				
-		return dai;
-		
-	}
-
+	
 }

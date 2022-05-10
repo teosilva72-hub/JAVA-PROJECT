@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +22,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.naming.NoInitialContextException;
 
 import org.primefaces.context.RequestContext;
 
@@ -37,8 +35,10 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import br.com.tracevia.webapp.dao.dai.DAIDAO;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.dai.DAI;
+import br.com.tracevia.webapp.model.global.DirectionModel;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ImageUtil;
@@ -51,6 +51,7 @@ public class DaiBean {
 	public List<Traffic> traffics;
 	public Traffic traffic;
 	public static List<Equipments> listDai;
+	public static List<DirectionModel> listDirection;
 	private String logo;
 	
 	static String noImage;
@@ -76,12 +77,16 @@ public class DaiBean {
 		
 		SimpleDateFormat formattter = new SimpleDateFormat("yyyyMMdd");
 		Date date = new Date();
-		
+					
 		try {
 			
 			DAI dai = new DAI();
+			//DAIDAO dao = new DAIDAO();
+			
 			listDai = dai.listEquipments("dai", 0);
 			traffic = new Traffic();
+			
+			//listDirection = dao.getDirectionsList();
 			
 			ftpFolder = "C:\\Cameras\\DAI\\"; 
 			noImage = "no-image.jpg";
@@ -141,8 +146,7 @@ public class DaiBean {
 					equipId = dai.getEquip_id();
 					
 					break;
-				}
-					
+				}		
 		}
 		
 		Traffic() {
