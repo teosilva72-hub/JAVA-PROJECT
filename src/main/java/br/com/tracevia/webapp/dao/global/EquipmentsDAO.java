@@ -765,12 +765,16 @@ public class EquipmentsDAO {
 			String sql = "SELECT st.name, c.city_name, r.road_name, st.km "
 					+ "FROM " + module + "_equipment st "
 					+ "INNER JOIN concessionaire_cities c ON c.city_id = st.city "
-					+ "INNER JOIN concessionaire_roads r ON r.road_id = st.road "
-					+ " WHERE st.equip_id = '" + equip_id + "' AND st.visible = 1";
+					+ "INNER JOIN concessionaire_roads r ON r.road_id = st.road ";
+			
+			if(!module.equals("ocr"))		
+				sql += " WHERE st.equip_id = '" + equip_id + "' AND st.visible = 1";
+			
+			else sql += " WHERE st.name = '" + equip_id + "' AND st.visible = 1";
 
 			conn.prepare(sql);
 			MapResult result = conn.executeQuery();
-
+	
 			if (result != null) {
 				for (RowResult rs : result) {
 

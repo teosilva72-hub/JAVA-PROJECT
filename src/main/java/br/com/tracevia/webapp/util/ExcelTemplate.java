@@ -220,12 +220,12 @@ public class ExcelTemplate {
 		
 	
 		// ----------------------------------------------------------------------------------------------------------------
-					
+						
 		if(!module.equals("sat")) {
-		     if(equipId.size() == 1 && !module.equals("default"))		
+		     if(equipId.size() == 1 && !module.equals("default")) {		
 		        equipsInfo = genericInfo(equipId, module);
-				
-		    else equipsInfo = defaultGenericInfo();			    
+		     				
+		     }else equipsInfo = defaultGenericInfo();			    
 		   		
 		}else {
 			
@@ -297,7 +297,7 @@ public class ExcelTemplate {
        				
 		// NOME DO EQUIPAMENTO
 		utilSheet.createCell(sheet, row, rowStart + 5, 2);		
-		utilSheet.setCellValue(sheet, row, rowStart + 5, 2, module.equals("sat")? satInfo.get(0).getNome() : equipsInfo.get(0).getNome()); // null? 0 :
+		utilSheet.setCellValue(sheet, row, rowStart + 5, 2, module.equals("sat") ? satInfo.get(0).getNome() : equipsInfo.get(0).getNome()); // null? 0 :
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 5, 2); 
  
 		// DATA DE CONSULTA LABEL

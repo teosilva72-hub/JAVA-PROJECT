@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+/**
+* Tracevia Application
+*
+* Tooltip Style
+*
+* Esta folha de estilo para o componente tooltip
+*
+* @project Tracevia Application
+* @author Wellington
+* @date 27/04/2022
+* @version 1.0 
+* @since 1.0
+* @company Tracevia S/A
+* @package css/util/tooltip
+*
+*/
+
+/* --------------------------------------------- */
+
+/**
+* Alterar a cor do tooltip
+*
+* @author Wellington
+* @date 27/04/2022
+* @version 1.0
+* @since 1.0
+* @note mudar a cor de fundo padrão do tooltip
+*
+*/
+
+.tooltip > .tooltip-inner {background-color: #007bff;}
+
+/* --------------------------------------------- */
+
+/**
+* Opacidade do tooltip
+*
+* @author Wellington
+* @date 27/04/2022
+* @version 1.0
+* @since 1.0
+* @note mudar a opacidade do tooltip a o elemento aparecer.
+*
+*/
+
+.tooltip.show {
+	opacity: 1;
+}
+
+/* --------------------------------------------- */
