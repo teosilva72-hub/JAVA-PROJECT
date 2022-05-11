@@ -1,7 +1,8 @@
-target/
-.vscode/
-bin/
-.factorypath
-.team-project
-.metadata/
-.settings
+/target/
+/.vscode/
+/bin/
+/.factorypath
+/.team-project
+/.metadata/
+/.settings
+*.class
