@@ -5,16 +5,22 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.tracevia.webapp.model.colas.Colas;
-import br.com.tracevia.webapp.model.colas.ColasQueue;
 import br.com.tracevia.webapp.model.colas.ColasData;
-import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.colas.ColasQueue;
 import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
 import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 
 public class ColasDAO {
 
-	SQL_Tracevia conn = new SQL_Tracevia();
+	SQL_Tracevia  conn;
+	
+	
+	public ColasDAO() {
+		
+		conn = new SQL_Tracevia();
+	}
+	
 	
 	public List<ColasData> cameraGet() throws Exception{
 		
@@ -52,21 +58,18 @@ public class ColasDAO {
 	public List<ColasQueue> history_queue(String date, int deviceS, int laneS) throws Exception {
 
 		List<ColasQueue> list = new ArrayList<>();
-		
-		String query = "SELECT h.device, d.direction, h.update_date, h.lane, h.local, c.km FROM colas_history h "
-				+ "INNER JOIN colas_equipment c ON h.device = c.equip_id "
-				+ "INNER JOIN colas_direction d ON h.device = d.equip_id "
-				+ "WHERE h.update_date >= '"
+		String query = "SELECT device, update_date, lane, local, km FROM colas_history h INNER JOIN colas_equipment "
+				+ "WHERE update_date >= '"
 				+ date
 				+ " 00:00:00' "
-				+ "AND h.update_date < '"
+				+ "AND update_date < '"
 				+ date
 				+ " 23:59:59'";
 
 		if (laneS > 0)
-			query += " AND h.lane = " + laneS;
+			query += " AND lane = " + laneS;
 		if (deviceS > 0)
-			query += " AND h.device = " + deviceS;
+			query += " AND device = " + deviceS;
 
 		try {
 			conn.start(1);
@@ -74,23 +77,20 @@ public class ColasDAO {
 			conn.prepare(query);
 			
 			MapResult result = conn.executeQuery();
-			
-		//	System.out.println(query);
 
 			if (result.hasNext()) {
 				for (RowResult rs : result) {
 
-					int device = rs.getInt("h.device");
-					String direction = rs.getString("d.direction");
-					int lane = rs.getInt("h.lane");
-					int local = rs.getInt("h.local");
-					String km = rs.getString("c.km");
+					int device = rs.getInt("device");
+					int lane = rs.getInt("lane");
+					int local = rs.getInt("local");
+					String km = rs.getString("km");
 
-					ColasQueue colas = new ColasQueue(device, direction, lane, local, km);
+					ColasQueue colas = new ColasQueue(device, lane, local, km);
 
 					SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd hh:MM");
 
-					colas.setDate(format.parse(rs.getString("h.update_date")));
+					colas.setDate(format.parse(rs.getString("update_date")));
 
 					list.add(colas);
 				}				

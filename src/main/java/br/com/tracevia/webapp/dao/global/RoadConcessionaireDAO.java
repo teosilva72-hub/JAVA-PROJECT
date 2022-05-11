@@ -44,6 +44,7 @@ public class RoadConcessionaireDAO {
 
 	private static String serverExceptionLog = classErrorPath.concat("server_exception_");
 	private static String citiesExceptionLog = classErrorPath.concat("cities_exception_");
+	private static String citiesDirectionExceptionLog = classErrorPath.concat("cities_direction_exception_");
 	private static String roadsExceptionLog = classErrorPath.concat("roads_exception_");
 	private static String modulesExceptionLog = classErrorPath.concat("modules_exception_");
 	private static String plaquesExceptionLog = classErrorPath.concat("plaques_exception_");
@@ -276,6 +277,60 @@ public class RoadConcessionaireDAO {
 	}
 
 	// --------------------------------------------------------------------------------------------
+	
+	/**
+	 * M�todo para obter uma lista com as cidades dispon�veis
+	 * 
+	 * @author Wellington 10/03/2020
+	 * @version 1.0
+	 * @since 1.0
+	 * @return lista contendo o id e o nome das cidades dispon�veis
+	 * @throws Exception
+	 */
+
+	public ArrayList<SelectItem> cityDirectionDefinitions() throws Exception {
+
+		ArrayList<SelectItem> city = new ArrayList<SelectItem>();
+
+		String query = "SELECT city_id, city_name FROM city_direction";
+
+		try {
+
+			conn.start(1);
+
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
+
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
+
+					SelectItem item = new SelectItem();
+					item.setValue(rs.getInt(1));
+					item.setLabel(rs.getString(2));
+
+					city.add(item);
+				}
+			}
+
+		} catch (Exception sqle) {
+
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(citiesDirectionExceptionLog), classLocation, sqle.hashCode(),
+					sqle.toString(), sqle.getMessage(), errors.toString());
+
+		} finally {
+
+			conn.close();
+
+		}
+
+		return city;
+	}
+
+	// --------------------------------------------------------------------------------------------
+
 
 	/**
 	 * M�todo para obter uma lista com as placas dispon�veis

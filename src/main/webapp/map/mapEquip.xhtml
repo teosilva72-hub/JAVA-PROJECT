@@ -4,7 +4,7 @@
     xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions" xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui">
 
     <f:view locale="#{language.locale}">
-        <c:forEach items="#{listEquips.equips}" var="loadItem">
+        <c:forEach items="#{listEquipsBean.equips}" var="loadItem">
 
             <ui:fragment rendered="#{loadItem.value}">
 

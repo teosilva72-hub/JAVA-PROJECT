@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class ColasQueue {
 	public int device;
-	public String direction;
     public int lane;
     public int local;
     public String km;
@@ -12,9 +11,8 @@ public class ColasQueue {
 
 	public ColasQueue() {}
 
-	public ColasQueue(int device, String direction, int lane, int local, String km) {
+	public ColasQueue(int device, int lane, int local, String km) {
         this.device = device;
-        this.direction = direction;
         this.lane = lane;
         this.local = local;
         this.km = km;
@@ -26,14 +24,6 @@ public class ColasQueue {
 
 	public void setDevice(int device) {
 		this.device = device;
-	}
-	
-	public String getDirection() {
-		return direction;
-	}
-
-	public void setDirection(String direction) {
-		this.direction = direction;
 	}
 
 	public int getLane() {
