@@ -5,16 +5,22 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.tracevia.webapp.model.colas.Colas;
-import br.com.tracevia.webapp.model.colas.ColasQueue;
 import br.com.tracevia.webapp.model.colas.ColasData;
-import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.colas.ColasQueue;
 import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
 import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 
 public class ColasDAO {
 
-	SQL_Tracevia conn = new SQL_Tracevia();
+	SQL_Tracevia  conn;
+	
+	
+	public ColasDAO() {
+		
+		conn = new SQL_Tracevia();
+	}
+	
 	
 	public List<ColasData> cameraGet() throws Exception{
 		
@@ -97,44 +103,6 @@ public class ColasDAO {
 		}
 
 		return list;
-	}
-
-	public List<Colas> Status() throws Exception {
-
-
-		List<Colas> list = new ArrayList<Colas>();		
-
-		String select = "SELECT equip_id, equip_name, equip_status FROM connection_monitor WHERE equip_type = 'COLAS' ";
-
-		try {
-
-			conn.start(1);
-
-			conn.prepare(select);			
-
-			MapResult result = conn.executeQuery();
-
-			if (result.hasNext()) {
-				for (RowResult rs : result) {
-
-					Colas colas = new Colas();
-
-					colas.setEquip_id(rs.getInt("equip_id"));
-					colas.setNome(rs.getString("equip_name"));
-					colas.setStatus(rs.getInt("equip_status"));
-
-					list.add(colas);
-				}				
-			}			
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			conn.close();
-		}
-
-		return list;
-
 	}
 
 }

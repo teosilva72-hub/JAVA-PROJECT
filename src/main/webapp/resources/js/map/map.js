@@ -216,7 +216,8 @@ $(function () {
 				$('.portInput-edit').hide();
 				$('.speedHidden-edit').hide();
 				$('.meteoHidden-edit').hide();
-				$('.sosInputs-edit').hide(); 				
+				$('.sosInputs-edit').hide(); 	
+				$('.directionToHidden-edit').hide();				
 				
 				$("#lanes-edit").change(
 					function () {
@@ -281,7 +282,8 @@ $(function () {
 				$('.dmsHidden-edit').hide(); 
 				$('.sosInputs-edit').hide(); 					
 				$('.satInputs-edit').hide();				
-				$('.speedHidden-edit').hide();			
+				$('.speedHidden-edit').hide();	
+				$('.directionToHidden-edit').hide();			
 
 			}else if (selectVAL == 8) {
 
@@ -290,7 +292,8 @@ $(function () {
 				$('.portInput-edit').hide();
 				$('.sosInputs-edit').hide(); 	
 				$('.meteoHidden-edit').hide();
-				$('.speedHidden-edit').hide();			
+				$('.speedHidden-edit').hide();	
+				$('.directionToHidden-edit').hide();			
 
 			} else if (selectVAL == 10) {
 
@@ -299,7 +302,8 @@ $(function () {
 				$('.dmsHidden-edit').hide();				
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').hide();
-				$('.meteoHidden-edit').hide();			
+				$('.meteoHidden-edit').hide();	
+				$('.directionToHidden-edit').hide();			
 
 			} else if (selectVAL == 11) {
 
@@ -309,19 +313,25 @@ $(function () {
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').css('display', 'flex'); 
 				$('.meteoHidden-edit').hide();
-				$('.ipAddress-edit').hide();	
+				$('.ipAddress-edit').hide();
+				$('.directionToHidden-edit').hide();		
 			
-			} else {
+			}else if (selectVAL == 2 || selectVAL == 4) {
+				
+				$('.directionToHidden-edit').show();
+			
+			}else {
 
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
 				$('.portInput-edit').hide();
 				$('.sosInputs-edit').hide();	
 				$('.speedHidden-edit').hide();
-				$('.meteoHidden-edit').hide();			
+				$('.meteoHidden-edit').hide();	
+				$('.directionToHidden-edit').hide();		
 			}
 
-		}, 300)
+		}, 400)
 	});
 
 	// Scroll Zoom Map Full
@@ -836,16 +846,19 @@ function sendType() {
 	document.getElementById('edit-equip-form:equipId1').value = id;
 	document.getElementById('edit-equip-form:equipTable1').value = type;
 }
-$(editModal=>{
+
+$(editModal => {
 	
 	editBtnDisabled(true)
-	$('#edit-equip-form input').change(e=>{
+	$('#edit-equip-form input, #edit-equip-form select').change(e=>{
 		editBtnDisabled(false)
 	})
 })
+
 function editBtnDisabled(cheked){
 	$('#btn-form-confirm-edit').attr("disabled", cheked)
 }
+
 function deleteParameters() {
 
 	document.getElementById('delete-equip-form:equipDel').value = id;
@@ -975,14 +988,18 @@ $(function () {
 		setTimeout(() => {
 			var equipsSEL = document.getElementById("equips");
 			var selectVAL = equipsSEL.options[equips.selectedIndex].value;
+			
 			if (selectVAL == 9) {
 				$('.satInputs').show(); // DIV FAIXAS 1	
 				$('.dmsHidden').hide();
 				$('.sosInputs').hide(); 	
 				$('.portInput').hide();
 				$('.speedHidden').hide();
-				$('.meteoHidden').hide();			
+				$('.meteoHidden').hide()
+				$('.directionToHidden').hide();		
+					
 				$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
+				
 				$("#lanes").change(
 					function () {
 						var satLanes = document.getElementById("lanes");
@@ -1047,6 +1064,7 @@ $(function () {
 				$('.satInputs').hide();				
 				$('.speedHidden').hide();			
 				$('.sosInputs').hide(); 	
+				$('.directionToHidden').hide();
 
 			}else if (selectVAL == 8) {
 
@@ -1056,6 +1074,7 @@ $(function () {
 				$('.satInputs').hide();
 				$('.portInput').hide();
 				$('.speedHidden').hide();
+				$('.directionToHidden').hide();
 			
 			} else if (selectVAL == 10) {
 
@@ -1065,6 +1084,7 @@ $(function () {
 				$('.satInputs').hide();
 				$('.mtoHidden').hide();
 				$('.speedHidden').hide();
+				$('.directionToHidden').hide();
 		
 			} else if (selectVAL == 11) {
 
@@ -1075,9 +1095,15 @@ $(function () {
 				$('.dmsHidden').hide();
 				$('.satInputs').hide();		
 				$('.ipAddress').hide();	
+				$('.directionToHidden').hide();
 
-			} else {
+			}else if (selectVAL == 2 || selectVAL == 4) {
+				
+				$('.directionToHidden').show();
+			
+			}else {
 
+				$('.directionToHidden').hide();
 				$('.dmsHidden').hide();
 				$('.meteoHidden').hide(); // DIV DMS TYPE	
 				$('.sosInputs').hide(); 		

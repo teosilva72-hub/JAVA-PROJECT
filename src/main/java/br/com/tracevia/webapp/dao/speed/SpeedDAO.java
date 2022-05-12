@@ -1,55 +1,23 @@
 package br.com.tracevia.webapp.dao.speed;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.tracevia.webapp.model.speed.Speed;
-import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
 import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.speed.Speed;
 
 public class SpeedDAO {
 
 	SQL_Tracevia conn = new SQL_Tracevia();
 
-	public List<Speed> Status() throws Exception {
-
-		List<Speed> list = new ArrayList<Speed>();
-
-		String select = "SELECT equip_id, equip_name, equip_status FROM connection_monitor WHERE equip_type = 'SPEED' ";
-
-		try {
-
-			conn.start(1);
-
-			conn.prepare(select);
-
-			MapResult result = conn.executeQuery();
-
-			if (result.hasNext()) {
-				for (RowResult rs : result) {
-
-					Speed speed = new Speed();
-
-					speed.setEquip_id(rs.getInt("equip_id"));
-					speed.setNome(rs.getString("equip_name"));
-					speed.setStatus(rs.getInt("equip_status"));
-					speed.setTable_id("speed");
-
-					list.add(speed);
-				}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			conn.close();
-		}
-
-		return list;
-
+	public SpeedDAO(){
+		
+		 conn = new SQL_Tracevia();
+		
 	}
+
 
 	public List<Speed> getSpeeds() throws Exception {
 

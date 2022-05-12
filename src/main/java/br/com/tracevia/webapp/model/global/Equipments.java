@@ -35,6 +35,7 @@ public class Equipments {
 	private int dlgPosX;
 	private int dlgPosY;
 	private String direction;
+	private String directionTo;
 	private int status;
 	private int lastStatus;
 	private boolean notificacao;
@@ -44,7 +45,7 @@ public class Equipments {
 	public Equipments(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
 			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
-			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, int status, int lastStatus, boolean notificacao,
+			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, String directionTo, int status, int lastStatus, boolean notificacao,
 		    int port, boolean visible) {
 		
 		this.equip_id = equip_id;
@@ -69,6 +70,7 @@ public class Equipments {
 		this.dlgPosX = dlgPosX;
 		this.dlgPosY = dlgPosY;
 		this.direction = direction;
+		this.directionTo = directionTo;
 		this.status = status;
 		this.lastStatus = lastStatus;
 		this.notificacao = notificacao;
@@ -313,12 +315,18 @@ public class Equipments {
 	public void setDirection(String direction) {
 		this.direction = direction;
 	}
-
 	
+	public String getDirectionTo() {
+		return directionTo;
+	}
+
+	public void setDirectionTo(String directionTo) {
+		this.directionTo = directionTo;
+	}
+
 	public int getStatus() {
 		return status;
 	}
-
 
 	public void setStatus(int status) {
 		this.status = status;

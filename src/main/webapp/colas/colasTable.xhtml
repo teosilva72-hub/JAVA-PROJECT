@@ -45,6 +45,11 @@
 									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
+								<f:facet name="header">#{colasLabels.direction}</f:facet>
+								<h:outputText value="#{data.directionTo}"
+									style="font-size: 12px; " />
+							</h:column>
+							<h:column>
 								<f:facet name="header">#{colasLabels.lane} 1</f:facet>
 								<h:outputText pt:deviceid="#{data.equip_id}" pt:lane="1" value="0"
 									style="font-size: 12px; " />
