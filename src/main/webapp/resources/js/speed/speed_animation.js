@@ -25,7 +25,7 @@ const speed_animation = response => {
     let hour = date.getHours();
     let minute = date.getMinutes();
     let second = date.getSeconds();
-    let date_format =  `${ month <= 9 ? '0' + month : month }/${ day <= 9 ? '0' + day : day }/${ year } ${ hour <= 9 ? '0' + hour : hour }:${ minute }:${ second }`
+    let date_format =  `${ day <= 9 ? '0' + day : day }/${ month <= 9 ? '0' + month : month }/${ year } ${ hour <= 9 ? '0' + hour : hour }:${ minute }:${ second }`
 
     setTimeout(() => {
         let list = speed_number.get().reverse()
