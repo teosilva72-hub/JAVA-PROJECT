@@ -30,7 +30,7 @@ public class DataSatDAO {
 			// Obter datas formatadas para os dados
 			currentDate = dta.getDataInterval15Min(calendar, minute);							
 			
-			//System.out.println(currentDate);		
+			System.out.println(currentDate);		
 			
 			String temp = "CREATE TEMPORARY TABLE IF NOT EXISTS equip SELECT eq.equip_id, eq.visible, CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4) THEN 5 " +
 					"WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3) THEN 4 " +
@@ -265,6 +265,8 @@ public class DataSatDAO {
 			   select += "AND eq.visible = 1 " +
 					   "GROUP BY d.NOME_ESTACAO " +	
 					   "ORDER BY d.DATA_HORA DESC ";
+			   
+			   System.out.println(select);
 	 
 	 try {
 			
