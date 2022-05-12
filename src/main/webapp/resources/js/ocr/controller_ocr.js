@@ -42,14 +42,14 @@ function btnTable(){
 }
 function dataPicker(){
 	var  dtInitial = $('[id$=dateInitial]')
-	var dtFinal = $('[id$=dateFinal]')
+	//var dtFinal = $('[id$=dateFinal]')
 	$('[id$=btnPdf]').prop('disabled', true);
     dtInitial.on('click', function() {
       $('[id$=dateInitial]').mask('9999-99-99')
     });
-	dtFinal.on('click', function() {
+	/*dtFinal.on('click', function() {
 	$('[id$=dateFinal]').mask('9999-99-99')
-    });
+    });*/
 	$('[id$=dateInitial]').datepicker({ 
 		dateFormat: "yy-mm-dd",  
 		changeYear: true,
@@ -87,13 +87,14 @@ function validador(){
 	var dtInitial = document.getElementById("dateInitial")
 	var hourInitial = document.getElementById("hourInitial")
 	var minuteInitial = document.getElementById("minuteInitial")
-	var dateFinal = document.getElementById("dateFinal")
+	/*var dateFinal = document.getElementById("dateFinal")
 	var hourFinal = document.getElementById("hourFinal")
 	var minuteFinal = document.getElementById("minuteFinal")
+	var camera = document.getElementById("minuteFinal")*/
 
 	if(dtInitial.value == "" || hourInitial.value==""||
-	minuteInitial.value == ""|| dateFinal.value == ""||
-	hourFinal.value == ""|| minuteFinal.value == ""){
+	minuteInitial.value == ""|| /*dateFinal.value == ""||*/
+	/*hourFinal.value == ""|| minuteFinal.value == "" ||*/camera == ""){
 		$('.ll').addClass('error')
 		$('.ll').removeClass('ok')
 		return false
