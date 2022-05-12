@@ -31,7 +31,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, Equipamento, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.speed_20_km, satLabels.speed_20_40_km, satLabels.speed_40_60_km, satLabels.speed_60_80_km, satLabels.speed_over_80_km, satLabels.global_total_vehicles_column))}" />
 	   
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; s.name; SUM(speed / 27.778 &lt; 20); SUM(speed / 27.778 &gt;= 20 AND speed / 27.778 &lt; 40); SUM(speed / 27.778 &gt;= 40 AND speed / 27.778 &lt; 60); SUM(speed / 27.778 &gt;= 60 AND speed / 27.778 &lt; 80); SUM(speed / 27.778 &gt;= 80); SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; s.name; SUM(speed &lt; 20); SUM(speed &gt;= 20 AND speed &lt; 40); SUM(speed &gt;= 40 AND speed &lt; 60); SUM(speed &gt;= 60 AND speed &lt; 80); SUM(speed &gt;= 80); SUM(1)')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON q.equip_id = siteID AND q.lane = v.lane INNER JOIN sat_equipment s ON s.equip_id = siteID')}" />
 
