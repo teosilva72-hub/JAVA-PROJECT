@@ -316,7 +316,7 @@ $(function () {
 				$('.ipAddress-edit').hide();
 				$('.directionToHidden-edit').hide();		
 			
-			}if (selectVAL == 2 || selectVAL ==4) {
+			}else if (selectVAL == 2 || selectVAL == 4) {
 				
 				$('.directionToHidden-edit').show();
 			
@@ -331,7 +331,7 @@ $(function () {
 				$('.directionToHidden-edit').hide();		
 			}
 
-		}, 300)
+		}, 400)
 	});
 
 	// Scroll Zoom Map Full
@@ -854,9 +854,11 @@ $(editModal => {
 		editBtnDisabled(false)
 	})
 })
+
 function editBtnDisabled(cheked){
 	$('#btn-form-confirm-edit').attr("disabled", cheked)
 }
+
 function deleteParameters() {
 
 	document.getElementById('delete-equip-form:equipDel').value = id;
@@ -994,8 +996,10 @@ $(function () {
 				$('.portInput').hide();
 				$('.speedHidden').hide();
 				$('.meteoHidden').hide()
-				$('.directionToHidden').hide();			
+				$('.directionToHidden').hide();		
+					
 				$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
+				
 				$("#lanes").change(
 					function () {
 						var satLanes = document.getElementById("lanes");
@@ -1093,7 +1097,7 @@ $(function () {
 				$('.ipAddress').hide();	
 				$('.directionToHidden').hide();
 
-			} if (selectVAL == 2 || selectVAL ==4) {
+			}else if (selectVAL == 2 || selectVAL == 4) {
 				
 				$('.directionToHidden').show();
 			

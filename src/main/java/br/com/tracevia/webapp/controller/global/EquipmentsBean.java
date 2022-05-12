@@ -392,7 +392,7 @@ public class EquipmentsBean implements Serializable {
 		
 		EquipmentsDAO dao = new EquipmentsDAO();
 	    EquipmentDataSource dataSource = new EquipmentDataSource();
-			
+	  
 		dataSource = dao.searchEquipament(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 
 				SessionUtil.executeScript("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				
@@ -517,8 +517,8 @@ public class EquipmentsBean implements Serializable {
 		checked = false; // VARIÃ�VEL PARA VERFICAR OPERAÃ‡Ã•ES AO SALVAR NOVO EQUIPAMENTO	
 		
 		int equipId = getEquipId();		 
-		String equipTable = getEquipTable();
-			
+		String equipTable = getEquipTable();	
+		 				
 		EquipmentDataSource dataSource = new EquipmentDataSource();
 				
 		// ------------------------------------------------------------------------------------------------------
@@ -615,14 +615,16 @@ public class EquipmentsBean implements Serializable {
 		// -----------------------------------------------------------------------------------------------------------------
 				
 		  checked = dao.updateEquipment(dataSource, interfaceView, login.getLogin().getPermission_id());
-		
+		  		
 		if(checked) {
+			
 			RequestContext.getCurrentInstance().execute(String.format("editBtnDisabled('%b')", checked));
 			SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
 			SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");			
 			SessionUtil.remove("meteoType");
 			
 		} else {
+			
 			RequestContext.getCurrentInstance().execute(String.format("editBtnDisabled('%b')", checked));
 			SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
 		}

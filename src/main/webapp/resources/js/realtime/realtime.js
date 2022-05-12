@@ -3,28 +3,20 @@ let heightMax = 1000
 let updated = '';
 let scale = 1;
 
+// RELOAD EQUIPMENTS INFORMATION
 
-setTimeout(() => {
-	setInterval(() => {
+setInterval(() => {
 
-		let data = new Date();
-		let n = data.getSeconds();
-		let minute = data.getMinutes();
+	let data = new Date();
+	let n = data.getSeconds();
+	let minute = data.getMinutes();		
 
-		if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
-			if (n < 4){
-				init();
-
-		  location.href = location.protocol + '//' + location.host + location.pathname
-		  window.location.reload();
-	
+	if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
+		if (n > 0 && n < 4)
+			init();		
 	}
-
-}
-			     
-	}, 3000)
-}, 4000)
-
+	
+ }, 3000)
 
 // *********************************************************** //
 
@@ -55,7 +47,6 @@ const init = () => {
 		})
 
 		borderEquip(updated);
-
 		setInfoEquip();
 		setEquipToolTip();
 		showGenericName();
@@ -271,7 +262,7 @@ $(function () {
 				$('.ipAddress-edit').hide();
 				$('.directionToHidden-edit').hide();		
 			
-			}if (selectVAL == 2 || selectVAL ==4) {
+			}else if (selectVAL == 2 || selectVAL ==4) {
 				
 				$('.directionToHidden-edit').show();
 			
@@ -286,7 +277,7 @@ $(function () {
 				$('.directionToHidden-edit').hide();		
 			}
 
-		}, 300)
+		}, 400)
 	});
  
 	$(".overflow").css("height", $(this).height() - 125)
@@ -894,6 +885,18 @@ function sendToBeanDel() {
 function sendType() {
 	document.getElementById('edit-equip-form:equipId1').value = id;
 	document.getElementById('edit-equip-form:equipTable1').value = type;
+}
+
+$(editModal => {
+	
+	editBtnDisabled(true)
+	$('#edit-equip-form input, #edit-equip-form select').change(e=>{
+		editBtnDisabled(false)
+	})
+})
+
+function editBtnDisabled(cheked){
+	$('#btn-form-confirm-edit').attr("disabled", cheked)
 }
 
 function deleteParameters() {

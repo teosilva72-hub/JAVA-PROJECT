@@ -2046,6 +2046,7 @@ public class EquipmentsDAO {
 	public boolean updateEquipment(EquipmentDataSource dataSource, String updateView, int permission) {
 		boolean updated = false;
 		int id = 0;
+		String name = "", ip = "", km = "";
 
 		String widthOption = "";
 		String update = "";
@@ -2081,7 +2082,7 @@ public class EquipmentsDAO {
 
 		// NOTIFICATIONS QUERY
 
-		String notificationId = "SELECT notifications_id FROM notifications_status WHERE equip_id = ? and equip_type = ?";
+		String notificationId = "SELECT notifications_id, equip_ip, equip_name, equip_km FROM notifications_status WHERE equip_id = ? and equip_type = ?";
 		String updateNotifications = "UPDATE notifications_status SET equip_ip = ?, equip_name = ?,  equip_km = ? WHERE notifications_id = ? ";
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
@@ -2307,8 +2308,7 @@ public class EquipmentsDAO {
 
 					conn.setString(7, dataSource.getIpAddress());
 					conn.setInt(8, dataSource.getEquipId());
-
-				}
+				}				
 
 			} else {
 				conn.setDouble(7, dataSource.getLatitude());
@@ -2360,13 +2360,13 @@ public class EquipmentsDAO {
 					conn.setString(9, dataSource.getIpAddress());
 					conn.setInt(10, dataSource.getEquipId());
 
-				}
-				updated = true;
+				}				
 			}
 
 			long res = conn.executeUpdate();
-
+		
 			if (res > 0) {
+				
 				if (!dataSource.getTable().equals("speed")) {
 
 					conn.prepare(notificationId);
@@ -2380,10 +2380,13 @@ public class EquipmentsDAO {
 						for (RowResult rs : result) {
 
 							id = rs.getInt(1);
+							ip = rs.getString(2);
+						    name = rs.getString(3);
+						    km = rs.getString(4);
 
 						}
 					}
-
+					
 					conn.prepare(updateNotifications);
 
 					conn.setString(1, dataSource.getIpAddress());
@@ -2392,9 +2395,12 @@ public class EquipmentsDAO {
 					conn.setInt(4, id);
 
 					long res2 = conn.executeUpdate();
-
-					if (res2 > 0)
+					
+					if (res2 > 0)						
 						updated = true;
+					
+					else if(ip.equals(dataSource.getIpAddress()) && name.equals(dataSource.getEquipName()) && km.equals(dataSource.getKm()))
+							updated = true;
 
 				} else {
 
@@ -2435,7 +2441,10 @@ public class EquipmentsDAO {
 						if (result != null) {
 							for (RowResult rs : result) {
 
-								id = rs.getInt(1);
+								id = rs.getInt(1);								
+								ip = rs.getString(2);
+							    name = rs.getString(3);
+							    km = rs.getString(4);
 							}
 						}
 
@@ -2448,8 +2457,11 @@ public class EquipmentsDAO {
 
 						long res3 = conn.executeUpdate();
 
-						if (res3 > 0)
+						if (res3 > 0)						
 							updated = true;
+						
+						else if(ip.equals(dataSource.getIpAddress()) && name.equals(dataSource.getEquipName()) && km.equals(dataSource.getKm()))
+								updated = true;
 					}
 				}
 			}
@@ -2461,11 +2473,13 @@ public class EquipmentsDAO {
 
 			SystemLog.logErrorSQL(errorFolder.concat("error_updating"), EquipmentsDAO.class.getCanonicalName(),
 					sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
+			
+			updated = false;
 
 		} finally {
 			conn.close();
 		}
-
+	
 		return updated;
 
 	}
