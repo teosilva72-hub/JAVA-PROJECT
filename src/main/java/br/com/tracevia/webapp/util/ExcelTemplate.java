@@ -240,10 +240,12 @@ public class ExcelTemplate {
 		     }
 		
 		if (direction != null) {
-			String[] s = satInfo.get(0).getSentidos().split("/");
-			String[] l = satInfo.get(0).getQtdeFaixas().split("+");
+			String s = tm.directions(satInfo.get(0).getSentidos());
+			String[] l = satInfo.get(0).getQtdeFaixas().split("\\+");
+			satInfo.get(0).setQtdeFaixas(l[s.startsWith(direction) ? 0 : 1]);
+			System.out.println(s);
+			System.out.println(direction);
 			satInfo.get(0).setSentidos(direction);
-			satInfo.get(0).setQtdeFaixas(l[s[0].substring(0).equals(direction.substring(0)) ? 0 : 1]);
 		}
 					
 		// ----------------------------------------------------------------------------------------------------------------
