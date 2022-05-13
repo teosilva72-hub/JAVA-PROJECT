@@ -39,28 +39,9 @@ public class DataSatDAO {
 					"WHEN (eq.dir_lane1 = eq.dir_lane2) THEN 3 " +
 					"ELSE 2 END 'sentido' FROM sat_equipment eq; ";  // initialize variable
 			
-			 String maxDate = "CREATE TEMPORARY TABLE IF NOT EXISTS maxDatetime " +
-					"SELECT siteID, MAX(data) maxDate FROM tb_vbv WHERE siteID NOT IN(222, 340";
-					
-					if(!availabilityList.isEmpty()) {
-					   
-					   maxDate += ", ";
-				 		
-				 		for(int i = 0; i < availabilityList.size(); i++) {
-				 			
-				 			maxDate += availabilityList.get(i);
-				 			
-				 			if(i < (availabilityList.size() - 1))
-				 				maxDate +=", ";
-				 					
-				 		}
-				 		
-				 		maxDate += ") ";				   
-				   	}
-			
-				   else maxDate += ") " +
-			
-					"GROUP BY siteID LIMIT "+limit;
+			 String maxDate = "CREATE TEMPORARY TABLE IF NOT EXISTS maxDatetime SELECT * FROM "
+			 		+ "(SELECT siteID, max(data) maxDate FROM tb_vbv group by siteID order by data desc) "
+			 		+ "filterSiteID WHERE siteID not in (222, 340);";
 							
 			String last7days = "CREATE TEMPORARY TABLE IF NOT EXISTS last_7_days " +
 					"SELECT ld.NOME_ESTACAO, SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN ld.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_7_DAYS_S1', " + 
@@ -481,29 +462,10 @@ public class DataSatDAO {
   		
   		List<SAT> list = new ArrayList<SAT>();
   		
-		 String maxDate = "CREATE TEMPORARY TABLE IF NOT EXISTS maxDatetime " +
-					"SELECT siteID, MAX(data) maxDate FROM tb_vbv WHERE siteID NOT IN(222, 340";
-					
-					if(!availabilityList.isEmpty()) {
-					   
-					   maxDate += ", ";
-				 		
-				 		for(int i = 0; i < availabilityList.size(); i++) {
-				 			
-				 			maxDate += availabilityList.get(i);
-				 			
-				 			if(i < (availabilityList.size() - 1))
-				 				maxDate +=", ";
-				 					
-				 		}
-				 		
-				 		maxDate += ") ";				   
-				   	}
-			
-				   else maxDate += ") " +
-			
-					"GROUP BY siteID LIMIT "+limit;
-  	  		 		 		 	 	 		 					
+  		 String maxDate = "CREATE TEMPORARY TABLE IF NOT EXISTS maxDatetime SELECT * FROM "
+			 		+ "(SELECT siteID, max(data) maxDate FROM tb_vbv group by siteID order by data desc) "
+			 		+ "filterSiteID WHERE siteID not in (222, 340);";
+			 		 		 	 	 		 					
  		String select = "SELECT d.NOME_ESTACAO AS ESTACAO, nt.online_status AS ESTADO_ATUAL, " +
  				  "IFNULL(CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE " + 			
  				  "CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE CASE WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), " + 

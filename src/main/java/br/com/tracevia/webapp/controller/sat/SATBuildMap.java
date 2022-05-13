@@ -234,7 +234,7 @@ public class SATBuildMap implements Serializable {
 							
 							// ----------------------------------------------------------------------- 
 							
-							/*if(limit > 0 && !availabilityList.isEmpty()) { // CASO NÃO EXISTA NAS VALORES
+							if(limit > 0 && !availabilityList.isEmpty()) { // CASO NÃO EXISTA NAS VALORES
 																																												
 								noDataList = dao.noDataInterval(limit, availabilityList, false);
 								
@@ -282,7 +282,7 @@ public class SATBuildMap implements Serializable {
 							satListValuesAux = intializeNullList(limit, equipIdList);
 							
 							//System.out.println("HERE 2");
-						}*/
+						}
 							
 						// ----------------------------------------------------------------------- 
 							
