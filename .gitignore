@@ -5,3 +5,4 @@ bin/
 .team-project
 .metadata/
 .settings
+/pom.properties

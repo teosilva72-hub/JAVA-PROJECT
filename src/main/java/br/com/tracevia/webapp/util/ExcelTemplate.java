@@ -239,8 +239,12 @@ public class ExcelTemplate {
 		   
 		     }
 		
-		if (direction != null)
+		if (direction != null) {
+			String[] s = satInfo.get(0).getSentidos().split("/");
+			String[] l = satInfo.get(0).getQtdeFaixas().split("+");
 			satInfo.get(0).setSentidos(direction);
+			satInfo.get(0).setQtdeFaixas(l[s[0].substring(0).equals(direction.substring(0)) ? 0 : 1]);
+		}
 					
 		// ----------------------------------------------------------------------------------------------------------------
 				
