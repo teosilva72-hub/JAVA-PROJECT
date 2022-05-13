@@ -103,12 +103,31 @@
 			</div>
 								
 			<!---->
+			
+				<!-- COLAS TYPE || DAI TYPE -->
+				 
+				 <div class="form-row directionToHidden"> <!-- ROW -->
+				   <div class="form-group col-md-12 select-field"> <!-- SELECT DIV -->
+					  <span><i class="fas fa-th-list"></i></span> <!-- SPAN ICON -->
+						<span for="directionTo" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION -->
+	  					 <select class="w-100" name="directionTo" id="directionTo" size="1" >
+							<option value="">#{mapLabels.$label_map_option_select_direction_to}</option>
+							<ui:repeat var="tp" value="#{equipsBean.directionTo}" varStatus="tpStatus">
+								<option value="#{tp.value}">#{tp.label}</option>
+							</ui:repeat>
+						 </select> <!-- SELECT -->						
+					</div> <!---->					
+					<div class="error-label"> <!-- ERROR DIV -->						
+					</div> <!---->					
+				</div>
+				
+				<!---->       
 		
 		     <!-- CONFIG ID AND METEO TYPE -->
 
 				<div class="form-row meteoHidden"> <!-- ROW -->	
 												
-					<!-- CONFIG -->
+				<!-- CONFIG -->
 						
 				 <div class="col-md-6"> <!-- COL -->		
 					<div class="form-group input-field-half" > <!-- INPUT DIV -->					

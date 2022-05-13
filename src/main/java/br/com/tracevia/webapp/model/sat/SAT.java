@@ -73,29 +73,30 @@ public class SAT extends Equipments implements Comparable<SAT> {
 	private String lastOneDatetime;
 	private String projectionDatetime;
 	private String currentDatetime;				
-
+		
 	public SAT(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
 			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
-			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, int status, int lastStatus,
-			boolean notificacao, int port, boolean visible, int numFaixas, int quantidadeS1, int velocidadeS1,
-			int quantidadeS2, int velocidadeS2, int statusInterval, int autos7days1hS1, int autosCurrent1hS1,
-			int autosProjection1hS1, int autosVolumeS1, int autosVelMedS1, int autos7days1hS2, int autosCurrent1hS2,
-			int autosProjection1hS2, int autosVolumeS2, int autosVelMedS2, int com7days1hS1, int comCurrent1hS1,
-			int comProjection1hS1, int comVolumeS1, int comVelMedS1, int com7days1hS2, int comCurrent1hS2,
-			int comProjection1hS2, int comVolumeS2, int comVelMedS2, int moto7days1hS1, int motoCurrent1hS1,
-			int motoProjection1hS1, int motoVolumeS1, int motoVelMedS1, int moto7days1hS2, int motoCurrent1hS2,
-			int motoProjection1hS2, int motoVolumeS2, int motoVelMedS2, int total7days1hS1, int totalCurrent1hS1,
-			int totalProjection1hS1, int totalVolumeS1, int totalVelMedS1, int total7days1hS2, int totalCurrent1hS2,
-			int totalProjection1hS2, int totalVolumeS2, int totalVelMedS2, double occupancyRateS1,
+			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, String directionTo, int status,
+			int lastStatus, boolean notificacao, int port, boolean visible, int numFaixas, int quantidadeS1,
+			int velocidadeS1, int quantidadeS2, int velocidadeS2, int statusInterval, int autos7days1hS1,
+			int autosCurrent1hS1, int autosProjection1hS1, int autosVolumeS1, int autosVelMedS1, int autos7days1hS2,
+			int autosCurrent1hS2, int autosProjection1hS2, int autosVolumeS2, int autosVelMedS2, int com7days1hS1,
+			int comCurrent1hS1, int comProjection1hS1, int comVolumeS1, int comVelMedS1, int com7days1hS2,
+			int comCurrent1hS2, int comProjection1hS2, int comVolumeS2, int comVelMedS2, int moto7days1hS1,
+			int motoCurrent1hS1, int motoProjection1hS1, int motoVolumeS1, int motoVelMedS1, int moto7days1hS2,
+			int motoCurrent1hS2, int motoProjection1hS2, int motoVolumeS2, int motoVelMedS2, int total7days1hS1,
+			int totalCurrent1hS1, int totalProjection1hS1, int totalVolumeS1, int totalVelMedS1, int total7days1hS2,
+			int totalCurrent1hS2, int totalProjection1hS2, int totalVolumeS2, int totalVelMedS2, double occupancyRateS1,
 			double occupancyRateS2, String faixa1, String faixa2, String faixa3, String faixa4, String faixa5,
 			String faixa6, String faixa7, String faixa8, String qtdeFaixas, String sentidos, String sentido1,
 			String sentido2, String sentido1Abbr, String sentido2Abbr, String posicao_nivel_servico,
-			String lastRegister, String lastPackage, String sevenDaysDatetime, String lastOneDatetime, String projectionDatetime, String currentDatetime) {
+			String lastRegister, String lastPackage, String sevenDaysDatetime, String lastOneDatetime,
+			String projectionDatetime, String currentDatetime) {
 		
 		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
 				nome, estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
-				dlgPosX, dlgPosY, direction, status, lastStatus, notificacao, port, visible);
+				dlgPosX, dlgPosY, direction, directionTo, status, lastStatus, notificacao, port, visible);
 		
 		this.numFaixas = numFaixas;
 		this.quantidadeS1 = quantidadeS1;
@@ -158,7 +159,7 @@ public class SAT extends Equipments implements Comparable<SAT> {
 		this.sentido1 = sentido1;
 		this.sentido2 = sentido2;
 		this.sentido1Abbr = sentido1Abbr;
-		this.sentido2Abbr = sentido2Abbr;	
+		this.sentido2Abbr = sentido2Abbr;
 		this.posicao_nivel_servico = posicao_nivel_servico;
 		this.lastRegister = lastRegister;
 		this.lastPackage = lastPackage;
@@ -168,9 +169,7 @@ public class SAT extends Equipments implements Comparable<SAT> {
 		this.currentDatetime = currentDatetime;
 	}
 
-	public SAT() {
-		super();		
-	}
+	public SAT() { super();}
 
 	public int getNumFaixas() {
 		return numFaixas;

@@ -288,7 +288,7 @@ public class OcrReport{
 		data = new OCR();
 			
 		String start = dtStart+" "+ hrStart+":"+minStart;
-		String end = dtFinal+" "+ hrFinal+":"+minFinal;
+		String end = dtStart+" 23:59:00";
 
 		if(camera == "Todos") camera ="";
 
@@ -302,7 +302,7 @@ public class OcrReport{
  				System.out.println("condição camera entramos");
 			try {
 				
-				list = dao.searchTable(start, end, cam, all_search, all_img);
+				list = dao.searchTable(start, cam, all_search, all_img, end);
 
 				RequestContext.getCurrentInstance().execute("getTr()");
 				RequestContext.getCurrentInstance().execute("dataPicker()");

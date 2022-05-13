@@ -16,7 +16,7 @@ public class reportDAO {
 	private ResultSet rs;
 	OCR data = new OCR();
 
-	public ArrayList<OCR> searchTable(String start, String end, String classe, String plate, String x) throws Exception {
+	public ArrayList<OCR> searchTable(String start, String classe, String plate, String x, String end) throws Exception {
 		String query = "";
 		if(x.equals("0") || x.equals("1")) {
 			query = "SELECT ocr.id_ocr_data, ocr.site_name, " +	 		
@@ -24,7 +24,7 @@ public class reportDAO {
 			      "eq.direction FROM ocr_data ocr " +
 		          "INNER JOIN ocr_equipment eq " +			
 				  "ON eq.name = ocr.site_name AND ocr.datetime " +
-				  "WHERE datetime BETWEEN'"+ start +"'AND'"+ end +"'AND site_name ='"+ classe+"' AND plate !='"+plate+"' LIMIT 100";
+				  "WHERE datetime BETWEEN'"+ start +"'AND'"+ end +"'AND site_name ='"+ classe+"' AND plate !='"+plate+"'";
 		}
 		if(x.equals("2")) {
 			query = "SELECT ocr.id_ocr_data, ocr.site_name, " +	 		
@@ -32,7 +32,7 @@ public class reportDAO {
 				      "eq.direction FROM ocr_data ocr " +
 			          "INNER JOIN ocr_equipment eq " +			
 					  "ON eq.name = ocr.site_name AND ocr.datetime " +
-					  "WHERE datetime BETWEEN'"+ start +"'AND'"+ end +"'AND site_name ='"+ classe+"' AND plate ='"+plate+"' LIMIT 100";
+					  "WHERE datetime BETWEEN'"+ start +"'AND'"+ end +"'AND site_name ='"+ classe+"' AND plate ='"+plate+"'";
 		}
 		
 		System.out.println(query);

@@ -92,6 +92,24 @@
 			</ui:fragment>
 
 			<!---->
+			
+			<!-- WIM MENU -->
+		
+			<ui:fragment rendered="#{loginAccount.load.en_wim}">
+			
+					<li class="nav-item">
+						<h:commandLink class="nav-link"
+							action="#{navigationController.redirectToURL('/wim/wim-realtime.xhtml?faces-redirect=true')}" value="">
+							<i class="fas fa-weight icon-sub"></i>
+							<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_wim_realtime}</span>
+						</h:commandLink>
+					</li>										
+				
+				<!---->
+				
+			</ui:fragment>
+
+			<!---->
 
 		</ul></li>
 
@@ -200,8 +218,7 @@
 		</ul></li>
 
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-		
-
+	
 	<!-- REPORTS MENU -->
 	
 	<li class="nav-item"><a href="#modMenu" data-toggle="collapse"
@@ -555,7 +572,7 @@
 						<!-- WIM REPORT SUBMENU ITEM -->
 
 						<li class="nav-item"><h:commandLink class="nav-link"
-								action="#{navigationController.wimReport}" value="">
+								action="#{navigationController.redirectToURL('/wim/wim.xhtml?faces-redirect=true')}" value="">
 								<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 								<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_wim_sub_menu_report}</span>
 							</h:commandLink></li>
