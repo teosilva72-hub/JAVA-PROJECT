@@ -22,7 +22,7 @@ setInterval(() => {
 
 const init = () => {
 	
-	$('#preloader').removeClass('d-none') // PRE LOADER CLASS
+	//$('#preloader').removeClass('d-none') // PRE LOADER CLASS
 	
 	$('#equipAll').load('/map/mapEquip.xhtml', () => {
 		$('[role=tooltip]').tooltip('hide')

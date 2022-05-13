@@ -21,6 +21,9 @@ setInterval(() => {
 // *********************************************************** //
 
 const init = () => {
+	
+	$('#preloader').removeClass('d-none') // PRE LOADER CLASS
+	
 	$('#equipAll').load('/realtime/realtimeEquip.xhtml', () => {
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))
@@ -69,6 +72,10 @@ const init = () => {
 		if (window.initMeteo)
 			initMeteo();
 	})
+	
+	
+	 // if any popover is opened then it's closed on page load
+	 $('[data-toggle=popover-d]').popover('hide')
 }
 
 const onEventMapFunction = data => {
@@ -87,6 +94,7 @@ const onEventMapFunction = data => {
 			break;
 	}
 }
+
 
 const setInfoEquip = () => {
 	
@@ -117,14 +125,44 @@ const setInfoEquip = () => {
 			return $(title).children(".popover-header").html();
 		}
 	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
 	$('[data-toggle=popover-d]').popover({
 		html: true,
-		trigger: 'hover',		
-		template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body p-0"></div></div>',
+		trigger: 'click',		
+		template: '<div class="popover custom-detail"><div class="arrow"></div><div class="popover-body p-0"></div></div>',
 		content: function () {
-			return $('.popover-d').parent().html();
-		},
+			let content = $(this).attr("data-popover-content");
+			return $(content).children(".popover-body").html();
+		},		
 	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	// hide opened popover when click outside popover content
+	$('html').on('click', function (e) {
+	    $('[data-toggle=popover-d]').each(function () {	       
+	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+	            $(this).popover('hide');
+	        }
+	    });
+	});	
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	// hide opened popover when esc key is pressed
+	$(document).keydown(function(e){
+	   if (e.keyCode === 27)
+	      $('[data-toggle=popover-d]').each(function () {	       
+	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+	            $(this).popover('hide');
+	        }
+	    });
+	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+
 }
 
 const setEquipToolTip = () => {
