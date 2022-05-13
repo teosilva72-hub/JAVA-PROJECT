@@ -21,9 +21,6 @@ setInterval(() => {
 // *********************************************************** //
 
 const init = () => {
-	
-	$('#preloader').removeClass('d-none') // PRE LOADER CLASS
-	
 	$('#equipAll').load('/map/mapEquip.xhtml', () => {
 		$('[role=tooltip]').tooltip('hide')
 		resizeEquipScale($('[scroll-zoom]'))
@@ -72,7 +69,9 @@ const init = () => {
 			initGPS();
 
 		if (window.initMeteo)
-			initMeteo();		
+			initMeteo();
+			
+		$('#preloader').addClass('d-none') // PRE LOADER CLASS
 	})	
 	
 	 // if any popover is opened then it's closed on page load
