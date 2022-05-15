@@ -40,9 +40,27 @@ public class DataSatDAO {
 					"ELSE 2 END 'sentido' FROM sat_equipment eq; ";  // initialize variable
 			
 			 String maxDate = "CREATE TEMPORARY TABLE IF NOT EXISTS maxDatetime SELECT * FROM "
-			 		+ "(SELECT siteID, max(data) maxDate FROM tb_vbv group by siteID order by data desc) "
-			 		+ "filterSiteID WHERE siteID not in (222, 340);";
-							
+			 		+ "(SELECT siteID, MAX(data) maxDate FROM tb_vbv GROUP BY siteID ORDER BY data DESC) "
+			 		+ "filterMaxDate WHERE siteID NOT IN (222, 340";
+			 
+					 if(!availabilityList.isEmpty()) {
+						   
+						   maxDate += ", ";
+					 		
+					 		for(int i = 0; i < availabilityList.size(); i++) {
+					 			
+					 			maxDate += availabilityList.get(i);
+					 			
+					 			if(i < (availabilityList.size() - 1))
+					 				maxDate +=", ";
+					 					
+					 		}
+					 		
+					 		maxDate += ") ";				   
+					   	}
+				
+					   else maxDate += ") ";						 
+			 			 			 							
 			String last7days = "CREATE TEMPORARY TABLE IF NOT EXISTS last_7_days " +
 					"SELECT ld.NOME_ESTACAO, SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN ld.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_7_DAYS_S1', " + 
 					"SUM(CASE WHEN ld.NOME_FAIXA < eq.sentido THEN (ld.VOLUME_COM + ld.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_7_DAYS_S1', " +
@@ -249,13 +267,7 @@ public class DataSatDAO {
 				"FROM "+RoadConcessionaire.tableDados15+" d " +
 				"LEFT JOIN equip eq ON (d.NOME_ESTACAO = eq.equip_id) " +	
 				"LEFT JOIN maxDatetime md ON md.siteID = eq.equip_id " +
-				
-				/*"LEFT JOIN " +
-				"( " +
-				"  SELECT siteID, MAX(data) maxDate FROM tb_vbv WHERE siteID NOT IN(222, 340) " +
-				"  GROUP BY siteID " +
-				") md ON md.siteID = eq.equip_id " +*/
-								
+												
 				"LEFT JOIN last_7_days dy ON (d.NOME_ESTACAO = dy.NOME_ESTACAO) " +
 				"LEFT JOIN last_hour lh ON (d.NOME_ESTACAO = lh.NOME_ESTACAO) " +
 				"LEFT JOIN notifications_status nt ON (d.NOME_ESTACAO = nt.equip_id) AND 'SAT' = nt.equip_type " +						  
@@ -289,25 +301,33 @@ public class DataSatDAO {
 	 try {
 			
 		 	conn.start(1);
+		 	
+		 	//System.out.println(temp);
 		 
 			conn.prepare(temp);
 			conn.executeUpdate();
 			
 			// ------------------------------
-			System.out.println(maxDate);
 			
+			//System.out.println(maxDate);
+					
 			conn.prepare(maxDate);
 			conn.executeUpdate();
 			
 			
 			// ------------------------------
 			
+			//System.out.println(last7days.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
+			
 			conn.prepare_my(last7days.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
 			conn.setString(1, currentDate);	
 			conn.setString(2, currentDate);	
 			conn.executeUpdate();
 			
+			
 			// ------------------------------
+			
+			//System.out.println(lastHour.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
 			
 			conn.prepare_my(lastHour.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));	
 			conn.setString(1, currentDate);	
@@ -463,9 +483,27 @@ public class DataSatDAO {
   		List<SAT> list = new ArrayList<SAT>();
   		
   		 String maxDate = "CREATE TEMPORARY TABLE IF NOT EXISTS maxDatetime SELECT * FROM "
-			 		+ "(SELECT siteID, max(data) maxDate FROM tb_vbv group by siteID order by data desc) "
-			 		+ "filterSiteID WHERE siteID not in (222, 340);";
-			 		 		 	 	 		 					
+			 		+ "(SELECT siteID, MAX(data) maxDate FROM tb_vbv GROUP BY siteID ORDER BY data DESC) "
+			 		+ "filterMaxDate WHERE siteID NOT IN (222, 340";
+			 
+					 if(!availabilityList.isEmpty()) {
+						   
+						   maxDate += ", ";
+					 		
+					 		for(int i = 0; i < availabilityList.size(); i++) {
+					 			
+					 			maxDate += availabilityList.get(i);
+					 			
+					 			if(i < (availabilityList.size() - 1))
+					 				maxDate +=", ";
+					 					
+					 		}
+					 		
+					 		maxDate += ") ";				   
+					   	}
+				
+					   else maxDate += ") ";
+							 		 		 	 	 		 					
  		String select = "SELECT d.NOME_ESTACAO AS ESTACAO, nt.online_status AS ESTADO_ATUAL, " +
  				  "IFNULL(CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE " + 			
  				  "CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE CASE WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), " + 
