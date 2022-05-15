@@ -1087,11 +1087,11 @@ input#width {
 	margin-left: 4px !important;
 }
 
-.dmsHidden, .meteoHidden {
+.dmsHidden, .meteoHidden, .directionToHidden {
 	display: none;
 }
 
-.dmsHidden-edit, .meteoHidden-edit {
+.dmsHidden-edit, .meteoHidden-edit, .directionToHidden-edit {
 	display: none;
 }
 

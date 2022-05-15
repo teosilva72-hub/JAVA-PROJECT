@@ -36,12 +36,11 @@ public class EquipmentsBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<SelectItem> cities, roads, module, lanes, dir, serviceLevel, dmsType, meteoType;
+	private List<SelectItem> cities, roads, module, lanes, dir, serviceLevel, dmsType, meteoType, directionTo;
 	
 	private String imgControle = "";
 
-	RoadConcessionaireDAO concessionaireDao;
-
+	RoadConcessionaireDAO concessionaireDao;	
 	LocaleUtil localeDirection, localeMap;
 		
 	Equipments equip;
@@ -105,6 +104,10 @@ public class EquipmentsBean implements Serializable {
 		
 	public List<SelectItem> getServiceLevel() {
 		return serviceLevel;
+	}
+	
+	public List<SelectItem> getDirectionTo() {
+		return directionTo;
 	}
 
 	public int getEquipId() {
@@ -197,6 +200,7 @@ public class EquipmentsBean implements Serializable {
 		dmsType = new ArrayList<SelectItem>();
 		meteoType = new ArrayList<SelectItem>();
 		serviceLevel = new ArrayList<SelectItem>();
+		directionTo = new ArrayList<SelectItem>();
 		
 		try {
 
@@ -205,6 +209,7 @@ public class EquipmentsBean implements Serializable {
 			cities = concessionaireDao.cityDefinitions();
 			roads = concessionaireDao.roadDefinitions();
 			module = concessionaireDao.moduleDefinitions();
+			directionTo = concessionaireDao.cityDirectionDefinitions();
 
 			for (int f = 2; f <= 8; f++) {
 
@@ -285,6 +290,9 @@ public class EquipmentsBean implements Serializable {
 								
 		dataSource.setDirection(parameterMap.get("direction")); // DIRECTION	
 		
+		if(dataSource.getTable().equals("colas") || dataSource.getTable().equals("dai"))
+			dataSource.setDirectionTo(parameterMap.get("directionTo") == "" ? "1" : parameterMap.get("directionTo")); // DIRECTION	
+		
 		dataSource.setLatitude(parameterMap.get("lat") == "" ? 0 : Double.parseDouble(parameterMap.get("lat"))); // LATITUDE
 
 		dataSource.setLongitude(parameterMap.get("long") == "" ? 0 : Double.parseDouble(parameterMap.get("long"))); // LONGITUDE
@@ -347,7 +355,7 @@ public class EquipmentsBean implements Serializable {
 		}
 		
 		// -----------------------------------------------------------------------------------------------------------------
-			System.out.println(dataSource.getTable());	
+				
 		checked =  equipDAO.checkExists(dataSource.getEquipId(), dataSource.getTable()); // CHECK IF ID ALREADY EXISTS
 
 			if(checked)
@@ -384,7 +392,7 @@ public class EquipmentsBean implements Serializable {
 		
 		EquipmentsDAO dao = new EquipmentsDAO();
 	    EquipmentDataSource dataSource = new EquipmentDataSource();
-			
+	  
 		dataSource = dao.searchEquipament(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 
 				SessionUtil.executeScript("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				
@@ -452,8 +460,12 @@ public class EquipmentsBean implements Serializable {
 				 	  SessionUtil.executeScript("$('#indicator-equipIp-edit').val('"+ dataSource.getIpAddressIndicator()+"');");	
 					  SessionUtil.executeScript("$('#radar-equipIp-edit').val('"+dataSource.getIpAddressRadar()+"');");		
 			
-			 }		
-	    }
+			 }	
+				
+			 else if(equipTable.equals("colas") || equipTable.equals("dai"))			 	
+				  SessionUtil.executeScript("$('#directionTo-edit').val('"+dataSource.getDirectionTo()+"');");		
+	    
+	}
 
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -505,8 +517,8 @@ public class EquipmentsBean implements Serializable {
 		checked = false; // VARIÃ�VEL PARA VERFICAR OPERAÃ‡Ã•ES AO SALVAR NOVO EQUIPAMENTO	
 		
 		int equipId = getEquipId();		 
-		String equipTable = getEquipTable();
-			
+		String equipTable = getEquipTable();	
+		 				
 		EquipmentDataSource dataSource = new EquipmentDataSource();
 				
 		// ------------------------------------------------------------------------------------------------------
@@ -531,6 +543,9 @@ public class EquipmentsBean implements Serializable {
 		
 		dataSource.setRoad(parameterMap.get("roadsEdit")); // ROAD
 		
+		if(dataSource.getTable().equals("colas") || dataSource.getTable().equals("dai"))
+			dataSource.setDirectionTo(parameterMap.get("directionTo-edit") == "" ? "1" : parameterMap.get("directionTo-edit")); // DIRECTION	
+			
 		if(!dataSource.getTable().equals("meteo"))
 			dataSource.setEquipType(defineEquipType(dataSource.getTable())); // TYPE
 										
@@ -600,14 +615,16 @@ public class EquipmentsBean implements Serializable {
 		// -----------------------------------------------------------------------------------------------------------------
 				
 		  checked = dao.updateEquipment(dataSource, interfaceView, login.getLogin().getPermission_id());
-		
+		  		
 		if(checked) {
+			
 			RequestContext.getCurrentInstance().execute(String.format("editBtnDisabled('%b')", checked));
 			SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
 			SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");			
 			SessionUtil.remove("meteoType");
 			
 		} else {
+			
 			RequestContext.getCurrentInstance().execute(String.format("editBtnDisabled('%b')", checked));
 			SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
 		}

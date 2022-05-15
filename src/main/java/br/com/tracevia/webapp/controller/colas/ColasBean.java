@@ -2,8 +2,6 @@ package br.com.tracevia.webapp.controller.colas;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -16,8 +14,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -25,8 +21,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-
-import org.primefaces.context.RequestContext;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -38,14 +32,10 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import br.com.tracevia.webapp.methods.TranslationMethods;
-import br.com.tracevia.webapp.model.colas.Colas;
-import br.com.tracevia.webapp.model.colas.ColasQueue;
-import br.com.tracevia.webapp.model.global.UserAccount;
-import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.global.ListEquipments.listEquips;
-import br.com.tracevia.webapp.controller.global.LoginAccountBean;
+import br.com.tracevia.webapp.controller.global.ListEquipments;
 import br.com.tracevia.webapp.dao.colas.ColasDAO;
+import br.com.tracevia.webapp.model.colas.ColasQueue;
+import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="colasBean")
@@ -54,19 +44,21 @@ public class ColasBean {
 	LocaleUtil localeColas;
 	public List<ColasQueue> queues;
 	public ColasQueue queue;
-	public List<Equipments> colas;
+	public List<? extends Equipments> colas;
 	private String logo;
 	private String Toll, Lane, Date, Waiting_time;
-	
-	@ManagedProperty("#{loginAccount}")
-	private LoginAccountBean login;
-	
-	public LoginAccountBean getLogin() {
-		return login;
+			
+	@ManagedProperty("#{listEquipsBean}")
+	ListEquipments equips;
+				
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
+	}	
+			
+	public ListEquipments getEquips() {
+		return equips;
 	}
-	public void setLogin(LoginAccountBean login) {
-		this.login = login;
-	}
+	
 	public String getToll() {
 		return Toll;
 	}
@@ -92,7 +84,7 @@ public class ColasBean {
 		Waiting_time = waiting_time;
 	}
 	
-	public List<Equipments> getColas() {
+	public List<? extends Equipments> getColas() {
 		return colas;
 	}
 	
@@ -181,22 +173,16 @@ public class ColasBean {
 
 	}
 	
-	public void collectColas() throws Exception {
-		
-		Colas colas = new Colas();
-		
-		
-		UserAccount actual_login = login.getLogin();
-		int permission_id = actual_login.getPermission_id();
-		
-		this.colas = colas.listEquipments("colas", permission_id); 
+	public void collectColas() throws Exception {			
+				
+		this.colas = equips.getColasList();
 	}
 	
 	public void pdf() {
 		
 		try {
 			
-			TranslationMethods trad = new TranslationMethods();
+			//TranslationMethods trad = new TranslationMethods();
 			localeColas = new LocaleUtil();	
 			localeColas.getResourceBundle(LocaleUtil.LABELS_COLAS);
 			//String RESULT = "/teste/teste.pdf";
@@ -280,4 +266,31 @@ public class ColasBean {
 			e.printStackTrace();
 		}
 	}
+	
+	// ---------------------------------------------------------------
+	
+	public static String getDirectionEquip(String cam) {
+		
+		String direction = "";
+		
+			switch(cam) {
+			
+				case "DAI 01": direction = "Mexico"; break;
+				case "DAI 02": direction = "Buenos Aires"; break;
+				case "DAI 03": direction = "Tuxpam"; break;
+				case "DAI 04": direction = "Naranjos"; break;
+				case "DAI 05": direction = "Buenos Aires"; break;
+				case "DAI 06": direction = "Naranjos - Tamiahua"; break;
+				case "DAI 07": direction = "Buenos Aires"; break;
+				case "DAI 08": direction = "Buenos Aires"; break;
+				case "DAI 09": direction = "Naranjos"; break;
+				case "DAI 10": direction = "Tampico"; break;			
+			
+			}		
+		
+		return direction;
+	}
+	
+	// -------------------------------------------------------------------------------
+	
 }

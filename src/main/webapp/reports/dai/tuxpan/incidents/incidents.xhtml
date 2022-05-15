@@ -25,11 +25,11 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('d.device')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s', daiLabels.global_date_column, daiLabels.global_time_column, daiLabels.global_equipment_column, daiLabels.dai_lane_column, daiLabels.dai_direction_column, daiLabels.dai_event_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(d.date, `%d/%m/%Y`) as sd; d.hour; e.name; d.lane; dai.direction; d.incident')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(d.date, `%d/%m/%Y`) as sd; d.hour; e.name; d.lane; dai.city_name; d.incident')}" />
 	
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 		     		
-	    <f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('dai_equipment e ON e.equip_id = d.equip_id LEFT JOIN dai_direction dai ON d.equip_id = dai.equip_id')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('dai_equipment e ON e.equip_id = d.equip_id LEFT JOIN city_direction dai ON dai.city_id = e.to_direction')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		

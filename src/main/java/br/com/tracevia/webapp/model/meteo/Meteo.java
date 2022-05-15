@@ -20,19 +20,20 @@ public class Meteo extends Equipments{
 	private int battery;
 	private int volts_line;	
 	private int config_id;
-		
+			
 	public Meteo(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
 			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
-			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, int status, int lastStatus,
-			boolean notificacao, int port, boolean visible, String dateTime, String date, String interval,
-			int monthOrDay, int atmospheric_pressure, int relative_humidity, int absolute_precipitation, int wind_speed,
-			int wind_direction, double air_temperature, double road_temperature, double ambient_temperature,
-			int visibilidade, int battery, int volts_line, int config_id) {
+			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, String directionTo, int status,
+			int lastStatus, boolean notificacao, int port, boolean visible, String dateTime, String date,
+			String interval, int monthOrDay, int atmospheric_pressure, int relative_humidity,
+			int absolute_precipitation, int wind_speed, int wind_direction, double air_temperature,
+			double road_temperature, double ambient_temperature, int visibilidade, int battery, int volts_line,
+			int config_id) {
 		
 		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
 				nome, estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
-				dlgPosX, dlgPosY, direction, status, lastStatus, notificacao, port, visible);
+				dlgPosX, dlgPosY, direction, directionTo, status, lastStatus, notificacao, port, visible);
 		
 		this.dateTime = dateTime;
 		this.date = date;
@@ -52,7 +53,7 @@ public class Meteo extends Equipments{
 		this.config_id = config_id;
 	}
 
-	public Meteo() {}
+	public Meteo() {super();}
 
 	public String getDateTime() {
 		return dateTime;
