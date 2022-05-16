@@ -1910,6 +1910,7 @@ public class ExcelTemplate {
 		int startCol = 0;
 		int endCol = columns.size() - 8;
 		int start = 8;
+		boolean shorted = false;
 		
 		lines.forEach(list -> {
 			if (sep.containsKey(list[1])) {
@@ -1920,6 +1921,9 @@ public class ExcelTemplate {
 				sep.put(list[1], newLine);
 			}
 		});
+		
+		sheet = workbook.createSheet(sheetName);	
+		utilSheet.columnsWidth(sheet, 0, 0, 4300);
 		
 		for (Entry<String, List<String[]>> l : sep.entrySet()) {
 			Map<String, List<String[]>> newLines = new LinkedHashMap<>();
@@ -1961,11 +1965,8 @@ public class ExcelTemplate {
 				IDs.clear();
 				IDs.add(l.getKey());
 				String direction = equip.getKey();
-				
-				sheet = workbook.createSheet(l.getKey() + direction);	
-				utilSheet.columnsWidth(sheet, 0, 0, 4300);
 				excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, "sat", columns.size(), "Contagem de Veículo",  
-						date, period, IDs, 0, false, false, dataStartRow, "name", direction.equals("All") ? null : direction);
+						date, period, IDs, 0, false, false, dataStartRow, shorted, "name", direction.equals("All") ? null : direction);
 				
 				dataStartRow += 11;
 				// ------------------------------------------------------------------------------------------------------------
@@ -1997,6 +1998,7 @@ public class ExcelTemplate {
 				utilSheet.setCellValue(sheet, row, dataEndRow, 0, " ");
 				
 				dataStartRow = ++dataEndRow;
+				shorted = true;
 			}
 			
 		}

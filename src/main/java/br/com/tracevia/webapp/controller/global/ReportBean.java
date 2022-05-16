@@ -1173,13 +1173,13 @@ public class ReportBean implements Serializable{
 				if (isSpecialPDF()) {
 						generateSpecialFile(specialPDF, new String[] { dateStart, dateEnd }, period);
 						SessionUtil.getExternalContext().getSessionMap().put(fileName + "PDF", model.ToPDF());
-						model = new ExcelTemplate();
+						//model = new ExcelTemplate();
 					}
 				
-				if(!special)										
-					model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, selectedLane, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
+				//if(!special)										
+				//	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, selectedLane, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
 				
-				else generateSpecialFile(specialName, new String[] { dateStart, dateEnd }, period);
+				//else generateSpecialFile(specialName, new String[] { dateStart, dateEnd }, period);
 			
 			} catch (Exception e) {
 				e.printStackTrace();
