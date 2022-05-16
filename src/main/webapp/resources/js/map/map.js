@@ -316,7 +316,7 @@ $(function () {
 				$('.ipAddress-edit').hide();
 				$('.directionToHidden-edit').hide();		
 			
-			}else if (selectVAL == 2 || selectVAL == 4) {
+			}else if (selectVAL == 2 || selectVAL == 4 || selectVAL == 5) {
 				
 				$('.directionToHidden-edit').show();
 			
@@ -1097,7 +1097,7 @@ $(function () {
 				$('.ipAddress').hide();	
 				$('.directionToHidden').hide();
 
-			}else if (selectVAL == 2 || selectVAL == 4) {
+			}else if (selectVAL == 2 || selectVAL == 4 || selectVAL == 5) {
 				
 				$('.directionToHidden').show();
 			

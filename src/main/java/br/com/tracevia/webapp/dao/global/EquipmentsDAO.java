@@ -100,14 +100,14 @@ public class EquipmentsDAO {
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
 				"linear_posX, linear_posY, map_width, map_posX, map_posY, longitude, latitude, direction ";
 		
-			if(modulo.equals("colas") || modulo.contentEquals("dai"))
+			if(modulo.equals("colas") || modulo.contentEquals("dai") || modulo.contentEquals("ocr"))
 				sql += ", d.city_name "; 
 					
 				sql += "FROM "+modulo+"_equipment eq " +
 						"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 						"INNER JOIN concessionaire_roads r ON r.road_id = eq.road ";
 				
-				if(modulo.equals("colas") || modulo.contentEquals("dai"))
+				if(modulo.equals("colas") || modulo.contentEquals("dai") || modulo.contentEquals("ocr"))
 						sql+= "INNER JOIN city_direction d ON d.city_id = eq.to_direction ";
 						
 								
@@ -116,14 +116,14 @@ public class EquipmentsDAO {
 		String sqlVW = "SELECT equip_id, name, c.city_name, r.road_name, km, vw_linear_width, " +
 				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, longitude, latitude, direction ";
 				
-				if(modulo.equals("colas") || modulo.contentEquals("dai"))
+				if(modulo.equals("colas") || modulo.contentEquals("dai") || modulo.contentEquals("ocr"))
 					sqlVW += ", d.city_name "; 
 				
 				sqlVW += "FROM "+ modulo + "_equipment eq " +
 						"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 						"INNER JOIN concessionaire_roads r ON r.road_id = eq.road ";
 		
-				if(modulo.equals("colas") || modulo.contentEquals("dai"))
+				if(modulo.equals("colas") || modulo.contentEquals("dai") || modulo.contentEquals("ocr"))
 					sqlVW += "INNER JOIN city_direction d ON d.city_id = eq.to_direction ";
 							
 				sqlVW += "WHERE visible = 1 ";
@@ -163,7 +163,7 @@ public class EquipmentsDAO {
 					equip.setLatitude(rs.getDouble(13));
 					equip.setDirection(rs.getString(14));
 					
-				if(modulo.equals("colas") || modulo.contentEquals("dai"))
+				if(modulo.equals("colas") || modulo.contentEquals("dai") || modulo.contentEquals("ocr"))
 					equip.setDirectionTo(rs.getString(15));
 
 					lista.add(equip);
@@ -1533,7 +1533,7 @@ public class EquipmentsDAO {
 
 			}
 			
-			else if(dataSource.getTable().equals("colas") || dataSource.getTable().equals("dai")) {
+			else if(dataSource.getTable().equals("colas") || dataSource.getTable().equals("dai")|| dataSource.getTable().equals("ocr")) {
 				conn.setString(25, dataSource.getDirectionTo());
 			}
 
@@ -1846,7 +1846,7 @@ public class EquipmentsDAO {
 						dataSource.setIpAddressRadar(rs.getString(11));
 					}
 					
-					else if (table.equals("colas")|| table.equals("dai"))						
+					else if (table.equals("colas")|| table.equals("dai")|| table.equals("ocr"))						
 							dataSource.setDirectionTo(rs.getString(11));
 					
 				}
@@ -2298,7 +2298,7 @@ public class EquipmentsDAO {
 					conn.setString(17, dataSource.getLane8());
 					conn.setInt(18, dataSource.getEquipId());
 				}
-				else if (dataSource.getTable().equals("colas") || dataSource.getTable().equals("dai")) {
+				else if (dataSource.getTable().equals("colas") || dataSource.getTable().equals("dai")|| dataSource.getTable().equals("ocr")) {
 					conn.setString(7, dataSource.getIpAddress());
 					conn.setString(8, dataSource.getDirectionTo());
 					conn.setInt(9, dataSource.getEquipId());
@@ -2349,7 +2349,7 @@ public class EquipmentsDAO {
 					conn.setInt(19, dataSource.getEquipId());
 				}
 				
-				else if (dataSource.getTable().equals("colas") || dataSource.getTable().equals("dai")) {
+				else if (dataSource.getTable().equals("colas") || dataSource.getTable().equals("dai")|| dataSource.getTable().equals("ocr")) {
 					conn.setString(9, dataSource.getIpAddress());
 					conn.setString(10, dataSource.getDirectionTo());
 					conn.setInt(11, dataSource.getEquipId());

@@ -290,7 +290,7 @@ public class EquipmentsBean implements Serializable {
 								
 		dataSource.setDirection(parameterMap.get("direction")); // DIRECTION	
 		
-		if(dataSource.getTable().equals("colas") || dataSource.getTable().equals("dai"))
+		if(dataSource.getTable().equals("colas") || dataSource.getTable().equals("dai") || dataSource.getTable().equals("ocr"))
 			dataSource.setDirectionTo(parameterMap.get("directionTo") == "" ? "1" : parameterMap.get("directionTo")); // DIRECTION	
 		
 		dataSource.setLatitude(parameterMap.get("lat") == "" ? 0 : Double.parseDouble(parameterMap.get("lat"))); // LATITUDE
@@ -543,7 +543,7 @@ public class EquipmentsBean implements Serializable {
 		
 		dataSource.setRoad(parameterMap.get("roadsEdit")); // ROAD
 		
-		if(dataSource.getTable().equals("colas") || dataSource.getTable().equals("dai"))
+		if(dataSource.getTable().equals("colas") || dataSource.getTable().equals("dai")|| dataSource.getTable().equals("ocr"))
 			dataSource.setDirectionTo(parameterMap.get("directionTo-edit") == "" ? "1" : parameterMap.get("directionTo-edit")); // DIRECTION	
 			
 		if(!dataSource.getTable().equals("meteo"))
