@@ -74,9 +74,8 @@ public class DataSatDAO {
 	
 					"FROM tb_dados15 ld " +
 					"LEFT JOIN equip eq ON (ld.NOME_ESTACAO = eq.equip_id) " +					
-					"WHERE ld.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 7 DAY) AND DATE_SUB(DATE_ADD(DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 7 DAY), INTERVAL 1 HOUR), INTERVAL 1 SECOND) ";
-				
-					
+					"WHERE ld.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 7 DAY) AND DATE_SUB(DATE_SUB(DATE_FORMAT(?, '%y-%m-%d %H:00:00'), INTERVAL 7 DAY), INTERVAL 1 SECOND) ";
+									
 					// --------------------------------------------------------------------
 					
 					   if(!availabilityList.isEmpty()) {
@@ -98,8 +97,8 @@ public class DataSatDAO {
 					// -------------------------------------------------------------------
 					   
 					last7days += "AND eq.visible = 1 " +					
-							"GROUP BY ld.NOME_ESTACAO LIMIT " + limit;
-					
+							"GROUP BY ld.NOME_ESTACAO, HOUR(ld.DATA_HORA) " +
+							"ORDER BY ld.DATA_HORA DESC LIMIT " + limit;					
 
 			String lastHour = "CREATE TEMPORARY TABLE IF NOT EXISTS last_hour " +
 					"SELECT lh.NOME_ESTACAO, SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN lh.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_HOUR_S1', " + 
@@ -113,9 +112,13 @@ public class DataSatDAO {
 					"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido THEN lh.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_HOUR_S2' " +
 		
 					"FROM tb_dados15 lh " +
-					"LEFT JOIN equip eq ON (lh.NOME_ESTACAO = eq.equip_id) " +
-					"WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR) AND DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 SECOND) ";
-						
+					"LEFT JOIN equip eq ON (lh.NOME_ESTACAO = eq.equip_id) ";
+			
+					if(time == 15)
+						lastHour +="WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR) AND DATE_SUB(DATE_FORMAT(?, '%y-%m-%d %H:00:00'), INTERVAL 1 SECOND) ";
+					
+						else lastHour +="WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(?, '%y-%m-%d %H:00:00'), INTERVAL "+time+" HOUR) AND DATE_SUB(DATE_FORMAT(?, '%y-%m-%d %H:00:00'), INTERVAL 1 SECOND) ";
+				
 					// --------------------------------------------------------------------
 					
 					   if(!availabilityList.isEmpty()) {
@@ -137,14 +140,15 @@ public class DataSatDAO {
 					// -------------------------------------------------------------------
 					   
 				   lastHour += "AND eq.visible = 1 " +					
-							   "GROUP BY lh.NOME_ESTACAO LIMIT " + limit;				
+							   "GROUP BY lh.NOME_ESTACAO, HOUR(lh.DATA_HORA) " +
+							   "ORDER BY lh.DATA_HORA DESC LIMIT " + limit;				
 										
 			String select = "SELECT "
 					+ "ESTACAO, "
 					+ "ESTADO_ATUAL, "
 					+ "PACOTE_HORA, "
 					+ "DADO_HORA, "
-					+ "7_DAYS_HEADER, "
+					+ "LAST_7_DAYS_HEADER, "
 					+ "LAST_HOUR_HEADER, "
 					+ "PROJECTION_HEADER, "
 					+ "VOLUME_AUTO_LAST_7_DAYS_S1, "
@@ -196,7 +200,7 @@ public class DataSatDAO {
 				
 				/* COLUMN DATETIME HEADER */
 				
-				"IFNULL(DATE_FORMAT(DATE_SUB(d.DATA_HORA, INTERVAL 7 DAY),  '%d/%m/%Y  %H:00'), '01/01/2000 07:00') '7_DAYS_HEADER', " +
+				"IFNULL(DATE_FORMAT(DATE_SUB(d.DATA_HORA, INTERVAL 7 DAY),  '%d/%m/%Y  %H:00'), '01/01/2000 07:00') 'LAST_7_DAYS_HEADER', " +
 				"IFNULL(DATE_FORMAT(DATE_SUB(d.DATA_HORA, INTERVAL 1 HOUR), '%d/%m/%Y %H:00'), '07/01/2000 06:00') 'LAST_HOUR_HEADER', " +
 				"IFNULL(DATE_FORMAT(d.DATA_HORA, '%d/%m/%Y %H:00'), '07/01/2000 07:00') 'PROJECTION_HEADER', " +
 				
@@ -272,8 +276,7 @@ public class DataSatDAO {
 				"LEFT JOIN last_hour lh ON (d.NOME_ESTACAO = lh.NOME_ESTACAO) " +
 				"LEFT JOIN notifications_status nt ON (d.NOME_ESTACAO = nt.equip_id) AND 'SAT' = nt.equip_type " +						  
 			    "WHERE d.DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? ";
-			    
-			
+			    			
 				// --------------------------------------------------------------------
 									
 				   if(!availabilityList.isEmpty()) {
@@ -332,12 +335,12 @@ public class DataSatDAO {
 			conn.prepare_my(lastHour.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));	
 			conn.setString(1, currentDate);	
 			conn.setString(2, currentDate);	
-						
+								
 			conn.executeUpdate();
 			
 			// ------------------------------
 									
-			conn.prepare_my(select.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)) + " LIMIT " + limit + ") as algoEscrito");
+			conn.prepare_my(select.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)) + " LIMIT " + limit + ") AS mainQuery");
  			conn.prepare_ms(select
 			 	.replace("date_format", "FORMAT")
 				.replace("%H:%i", "hh:mm")
@@ -378,7 +381,7 @@ public class DataSatDAO {
 							// TABLE HEADERS 
 							
 							sat.setCurrentDatetime(rs.getString("PACOTE_HORA")); //  MAIN HEADER					
-							sat.setSevenDaysDatetime(rs.getString("7_DAYS_HEADER")); // 7 DAYS HEADER
+							sat.setSevenDaysDatetime(rs.getString("LAST_7_DAYS_HEADER")); // 7 DAYS HEADER
 							sat.setLastOneDatetime(rs.getString("LAST_HOUR_HEADER")); // LAST HOUR HEADER
 							sat.setProjectionDatetime(rs.getString("PROJECTION_HEADER")); // PROJECTION HEADER	
 							
