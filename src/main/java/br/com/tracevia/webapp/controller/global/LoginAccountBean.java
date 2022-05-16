@@ -43,11 +43,11 @@ public class LoginAccountBean implements Serializable {
 	 * SERIAL ID
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private UserAccount user;
 	private UserAccount login;
 	private String credentials;    
-  
+
 	public HashMap<String, double[][]> coord = new HashMap<>();    
 
 	LocaleUtil locale, locale1, locale2;
@@ -58,15 +58,15 @@ public class LoginAccountBean implements Serializable {
 	String plaque;
 	String logo;
 	boolean mapEnabled, mapDivided, darkMap, reportsLLEnabled;
-	
+
 	@ManagedProperty("#{language}")
 	private LanguageBean language;
 
 	public String getCredentials() {
-		
+
 		String cred = credentials;
 		credentials = new String();
-		
+
 		return cred;
 	}
 
@@ -109,7 +109,7 @@ public class LoginAccountBean implements Serializable {
 	public void setMapUI(String mapUI) {
 		this.mapUI = mapUI;
 	}
-	
+
 	public String getDarkMapUI() {
 		return darkMapUI;
 	}
@@ -117,7 +117,7 @@ public class LoginAccountBean implements Serializable {
 	public void setDarkMapUI(String darkMapUI) {
 		this.darkMapUI = darkMapUI;
 	}
-	
+
 	public String getPlaque() {
 		return plaque;
 	}
@@ -149,7 +149,7 @@ public class LoginAccountBean implements Serializable {
 	public void setMapEnabled(boolean mapEnabled) {
 		this.mapEnabled = mapEnabled;
 	}
-	
+
 	public boolean isMapDivided() {
 		return mapDivided;
 	}
@@ -157,7 +157,7 @@ public class LoginAccountBean implements Serializable {
 	public void setMapDivided(boolean mapDivided) {
 		this.mapDivided = mapDivided;
 	}
-	
+
 	public boolean isDarkMap() {
 		return darkMap;
 	}
@@ -173,7 +173,7 @@ public class LoginAccountBean implements Serializable {
 	public void setReportsLLEnabled(boolean reportsLLEnabled) {
 		this.reportsLLEnabled = reportsLLEnabled;
 	}
-		
+
 	public RoadConcessionaire getRoad() {
 		return road;
 	}
@@ -188,35 +188,35 @@ public class LoginAccountBean implements Serializable {
 		}
 		return coord.get("");
 	}
-	    // --------------------------------------------------------------------------------------------
-	
-		// CLASS PATH
-		
-		private static String classLocation = LoginAccountBean.class.getCanonicalName();
-		
-		// --------------------------------------------------------------------------------------------
-		
-		// CLASS LOG FOLDER
-		
-		private static String classErrorPath = LogUtils.ERROR.concat("login\\");
-		
-		// --------------------------------------------------------------------------------------------
-		
-		// EXCEPTION FILENAMES
-		
-		private static String loginValidationExceptionLog = classErrorPath.concat("validation_exception_");
-		private static String loginNullExceptionLog = classErrorPath.concat("null_pointer_exception_");
-		private static String recoveryPasswordExceptionLog = classErrorPath.concat("recovery_password_exception_");
-			
-		// --------------------------------------------------------------------------------------------		
-		
-		// CONSTRUTOR 
+	// --------------------------------------------------------------------------------------------
+
+	// CLASS PATH
+
+	private static String classLocation = LoginAccountBean.class.getCanonicalName();
+
+	// --------------------------------------------------------------------------------------------
+
+	// CLASS LOG FOLDER
+
+	private static String classErrorPath = LogUtils.ERROR.concat("login\\");
+
+	// --------------------------------------------------------------------------------------------
+
+	// EXCEPTION FILENAMES
+
+	private static String loginValidationExceptionLog = classErrorPath.concat("validation_exception_");
+	private static String loginNullExceptionLog = classErrorPath.concat("null_pointer_exception_");
+	private static String recoveryPasswordExceptionLog = classErrorPath.concat("recovery_password_exception_");
+
+	// --------------------------------------------------------------------------------------------		
+
+	// CONSTRUTOR 
 
 	@PostConstruct
 	public void initialize() {
 
 		user = new UserAccount();
-		
+
 		locale = new LocaleUtil();
 		locale.getResourceBundle(LocaleUtil.MESSAGES_LOGIN);
 
@@ -225,206 +225,208 @@ public class LoginAccountBean implements Serializable {
 
 		locale2 = new LocaleUtil();
 		locale2.getResourceBundle(LocaleUtil.MESSAGES_REQUIRED);	
-			
+
 	}
-	
+
 	// --------------------------------------------------------------------------------------------
 
 	/**
 	 * M�todo para valida��o de um acesso
 	 * @author Wellington 12/06/2018
-     * @version 1.0
-     * @since 1.0 
+	 * @version 1.0
+	 * @since 1.0 
 	 * @return uma url de acesso
 	 */
 	public String loginValidation() {
-		
+
 		load = new LoadStartupModules(); // Carregar os m�dulos		
 		road = new RoadConcessionaire();
-	
+
 		boolean status = false, inMemory = false, isName = false;
-		
+
 		InMemoryAuthentication memoryAuth = new InMemoryAuthentication();		
-	
+
 		// IF SUCCESS ON AUTH GET SERVER INFORMATION	
 		isName = road.defineConcessionarieValues(language.concessionaire);
-				
+
 		try {
-		
-		// CHANGES
-		LoginAccountDAO dao = new LoginAccountDAO();
 
-		if (isName) {
+			// CHANGES
+			LoginAccountDAO dao = new LoginAccountDAO();
 
-			// First - Auth memory user
-			inMemory = InMemoryAuthenticationUtil.validateUserInMemory(user.getUsername());
+			if (isName) {
 
-			if (inMemory) {
+				// First - Auth memory user
+				inMemory = InMemoryAuthenticationUtil.validateUserInMemory(user.getUsername());
 
-				memoryAuth = InMemoryAuthenticationUtil.authUserInMemory(user.getUsername(), user.getPassword());
+				if (inMemory) {
 
-				// System.out.println("Memory: "+memoryAuth.getUsername());
+					memoryAuth = InMemoryAuthenticationUtil.authUserInMemory(user.getUsername(), user.getPassword());
 
-				if (memoryAuth.getUsername() == null) {
-										
-					SessionUtil.executeScript("showLoginErrorMessage();");
-					SessionUtil.executeScript("hideLoginErrorMessage();");
+					// System.out.println("Memory: "+memoryAuth.getUsername());
 
-				}
-
-				else {
-					
-					// FIX					
-					login = new UserAccount();
-					login.setPermission_id(memoryAuth.getPermission_id());					
-				
-					SessionUtil.setParam("user", memoryAuth.getUsername()); // User
-					SessionUtil.setParam("nivel", memoryAuth.getPermission_id()); // Super
-																												
-					SessionUtil.setParam("concessionaria", RoadConcessionaire.roadConcessionaire); // Concessionaire
-									
-					load.startupComponents(); // Inicializar Componentes
-								
-					// NOT IN USE
-					mapUI = RoadConcessionaire.mapUI; // Load Map
-					darkMapUI = RoadConcessionaire.darkMapUI;
-					linearMapUI = RoadConcessionaire.linearMapUI;
-					mapEnabled = RoadConcessionaire.mapEnabled;
-					mapDivided = RoadConcessionaire.mapDivided;
-					darkMap = RoadConcessionaire.darkMap;
-					reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;
-
-					plaque = RoadConcessionaire.plaque;
-					logo = RoadConcessionaire.logo;
-															
-					// STARTS MAP
-														
-					if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()) ||
-						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire())||
-						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Eco101.getConcessionaire())||
-						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.tester.getConcessionaire()) ||
-						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.AlternativasViales.getConcessionaire()))
-					    
-						return "/map/map.xhtml?faces-redirect=true";
-					
-					else return "/dashboard/dashboard.xhtml?faces-redirect=true";
-
-				}
-
-			} else {
-
-				// Else Auth DataBase User
-
-				status = dao.UserValidation(user.getUsername());
-
-				// caso seja verdadeiro passar usu�rio e senha para validacao
-
-				if (status) {
-
-					login = new UserAccount();
-					login = dao.loginValidation(user.getUsername(), EncryptPasswordUtil.encryptPassword(user.getPassword()));
-
-					if (login != null) {
-						if (login.isActiveStatus() == true) {
-
-							SessionUtil.setParam("user", login.getUsername());
-							SessionUtil.setParam("nivel", login.getPermission_id());
-							SessionUtil.setParam("concessionaria", RoadConcessionaire.roadConcessionaire);
-																			
-							load.startupComponents(); // Inicializar Componentes
-						
-							mapUI = RoadConcessionaire.mapUI; // Load Map
-							darkMapUI = RoadConcessionaire.darkMapUI;
-							linearMapUI = RoadConcessionaire.linearMapUI;
-							mapEnabled = RoadConcessionaire.mapEnabled;
-							mapDivided = RoadConcessionaire.mapDivided;
-							darkMap = RoadConcessionaire.darkMap;
-							reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;
-
-							plaque = RoadConcessionaire.plaque;
-							logo = RoadConcessionaire.logo;
-					
-							// STARTS MAP
-							
-							if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()) ||
-									RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire())||
-									RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.tester.getConcessionaire())||
-									  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.AlternativasViales.getConcessionaire()))
-							    
-								return "/map/map.xhtml?faces-redirect=true";
-							
-							else return "/dashboard/dashboard.xhtml?faces-redirect=true";
-
-						} else {
-
-							SessionUtil.executeScript("showInactiveErrorMessage();");
-							SessionUtil.executeScript("hideInactiveErrorMessage();");
-						}
-
-					} else {
+					if (memoryAuth.getUsername() == null) {
 
 						SessionUtil.executeScript("showLoginErrorMessage();");
 						SessionUtil.executeScript("hideLoginErrorMessage();");
+
+					}
+
+					else {
+
+						// FIX					
+						login = new UserAccount();
+						login.setPermission_id(memoryAuth.getPermission_id());					
+
+						SessionUtil.setParam("user", memoryAuth.getUsername()); // User
+						SessionUtil.setParam("nivel", memoryAuth.getPermission_id()); // Super
+
+						SessionUtil.setParam("concessionaria", RoadConcessionaire.roadConcessionaire); // Concessionaire
+
+						load.startupComponents(); // Inicializar Componentes
+
+						// NOT IN USE
+						mapUI = RoadConcessionaire.mapUI; // Load Map
+						darkMapUI = RoadConcessionaire.darkMapUI;
+						linearMapUI = RoadConcessionaire.linearMapUI;
+						mapEnabled = RoadConcessionaire.mapEnabled;
+						mapDivided = RoadConcessionaire.mapDivided;
+						darkMap = RoadConcessionaire.darkMap;
+						reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;
+
+						plaque = RoadConcessionaire.plaque;
+						logo = RoadConcessionaire.logo;
+
+						// STARTS MAP
+
+						if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()) ||
+								RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire())||
+								RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Eco101.getConcessionaire())||
+								RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.tester.getConcessionaire()) ||
+								RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.AlternativasViales.getConcessionaire())
+								||RoadConcessionaire.roadConcessionaire.contentEquals(RoadConcessionairesEnum.CardelPozaRica.getConcessionaire()))
+
+							return "/map/map.xhtml?faces-redirect=true";
+
+						else return "/dashboard/dashboard.xhtml?faces-redirect=true";
+
 					}
 
 				} else {
 
-					SessionUtil.executeScript("showNotFoundMessage();");
-					SessionUtil.executeScript("hideNotFoundMessage();");
-				}
+					// Else Auth DataBase User
 
-			} // Fim do Else - Do Nothing
+					status = dao.UserValidation(user.getUsername());
 
-		} else {
+					// caso seja verdadeiro passar usu�rio e senha para validacao
 
-			SessionUtil.executeScript("showConnectionErrorMessage();");
-			SessionUtil.executeScript("hideConnectionErrorMessage();");
+					if (status) {
 
-		   }
-		
-	    }catch(NullPointerException nex) {
-			
+						login = new UserAccount();
+						login = dao.loginValidation(user.getUsername(), EncryptPasswordUtil.encryptPassword(user.getPassword()));
+
+						if (login != null) {
+							if (login.isActiveStatus() == true) {
+
+								SessionUtil.setParam("user", login.getUsername());
+								SessionUtil.setParam("nivel", login.getPermission_id());
+								SessionUtil.setParam("concessionaria", RoadConcessionaire.roadConcessionaire);
+
+								load.startupComponents(); // Inicializar Componentes
+
+								mapUI = RoadConcessionaire.mapUI; // Load Map
+								darkMapUI = RoadConcessionaire.darkMapUI;
+								linearMapUI = RoadConcessionaire.linearMapUI;
+								mapEnabled = RoadConcessionaire.mapEnabled;
+								mapDivided = RoadConcessionaire.mapDivided;
+								darkMap = RoadConcessionaire.darkMap;
+								reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;
+
+								plaque = RoadConcessionaire.plaque;
+								logo = RoadConcessionaire.logo;
+
+								// STARTS MAP
+
+								if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()) ||
+										RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire())||
+										RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.tester.getConcessionaire())||
+										RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.AlternativasViales.getConcessionaire())
+										||RoadConcessionaire.roadConcessionaire.contentEquals(RoadConcessionairesEnum.CardelPozaRica.getConcessionaire()))
+
+									return "/map/map.xhtml?faces-redirect=true";
+
+								else return "/dashboard/dashboard.xhtml?faces-redirect=true";
+
+							} else {
+
+								SessionUtil.executeScript("showInactiveErrorMessage();");
+								SessionUtil.executeScript("hideInactiveErrorMessage();");
+							}
+
+						} else {
+
+							SessionUtil.executeScript("showLoginErrorMessage();");
+							SessionUtil.executeScript("hideLoginErrorMessage();");
+						}
+
+					} else {
+
+						SessionUtil.executeScript("showNotFoundMessage();");
+						SessionUtil.executeScript("hideNotFoundMessage();");
+					}
+
+				} // Fim do Else - Do Nothing
+
+			} else {
+
+				SessionUtil.executeScript("showConnectionErrorMessage();");
+				SessionUtil.executeScript("hideConnectionErrorMessage();");
+
+			}
+
+		}catch(NullPointerException nex) {
+
 			StringWriter errors = new StringWriter(); 
 			nex.printStackTrace(new PrintWriter(errors));	
-									
+
 			LogUtils.logError(LogUtils.fileDateTimeFormatter(loginNullExceptionLog), classLocation, nex.getMessage(), errors.toString());
-						
+
 		}catch(Exception ex) {
-			
+
 			StringWriter errors = new StringWriter(); 
 			ex.printStackTrace(new PrintWriter(errors));	
 
 			LogUtils.logError(LogUtils.fileDateTimeFormatter(loginValidationExceptionLog), classLocation, ex.getMessage(), errors.toString());
-						
+
 		}
 
 		return null;
 
 	}
-	
+
 	// --------------------------------------------------------------------------------------------
 
 	/**
 	 * M�todo para encerrar uma sess�o
 	 * @author Wellington 12/06/2018
-     * @version 1.0
-     * @since 1.0 	
+	 * @version 1.0
+	 * @since 1.0 	
 	 */
 	public void LogOut() throws IOException {
-			
+
 		SessionUtil.invalidate();
 		SessionUtil.redirectToUrl("login.xhtml");
-			
+
 	}
-	
+
 	// --------------------------------------------------------------------------------------------
 
 	/**
 	 * M�todo para redirecionar para p�gina de recupera��o de senha
 	 * @author Wellington 12/06/2018
-     * @version 1.0
-     * @since 1.0 
-     * @return retorna para p�gina de recupera��o de senha	
+	 * @version 1.0
+	 * @since 1.0 
+	 * @return retorna para p�gina de recupera��o de senha	
 	 */
 	public String forgetPasswordRedirect() {
 
@@ -432,19 +434,19 @@ public class LoginAccountBean implements Serializable {
 
 		SessionUtil.executeScript("$('#form-reset')[0].reset();"); // reset form
 		SessionUtil.executeScript("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');"); // Remove Validation Icons																											
-																													
+
 		return "/forget.xhtml?faces-redirect=true";
 
 	}
-	
+
 	// --------------------------------------------------------------------------------------------
 
 	/**
 	 * M�todo para redirecionar para p�gina de confirma��o da recupera��o de senha
 	 * @author Wellington 12/06/2018
-     * @version 1.0
-     * @since 1.0 
-     * @return retorna para p�gina de confirma��o da recupera��o de senha	
+	 * @version 1.0
+	 * @since 1.0 
+	 * @return retorna para p�gina de confirma��o da recupera��o de senha	
 	 */
 	public String forgetConfirmationRedirect() {
 
@@ -452,19 +454,19 @@ public class LoginAccountBean implements Serializable {
 
 		SessionUtil.executeScript("$('#form-reset')[0].reset();"); // reset form
 		SessionUtil.executeScript("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');"); // Remove Validation Icons	
-																													
+
 
 		return "/forget-confirmation.xhtml?faces-redirect=true";
 	}
 
 	// --------------------------------------------------------------------------------------------
-	
+
 	/**
 	 * M�todo para redirecionar para p�gina de login
 	 * @author Wellington 12/06/2018
-     * @version 1.0
-     * @since 1.0 
-     * @return retorna para p�gina de login
+	 * @version 1.0
+	 * @since 1.0 
+	 * @return retorna para p�gina de login
 	 */	
 	public String loginRedirect() {
 
@@ -475,15 +477,15 @@ public class LoginAccountBean implements Serializable {
 
 		return "/login.xhtml?faces-redirect=true";
 	}
-	
+
 	// --------------------------------------------------------------------------------------------
 
 	/**
 	 * M�todo para verificar o n�vel de permiss�o do usu�rio
 	 * @author Guilherme 12/08/2021
-     * @version 1.0
-     * @since 1.0 
-     * @return retorna verdadeiro caso se enquadre em uma das op��es desejadas
+	 * @version 1.0
+	 * @since 1.0 
+	 * @return retorna verdadeiro caso se enquadre em uma das op��es desejadas
 	 */
 	public boolean permissionAdminOrSuper(int roleID) {
 
@@ -493,22 +495,22 @@ public class LoginAccountBean implements Serializable {
 		else
 			return false;
 	}
-	
+
 	// --------------------------------------------------------------------------------------------
 
 	/**
 	 * M�todo para processar a recupera��o de senha
 	 * @author Wellington 12/06/2018
-     * @version 1.0
-     * @since 1.0 
-     * @return retorna para p�gina de confirma��o da recupera��o de senha em caso de sucesso	
+	 * @version 1.0
+	 * @since 1.0 
+	 * @return retorna para p�gina de confirma��o da recupera��o de senha em caso de sucesso	
 	 */
 	public String passwordRecovery() {
 
 		String generatedPass = "";
 
 		boolean response = false;
-		
+
 		EmailModel changeMail = new EmailModel();
 
 		try {
@@ -527,7 +529,7 @@ public class LoginAccountBean implements Serializable {
 				SessionUtil.executeScript("hideEmailInfoMessage();");
 
 			} else {
-							
+
 				// Criar Senha
 				generatedPass = GeneratePasswordUtil.generatePassword();
 
@@ -551,7 +553,7 @@ public class LoginAccountBean implements Serializable {
 					return forgetConfirmationRedirect();
 
 				} else {
-									
+
 					SessionUtil.executeScript("showEmailRecoverySendErrorMessage();");
 					SessionUtil.executeScript("hideEmailRecoverySendErrorMessage();");
 
@@ -559,60 +561,60 @@ public class LoginAccountBean implements Serializable {
 			}
 
 		}catch(NullPointerException n) {
-								
+
 			SessionUtil.executeScript("hideEmailRecoveryProcessMessage();");
-			
+
 			SessionUtil.executeScript("showConnectionErrorMessage();");
 			SessionUtil.executeScript("hideConnectionErrorMessage();");
-			
+
 		} catch (Exception ex) {
-			
+
 			StringWriter errors = new StringWriter(); 
 			ex.printStackTrace(new PrintWriter(errors));	
 
 			LogUtils.logError(LogUtils.fileDateTimeFormatter(recoveryPasswordExceptionLog),  classLocation, ex.getMessage(), errors.toString());
-						
+
 		}		
 
 		return null;
 	}
-	
+
 	// --------------------------------------------------------------------------------------------
 
 	/**
 	 * M�todo para obter as credenciais de um aplicativo
 	 * @author Guilherme 12/07/2021
-     * @version 1.0
-     * @since 1.0    
+	 * @version 1.0
+	 * @since 1.0    
 	 */
 	public void getCred() throws Exception {
-		
+
 		ModulesDAO mod = new ModulesDAO();
-		
+
 		String name = SessionUtil.getParametersValue("serviceName");							
-			
+
 		String[] cred = mod.getCred(name);
 
 		credentials = "{\"name\": \""
-					+ cred[0]
-					+ "\", \"user\": \""
-					+ cred[1]
-					+ "\", \"pass\": \""
-					+ cred[2]
-					+ "\", \"address\": \""
-					+ cred[3]
-					+ "\", \"port\": \""
-					+ cred[4]
-					+ "\", \"ws\": \""
-					+ cred[5]
-					+ "\"}";
+				+ cred[0]
+						+ "\", \"user\": \""
+						+ cred[1]
+								+ "\", \"pass\": \""
+								+ cred[2]
+										+ "\", \"address\": \""
+										+ cred[3]
+												+ "\", \"port\": \""
+												+ cred[4]
+														+ "\", \"ws\": \""
+														+ cred[5]
+																+ "\"}";
 	}
 
 	/**
 	 * M�todo para obter as credenciais de um aplicativo
 	 * @author Guilherme 12/07/2021
-     * @version 1.0
-     * @since 1.0    
+	 * @version 1.0
+	 * @since 1.0    
 	 */
 	public void coordMap() {
 		coordMap("");
@@ -621,8 +623,8 @@ public class LoginAccountBean implements Serializable {
 	/**
 	 * M�todo para obter as credenciais de um aplicativo
 	 * @author Guilherme 12/07/2021
-     * @version 1.0
-     * @since 1.0    
+	 * @version 1.0
+	 * @since 1.0    
 	 */
 	public double[][] coordMap(String name) {
 		name = (name.isEmpty() ? name : "-" + name);
@@ -638,6 +640,6 @@ public class LoginAccountBean implements Serializable {
 
 		return coord.get(name);
 	}
-	
+
 	// --------------------------------------------------------------------------------------------
 }
