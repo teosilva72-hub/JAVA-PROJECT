@@ -1403,6 +1403,8 @@ $("#darkmode").change(function() {
 
 $((add) => {
     $('#addequip').click(() => {
+        $('#lat').val($('[id$=defaultCoordLat]').val())
+        $('#long').val($('[id$=defaultCoordLong]').val())
         $("#lat, #long").on("input", function(a) {
             $(this).val($(this).val().replace(/,/g, ""));
         });
