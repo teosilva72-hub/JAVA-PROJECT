@@ -72,8 +72,7 @@ const init = () => {
 		if (window.initMeteo)
 			initMeteo();
 	})
-	
-	
+		
 	 // if any popover is opened then it's closed on page load
 	 $('[data-toggle=popover-d]').popover('hide')
 }

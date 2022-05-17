@@ -73,9 +73,9 @@ public class DataSatDAO {
 					"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido THEN ld.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_7_DAYS_S2' " +
 	
 					"FROM tb_dados15 ld " +
-					"LEFT JOIN equip eq ON (ld.NOME_ESTACAO = eq.equip_id) " +					
-					"WHERE ld.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 7 DAY) AND DATE_SUB(DATE_SUB(DATE_FORMAT(?, '%y-%m-%d %H:00:00'), INTERVAL 7 DAY), INTERVAL 1 SECOND) ";
-									
+					"LEFT JOIN equip eq ON (ld.NOME_ESTACAO = eq.equip_id) " +									
+					"WHERE ld.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 7 DAY) AND DATE_SUB(DATE_ADD(DATE_SUB(DATE_FORMAT(CASE WHEN MINUTE(?) = 45 THEN DATE_SUB(?, INTERVAL 15 MINUTE) ELSE ? END, '%y-%m-%d %H:00:00'), INTERVAL 7 DAY), INTERVAL 1 HOUR), INTERVAL 1 SECOND) ";
+					
 					// --------------------------------------------------------------------
 					
 					   if(!availabilityList.isEmpty()) {
@@ -110,15 +110,15 @@ public class DataSatDAO {
 					"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido THEN (lh.VOLUME_COM + lh.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_HOUR_S2', " +
 					"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido THEN lh.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_HOUR_S2', " +
 					"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido THEN lh.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_HOUR_S2' " +
-		
+				
 					"FROM tb_dados15 lh " +
 					"LEFT JOIN equip eq ON (lh.NOME_ESTACAO = eq.equip_id) ";
 			
-					if(time == 15)
-						lastHour +="WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR) AND DATE_SUB(DATE_FORMAT(?, '%y-%m-%d %H:00:00'), INTERVAL 1 SECOND) ";
-					
-						else lastHour +="WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(?, '%y-%m-%d %H:00:00'), INTERVAL "+time+" HOUR) AND DATE_SUB(DATE_FORMAT(?, '%y-%m-%d %H:00:00'), INTERVAL 1 SECOND) ";
-				
+					if(time == 15 || time == 30)						
+						 lastHour +="WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR) AND DATE_SUB(DATE_FORMAT(CASE WHEN MINUTE(?) = 45 THEN DATE_SUB(?, INTERVAL 15 MINUTE) ELSE ? END, '%y-%m-%d %H:00:00'), INTERVAL 1 SECOND) ";
+													
+					else lastHour += "WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR) AND DATE_SUB(DATE_SUB(DATE_FORMAT(CASE WHEN MINUTE(?) = 45 THEN DATE_SUB(?, INTERVAL 15 MINUTE) ELSE ? END, '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR), INTERVAL 1 SECOND) ";
+											
 					// --------------------------------------------------------------------
 					
 					   if(!availabilityList.isEmpty()) {
@@ -305,14 +305,14 @@ public class DataSatDAO {
 			
 		 	conn.start(1);
 		 	
-		 	//System.out.println(temp);
+		 	System.out.println(temp);
 		 
 			conn.prepare(temp);
 			conn.executeUpdate();
 			
 			// ------------------------------
 			
-			//System.out.println(maxDate);
+			System.out.println(maxDate);
 					
 			conn.prepare(maxDate);
 			conn.executeUpdate();
@@ -320,22 +320,25 @@ public class DataSatDAO {
 			
 			// ------------------------------
 			
-			//System.out.println(last7days.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
+			System.out.println(last7days.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
 			
 			conn.prepare_my(last7days.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
 			conn.setString(1, currentDate);	
 			conn.setString(2, currentDate);	
+			conn.setString(3, currentDate);	
+			conn.setString(4, currentDate);	
 			conn.executeUpdate();
 			
 			
 			// ------------------------------
 			
-			//System.out.println(lastHour.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
+			System.out.println(lastHour.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
 			
 			conn.prepare_my(lastHour.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));	
 			conn.setString(1, currentDate);	
 			conn.setString(2, currentDate);	
-								
+			conn.setString(3, currentDate);	
+			conn.setString(4, currentDate);	
 			conn.executeUpdate();
 			
 			// ------------------------------
