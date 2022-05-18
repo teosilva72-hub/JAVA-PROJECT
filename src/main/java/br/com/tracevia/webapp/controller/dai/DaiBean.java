@@ -53,9 +53,9 @@ public class DaiBean {
 	public static List<Equipments> listDai;
 	private String logo;
 	
-	static String noImage;
-	String ftpFolder;
-
+	static String noImage = "no-image.jpg";
+	String ftpFolder = "C:\\Cameras\\DAI\\"; 
+	
 	public String getLogo() {
 		return logo;
 	}
