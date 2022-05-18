@@ -15,7 +15,7 @@ public class DataSatDAO {
 			
 	SQL_Tracevia conn = new SQL_Tracevia();
 		
-	public List<SAT> dataInterval(int limit, String interval, int time, List<Integer> availabilityList) throws Exception {
+	public List<SAT> dataInterval(String interval, int time, List<Integer> availabilityList) throws Exception {
 		
 		//System.out.println("AVAI: "+availabilityList.size()); // MESTRE
 						
@@ -25,13 +25,16 @@ public class DataSatDAO {
 		DateTimeApplication dta = new DateTimeApplication();
 											
 			String currentDate = null;
+			int limit = 0; 
 			
 			Calendar calendar = Calendar.getInstance();	
 			int minute = calendar.get(Calendar.MINUTE);
 						
 			// Obter datas formatadas para os dados
-			currentDate = dta.getDataInterval15Min(calendar, minute);	
-						
+			//currentDate = dta.getDataInterval15Min(calendar, minute);	
+			
+			currentDate = "2022-05-18 10:00:00";
+												
 			System.out.println(currentDate);		
 			
 			String temp = "CREATE TEMPORARY TABLE IF NOT EXISTS equip SELECT eq.equip_id, eq.visible, CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4) THEN 5 " +
@@ -59,7 +62,28 @@ public class DataSatDAO {
 					 		maxDate += ") ";				   
 					   	}
 				
-					   else maxDate += ") ";						 
+					   else maxDate += ") ";	
+					 					 
+			String searchLimit = "SELECT COUNT(DISTINCT lm.NOME_ESTACAO) 'limit' FROM tb_dados15 lm " +
+					 "WHERE lm.DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? ";
+			
+			 		if(!availabilityList.isEmpty()) {
+			 		
+			 			searchLimit += " AND lm.NOME_ESTACAO NOT IN(";
+				 		
+				 		for(int i = 0; i < availabilityList.size(); i++) {
+				 			
+				 			searchLimit += availabilityList.get(i);
+				 			
+				 			if(i < (availabilityList.size() - 1))
+				 				searchLimit +=", ";
+				 					
+				 		}
+				 		
+				 		searchLimit += ") ";
+			 		}
+			 		
+			 		// -------------------------------------------------------------			 		
 			 			 			 							
 			String last7days = "CREATE TEMPORARY TABLE IF NOT EXISTS last_7_days " +
 					"SELECT ld.NOME_ESTACAO, SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN ld.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_7_DAYS_S1', " + 
@@ -73,8 +97,8 @@ public class DataSatDAO {
 					"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido THEN ld.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_7_DAYS_S2' " +
 	
 					"FROM tb_dados15 ld " +
-					"LEFT JOIN equip eq ON (ld.NOME_ESTACAO = eq.equip_id) " +									
-					"WHERE ld.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 7 DAY) AND DATE_SUB(DATE_ADD(DATE_SUB(DATE_FORMAT(CASE WHEN MINUTE(?) = 45 THEN DATE_SUB(?, INTERVAL 15 MINUTE) ELSE ? END, '%y-%m-%d %H:00:00'), INTERVAL 7 DAY), INTERVAL 1 HOUR), INTERVAL 1 SECOND) ";
+					"LEFT JOIN equip eq ON (ld.NOME_ESTACAO = eq.equip_id) " +
+					"WHERE ld.DATA_HORA BETWEEN DATE_FORMAT(@sub := DATE_ADD(DATE_SUB(DATE_SUB($INTERVAL$),INTERVAL 7 DAY), INTERVAL 1 HOUR), '%y-%m-%d %H:00:00') AND DATE_SUB(DATE_ADD(DATE_FORMAT(@sub, '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR), INTERVAL 1 SECOND) ";
 					
 					// --------------------------------------------------------------------
 					
@@ -98,7 +122,7 @@ public class DataSatDAO {
 					   
 					last7days += "AND eq.visible = 1 " +					
 							"GROUP BY ld.NOME_ESTACAO, HOUR(ld.DATA_HORA) " +
-							"ORDER BY ld.DATA_HORA DESC LIMIT " + limit;					
+							"ORDER BY ld.DATA_HORA DESC LIMIT ? ";					
 
 			String lastHour = "CREATE TEMPORARY TABLE IF NOT EXISTS last_hour " +
 					"SELECT lh.NOME_ESTACAO, SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN lh.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_HOUR_S1', " + 
@@ -115,10 +139,10 @@ public class DataSatDAO {
 					"LEFT JOIN equip eq ON (lh.NOME_ESTACAO = eq.equip_id) ";
 			
 					if(time == 15 || time == 30)						
-						 lastHour +="WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR) AND DATE_SUB(DATE_FORMAT(CASE WHEN MINUTE(?) = 45 THEN DATE_SUB(?, INTERVAL 15 MINUTE) ELSE ? END, '%y-%m-%d %H:00:00'), INTERVAL 1 SECOND) ";
-													
-					else lastHour += "WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR) AND DATE_SUB(DATE_SUB(DATE_FORMAT(CASE WHEN MINUTE(?) = 45 THEN DATE_SUB(?, INTERVAL 15 MINUTE) ELSE ? END, '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR), INTERVAL 1 SECOND) ";
-											
+						 lastHour +="WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(@sub := DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR) AND DATE_SUB(DATE_FORMAT(@sub, '%y-%m-%d %H:00:00'), INTERVAL 1 SECOND) ";
+												
+					else lastHour += "WHERE lh.DATA_HORA BETWEEN DATE_FORMAT(@sub := DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00') AND DATE_SUB(DATE_ADD(DATE_FORMAT(@sub, '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR), INTERVAL 1 SECOND) ";
+				
 					// --------------------------------------------------------------------
 					
 					   if(!availabilityList.isEmpty()) {
@@ -141,7 +165,7 @@ public class DataSatDAO {
 					   
 				   lastHour += "AND eq.visible = 1 " +					
 							   "GROUP BY lh.NOME_ESTACAO, HOUR(lh.DATA_HORA) " +
-							   "ORDER BY lh.DATA_HORA DESC LIMIT " + limit;				
+							   "ORDER BY lh.DATA_HORA DESC LIMIT ? ";				
 										
 			String select = "SELECT "
 					+ "ESTACAO, "
@@ -305,6 +329,22 @@ public class DataSatDAO {
 			
 		 	conn.start(1);
 		 	
+		 	conn.prepare(searchLimit.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));	 		
+		 	conn.setString(1, currentDate);	
+			conn.setString(2, currentDate);	
+			conn.executeQuery();
+			
+			MapResult result1 = conn.executeQuery();
+				
+				if(result1.hasNext()) {
+					for (RowResult rs : result1) {
+						
+						limit = rs.getInt("limit");
+					}					
+				}
+				
+				System.out.println("LIMIT: "+limit);
+				 	
 		 	System.out.println(temp);
 		 
 			conn.prepare(temp);
@@ -323,10 +363,8 @@ public class DataSatDAO {
 			System.out.println(last7days.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
 			
 			conn.prepare_my(last7days.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
-			conn.setString(1, currentDate);	
-			conn.setString(2, currentDate);	
-			conn.setString(3, currentDate);	
-			conn.setString(4, currentDate);	
+			conn.setString(1, currentDate);				
+			conn.setInt(2, limit);
 			conn.executeUpdate();
 			
 			
@@ -336,14 +374,12 @@ public class DataSatDAO {
 			
 			conn.prepare_my(lastHour.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));	
 			conn.setString(1, currentDate);	
-			conn.setString(2, currentDate);	
-			conn.setString(3, currentDate);	
-			conn.setString(4, currentDate);	
+			conn.setInt(2, limit);
 			conn.executeUpdate();
 			
 			// ------------------------------
 									
-			conn.prepare_my(select.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)) + " LIMIT " + limit + ") AS mainQuery");
+			conn.prepare_my(select.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)) + " LIMIT ? ) AS mainQuery");
  			conn.prepare_ms(select
 			 	.replace("date_format", "FORMAT")
 				.replace("%H:%i", "hh:mm")
@@ -353,6 +389,7 @@ public class DataSatDAO {
 			 				
 			conn.setString(1, currentDate);
 			conn.setString(2, currentDate);
+			conn.setInt(3, limit);
 						
 			MapResult result = conn.executeQuery();
 			
@@ -362,7 +399,7 @@ public class DataSatDAO {
 				for (RowResult rs : result) {
 										
 					if(!listStationAux.contains(rs.getInt("ESTACAO"))) {
-											
+																					
 							SAT sat = new SAT();
 							
 							// PRIMARY INFORMATION
@@ -467,7 +504,7 @@ public class DataSatDAO {
 							// -------------------------------
 						
 							listStationAux.add(rs.getInt("ESTACAO")); //ADICIONA O NOVO ID A LISTA
-							
+													
 					} // ELSE DO NOTHING						
 				 }
 			  }			
@@ -534,7 +571,7 @@ public class DataSatDAO {
 			 					
 			 		}	
 			 		
-			 		select += ") AND eq.visible = 1 ";
+			 		  select += ") AND eq.visible = 1 ";
 			 		
 				  } else {
 					  
@@ -568,7 +605,7 @@ public class DataSatDAO {
  			 						
  			MapResult result = conn.executeQuery();
  			
- 			//System.out.println(select); 			  		 
+ 			System.out.println(select); 			  		 
  			 			  			 		 			
  			if (result.hasNext()) {
  				for (RowResult rs : result) { 								    	   	

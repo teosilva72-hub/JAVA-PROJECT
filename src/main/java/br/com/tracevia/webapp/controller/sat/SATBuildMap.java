@@ -113,7 +113,7 @@ public class SATBuildMap implements Serializable {
 				
 				//SessionUtil.executeScript("$('#preloader').removeClass('d-none')");
 
-				 data15MinList = dao.dataInterval(limit, "MINUTE", 15, availabilityList);
+				 data15MinList = dao.dataInterval("MINUTE", 15, availabilityList);
 				 
 				  if(!data15MinList.isEmpty()) {
 																								
@@ -133,7 +133,7 @@ public class SATBuildMap implements Serializable {
 					
 					if(limit > 0) {
 						
-						 data30MinList = dao.dataInterval(limit, "MINUTE", 30, availabilityList);
+						 data30MinList = dao.dataInterval("MINUTE", 30, availabilityList);
 						 
 								if(!data30MinList.isEmpty()) {
 									
@@ -168,7 +168,7 @@ public class SATBuildMap implements Serializable {
 					
 							if(limit > 0) {
 								
-								 data03HourList = dao.dataInterval(limit, "HOUR", 3, availabilityList);
+								 data03HourList = dao.dataInterval("HOUR", 3, availabilityList);
 																		
 										if(!data03HourList.isEmpty()) {
 											
@@ -201,7 +201,7 @@ public class SATBuildMap implements Serializable {
 							
 							if(limit > 0) {
 								
-								 data06HourList = dao.dataInterval(limit, "HOUR", 6, availabilityList);
+								 data06HourList = dao.dataInterval("HOUR", 6, availabilityList);
 								 																
 										if(!data06HourList.isEmpty()) {
 											
