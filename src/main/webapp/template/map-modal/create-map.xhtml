@@ -347,13 +347,16 @@
 	 <div class="map-show" >											 
  		<div class="form-row"> <!-- ROW -->
  		
+ 			<ui:param name="Coord" value="#{ loginAccount.coord }" />
+ 		
 			<!-- LATITUDE -->
-			
+			<input type="hidden" value="#{(Coord[0][1] + Coord[1][1]) / 2}" id="defaultCoordLat"/>
+			<input type="hidden" value="#{(Coord[0][0] + Coord[1][0]) / 2}" id="defaultCoordLong"/>
 			<div class="col-md-6"> <!-- COL-->
 				<div class="form-group input-field-half">										
 					<span><i class="fas fa-globe-americas"></i></span> <!-- SPAN ICON -->										
 						<span for="lat" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION -->										
-							<input type="text" autocomplete="off" name="lat" id="lat"
+							<input type="text" autocomplete="off" name="lat" id="lat" value="#{ (Coord[0][1] + Coord[1][1]) / 2 }"
 								class="lat" placeholder="#{mapLabels.$label_map_option_input_lat}" /> <!-- INPUT -->										
 				</div> <!---->									
 				<div class="error-label">
@@ -369,7 +372,7 @@
 				<div class="form-group input-field-half"> <!-- ROW -->										
 					<span><i class="fas fa-globe-europe"></i></span> <!-- SPAN ICON -->										
 						<span for="long" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION -->
-							<input type="text" autocomplete="off" name="long" id="long"
+							<input type="text" autocomplete="off" name="long" id="long" value="#{ (Coord[0][0] + Coord[1][0]) / 2 }"
 								class="long" placeholder="#{mapLabels.$label_map_option_input_long}" /> <!-- INPUT -->										
 				</div> <!---->									
 				<div class="error-label">
