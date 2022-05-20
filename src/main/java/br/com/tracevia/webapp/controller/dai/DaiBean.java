@@ -54,8 +54,8 @@ public class DaiBean {
 	public static List<DirectionModel> listDirection;
 	private String logo;
 	
-	static String noImage;
-	String ftpFolder;
+	static String noImage = "no-image.jpg";
+	String ftpFolder = "C:\\Cameras\\DAI\\";
 	
 	@ManagedProperty("#{listEquipsBean}")
 	ListEquipments equips;
