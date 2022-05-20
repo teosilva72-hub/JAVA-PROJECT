@@ -1,41 +1,39 @@
 package br.com.tracevia.webapp.controller.globalPDF;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfCopy;
+import com.itextpdf.text.pdf.PdfReader;
 
 @ManagedBean(name="GlobalPDF")
 public class GlobalPDF {
-	
-	static List<URL> files = new ArrayList<URL>(Arrays.asList(
-			GlobalPDF.class.getResource("/example-001.pdf"),
-			GlobalPDF.class.getResource("/example-002.pdf"),
-            GlobalPDF.class.getResource("/example-003.pdf")
-    ));
-	
-	public byte[] main(byte[] args) {
+	public Document merge(List<byte[]> files) {
 		
 		Document document = new Document();
 		
-		GlobalPDF.class.getResource("/example-001.pdf");
-		//GlobalPDF.class.getResource("/example-002.pdf");
 		try {
-			
-			PdfCopy copy = new PdfCopy(document, new FileOutputStream("merge-pdf-result.pdf"));
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			PdfCopy copy = new PdfCopy(document, new ByteArrayOutputStream());
+	
+	        document.open();
+	        for (byte[] file : files){
+	            PdfReader reader = new PdfReader(file);
+	            copy.addDocument(reader);
+	            copy.freeReader(reader);
+	            reader.close();
+	        }
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
+		} finally {
+			document.close();
+		}
 		
-		return args;
+		return document;
 	}
 }
