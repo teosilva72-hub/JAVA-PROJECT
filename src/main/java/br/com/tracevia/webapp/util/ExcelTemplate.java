@@ -94,7 +94,7 @@ public class ExcelTemplate {
 	// centerAlignStandardStyle - estilo padrÃ£o para centralizar	
 
 	CellStyle titleStyle, standardStyle, tableHeadStyle, leftAlignStandardStyle, rightAlignBoldStyle, dateTitleStyle,   
-	dateTimeStyle, centerBoldStyle, centerAlignStandardStyle, subHeaderClassStyle, centerStyle;   
+	dateTimeStyle, centerBoldStyle, leftBoldStyle, centerAlignStandardStyle, subHeaderClassStyle, centerStyle;   
 
 	// COUNT FLOW STYLES 
 
@@ -142,11 +142,13 @@ public class ExcelTemplate {
 	    // ESTILO PARA CABEÃ‡ALHO DAS TABELAS
 	    tableHeadStyle = utilSheet.createCellStyle(workbook, tableHeadFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.LIGHT_BLUE, FillPatternType.SOLID_FOREGROUND,ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 	    // ESTILO PARA CABEÃ‡ALHO ENTRE DATAS 
-	    dateTitleStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    dateTitleStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 	    // ESTILO PARA CAMPO DE DATAS EM NEGRITO
 	    dateTimeStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
         // ESTILO NEGRITO CENTRALIZADO (SEM BORDAS)  
 	    centerBoldStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
+	    // ESTILO NEGRITO (SEM BORDAS)  
+	    leftBoldStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.LEFT, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
 	    // ESTILO PADRÃƒO DE ALINHAMENTO CENTRAL	(SEM BORDAS)  
 	    centerAlignStandardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
 		// ESTILO PARA ALINHAMENTO A ESQUERDA FONTE PADRÃƒO (SEM BORDAS)
@@ -307,7 +309,7 @@ public class ExcelTemplate {
 		// NOME DO EQUIPAMENTO
 		utilSheet.createCell(sheet, row, rowStart + 5, 2);		
 		utilSheet.setCellValue(sheet, row, rowStart + 5, 2, module.equals("sat") ? satInfo.get(0).getNome() : equipsInfo.get(0).getNome()); // null? 0 :
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 5, 2); 
+		utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 5, 2); 
  
 		// DATA DE CONSULTA LABEL
 		utilSheet.createCell(sheet, row, rowStart + 5, 5);
@@ -317,7 +319,7 @@ public class ExcelTemplate {
 		// DATA
 		utilSheet.createCell(sheet, row, rowStart + 5, 8);
 		utilSheet.setCellValue(sheet, row, rowStart + 5, 8, " " + dta.currentDateTime());	
-		utilSheet.setCellStyle(sheet, row, leftAlignStandardStyle, rowStart + 5, 8);
+		utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 5, 8);
 
 		// ----------------------------------------------------------------------------------------------------------------
 
@@ -332,7 +334,7 @@ public class ExcelTemplate {
 		// CIDADE
 		utilSheet.createCell(sheet, row, rowStart + 6, 2);
 		utilSheet.setCellValue(sheet, row, rowStart + 6, 2, module.equals("sat")? satInfo.get(0).getCidade() : equipsInfo.get(0).getCidade());
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 6, 2);
+		utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 6, 2);
 
 		// PARA REPORTS QUE NÃO USAM PERIODO
 		try {
@@ -347,7 +349,7 @@ public class ExcelTemplate {
 		// PERIODO
 		utilSheet.createCell(sheet, row, rowStart + 6, 8);
 		utilSheet.setCellValue(sheet, row, rowStart + 6, 8, period[2]);
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 6, 8);
+		utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 6, 8);
 		
 		}
 		
@@ -366,7 +368,7 @@ public class ExcelTemplate {
 		// NOME DA RODOVIA / ESTRADA
 		utilSheet.createCell(sheet, row, rowStart + 7, 2);
 		utilSheet.setCellValue(sheet, row, rowStart + 7, 2, module.equals("sat")? satInfo.get(0).getEstrada() : equipsInfo.get(0).getEstrada());
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 7, 2);
+		utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 7, 2);
 					    
 		// ----------------------------------------------------------------------------------------------------------------
 
@@ -381,7 +383,7 @@ public class ExcelTemplate {
 		// KM
 		utilSheet.createCell(sheet, row, rowStart + 8, 2);
 		utilSheet.setCellValue(sheet, row, rowStart + 8, 2, module.equals("sat")? satInfo.get(0).getKm() : equipsInfo.get(0).getKm());
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 8, 2);
+		utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 8, 2);
 
 		// ----------------------------------------------------------------------------------------------------------------
 
@@ -407,7 +409,7 @@ public class ExcelTemplate {
 			
 			else utilSheet.setCellValue(sheet, row, rowStart + 9, 2, satInfo.get(0).getQtdeFaixas()); 
 			
-			utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 9, 2);
+			utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 9, 2);
 			
 			// -------------------------------------------------------------------------------------------------------
 			
@@ -423,7 +425,7 @@ public class ExcelTemplate {
 			 
 			 utilSheet.setCellValue(sheet, row, rowStart + 10, columns - 1, tm.directions(satInfo.get(0).getSentidos()));
 						
-			 utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 10, columns - 1);
+			 utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 10, columns - 1);
 								
 			}
 		}
@@ -788,6 +790,11 @@ public class ExcelTemplate {
 
 		utilSheet.donwloadExcelFile(workbook, fileName);
 
+	}
+	
+	public InputStream ToInput() throws IOException {
+		InputStream input = utilSheet.getOutput(workbook);
+		return input;
 	}
 	
 	public ByteArrayOutputStream ToPDF() throws IOException {
@@ -1910,7 +1917,6 @@ public class ExcelTemplate {
 		int startCol = 0;
 		int endCol = columns.size() - 8;
 		int start = 8;
-		boolean shorted = false;
 		
 		lines.forEach(list -> {
 			if (sep.containsKey(list[1])) {
@@ -1921,9 +1927,6 @@ public class ExcelTemplate {
 				sep.put(list[1], newLine);
 			}
 		});
-		
-		sheet = workbook.createSheet(sheetName);	
-		utilSheet.columnsWidth(sheet, 0, 0, 4300);
 		
 		for (Entry<String, List<String[]>> l : sep.entrySet()) {
 			Map<String, List<String[]>> newLines = new LinkedHashMap<>();
@@ -1964,9 +1967,13 @@ public class ExcelTemplate {
 			for (Entry<String, List<String[]>> equip : newLines.entrySet()) {
 				IDs.clear();
 				IDs.add(l.getKey());
+				
+				sheet = workbook.createSheet(l.getKey() + equip.getKey());	
+				utilSheet.columnsWidth(sheet, 0, 0, 4300);
+				
 				String direction = equip.getKey();
 				excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, "sat", columns.size(), "Contagem de Veículo",  
-						date, period, IDs, 0, false, false, dataStartRow, shorted, "name", direction.equals("All") ? null : direction);
+						date, period, IDs, 0, false, false, dataStartRow, "name", direction.equals("All") ? null : direction);
 				
 				dataStartRow += 11;
 				// ------------------------------------------------------------------------------------------------------------
@@ -1998,7 +2005,6 @@ public class ExcelTemplate {
 				utilSheet.setCellValue(sheet, row, dataEndRow, 0, " ");
 				
 				dataStartRow = ++dataEndRow;
-				shorted = true;
 			}
 			
 		}
