@@ -1,8 +1,14 @@
 package br.com.tracevia.webapp.controller.global;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -22,8 +28,11 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
 import com.google.gson.Gson;
+import com.groupdocs.conversion.Converter;
+import com.groupdocs.conversion.options.convert.PdfConvertOptions;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
@@ -47,6 +56,7 @@ public class ReportBean implements Serializable{
 	 * SERIAL ID
 	 */
 	private static final long serialVersionUID = -2613194601431027633L;
+	private String currentDir = FacesContext.getCurrentInstance().getExternalContext().getRealPath("");
 	
 	public String table;
 	public String idTable;
@@ -100,6 +110,7 @@ public class ReportBean implements Serializable{
 	private ReportBuild build;
 	private SatTableHeader satTab;
 	private TranslationMethods tm;
+	String dta;
 		
 	private ReportDAO report;
 	public List<Builder> resultList;	
@@ -1172,7 +1183,12 @@ public class ReportBean implements Serializable{
 				
 				if (isSpecialPDF()) {
 						generateSpecialFile(specialPDF, new String[] { dateStart, dateEnd }, period);
-						SessionUtil.getExternalContext().getSessionMap().put(fileName + "PDF", model.ToPDF());
+						Path path = Paths.get(currentDir, "resources", "temp");
+						Path file = Files.createTempFile(path, fileName, null);
+						InputStream stream = model.ToInput();
+						Files.write(file, stream.readAllBytes());
+						SessionUtil.getExternalContext().getSessionMap().put(fileName+"PDF", file);
+						
 						model = new ExcelTemplate();
 					}
 				
@@ -1184,8 +1200,8 @@ public class ReportBean implements Serializable{
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		     
-		    SessionUtil.getExternalContext().getSessionMap().put(fileName, model);  
+		   
+			SessionUtil.getExternalContext().getSessionMap().put(fileName, model); 
 		    
 		    // ------------------------------------------------------------
 		    			
@@ -1223,14 +1239,32 @@ public class ReportBean implements Serializable{
 	   
 		public void downloadPDF() {
 			ExcelTemplate model;
-			ByteArrayOutputStream out;
+			InputStream input;
 			DateTimeApplication dta = new DateTimeApplication();
 			String file = fileName+"_"+dta.currentDateToExcelFile();
 			model = (ExcelTemplate) SessionUtil.getExternalContext().getSessionMap().get(fileName);
 			try {
 				if (isSpecialPDF()) {
-					out = (ByteArrayOutputStream) SessionUtil.getExternalContext().getSessionMap().get(fileName + "PDF");
-					model.downloadToPDF(out, file);					
+					Path path = (Path) SessionUtil.getExternalContext().getSessionMap().get(fileName + "PDF");
+					byte[] bytes = Files.readAllBytes(path);
+					input = new ByteArrayInputStream(bytes);
+					ByteArrayOutputStream output = new ByteArrayOutputStream();
+					try {
+						int n = 1;
+						while (true) {
+							Converter converter = new Converter(input);
+							PdfConvertOptions options = new PdfConvertOptions();
+							options.setPageNumber(n);
+							options.setPagesCount(n++);
+							converter.convert(output, options);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						output.close();
+						input.close();			
+					}
+					model.downloadToPDF(output, file);
 				} else
 					model.downloadToPDF(file);
 			} catch (IOException e) {	

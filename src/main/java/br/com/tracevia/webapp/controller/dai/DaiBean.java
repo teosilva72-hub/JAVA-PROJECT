@@ -85,7 +85,6 @@ public class DaiBean {
 
 	@PostConstruct
 	public void initalize(){
-		
 		SimpleDateFormat formattter = new SimpleDateFormat("yyyyMMdd");
 		Date date = new Date();
 					
@@ -93,16 +92,12 @@ public class DaiBean {
 											
 			listDai = equips.getDaiList();
 			traffic = new Traffic();
-					
-			ftpFolder = "C:\\Cameras\\DAI\\"; 
-			noImage = "no-image.jpg";
 			
 			getAllFile(formattter.format(date));
 			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public List<? extends Equipments> getListDai() {
@@ -230,18 +225,20 @@ public class DaiBean {
 		static List<Traffic> all_traffic(List<Path> list, int idx, String filter_name, String filter_channel, String filter_lane) throws IOException, ParseException {
 			List<Traffic> new_list = new ArrayList<>();
 			for (final Path path : list) {
-				Traffic traffic = new Traffic(path, idx);
-				if (
-					(traffic.name.contains(filter_name) ||
-							filter_name.isEmpty()) && 
-					(traffic.channel.contains(filter_channel) ||
-							filter_channel.isEmpty()) && 
-					(traffic.lane.contains(filter_lane) ||
-							filter_lane.isEmpty()))
+				try { 
+					Traffic traffic = new Traffic(path, idx);
+					if (
+							(traffic.name.contains(filter_name) ||
+									filter_name.isEmpty()) && 
+							(traffic.channel.contains(filter_channel) ||
+									filter_channel.isEmpty()) && 
+							(traffic.lane.contains(filter_lane) ||
+									filter_lane.isEmpty()))
 						new_list.add(traffic);
-				else
-					continue;
-				idx++;
+					else
+						continue;
+					idx++;
+				} catch (Exception e) { continue; };
 			}
 			
 			return new_list;
