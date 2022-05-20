@@ -429,7 +429,7 @@ public class OcrReport{
 			document.open();
 
 			document.setPageSize(PageSize.A4);
-			Paragraph pTitulo = new Paragraph(new Phrase(27F,localeOCR.getStringKey("ocr_report_title"), FontFactory.getFont(FontFactory.HELVETICA, 20F)));
+			Paragraph pTitulo = new Paragraph(new Phrase(27F,localeOCR.getStringKey("ocr_report_vehicles_report"), FontFactory.getFont(FontFactory.HELVETICA, 20F)));
 			ColumnText tl = new ColumnText(writer.getDirectContent());
 			Paragraph tx = new Paragraph();
 			
