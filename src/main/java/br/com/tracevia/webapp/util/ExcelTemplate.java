@@ -191,6 +191,11 @@ public class ExcelTemplate {
 	}
 	
 	public void excelFileHeader(XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
+			String[] dates, String[] period, List<String> equipId, int dayIndex, boolean isMultiSheet, boolean isDirectionsOnSheet, int rowStart, String name, String direction) {
+		excelFileHeader(sheet, row, pathLogo, module, columns, fileTitle, dates, period, equipId, dayIndex, isMultiSheet, isDirectionsOnSheet, 0, false, name, direction);
+	}
+	
+	public void excelFileHeader(XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
 			String[] dates, String[] period, List<String> equipId, int dayIndex, boolean isMultiSheet, boolean isDirectionsOnSheet, int rowStart, boolean shortHeader, String name, String direction) {
 
 		DateTimeApplication dta = new DateTimeApplication();
@@ -239,8 +244,12 @@ public class ExcelTemplate {
 		   
 		     }
 		
-		if (direction != null)
+		if (direction != null) {
+			String s = tm.directions(satInfo.get(0).getSentidos());
+			String[] l = satInfo.get(0).getQtdeFaixas().split("\\+");
+			satInfo.get(0).setQtdeFaixas(l[s.startsWith(direction) ? 0 : 1]);
 			satInfo.get(0).setSentidos(direction);
+		}
 					
 		// ----------------------------------------------------------------------------------------------------------------
 				
@@ -1901,7 +1910,6 @@ public class ExcelTemplate {
 		int startCol = 0;
 		int endCol = columns.size() - 8;
 		int start = 8;
-		boolean header = false;
 		
 		lines.forEach(list -> {
 			if (sep.containsKey(list[1])) {
@@ -1912,10 +1920,6 @@ public class ExcelTemplate {
 				sep.put(list[1], newLine);
 			}
 		});
-		
-		sheet = workbook.createSheet(sheetName);	
-		
-		utilSheet.columnsWidth(sheet, 0, 0, 4300);
 		
 		for (Entry<String, List<String[]>> l : sep.entrySet()) {
 			Map<String, List<String[]>> newLines = new LinkedHashMap<>();
@@ -1957,8 +1961,11 @@ public class ExcelTemplate {
 				IDs.clear();
 				IDs.add(l.getKey());
 				String direction = equip.getKey();
+				
+				sheet = workbook.createSheet(l.getKey() + direction);	
+				utilSheet.columnsWidth(sheet, 0, 0, 4300);
 				excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, "sat", columns.size(), "Contagem de Veículo",  
-						date, period, IDs, 0, false, false, dataStartRow, header, "name", direction.equals("All") ? null : direction);
+						date, period, IDs, 0, false, false, dataStartRow, "name", direction.equals("All") ? null : direction);
 				
 				dataStartRow += 11;
 				// ------------------------------------------------------------------------------------------------------------
@@ -1985,8 +1992,11 @@ public class ExcelTemplate {
 				
 				utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol - 1, dataStartRow, dataEndRow - 1);
 
+				utilSheet.createRow(sheet, row, ++dataEndRow);
+				utilSheet.createCells(sheet, row, 0, endCol, dataEndRow, dataEndRow);
+				utilSheet.setCellValue(sheet, row, dataEndRow, 0, " ");
+				
 				dataStartRow = ++dataEndRow;
-				header = true;
 			}
 			
 		}

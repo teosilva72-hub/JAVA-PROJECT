@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,10 +19,10 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.naming.NoInitialContextException;
 
 import org.primefaces.context.RequestContext;
 
@@ -37,8 +36,9 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import br.com.tracevia.webapp.controller.global.ListEquipments;
 import br.com.tracevia.webapp.methods.TranslationMethods;
-import br.com.tracevia.webapp.model.dai.DAI;
+import br.com.tracevia.webapp.model.global.DirectionModel;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ImageUtil;
@@ -50,12 +50,24 @@ public class DaiBean {
 	LocaleUtil localeDai;
 	public List<Traffic> traffics;
 	public Traffic traffic;
-	public static List<Equipments> listDai;
+	public static List<? extends Equipments> listDai;
+	public static List<DirectionModel> listDirection;
 	private String logo;
 	
 	static String noImage = "no-image.jpg";
-	String ftpFolder = "C:\\Cameras\\DAI\\"; 
+	String ftpFolder = "C:\\Cameras\\DAI\\";
 	
+	@ManagedProperty("#{listEquipsBean}")
+	ListEquipments equips;
+				
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
+	}	
+			
+	public ListEquipments getEquips() {
+		return equips;
+	}
+
 	public String getLogo() {
 		return logo;
 	}
@@ -76,13 +88,12 @@ public class DaiBean {
 		
 		SimpleDateFormat formattter = new SimpleDateFormat("yyyyMMdd");
 		Date date = new Date();
-		
+					
 		try {
-			
-			DAI dai = new DAI();
-			listDai = dai.listEquipments("dai", 0);
+											
+			listDai = equips.getDaiList();
 			traffic = new Traffic();
-			
+					
 			ftpFolder = "C:\\Cameras\\DAI\\"; 
 			noImage = "no-image.jpg";
 			
@@ -94,7 +105,7 @@ public class DaiBean {
 		
 	}
 	
-	public List<Equipments> getListDai() {
+	public List<? extends Equipments> getListDai() {
 		return listDai;
 	}
 
@@ -129,20 +140,19 @@ public class DaiBean {
 			id = idx;
 			incident = info[0];
 			channel = info[1];
-			lane = info[2];
-			direction = info[3];
+			lane = info[2];			
 			date = date_formatter.format(date_new);
 			hour = hour_formatter.format(hour_new);
 			name = info[6];
-			
+			//direction = info[3];
+											
 			for (Equipments dai : listDai)
 				if (dai.getNome().equals(name)) {
 					km = dai.getKm();
-					equipId = dai.getEquip_id();
-					
+					equipId = dai.getEquip_id();					
+					direction = dai.getDirectionTo(); //direction = info[3];	
 					break;
-				}
-					
+				}	  
 		}
 		
 		Traffic() {
@@ -171,9 +181,8 @@ public class DaiBean {
 			return lane;
 		}
 
-		public String getDirection() {
-			TranslationMethods trad = new TranslationMethods();
-			return trad.daiLabels(direction);
+		public String getDirection() {	
+			return direction;
 		}
 		
 		public String getChannel() {
@@ -450,4 +459,7 @@ public class DaiBean {
 			e.printStackTrace();
 		}
 	}
+	
+	// --------------------------------------------------
+
 }

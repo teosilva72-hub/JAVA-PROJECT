@@ -26,13 +26,13 @@
 		colasLabels.colas_direction_column, colasLabels.colas_estimated_time_column))}" />
 	   
 	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('c.id; DATE_FORMAT(c.update_date, `%d/%m/%Y`) as sd; DATE_FORMAT(c.update_date, `%H:%m:%s`); 
-         e.name; col.direction; CASE                            
+         e.name; ct.city_name; CASE                            
                         	 WHEN (c.local != 0) AND c.lane = 1 THEN ` &lt; 1 minute`
                              WHEN (c.local != 0) AND c.lane = 2 THEN ` &gt; 1 minute and &lt; 2 minutes`
                              WHEN (c.local != 0) AND c.lane = 3 THEN ` &gt; 3 minutes`
                              ELSE ` 0 minute` END')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('colas_equipment e ON e.equip_id = c.device LEFT JOIN colas_direction col ON c.device = col.equip_id')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('colas_equipment e ON e.equip_id = c.device LEFT JOIN city_direction ct ON ct.city_id = e.to_direction')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
        		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('c.update_date', reportsLabels.reports_select_date, true, true)}" />
