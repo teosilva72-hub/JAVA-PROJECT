@@ -16,7 +16,6 @@ import br.com.tracevia.webapp.controller.global.ListEquipments;
 import br.com.tracevia.webapp.controller.global.NotificationsBean;
 import br.com.tracevia.webapp.dao.sat.DataSatDAO;
 import br.com.tracevia.webapp.model.sat.SAT;
-import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name = "satMapsView")
 @ViewScoped
@@ -32,6 +31,8 @@ public class SATBuildMap implements Serializable {
 	List<Integer> unavailabilityList; 
 	
 	NotificationsBean not;
+	
+	DataSatDAO dao;
 		
 	@ManagedProperty("#{listEquipsBean}")
 	ListEquipments equips;
@@ -76,10 +77,8 @@ public class SATBuildMap implements Serializable {
 				
 	public List<SAT> BuildSAT() {
 
-		DataSatDAO dao = new DataSatDAO();
-		
-		// System.out.println("DATA");		
-		
+		dao = new DataSatDAO(); // GLOBAL SAT DATA OBJECT ACCESS
+			
 		List<SAT> satListValuesAux = new ArrayList<SAT>();	
 		
 		// LISTAS
@@ -114,7 +113,7 @@ public class SATBuildMap implements Serializable {
 				dao.temporaryEquip(); // CALL TEMP EQUIP
 				
 				dao.temporaryMaxDate(); // CALL TEMP MAX DATE
-
+			
 				 data15MinList = dao.dataInterval(limit, "MINUTE", 15, availabilityList);
 				 
 				  if(!data15MinList.isEmpty()) {
@@ -321,7 +320,7 @@ public class SATBuildMap implements Serializable {
 
 		FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(":navbarDropdown2");
 		
-		SessionUtil.executeScript("$('#preloader').addClass('d-none')");
+		//SessionUtil.executeScript("$('#preloader').addClass('d-none')");
 		
 		dao.connectionClose(); // CLOSE CONNECTION
 		
@@ -340,9 +339,7 @@ public class SATBuildMap implements Serializable {
 		List<SAT> satListValuesAux = new ArrayList<SAT>();
 		List<SAT> noDataList = new ArrayList<SAT>();	
 		List<Integer> noDataAuxList = new ArrayList<Integer>();	
-				
-		DataSatDAO dao = new DataSatDAO();
-		
+	
 		noDataList = dao.noDataInterval(limit, equipIdList, true);
 		
 		if(!noDataList.isEmpty()) {
