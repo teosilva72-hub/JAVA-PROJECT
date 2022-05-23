@@ -462,7 +462,7 @@ public class EquipmentsBean implements Serializable {
 			
 			 }	
 				
-			 else if(equipTable.equals("colas") || equipTable.equals("dai"))			 	
+			 else if(equipTable.equals("colas") || equipTable.equals("dai") || equipTable.equals("ocr"))			 	
 				  SessionUtil.executeScript("$('#directionTo-edit').val('"+dataSource.getDirectionTo()+"');");		
 	    
 	}
