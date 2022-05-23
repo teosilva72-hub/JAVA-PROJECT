@@ -81,9 +81,9 @@ public class DataSatDAO {
 			int minute = calendar.get(Calendar.MINUTE);
 						
 			// Obter datas formatadas para os dados
-			//currentDate = dta.getDataInterval15Min(calendar, minute);	
+			currentDate = dta.getDataInterval15Min(calendar, minute);	
 			
-			currentDate = "2022-05-22 20:30:00";
+			//currentDate = "2022-05-22 20:30:00";
 												
 			System.out.println(currentDate);		
 							 			 							
@@ -139,11 +139,10 @@ public class DataSatDAO {
 					"FROM tb_dados15 lh " +
 					"LEFT JOIN equip eq ON (lh.NOME_ESTACAO = eq.equip_id) ";
 			
-					if(time == 15 && time == 30)						
-						 lastHour +="WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(@sub := DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR) AND DATE_SUB(DATE_FORMAT(@sub, '%y-%m-%d %H:00:00'), INTERVAL 1 SECOND) ";
+					if(time == 15 || time == 30)						
+						 lastHour +="WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR) AND DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 SECOND) ";
 												
 					else lastHour += "WHERE lh.DATA_HORA BETWEEN DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00') AND DATE_SUB(DATE_ADD(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR), INTERVAL 1 SECOND) ";
-
 					// --------------------------------------------------------------------
 					
 					   if(!availabilityList.isEmpty()) {
@@ -374,13 +373,9 @@ public class DataSatDAO {
 			 			
 			if (result.hasNext()) {
 				for (RowResult rs : result) {
-					
-					listStationAux.forEach(item -> System.out.println("ITEM: "+item));
-										
+															
 					if(!listStationAux.contains(rs.getInt("ESTACAO"))) {
 						
-						System.out.println("LOOP INDEX: "+rs.getInt("ESTACAO"));
-																					
 							SAT sat = new SAT();
 							
 							// PRIMARY INFORMATION
