@@ -27,6 +27,7 @@ import com.groupdocs.conversion.Converter;
 import com.groupdocs.conversion.options.convert.PdfConvertOptions;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
+import br.com.tracevia.webapp.controller.globalPDF.GlobalPDF;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
@@ -797,23 +798,35 @@ public class ExcelTemplate {
 		return input;
 	}
 	
-	public ByteArrayOutputStream ToPDF() throws IOException {
+	public ByteArrayOutputStream ToPDF(String sheetName) throws IOException {
 		InputStream input = utilSheet.getOutput(workbook);
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		ByteArrayOutputStream output = null;
 		try {
+			int count = (Integer) SessionUtil.getExternalContext().getSessionMap().get(sheetName + "PDF_Count");
 			Converter converter = new Converter(input);
-			converter.convert(output, new PdfConvertOptions());
+			List<byte[]> sheets = new ArrayList<>();
+			PdfConvertOptions options = new PdfConvertOptions();
+			for (int n = 1; n <= count; n++) {
+				ByteArrayOutputStream output2 = new ByteArrayOutputStream();
+				options.setPageNumber(n);
+				options.setPagesCount(n);
+				converter.convert(output2, options);
+				output2.close();
+				sheets.add(output2.toByteArray());
+			}
+
+			GlobalPDF pdf = new GlobalPDF();
+			output = pdf.merge(sheets);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			output.close();
 			input.close();			
 		}
 		return output;
 	}
 	
-	public void downloadToPDF(String fileName) throws IOException {
-		ByteArrayOutputStream output = ToPDF();
+	public void downloadToPDF(String fileName, String sheetName) throws IOException {
+		ByteArrayOutputStream output = ToPDF(sheetName);
 		downloadToPDF(output, fileName);
 	}
 	
@@ -850,6 +863,7 @@ public class ExcelTemplate {
 		int startCol = 0;
 		int endCol = columns.size() - 1;
 		boolean singleDirectionFilter = false;
+		int count = 0;
 		
 		// --------------------------------------------------------------------------------------
 		
@@ -960,7 +974,8 @@ public class ExcelTemplate {
 			  // --------------------------------------------------------------------------------------------			  
 			  
 		    	// SheetName
-				sheet = workbook.createSheet(sheetNames[op]); // CREATE SHEET NAMES								
+				sheet = workbook.createSheet(sheetNames[op]); // CREATE SHEET 7
+				count++;
 			
 				if(isEquipNameSheet) 
 					excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
@@ -1392,7 +1407,7 @@ public class ExcelTemplate {
 					
 		// SHEETNAME BY DATE SELECTION										
 				
-	    for(int op = 0; op < selectOption; op++) {	    	
+	    for(int op = 0; op < selectOption; op++) {	
 	 					  
 				  if(isEquipNameSheet && division) {
 
@@ -1419,6 +1434,7 @@ public class ExcelTemplate {
 	    	
 	    	// SheetName
 			sheet = workbook.createSheet(sheetNames[op]); // CREATE SHEET NAMES
+			count++;
 		
 			if(isEquipNameSheet) 
 				excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
@@ -1803,7 +1819,9 @@ public class ExcelTemplate {
 		// TABLE COLUMNS AUTO SIZE 
 		utilSheet.columnsWidthAuto(sheet, columns.size());
 		
-		}		
+		}
+		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count); 
+
 	}
 					
 						
@@ -1902,6 +1920,116 @@ public class ExcelTemplate {
 		utilSheet.setCellsStyle(sheet, row, bgColorBodyStyle2, 5, 7, dataStartRow, dataEndRow);	
 		
 	}
+	
+	public void generateVehicleSpeedEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
+
+		sheet = null;		
+		row = null;
+		
+		Map<String, List<String[]>> sep = new LinkedHashMap<>();
+		List<String> IDs = new ArrayList<>();
+		
+		boolean alt = false;
+		int dataStartRow = 0;
+		int dataEndRow = 0;
+		int startCol = 0;
+		int endCol = columns.size() - 4;
+		int start = 3;
+		int count = 0;
+		
+		lines.forEach(list -> {
+			if (sep.containsKey(list[2])) {
+				sep.get(list[2]).add(list);
+			} else if (!list[2].equals("0")) {
+				List<String[]> newLine = new ArrayList<>();
+				newLine.add(list);
+				sep.put(list[2], newLine);
+			}
+		});
+		
+		for (Entry<String, List<String[]>> l : sep.entrySet()) {
+			Map<String, List<String[]>> newLines = new LinkedHashMap<>();
+			for (String[] fullLine : l.getValue()) {
+				String[] line = Arrays.copyOfRange(fullLine, start, fullLine.length - 1);
+				line[0] = String.format("%s %s", fullLine[0], fullLine[1]);
+				if (newLines.containsKey("All")) {
+					if (newLines.containsKey(fullLine[3]))
+						newLines.get(fullLine[3]).add(line);
+					else {
+						List<String[]> newL = new ArrayList<>();
+						newL.add(line);
+						newLines.put(fullLine[3], newL);
+					}
+					List<String[]> all = newLines.get("All");
+					if (alt) {
+						String[] r = all.get(all.size() - 1);
+						for (int rIdx = 1; rIdx < r.length; rIdx++) {
+							r[rIdx] = String.valueOf(Integer.parseInt(r[rIdx]) + Integer.parseInt(line[rIdx]));
+						}
+						alt = !alt;
+					} else {
+						all.add(Arrays.copyOf(line, line.length));
+						alt = !alt;
+					}
+					
+				} else {
+					List<String[]> newL = new ArrayList<>();
+					List<String[]> newL2 = new ArrayList<>();
+					newL2.add(Arrays.copyOf(line, line.length));
+					newLines.put("All", newL2);
+					newL.add(line);
+					newLines.put(fullLine[3], newL);
+					alt = !alt;
+				}
+			}
+			
+			for (Entry<String, List<String[]>> equip : newLines.entrySet()) {
+				IDs.clear();
+				IDs.add(l.getKey());
+				
+				sheet = workbook.createSheet(l.getKey() + equip.getKey());	
+				utilSheet.columnsWidth(sheet, 0, 0, 4300);
+				
+				String direction = equip.getKey();
+				excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, "sat", columns.size(), "Contagem de Veículo",  
+						date, period, IDs, 0, false, false, dataStartRow, "name", direction.equals("All") ? null : direction);
+				
+				dataStartRow += 11;
+				// ------------------------------------------------------------------------------------------------------------
+				
+				// SECOND LEVEL COLUMNS 1
+				
+				utilSheet.createRow(sheet, row, dataStartRow);
+				utilSheet.createCells(sheet, row, 0, endCol, dataStartRow, dataStartRow);
+				utilSheet.setCellsStyle(sheet, row, tableHeadStyle, 0, endCol, dataStartRow, dataStartRow);
+				
+				for (int i = 3, idx = 0; idx < endCol; i++, idx++)
+					utilSheet.setCellValue(sheet, row, dataStartRow, idx, columns.get(i == 3 ? 0 : i));
+				
+				dataStartRow++;
+				dataEndRow = dataStartRow + equip.getValue().size();
+				
+				// ------------------------------------------------------------------------------------------------------------
+				
+				utilSheet.createRows(sheet, row, dataStartRow, dataEndRow); // CRIAR LINHAS 
+				
+				utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow); // CRIAR CÉLULAS
+				
+				utilSheet.fileBodySimple(sheet, row, equip.getValue(), startCol, endCol, dataStartRow); // PREENCHER DADOS
+				
+				utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol - 1, dataStartRow, dataEndRow - 1);
+
+				utilSheet.createRow(sheet, row, ++dataEndRow);
+				utilSheet.createCells(sheet, row, 0, endCol, dataEndRow, dataEndRow);
+				utilSheet.setCellValue(sheet, row, dataEndRow, 0, " ");
+				
+				dataStartRow = ++dataEndRow;
+				count++;
+			}
+			
+		}
+		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
+	}
 
 	public void generateVehicleCountEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
 		
@@ -1917,6 +2045,7 @@ public class ExcelTemplate {
 		int startCol = 0;
 		int endCol = columns.size() - 8;
 		int start = 8;
+		int count = 0;
 		
 		lines.forEach(list -> {
 			if (sep.containsKey(list[1])) {
@@ -2005,10 +2134,11 @@ public class ExcelTemplate {
 				utilSheet.setCellValue(sheet, row, dataEndRow, 0, " ");
 				
 				dataStartRow = ++dataEndRow;
+				count++;
 			}
 			
 		}
-		
+		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
 	}
 	
 	public void generateVehicleCountCategoryEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
@@ -2049,6 +2179,7 @@ public class ExcelTemplate {
 		int startCol = 0;
 		int endCol = 2;
 		int len = lines.size() + 1;
+		int count = 1;
 		
 		sheet = workbook.createSheet(sheetName);	
 		
@@ -2110,6 +2241,7 @@ public class ExcelTemplate {
 		
 		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol - 1, dataStartRow, dataEndRow);
 		
+		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
 	}
 	
 	// ----------------------------------------------------------------------------------------------------------------

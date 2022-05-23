@@ -33,8 +33,12 @@ import javax.faces.context.FacesContext;
 import com.google.gson.Gson;
 import com.groupdocs.conversion.Converter;
 import com.groupdocs.conversion.options.convert.PdfConvertOptions;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
+import br.com.tracevia.webapp.controller.globalPDF.GlobalPDF;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.ReportDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
@@ -1237,7 +1241,7 @@ public class ReportBean implements Serializable{
 			
 		}	   
 	   
-		public void downloadPDF() {
+		public void downloadPDF() throws DocumentException {
 			ExcelTemplate model;
 			InputStream input;
 			DateTimeApplication dta = new DateTimeApplication();
@@ -1246,27 +1250,31 @@ public class ReportBean implements Serializable{
 			try {
 				if (isSpecialPDF()) {
 					Path path = (Path) SessionUtil.getExternalContext().getSessionMap().get(fileName + "PDF");
+					int count = (Integer) SessionUtil.getExternalContext().getSessionMap().get(sheetName + "PDF_Count");
 					byte[] bytes = Files.readAllBytes(path);
 					input = new ByteArrayInputStream(bytes);
-					ByteArrayOutputStream output = new ByteArrayOutputStream();
+					List<byte[]> sheets = new ArrayList<>();
 					try {
-						int n = 1;
-						while (true) {
-							Converter converter = new Converter(input);
-							PdfConvertOptions options = new PdfConvertOptions();
+						Converter converter = new Converter(input);
+						PdfConvertOptions options = new PdfConvertOptions();
+						for (int n = 1; n <= count; n++) {
+							ByteArrayOutputStream output = new ByteArrayOutputStream();
 							options.setPageNumber(n);
-							options.setPagesCount(n++);
+							options.setPagesCount(n);
 							converter.convert(output, options);
-						}
+							output.close();
+							sheets.add(output.toByteArray());
+						}						
 					} catch (Exception e) {
 						e.printStackTrace();
 					} finally {
-						output.close();
 						input.close();			
 					}
+					GlobalPDF pdf = new GlobalPDF();
+					ByteArrayOutputStream output = pdf.merge(sheets);
 					model.downloadToPDF(output, file);
 				} else
-					model.downloadToPDF(file);
+					model.downloadToPDF(file, sheetName);
 			} catch (IOException e) {	
 				e.printStackTrace();
 			}
@@ -1785,6 +1793,9 @@ public class ReportBean implements Serializable{
 				switch(name) {
 					case "counting-flow":
 						model.generateCountFlow(columnsInUse, report.lines, sheetName, satTab);
+						break;
+					case "vehicle-speed-eco101":
+						model.generateVehicleSpeedEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
 						break;
 					case "vehicle-count-eco101":
 						model.generateVehicleCountEco101(columnsInUse, report.lines, sheetName, satTab, date, period);

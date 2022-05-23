@@ -11,15 +11,17 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfWriter;
 
 @ManagedBean(name="GlobalPDF")
 public class GlobalPDF {
-	public Document merge(List<byte[]> files) {
-		
+	public ByteArrayOutputStream merge(List<byte[]> files) throws DocumentException {
+
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		Document document = new Document();
-		
+
 		try {
-			PdfCopy copy = new PdfCopy(document, new ByteArrayOutputStream());
+			PdfCopy copy = new PdfCopy(document, output);
 	
 	        document.open();
 	        for (byte[] file : files){
@@ -34,6 +36,6 @@ public class GlobalPDF {
 			document.close();
 		}
 		
-		return document;
+		return output;
 	}
 }
