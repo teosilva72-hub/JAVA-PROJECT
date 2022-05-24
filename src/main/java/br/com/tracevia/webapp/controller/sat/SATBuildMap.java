@@ -113,6 +113,8 @@ public class SATBuildMap implements Serializable {
 				dao.temporaryEquip(); // CALL TEMP EQUIP
 				
 				dao.temporaryMaxDate(); // CALL TEMP MAX DATE
+				
+				dao.temporaryMaxPeriod(); // CALL MAX PERIOD 
 			
 				 data15MinList = dao.dataInterval(limit, "MINUTE", 15, availabilityList);
 				 
