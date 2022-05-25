@@ -18,13 +18,20 @@ setInterval(() => {
 	
  }, 3000)
 
-// *********************************************************** //
+// ===========================================================
 
 const init = () => {
-	
-	$('#preloader').removeClass('d-none') // PRE LOADER CLASS
-	
-	$('#equipAll').load('/realtime/realtimeEquip.xhtml', () => {
+		
+	$('#equipAll').load('/realtime/realtimeEquip.xhtml', () => {		
+		
+		// PRELOADER LOADING 
+		
+		$('#preloader .inner').fadeOut();
+  		$('#preloader').fadeOut('slow');
+  		$('body').delay(350).css({'overflow' : 'visible'});
+
+		// ---------------------------------------------------
+		
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))
 
@@ -70,7 +77,8 @@ const init = () => {
 			initGPS();
 
 		if (window.initMeteo)
-			initMeteo();
+			initMeteo();					
+  	
 	})
 		
 	 // if any popover is opened then it's closed on page load

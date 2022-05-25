@@ -22,9 +22,16 @@ setInterval(() => {
 
 const init = () => {
 	
-	//$('#preloader').removeClass('d-none') // PRE LOADER CLASS
-	
 	$('#equipAll').load('/map/mapEquip.xhtml', () => {
+		
+		// PRELOADER LOADING 
+		
+		$('#preloader .inner').fadeOut();
+  		$('#preloader').fadeOut('slow');
+  		$('body').delay(350).css({'overflow' : 'visible'});
+
+		// ---------------------------------------------------
+
 		$('[role=tooltip]').tooltip('hide')
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))

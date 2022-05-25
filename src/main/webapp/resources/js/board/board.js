@@ -3,30 +3,34 @@ let heightMax = 1000
 let updated = '';
 let scale = 1;
 
-setTimeout(() => {
-	setInterval(() => {
+// RELOAD EQUIPMENTS INFORMATION
 
-		let data = new Date();
-		let n = data.getSeconds();
-		let minute = data.getMinutes();
+setInterval(() => {
 
-		if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
-			if (n < 4){
-								
-				location.href = location.protocol + '//' + location.host + location.pathname
-			    window.location.reload();
- 		}
+	let data = new Date();
+	let n = data.getSeconds();
+	let minute = data.getMinutes();		
+
+	if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
+		if (n > 0 && n < 4){			
+			init();
+			location.href = location.protocol + '//' + location.host + location.pathname	
+		}	
 	}
-			     
-	}, 3000)
-}, 4000)
-
-
-// *********************************************************** //
-
-const init = () => {
 	
-	$('.equip-box').each(function () {
+ }, 3000)
+
+// ===========================================================
+	
+const init = () => {	
+		
+		$('#preloader .inner').fadeOut();
+	  	$('#preloader').fadeOut('slow');
+	  	$('body').delay(350).css({'overflow' : 'visible'});
+		
+	// ---------------------------------------------------
+			
+	 $('.equip-box').each(function () {
 			
 			let equip = $(this)
 
@@ -36,12 +40,50 @@ const init = () => {
 	
 		setInfoEquip();
 		setEquipToolTip();	
+				
+	// if any popover is opened then it's closed on page load
+	 $('[data-toggle=popover-d]').popover('hide')
 
 }
 
 // *********************************************************** //
 
+const onEventMapFunction = data => {
+	var status = data.status;
+
+	switch (status) {
+		case "begin":
+			break;
+
+		case "complete":
+			break;
+
+		case "success":
+			init();
+
+			break;
+	}
+}
+
+// *********************************************************** //
+
 const setInfoEquip = () => {
+	
+	// Tooltips and Popovers use our built-in sanitizer to sanitize options which accept HTML.
+	// The default whiteList value is the following:
+	
+	let defaultWhiteList = $.fn.tooltip.Constructor.Default.whiteList
+	
+		defaultWhiteList.table = [];
+	    defaultWhiteList.tr = [];
+	    defaultWhiteList.td = [];
+	    defaultWhiteList.th = [];
+	    defaultWhiteList.div = [];
+	    defaultWhiteList.tbody = [];
+	    defaultWhiteList.thead = [];
+		defaultWhiteList.th = ['colspan', 'rowspan', 'scope'];
+		defaultWhiteList.td = ['colspan', 'rowspan', 'scope'];
+
 	$('[data-toggle="popover"]').popover({
 		html: true,
 		trigger: 'hover',
@@ -54,7 +96,47 @@ const setInfoEquip = () => {
 			return $(title).children(".popover-header").html();
 		}
 	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	$('[data-toggle=popover-d]').popover({
+		html: true,
+		trigger: 'click',		
+		template: '<div class="popover custom-detail"><div class="arrow"></div><div class="popover-body p-0"></div></div>',
+		content: function () {
+			let content = $(this).attr("data-popover-content");
+			return $(content).children(".popover-body").html();
+		},		
+	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	// hide opened popover when click outside popover content
+	$('html').on('click', function (e) {
+	    $('[data-toggle=popover-d]').each(function () {	       
+	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+	            $(this).popover('hide');
+	        }
+	    });
+	});	
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	// hide opened popover when esc key is pressed
+	$(document).keydown(function(e){
+	   if (e.keyCode === 27)
+	      $('[data-toggle=popover-d]').each(function () {	       
+	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+	            $(this).popover('hide');
+	        }
+	    });
+	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+
 }
+
+// *********************************************************** //
 
 const setEquipToolTip = () => {
 	$('[data-toggle="tooltip"]').tooltip();

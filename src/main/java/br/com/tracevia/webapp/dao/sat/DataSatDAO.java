@@ -30,8 +30,8 @@ public class DataSatDAO {
 			 		+ "(SELECT siteID, MAX(data) maxDate FROM tb_vbv GROUP BY siteID ORDER BY data DESC) "
 			 		+ "filterMaxDate WHERE siteID NOT IN (222, 340);";		 					
 				
-				try {					
-						 			 
+				try {	
+											 			 
 					conn.prepare(query);
 					
 					conn.executeUpdate();
@@ -39,29 +39,9 @@ public class DataSatDAO {
 				} catch (IOException e) {
 					
 					e.printStackTrace();
-				}					
-		
+				}	
 			
-	}
-	
-	public void temporaryMaxPeriod() {
-		
-		String query = "CREATE TEMPORARY TABLE IF NOT EXISTS last_period SELECT * FROM " +
-		"(SELECT lp.NOME_ESTACAO, MAX(lp.DATA_HORA) maxPeriod FROM tb_dados15 lp GROUP BY lp.NOME_ESTACAO) " +
-		"filterMax; ";
-		
-		try {			
-			 
-			conn.prepare(query);
-			
-			conn.executeUpdate();
-			
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}			
-	}
-		
+			}
 	public void temporaryEquip() {
 		
 		String query = "CREATE TEMPORARY TABLE IF NOT EXISTS equip SELECT eq.equip_id, eq.visible, CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4) THEN 5 " +
@@ -69,8 +49,8 @@ public class DataSatDAO {
 				"WHEN (eq.dir_lane1 = eq.dir_lane2) THEN 3 " +
 				"ELSE 2 END 'sentido' FROM sat_equipment eq; ";  // initialize variable
 		
-		try {			
-					 			 
+		try {
+						
 			conn.prepare(query);
 			
 			conn.executeUpdate();
@@ -81,6 +61,109 @@ public class DataSatDAO {
 		}			
 		
 	}
+	
+	public void temporaryLastHourInterval() {
+		
+		String query = "CREATE TEMPORARY TABLE IF NOT EXISTS last_hour_interval SELECT * FROM " +
+				"(SELECT lhi.NOME_ESTACAO, DATE_SUB(DATE_FORMAT(MAX(lhi.DATA_HORA), '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR) startDate, " +
+				"DATE_SUB(DATE_FORMAT(MAX(lhi.DATA_HORA), '%y-%m-%d %H:00:00'), INTERVAL 1 SECOND) endDate FROM tb_dados15 lhi " +
+				"GROUP BY lhi.NOME_ESTACAO) filterLastHour";
+						
+				try {		
+										 
+					conn.prepare(query);
+					
+					conn.executeUpdate();
+					
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}		
+	}
+	
+	public void temporaryLast7DaysInterval() {
+		
+		String query = "CREATE TEMPORARY TABLE IF NOT EXISTS last_7_days_interval SELECT * FROM " +
+				"(SELECT ldi.NOME_ESTACAO, DATE_SUB(DATE_FORMAT(MAX(ldi.DATA_HORA), '%y-%m-%d %H:00:00'), INTERVAL 7 DAY) startDate, " +
+				"DATE_SUB(DATE_ADD(DATE_SUB(DATE_FORMAT(MAX(ldi.DATA_HORA), '%y-%m-%d %H:00:00'), INTERVAL 7 DAY), INTERVAL 1 HOUR), INTERVAL 1 SECOND) endDate FROM tb_dados15 ldi " +
+				"GROUP BY ldi.NOME_ESTACAO) filterLast7Days";
+						
+				try {		
+										 
+					conn.prepare(query);
+					
+					conn.executeUpdate();
+					
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}		
+	}
+		
+	
+	public void temporaryLastHour() {
+		
+		String query = "CREATE TEMPORARY TABLE IF NOT EXISTS last_hour " +
+				"SELECT DISTINCT(lh.NOME_ESTACAO), SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN lh.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_HOUR_S1', " + 
+				"SUM(CASE WHEN lh.NOME_FAIXA < eq.sentido THEN (lh.VOLUME_COM + lh.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_HOUR_S1', " +
+				"SUM(CASE WHEN lh.NOME_FAIXA < eq.sentido THEN lh.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_HOUR_S1', " +
+				"SUM(CASE WHEN lh.NOME_FAIXA < eq.sentido THEN lh.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_HOUR_S1', " +
+	
+				"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido  THEN lh.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_HOUR_S2', " +
+				"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido THEN (lh.VOLUME_COM + lh.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_HOUR_S2', " +
+				"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido THEN lh.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_HOUR_S2', " +
+				"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido THEN lh.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_HOUR_S2' " +
+			
+				"FROM tb_dados15 lh " +
+				"LEFT JOIN equip eq ON (lh.NOME_ESTACAO = eq.equip_id) " +
+				"LEFT JOIN last_hour_interval ldi ON (lh.NOME_ESTACAO = ldi.NOME_ESTACAO) " + 
+				"WHERE lh.DATA_HORA BETWEEN ldi.startDate AND ldi.endDate AND eq.visible = 1 " +					
+				"GROUP BY lh.NOME_ESTACAO ";	
+	
+				try {
+										 
+					conn.prepare(query);
+					
+					conn.executeUpdate();
+					
+				} catch (IOException e) {
+					
+					e.printStackTrace();
+				}		
+		
+	     }
+	
+	public void temporaryLast7Days() {		
+			
+		String query = "CREATE TEMPORARY TABLE IF NOT EXISTS last_7_days " +
+		"SELECT DISTINCT(ld.NOME_ESTACAO), SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN ld.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_7_DAYS_S1', " + 
+		"SUM(CASE WHEN ld.NOME_FAIXA < eq.sentido THEN (ld.VOLUME_COM + ld.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_7_DAYS_S1', " +
+		"SUM(CASE WHEN ld.NOME_FAIXA < eq.sentido THEN ld.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_7_DAYS_S1', " +
+		"SUM(CASE WHEN ld.NOME_FAIXA < eq.sentido THEN ld.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_7_DAYS_S1', " +
+		
+		"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido  THEN ld.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_7_DAYS_S2', " +
+		"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido THEN (ld.VOLUME_COM + ld.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_7_DAYS_S2', " +
+		"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido THEN ld.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_7_DAYS_S2', " +
+		"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido THEN ld.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_7_DAYS_S2' " +
+		
+		"FROM tb_dados15 ld " +
+		"LEFT JOIN equip eq ON (ld.NOME_ESTACAO = eq.equip_id) " +
+		"LEFT JOIN last_7_days_interval lhi ON (ld.NOME_ESTACAO = lhi.NOME_ESTACAO) " +
+		"WHERE ld.DATA_HORA BETWEEN lhi.startDate AND lhi.endDate AND eq.visible = 1 " +					
+		"GROUP BY ld.NOME_ESTACAO ";
+		
+			try {			
+							 
+				conn.prepare(query);
+				
+				conn.executeUpdate();
+				
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}		
+
+		}
 	
 	public void connectionClose() {
 		conn.close();
@@ -100,95 +183,9 @@ public class DataSatDAO {
 						
 			// Obter datas formatadas para os dados
 			currentDate = dta.getDataInterval15Min(calendar, minute);	
+															
+			// System.out.println(currentDate);		
 			
-			//currentDate = "2022-05-22 21:30:00";
-												
-			System.out.println(currentDate);		
-							 			 							
-			String last7days = "CREATE TEMPORARY TABLE IF NOT EXISTS last_7_days " +
-					"SELECT DISTINCT(ld.NOME_ESTACAO),  MAX(ld.DATA_HORA) AS MAX_PERIOD, SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN ld.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_7_DAYS_S1', " + 
-					"SUM(CASE WHEN ld.NOME_FAIXA < eq.sentido THEN (ld.VOLUME_COM + ld.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_7_DAYS_S1', " +
-					"SUM(CASE WHEN ld.NOME_FAIXA < eq.sentido THEN ld.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_7_DAYS_S1', " +
-					"SUM(CASE WHEN ld.NOME_FAIXA < eq.sentido THEN ld.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_7_DAYS_S1', " +
-	
-					"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido  THEN ld.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_7_DAYS_S2', " +
-					"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido THEN (ld.VOLUME_COM + ld.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_7_DAYS_S2', " +
-					"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido THEN ld.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_7_DAYS_S2', " +
-					"SUM(CASE WHEN ld.NOME_FAIXA >= eq.sentido THEN ld.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_7_DAYS_S2' " +
-	
-					"FROM tb_dados15 ld " +
-					"LEFT JOIN equip eq ON (ld.NOME_ESTACAO = eq.equip_id) " ;
-					
-					if(time == 15 || time == 30)
-						last7days += "WHERE ld.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 7 DAY) AND DATE_SUB(DATE_ADD(DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 7 DAY), INTERVAL 1 HOUR), INTERVAL 1 SECOND) ";
-					
-					else last7days += "WHERE ld.DATA_HORA = DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 7 DAY) AND DATE_SUB(DATE_ADD(DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 7 DAY), INTERVAL 1 HOUR), INTERVAL 1 SECOND) AND eq.visible = 1 ";
-							
-					// --------------------------------------------------------------------
-					
-					   if(!availabilityList.isEmpty()) {
-						   
-						   last7days += "AND ld.NOME_ESTACAO NOT IN(";
-					 		
-					 		for(int i = 0; i < availabilityList.size(); i++) {
-					 			
-					 			last7days += availabilityList.get(i);
-					 			
-					 			if(i < (availabilityList.size() - 1))
-					 				last7days +=", ";
-					 					
-					 		}
-					 		
-					 		last7days += ") ";				   
-					   	}
-					   
-					// -------------------------------------------------------------------
-					   
-					last7days += "AND eq.visible = 1 " +					
-							   "GROUP BY ld.NOME_ESTACAO, HOUR(ld.DATA_HORA) ORDER BY MAX_PERIOD DESC LIMIT ? ";						
-
-			String lastHour = "CREATE TEMPORARY TABLE IF NOT EXISTS last_hour " +
-					"SELECT DISTINCT(lh.NOME_ESTACAO), SUM(CASE WHEN NOME_FAIXA < eq.sentido  THEN lh.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_HOUR_S1', " + 
-					"SUM(CASE WHEN lh.NOME_FAIXA < eq.sentido THEN (lh.VOLUME_COM + lh.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_HOUR_S1', " +
-					"SUM(CASE WHEN lh.NOME_FAIXA < eq.sentido THEN lh.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_HOUR_S1', " +
-					"SUM(CASE WHEN lh.NOME_FAIXA < eq.sentido THEN lh.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_HOUR_S1', " +
-		
-					"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido  THEN lh.VOLUME_AUTO ELSE 0 END) 'VOLUME_AUTO_LAST_HOUR_S2', " +
-					"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido THEN (lh.VOLUME_COM + lh.VOLUME_LONGO) ELSE 0 END) 'VOLUME_COM_LAST_HOUR_S2', " +
-					"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido THEN lh.VOLUME_MOTOS ELSE 0 END) 'VOLUME_MOTO_LAST_HOUR_S2', " +
-					"SUM(CASE WHEN lh.NOME_FAIXA >= eq.sentido THEN lh.VOLUME_TOTAL ELSE 0 END) 'VOLUME_TOTAL_LAST_HOUR_S2' " +
-				
-					"FROM tb_dados15 lh " +
-					"LEFT JOIN equip eq ON (lh.NOME_ESTACAO = eq.equip_id) " +
-					"LEFT JOIN last_period p ON (lh.NOME_ESTACAO = p.NOME_ESTACAO) ";
-			
-					if(time == 15 || time == 30)						
-						 lastHour +="WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR) AND DATE_SUB(DATE_FORMAT(DATE_SUB($INTERVAL$), '%y-%m-%d %H:00:00'), INTERVAL 1 SECOND) ";
-												
-					else lastHour += "WHERE lh.DATA_HORA BETWEEN DATE_SUB(DATE_FORMAT(p.maxPeriod, '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR) AND DATE_SUB(DATE_SUB(DATE_FORMAT(p.maxPeriod, '%y-%m-%d %H:00:00'), INTERVAL 1 HOUR), INTERVAL 1 SECOND) ";
-					
-					// --------------------------------------------------------------------
-					
-					   if(!availabilityList.isEmpty()) {
-						   
-						   lastHour += "AND lh.NOME_ESTACAO NOT IN(";
-					 		
-					 		for(int i = 0; i < availabilityList.size(); i++) {
-					 			
-					 			lastHour += availabilityList.get(i);
-					 			
-					 			if(i < (availabilityList.size() - 1))
-					 				lastHour +=", ";
-					 					
-					 		}
-					 		
-					 		lastHour += ") ";				   
-					   	}
-					   
-					// -------------------------------------------------------------------
-					   
-				   lastHour += "AND eq.visible = 1 " +					
-							   "GROUP BY lh.NOME_ESTACAO, HOUR(lh.DATA_HORA) ORDER BY p.maxPeriod DESC LIMIT ? ";	
 										
 			String select = "SELECT "
 					+ "ESTACAO, "
@@ -349,33 +346,6 @@ public class DataSatDAO {
 					   "ORDER BY d.DATA_HORA DESC ";
 			    
 	 try {
-							
-			System.out.println(last7days.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
-			
-			conn.prepare_my(last7days.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
-				
-			conn.setString(1, currentDate);				
-			conn.setString(2, currentDate);	
-			conn.setInt(3, limit);
-					
-			conn.executeUpdate();
-						
-			// ------------------------------
-			
-			System.out.println(lastHour.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));
-			
-			conn.prepare_my(lastHour.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)));	
-			
-			if(time == 15 || time == 30) {
-				conn.setString(1, currentDate);				
-				conn.setString(2, currentDate);	
-				conn.setInt(3, limit);	
-			
-			}else conn.setInt(1, limit);	
-			
-			conn.executeUpdate();
-			
-			// ------------------------------
 			
 			if(time == 15 || time == 30)									
 				conn.prepare_my(select.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)) + " LIMIT ? ) AS mainQuery");
@@ -397,10 +367,10 @@ public class DataSatDAO {
 							
 			MapResult result = conn.executeQuery();
 			
-			if(time == 15 || time == 30)		
-				System.out.println("ORIGIN: "+select.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)) + " LIMIT ? ) AS mainQuery");	
+			//if(time == 15 || time == 30)		
+				//System.out.println("ORIGIN: "+select.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)) + " LIMIT ? ) AS mainQuery");	
 			
-			else System.out.println("ORIGIN: "+select.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)) + ") AS mainQuery");	
+			//else System.out.println("ORIGIN: "+select.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)) + ") AS mainQuery");	
 			 			
 			if (result.hasNext()) {
 				for (RowResult rs : result) {
@@ -444,10 +414,7 @@ public class DataSatDAO {
 							sat.setTotal7days1hS1(rs.getInt("VOLUME_TOTAL_LAST_7_DAYS_S1"));
 							
 							// CURRENT LAST HOUR
-							
-							if(time == 3 || time == 6) 							
-								System.out.println("EQUIP: "+rs.getInt("ESTACAO") +" HOUR: "+rs.getInt("VOLUME_AUTO_LAST_HOUR_S1"));
-							
+								
 							sat.setAutosCurrent1hS1(rs.getInt("VOLUME_AUTO_LAST_HOUR_S1"));
 							sat.setComCurrent1hS1(rs.getInt("VOLUME_COM_LAST_HOUR_S1"));
 							sat.setMotoCurrent1hS1(rs.getInt("VOLUME_MOTO_LAST_HOUR_S1"));
@@ -582,7 +549,7 @@ public class DataSatDAO {
  			 						
  			MapResult result = conn.executeQuery();
  			
- 			System.out.println(select); 			  		 
+ 			//System.out.println(select); 			  		 
  			 			  			 		 			
  			if (result.hasNext()) {
  				for (RowResult rs : result) { 								    	   	

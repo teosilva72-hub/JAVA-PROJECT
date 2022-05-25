@@ -9,7 +9,7 @@
    <h:body> 
 	   <div class="row">
 		   <c:forEach items="#{satMapsView.equips.satList}" var="item" varStatus="loop" > <!-- EQUIP LIST -->
-				<div class="col">
+				<div class="col ml-2">
 					<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark"  status-period="#{satMapsView.satListValues.get(loop.index).statusInterval}" >
 				
 					 <!-- ======================== BODY ======================== -->
