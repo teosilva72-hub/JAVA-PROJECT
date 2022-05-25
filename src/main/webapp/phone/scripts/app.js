@@ -281,7 +281,7 @@ async function initPhone() {
             var callActive = (item.status !== 'ended' && item.status !== 'missed'),
                 timeStart  = typeof item.start == "string" ? new Date(item.start).getTime() : item.start,
                 timeStop    = typeof item.stop == "string" ? new Date(item.stop).getTime() : item.stop,
-                callLength = (item.status !== 'ended')? '<span id="'+item.id+'"></span>': moment.duration(timeStop - timeStart).humanize(),
+                callLength = (item.status !== 'ended')? '<span id="'+item.id+'"></span>': moment(timeStop - timeStart).format("mm:ss"),
                 callClass  = '',
                 callIcon,
                 i;
@@ -318,7 +318,7 @@ async function initPhone() {
 
             i  = '<div class="list-group-item sip-logitem clearfix '+callClass+'" data-uri="'+item.uri+'" data-sessionid="'+item.id+'">';
             i += '<div class="clearfix"><div class="float-left">';
-            i += callIcon+' <strong>'+ctxSip.formatPhone(item.uri)+'</strong><br><small>'+moment(item.start).format('MM/DD hh:mm:ss a')+'</small>';
+            i += callIcon+' <strong>'+ctxSip.formatPhone(item.uri)+'</strong><br><small>'+moment(item.start).format('DD/MM hh:mm:ss a')+'</small>';
             i += '</div>';
             i += '<div class="float-right text-right"><em>'+item.clid+'</em><br>' + callLength+'</div></div>';
 
