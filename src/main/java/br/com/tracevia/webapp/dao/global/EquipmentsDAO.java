@@ -519,7 +519,7 @@ public class EquipmentsDAO {
 				+ "ORDER BY eq.equip_id ASC";
 
 		String sqlVW = "SELECT eq.equip_id, equip_ip, driver, name, c.city_name, r.road_name, km, "
-				+ "vw_linear_width, vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, id_message, id_modify, active, longitude, latitude, direction"
+				+ "vw_linear_width, vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, id_message, id_modify, active, longitude, latitude, direction "
 				+ "FROM dms_equipment eq "
 				+ "INNER JOIN dms_messages_active act ON act.equip_id = eq.equip_id "
 				+ "INNER JOIN concessionaire_cities c ON c.city_id = eq.city "
