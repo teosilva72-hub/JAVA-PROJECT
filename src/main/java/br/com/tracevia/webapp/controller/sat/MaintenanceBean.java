@@ -103,8 +103,6 @@ public void initializer() {
 			 	
 			 	days[h] = String.valueOf(day);
 			 	
-			 	System.out.println(hour);
-			 	
 			 	hour++;
 		  }
 	} 

@@ -14,34 +14,34 @@ public class ClassName {
 								 
 			  cs.setClassRideCar("1"); // ViaPaulista Autos
 			  cs.setClassMotorcycle("9"); // ViaPaulista Motos	 	
-			  cs.setClassBus2Axl("2A"); // ViaPaulista (‘nibus 2 Eixos)  	
-			  cs.setClassBus3Axl("4A"); // ViaPaulista (‘nibus 3 Eixos)			  			  
+			  cs.setClassBus2Axl("2A"); // ViaPaulista (√înibus 2 Eixos)
+			  cs.setClassBus3Axl("4A"); // ViaPaulista (√înibus 3 Eixos)
 			  cs.setClassSemiTrailer("3"); // ViaPaulista (Semirreboque)
 			  cs.setClassTrailer("5");	// ViaPaulista (Reboque) 
-			  cs.setClassTruck2Axl("2"); // ViaPaulista Caminhıes 2 Eixos 
-			  cs.setClassTruck3Axl("4"); // ViaPaulista Caminhıes 3 Eixos 
-			  cs.setClassTruck4Axl("6"); // ViaPaulista Caminhıes 4 Eixos 
-			  cs.setClassTruck5Axl("7"); // ViaPaulista Caminhıes 5 Eixos 
-			  cs.setClassTruck6Axl("8"); // ViaPaulista Caminhıes 6 Eixos 
-			  cs.setClassTruck7Axl("10"); // ViaPaulista Caminhıes 7 Eixos 
-			  cs.setClassTruck8Axl("11"); // ViaPaulista Caminhıes 8 Eixos 
-			  cs.setClassTruck9Axl("E9"); // ViaPaulista Caminhıes 9 Eixos 
-			  cs.setClassTruck10Axl("10N"); // ViaPaulista Caminhıes 10 Eixos
+			  cs.setClassTruck2Axl("2"); // ViaPaulista Caminh√µes 2 Eixos
+			  cs.setClassTruck3Axl("4"); // ViaPaulista Caminh√µes 3 Eixos
+			  cs.setClassTruck4Axl("6"); // ViaPaulista Caminh√µes 4 Eixos
+			  cs.setClassTruck5Axl("7"); // ViaPaulista Caminh√µes 5 Eixos
+			  cs.setClassTruck6Axl("8"); // ViaPaulista Caminh√µes 6 Eixos
+			  cs.setClassTruck7Axl("10"); // ViaPaulista Caminh√µes 7 Eixos
+			  cs.setClassTruck8Axl("11"); // ViaPaulista Caminh√µes 8 Eixos
+			  cs.setClassTruck9Axl("E9"); // ViaPaulista Caminh√µes 9 Eixos
+			  cs.setClassTruck10Axl("10N"); // ViaPaulista Caminh√µes 10 Eixos
 			  			  
-			  cs.setClassNotIdentifiedAxl2("2N"); // ViaPaulista n„o identificadas 2 Eixos 
-			  cs.setClassNotIdentifiedAxl3("3N"); // ViaPaulista n„o identificadas 3 Eixos 
-			  cs.setClassNotIdentifiedAxl4("4N"); // ViaPaulista n„o identificadas 4 Eixos 
-			  cs.setClassNotIdentifiedAxl5("5N"); // ViaPaulista n„o identificadas 5 Eixos 
-			  cs.setClassNotIdentifiedAxl6("6N"); // ViaPaulista n„o identificadas 6 Eixos 
-			  cs.setClassNotIdentifiedAxl7("7N"); // ViaPaulista n„o identificadas 7 Eixos 
-			  cs.setClassNotIdentifiedAxl8("8N"); // ViaPaulista n„o identificadas 8 Eixos 
-			  cs.setClassNotIdentifiedAxl9("9N"); // ViaPaulista n„o identificadas 9 Eixos 
+			  cs.setClassNotIdentifiedAxl2("2N"); // ViaPaulista n√£o identificadas 2 Eixos 
+			  cs.setClassNotIdentifiedAxl3("3N"); // ViaPaulista n√£o identificadas 3 Eixos 
+			  cs.setClassNotIdentifiedAxl4("4N"); // ViaPaulista n√£o identificadas 4 Eixos 
+			  cs.setClassNotIdentifiedAxl5("5N"); // ViaPaulista n√£o identificadas 5 Eixos 
+			  cs.setClassNotIdentifiedAxl6("6N"); // ViaPaulista n√£o identificadas 6 Eixos 
+			  cs.setClassNotIdentifiedAxl7("7N"); // ViaPaulista n√£o identificadas 7 Eixos 
+			  cs.setClassNotIdentifiedAxl8("8N"); // ViaPaulista n√£o identificadas 8 Eixos 
+			  cs.setClassNotIdentifiedAxl9("9N"); // ViaPaulista n√£o identificadas 9 Eixos 
 			  cs.setUnknowClass("UC"); // Classe desconhecida	
 						 	  
 		  }	
 		
 		
-		if(var.equals("Concession·ria Bahia Norte")){
+		if(var.equals("Concession√°ria Bahia Norte")){
 			
 			  cs.setClassRideCar("CAT1"); 
 			  cs.setClassMotorcycle("CAT9"); 	 	
@@ -133,19 +133,19 @@ public class ClassName {
 			 
 			  cs.setClassRideCar("1"); // ViaPaulista Autos
 			  cs.setClassMotorcycle("9"); // ViaPaulista Motos	 	
-			  cs.setClassBus2Axl("2A"); // ViaPaulista (‘nibus 2 Eixos)  	
-			  cs.setClassBus3Axl("4A"); // ViaPaulista (‘nibus 3 Eixos)			  			  
+			  cs.setClassBus2Axl("2A"); // ViaPaulista (√înibus 2 Eixos)
+			  cs.setClassBus3Axl("4A"); // ViaPaulista (√înibus 3 Eixos)
 			  cs.setClassSemiTrailer("3"); // ViaPaulista (Semirreboque)
 			  cs.setClassTrailer("5");	// ViaPaulista (Reboque) 
-			  cs.setClassTruck2Axl("2"); // ViaPaulista Caminhıes 2 Eixos 
-			  cs.setClassTruck3Axl("4"); // ViaPaulista Caminhıes 3 Eixos 
-			  cs.setClassTruck4Axl("6"); // ViaPaulista Caminhıes 4 Eixos 
-			  cs.setClassTruck5Axl("7"); // ViaPaulista Caminhıes 5 Eixos 
-			  cs.setClassTruck6Axl("8"); // ViaPaulista Caminhıes 6 Eixos 
-			  cs.setClassTruck7Axl("10"); // ViaPaulista Caminhıes 7 Eixos 
-			  cs.setClassTruck8Axl("11"); // ViaPaulista Caminhıes 8 Eixos 
-			  cs.setClassTruck9Axl("E9"); // ViaPaulista Caminhıes 9 Eixos 
-			  cs.setClassTruck10Axl("10N"); // ViaPaulista Caminhıes 10 Eixos
+			  cs.setClassTruck2Axl("2"); // ViaPaulista Caminh√µes 2 Eixos
+			  cs.setClassTruck3Axl("4"); // ViaPaulista Caminh√µes 3 Eixos
+			  cs.setClassTruck4Axl("6"); // ViaPaulista Caminh√µes 4 Eixos
+			  cs.setClassTruck5Axl("7"); // ViaPaulista Caminh√µes 5 Eixos
+			  cs.setClassTruck6Axl("8"); // ViaPaulista Caminh√µes 6 Eixos
+			  cs.setClassTruck7Axl("10"); // ViaPaulista Caminh√µes 7 Eixos
+			  cs.setClassTruck8Axl("11"); // ViaPaulista Caminh√µes 8 Eixos
+			  cs.setClassTruck9Axl("E9"); // ViaPaulista Caminh√µes 9 Eixos
+			  cs.setClassTruck10Axl("10N"); // ViaPaulista Caminh√µes 10 Eixos
 			  
 			  cs.setCcr_autos("1");
 			  cs.setCcr_motos("10");
@@ -168,14 +168,14 @@ public class ClassName {
 			  cs.setCcr_truck_9axles("9");
 			  cs.setCcr_truck_10axles("20");			
 			  			  
-			  cs.setClassNotIdentifiedAxl2("2N"); // ViaPaulista n„o identificadas 2 Eixos 
-			  cs.setClassNotIdentifiedAxl3("3N"); // ViaPaulista n„o identificadas 3 Eixos 
-			  cs.setClassNotIdentifiedAxl4("4N"); // ViaPaulista n„o identificadas 4 Eixos 
-			  cs.setClassNotIdentifiedAxl5("5N"); // ViaPaulista n„o identificadas 5 Eixos 
-			  cs.setClassNotIdentifiedAxl6("6N"); // ViaPaulista n„o identificadas 6 Eixos 
-			  cs.setClassNotIdentifiedAxl7("7N"); // ViaPaulista n„o identificadas 7 Eixos 
-			  cs.setClassNotIdentifiedAxl8("8N"); // ViaPaulista n„o identificadas 8 Eixos 
-			  cs.setClassNotIdentifiedAxl9("9N"); // ViaPaulista n„o identificadas 9 Eixos 
+			  cs.setClassNotIdentifiedAxl2("2N"); // ViaPaulista n√£o identificadas 2 Eixos 
+			  cs.setClassNotIdentifiedAxl3("3N"); // ViaPaulista n√£o identificadas 3 Eixos 
+			  cs.setClassNotIdentifiedAxl4("4N"); // ViaPaulista n√£o identificadas 4 Eixos 
+			  cs.setClassNotIdentifiedAxl5("5N"); // ViaPaulista n√£o identificadas 5 Eixos 
+			  cs.setClassNotIdentifiedAxl6("6N"); // ViaPaulista n√£o identificadas 6 Eixos 
+			  cs.setClassNotIdentifiedAxl7("7N"); // ViaPaulista n√£o identificadas 7 Eixos 
+			  cs.setClassNotIdentifiedAxl8("8N"); // ViaPaulista n√£o identificadas 8 Eixos 
+			  cs.setClassNotIdentifiedAxl9("9N"); // ViaPaulista n√£o identificadas 9 Eixos 
 			  cs.setUnknowClass("UC"); // Classe desconhecida	
 						 	  
 		  }	

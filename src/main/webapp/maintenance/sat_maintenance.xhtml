@@ -15,32 +15,25 @@
 	<ui:define name="head">
 	
 		<!-- TITLE -->
-		<title>#{abaLabels.sat_board}</title>
+		<title>#{abaLabels.sat_maintenance}</title>
 					
 		<!-- CSS -->			
 		<h:outputStylesheet library="css/sat" name="style.css" />		
-		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />		
+		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
+		<h:outputStylesheet name="popover.css" library="css/util/popover" /> <!-- INSERT POPOVER -->
+		<h:outputStylesheet name="tooltip.css" library="css/util/tooltip" /> <!-- INSERT TOOLTIP -->
+		<h:outputStylesheet name="preloader.css" library="css/util/preloader" /> <!-- INSERT PRELOADER -->
 						
 	</ui:define>
 	
 	<ui:define name="main-content">
-	
-	<!-- PRE LOADER -->
-		
-		<div id="preloader">
-			<!---->
-			<div class="inner">
-				<div class="bolas">
-					<div></div>
-					<div></div>
-					<div></div>
-				</div>
-			<!---->
-			</div>
-		</div>
-		
+
+		<!-- ======================== PRE LOADER ======================== -->
+
+		<ui:include src="/template/util/preloader/preloader.xhtml" />
+
 		<!---->
-		
+
 		<h:form id="enable">
 			<!-- UPDATE FORM -->
 			<h:commandButton id="btn-enable-user" value="loop"

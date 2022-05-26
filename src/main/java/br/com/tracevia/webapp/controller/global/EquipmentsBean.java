@@ -209,7 +209,9 @@ public class EquipmentsBean implements Serializable {
 			cities = concessionaireDao.cityDefinitions();
 			roads = concessionaireDao.roadDefinitions();
 			module = concessionaireDao.moduleDefinitions();
-			directionTo = concessionaireDao.cityDirectionDefinitions();
+			
+			if(login.load.isEn_colas() || login.load.isEn_dai())
+				directionTo = concessionaireDao.cityDirectionDefinitions();
 
 			for (int f = 2; f <= 8; f++) {
 

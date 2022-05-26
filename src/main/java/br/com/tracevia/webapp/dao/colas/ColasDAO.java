@@ -58,18 +58,19 @@ public class ColasDAO {
 	public List<ColasQueue> history_queue(String date, int deviceS, int laneS) throws Exception {
 
 		List<ColasQueue> list = new ArrayList<>();
-		String query = "SELECT device, update_date, lane, local, km FROM colas_history h INNER JOIN colas_equipment "
-				+ "WHERE update_date >= '"
+		String query = "SELECT h.device, h.update_date, h.lane, h.local, c.km FROM colas_history h "
+				+ "INNER JOIN colas_equipment c ON h.device = c.equip_id "
+				+ "WHERE h.update_date >= '"
 				+ date
 				+ " 00:00:00' "
-				+ "AND update_date < '"
+				+ "AND h.update_date < '"
 				+ date
 				+ " 23:59:59'";
 
 		if (laneS > 0)
-			query += " AND lane = " + laneS;
+			query += " AND h.lane = " + laneS;
 		if (deviceS > 0)
-			query += " AND device = " + deviceS;
+			query += " AND h.device = " + deviceS;
 
 		try {
 			conn.start(1);
@@ -81,16 +82,16 @@ public class ColasDAO {
 			if (result.hasNext()) {
 				for (RowResult rs : result) {
 
-					int device = rs.getInt("device");
-					int lane = rs.getInt("lane");
-					int local = rs.getInt("local");
-					String km = rs.getString("km");
+					int device = rs.getInt("h.device");
+					int lane = rs.getInt("h.lane");
+					int local = rs.getInt("h.local");
+					String km = rs.getString("h.km");
 
 					ColasQueue colas = new ColasQueue(device, lane, local, km);
 
 					SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd hh:MM");
 
-					colas.setDate(format.parse(rs.getString("update_date")));
+					colas.setDate(format.parse(rs.getString("h.update_date")));
 
 					list.add(colas);
 				}				

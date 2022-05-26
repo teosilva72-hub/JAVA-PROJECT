@@ -111,7 +111,7 @@ public class FluxoPeriodoBean implements Serializable {
 	fontSubHeader, fontBody, fontIntervalo;
 	
 	int indice, interResp, last_index, fieldsLenght; 
-	String dtInicio, fileName;
+	String dtInicio, dtFinal, fileName;
 
 	String[] intervalo, interInicio, interFim, separador, data;
 	
@@ -362,7 +362,8 @@ public class FluxoPeriodoBean implements Serializable {
 												
 			tamanho = ((daysInMonth * tam) * equips.length);	
 								
-			dtInicio = startDate;			
+			dtInicio = startDate;
+			dtFinal = endDate;
 			data_anterior = startDate;			
 			equip_anterior = Integer.parseInt(equips[0]);		
 			pos = 0;					
@@ -419,7 +420,8 @@ public class FluxoPeriodoBean implements Serializable {
 				 // System.out.println("Entrando no Loop ...");
 													
 					if(Integer.parseInt(equip) != equip_anterior) {
-						 dtInicio = startDate;					    
+						 dtInicio = startDate;		
+						 data_anterior = startDate;
 					     pos = (sheetIndex * ((daysInMonth * tam)));	
 					}					
 																
@@ -432,9 +434,9 @@ public class FluxoPeriodoBean implements Serializable {
 					//CASO EXISTA REGISTROS ENTRA AQUI
 					if(auxResult.length > 0) {	
 																	
-					lin = auxResult.length;
-					col = auxResult[0].length;
-																			
+						lin = auxResult.length;
+						col = auxResult[0].length;
+																	
 					for(int j = 0; j < lin; j++) {
 						   for(int i = 0; i < col; i++) {
 						
@@ -446,8 +448,7 @@ public class FluxoPeriodoBean implements Serializable {
 							
 						else if(!period.equals("24 hours") && !period.equals("01 hour")) {
 							    hr = Integer.parseInt(auxResult[j][1].substring(0, 2));
-							    minuto =  Integer.parseInt(auxResult[j][1].substring(3, 5));	
-							    			 
+							    minuto =  Integer.parseInt(auxResult[j][1].substring(3, 5));							    			 
 							}
 						
 							// Restrio caso no haja dados nos primeiros registros
@@ -460,6 +461,9 @@ public class FluxoPeriodoBean implements Serializable {
 								
 								pos+= iterator;
 								dtInicio = null;
+								
+								// ADICIONA-SE A DATA ANTERIOR A DATA DO REGISTRO ATUAL
+								data_anterior = auxResult[j][0];
 
 							} else if (!auxResult[j][0].equals(data_anterior)) {								
 															
@@ -468,11 +472,14 @@ public class FluxoPeriodoBean implements Serializable {
 								   
 								else iterator = dta.daysDifference(data_anterior, auxResult[j][0], tam);	
 								
-								pos+= iterator;							
-							} 			
+								pos+= iterator;		
+								
+								// ADICIONA-SE A DATA ANTERIOR A DATA DO REGISTRO ATUAL
+								data_anterior = auxResult[j][0];
+							} 	
 							
-							 data_anterior = auxResult[j][0];
-																				
+							// ------------------------------------------------------------------------------------ 
+																																									
 							 if(period.equals("15 minutes")) {	
 								 p = dta.index15Minutes(hr, minuto);
 						         index = p + pos;										
@@ -480,8 +487,7 @@ public class FluxoPeriodoBean implements Serializable {
 							 
 							 else if(period.equals("01 hour"))				
 								 index = pos + hr;
-							
-							
+														
 							else if(period.equals("24 hours"))
 								  index = pos;
 																	 
@@ -490,12 +496,12 @@ public class FluxoPeriodoBean implements Serializable {
 																									
 						   } // CASO NO EXISTA VALOR >>>>>>> PASSA
 						 }
-					   }
+					  }
 					
-					 equip_anterior = Integer.parseInt(equip);
+					equip_anterior = Integer.parseInt(equip);
 					
-					}											
-								   
+				} // END
+										   
 			}catch(Exception ex) {
 				ex.printStackTrace();
 			}			

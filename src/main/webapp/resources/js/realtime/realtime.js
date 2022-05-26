@@ -18,10 +18,23 @@ setInterval(() => {
 	
  }, 3000)
 
-// *********************************************************** //
+// ===========================================================
 
 const init = () => {
-	$('#equipAll').load('/realtime/realtimeEquip.xhtml', () => {
+
+        // if any popover is opened then it's closed on page load
+         $('[data-toggle=popover-d]').popover('hide')
+
+	$('#equipAll').load('/realtime/realtimeEquip.xhtml', () => {		
+		
+		// PRELOADER LOADING 
+		
+		$('#preloader .inner').fadeOut();
+  		$('#preloader').fadeOut('slow');
+  		$('body').delay(350).css({'overflow' : 'visible'});
+
+		// ---------------------------------------------------
+		
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))
 
@@ -88,6 +101,7 @@ const onEventMapFunction = data => {
 	}
 }
 
+
 const setInfoEquip = () => {
 	
 	// Tooltips and Popovers use our built-in sanitizer to sanitize options which accept HTML.
@@ -117,14 +131,44 @@ const setInfoEquip = () => {
 			return $(title).children(".popover-header").html();
 		}
 	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
 	$('[data-toggle=popover-d]').popover({
 		html: true,
-		trigger: 'hover',		
-		template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body p-0"></div></div>',
+		trigger: 'click',		
+		template: '<div class="popover custom-detail"><div class="arrow"></div><div class="popover-body p-0"></div></div>',
 		content: function () {
-			return $('.popover-d').parent().html();
-		},
+			let content = $(this).attr("data-popover-content");
+			return $(content).children(".popover-body").html();
+		},		
 	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	// hide opened popover when click outside popover content
+	$('html').on('click', function (e) {
+	    $('[data-toggle=popover-d]').each(function () {	       
+	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+	            $(this).popover('hide');
+	        }
+	    });
+	});	
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	// hide opened popover when esc key is pressed
+	$(document).keydown(function(e){
+	   if (e.keyCode === 27)
+	      $('[data-toggle=popover-d]').each(function () {	       
+	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+	            $(this).popover('hide');
+	        }
+	    });
+	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+
 }
 
 const setEquipToolTip = () => {
