@@ -21,7 +21,10 @@ setInterval(() => {
 // ===========================================================
 
 const init = () => {
-		
+
+        // if any popover is opened then it's closed on page load
+         $('[data-toggle=popover-d]').popover('hide')
+
 	$('#equipAll').load('/realtime/realtimeEquip.xhtml', () => {		
 		
 		// PRELOADER LOADING 
@@ -77,12 +80,8 @@ const init = () => {
 			initGPS();
 
 		if (window.initMeteo)
-			initMeteo();					
-  	
+			initMeteo();
 	})
-		
-	 // if any popover is opened then it's closed on page load
-	 $('[data-toggle=popover-d]').popover('hide')
 }
 
 const onEventMapFunction = data => {

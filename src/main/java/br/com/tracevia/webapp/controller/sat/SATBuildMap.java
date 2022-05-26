@@ -74,7 +74,17 @@ public class SATBuildMap implements Serializable {
 			e.printStackTrace();
 		}			   				
 	}
-				
+
+	// ----------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Método de carregamento das informações dos SATs.
+	 * @author Wellington 26/05/2022
+	 * @version 1.0
+	 * @since 1.0
+	 * @return lista de objetos com informações dos equipamentos.
+	 */
+
 	public List<SAT> BuildSAT() {
 
 		dao = new DataSatDAO(); // GLOBAL SAT DATA OBJECT ACCESS
@@ -104,171 +114,175 @@ public class SATBuildMap implements Serializable {
 										
 				// INIT SAT LIST IDS
 				equips.getSatList().forEach(item -> equipIdList.add(item.getEquip_id()));
-							
+
+				//---------------------------------------------------------------
+
 				// TEMPORARY TABLES SQL
 											
-				dao.temporaryEquip(); // CALL TEMP EQUIP
+				dao.temporaryEquip(); // CALL TEMP EQUIP DIRECTIONS
 				
-				dao.temporaryMaxDate(); // CALL TEMP MAX DATE
+				dao.temporaryMaxDate(); // CALL TEMP MAX DATE VBV
 				
 				dao.temporaryLastHourInterval(); // CALL LAST HOUR INTERVAL
 				
 				dao.temporaryLast7DaysInterval(); // CALL LAST 7 DAYS INTERVAL 
 				
-				dao.temporaryLast7Days(); // CALL LAST 7 DAYS 
+				dao.temporaryLast7Days(); // CALL LAST 7 DAYS DATA
 				
-				dao.temporaryLastHour(); // CALL LAST HOUR 
+				dao.temporaryLastHour(); // CALL LAST HOUR DATA
 				
-				// TEMPORARY TABLES SQL 
+				// TEMPORARY TABLES SQL
+
+				//---------------------------------------------------------------
 			
 				 data15MinList = dao.dataInterval(limit, "MINUTE", 15, availabilityList);
 				 
-				  if(!data15MinList.isEmpty()) {
-																								
-						data15MinList.forEach(item -> availabilityList.add(item.getEquip_id()));
-											
-						satListValuesAux.addAll(data15MinList);		
-						
-					    limit = limit - data15MinList.size();
-					   																									
-					}
+					  if(!data15MinList.isEmpty()) {
+
+							data15MinList.forEach(item -> availabilityList.add(item.getEquip_id()));
+
+							satListValuesAux.addAll(data15MinList);
+
+							limit = limit - data15MinList.size();
+
+						}
 					
-					// ----------------------------------------------------------------------- 
+				// -----------------------------------------------------------------------
 					
-					if(limit > 0) {
-						
-						 data30MinList = dao.dataInterval(limit, "MINUTE", 30, availabilityList);
-						 
-								if(!data30MinList.isEmpty()) {
-																 									
-									if(!data15MinList.isEmpty()) {
-									
-										for(SAT value : data30MinList) {											
-										
-												availabilityList.add(value.getEquip_id());										
-												satListValuesAux.add(value);																									
-										 }	
-										
-											limit = limit - data30MinList.size();
-																																															
-										} else {
-											
-											data30MinList.forEach(item -> availabilityList.add(item.getEquip_id()));																					
-											satListValuesAux.addAll(data30MinList);			
-											
-											limit = limit - data30MinList.size();
-																						
-										}							
-									}							
-							    }
-					
-							// ----------------------------------------------------------------------- 
-					
-							if(limit > 0) {
-								
-								 data03HourList = dao.dataInterval(limit, "HOUR", 3, availabilityList);
-								 										
-										if(!data03HourList.isEmpty()) {
-																					  
-											if(!data30MinList.isEmpty()) {
-											
-												for(SAT value : data03HourList) {													
-													
-														availabilityList.add(value.getEquip_id());		
-																												
-														satListValuesAux.add(value);	
-																																
-												 }	
-												
-													limit = limit - data03HourList.size();
-																																																																										
-												} else {
-													
-													data03HourList.forEach(item -> availabilityList.add(item.getEquip_id()));																											
-													satListValuesAux.addAll(data03HourList);	
-														
-													limit = limit - data03HourList.size();		
-																																						
-												}										
-											}							
-									    }
-							
-							// ----------------------------------------------------------------------- 
-							
-							if(limit > 0) {
-																
-								 data06HourList = dao.dataInterval(limit, "HOUR", 6, availabilityList);
-								 																 																
-										if(!data06HourList.isEmpty()) {
-																				
-											if(!data03HourList.isEmpty()) {
-											
-												for(SAT value : data06HourList) {													
-													
-														availabilityList.add(value.getEquip_id());										
-														satListValuesAux.add(value);																												
-												 }	
-												
-													limit = limit - data06HourList.size();
-																																																			
-												} else {
-													
-													data06HourList.forEach(item -> availabilityList.add(item.getEquip_id()));																										
-													satListValuesAux.addAll(data06HourList);
-													
-													limit = limit - data06HourList.size();
-																										
-												}							
-											}							
-									    }
-							
-							// ----------------------------------------------------------------------- 
-							
-							if(limit > 0 && !availabilityList.isEmpty()) { // CASO NÃO EXISTA NAS VALORES
-																																													
-									noDataList = dao.noDataInterval(limit, availabilityList, false);
-								
-									if(!noDataList.isEmpty()) {
-																				
-										noDataList.forEach(item -> unavailabilityList.add(item.getEquip_id())); // ADD NO VALUES TO AUX LIST																								
-										satListValuesAux.addAll(noDataList); // ADD DATA TO A LIST
-																																	
-										limit =  limit - noDataList.size(); // LIMIT											
-										
-											if(limit > 0) {	// CASO O LIMITE AINDA SEJA MAIOR QUE ZERO ENTRA NA PROXIMA CONDICAO
-																												
-												availabilityList.forEach(item -> availableAuxList.add(item));
-												unavailabilityList.forEach(item -> availableAuxList.add(item));
-												
-												for(int id : equipIdList) {		
-													if(!availableAuxList.contains(id)) 
-														 unavailableAuxList.add(id);								
-												 
-												 }
-												
-											    satListValuesAux.addAll(completeAllEquips(unavailableAuxList));	// COMPLETA OS EQUIPAMENTOS
-											  
-											    limit = 0;									    
-											   
-											}						
-																		
-									} else { // CASO NAO EXISTA VALORES NA LISTA ENTRA AQUI
-																				
-										for(int id : equipIdList) {			
-											if(!availabilityList.contains(id)) 
-												unavailabilityList.add(id);																		
-										}
-																																	
-										satListValuesAux.addAll(completeAllEquips(unavailabilityList));	
-								  
-										limit = 0;
-								}														
-							
-							} else if(availabilityList.isEmpty())								
-							{							
-								satListValuesAux = intializeNullList(limit, equipIdList);
-								
+				if(limit > 0) {
+
+					 data30MinList = dao.dataInterval(limit, "MINUTE", 30, availabilityList);
+
+							if(!data30MinList.isEmpty()) {
+
+								if(!data15MinList.isEmpty()) {
+
+									for(SAT value : data30MinList) {
+
+											availabilityList.add(value.getEquip_id());
+											satListValuesAux.add(value);
+									 }
+
+										limit = limit - data30MinList.size();
+
+								} else {
+
+										data30MinList.forEach(item -> availabilityList.add(item.getEquip_id()));
+										satListValuesAux.addAll(data30MinList);
+
+										limit = limit - data30MinList.size();
+
+									}
 							}
+				}
+
+				// -----------------------------------------------------------------------
+
+				if(limit > 0) {
+								
+					 data03HourList = dao.dataInterval(limit, "HOUR", 3, availabilityList);
+								 										
+							if(!data03HourList.isEmpty()) {
+
+								if(!data30MinList.isEmpty()) {
+
+									for(SAT value : data03HourList) {
+
+											availabilityList.add(value.getEquip_id());
+
+											satListValuesAux.add(value);
+
+									 }
+
+										limit = limit - data03HourList.size();
+
+								} else {
+
+										data03HourList.forEach(item -> availabilityList.add(item.getEquip_id()));
+										satListValuesAux.addAll(data03HourList);
+
+										limit = limit - data03HourList.size();
+
+									}
+							}
+				}
+							
+				// -----------------------------------------------------------------------
+							
+				if(limit > 0) {
+																
+					 data06HourList = dao.dataInterval(limit, "HOUR", 6, availabilityList);
+								 																 																
+							if(!data06HourList.isEmpty()) {
+
+								if(!data03HourList.isEmpty()) {
+
+									for(SAT value : data06HourList) {
+
+											availabilityList.add(value.getEquip_id());
+											satListValuesAux.add(value);
+									 }
+
+										limit = limit - data06HourList.size();
+
+								} else {
+
+										data06HourList.forEach(item -> availabilityList.add(item.getEquip_id()));
+										satListValuesAux.addAll(data06HourList);
+
+										limit = limit - data06HourList.size();
+
+								}
+							}
+				}
+
+				// -----------------------------------------------------------------------
+
+				if(limit > 0 && !availabilityList.isEmpty()) { // CASO NÃO EXISTA NAS VALORES
+
+						noDataList = dao.noDataInterval(limit, availabilityList, false);
+								
+							if(!noDataList.isEmpty()) {
+
+									noDataList.forEach(item -> unavailabilityList.add(item.getEquip_id())); // ADD NO VALUES TO AUX LIST
+									satListValuesAux.addAll(noDataList); // ADD DATA TO A LIST
+
+									limit =  limit - noDataList.size(); // LIMIT
+
+								if(limit > 0) {	// CASO O LIMITE AINDA SEJA MAIOR QUE ZERO ENTRA NA PROXIMA CONDICAO
+
+									availabilityList.forEach(item -> availableAuxList.add(item));
+									unavailabilityList.forEach(item -> availableAuxList.add(item));
+
+									for(int id : equipIdList) {
+										if(!availableAuxList.contains(id))
+											 unavailableAuxList.add(id);
+
+									 }
+
+									satListValuesAux.addAll(completeAllEquips(unavailableAuxList));	// COMPLETA OS EQUIPAMENTOS
+
+									limit = 0;
+
+								}
+
+							} else { // CASO NAO EXISTA VALORES NA LISTA ENTRA AQUI
+
+								for(int id : equipIdList) {
+									if(!availabilityList.contains(id))
+										unavailabilityList.add(id);
+								}
+
+								satListValuesAux.addAll(completeAllEquips(unavailabilityList));
+
+								limit = 0;
+							}
+
+				} else if(availabilityList.isEmpty())
+				{
+						satListValuesAux = intializeNullList(limit, equipIdList);
+
+				}
 							
 						// ----------------------------------------------------------------------- 
 													
@@ -276,24 +290,35 @@ public class SATBuildMap implements Serializable {
 						
 						// -----------------------------------------------------------------------												
 										
-			} catch (IndexOutOfBoundsException ex) {
+				} catch (IndexOutOfBoundsException ex) {
 
-				ex.printStackTrace();
-			}
+					ex.printStackTrace();
+				}
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 
-		FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(":navbarDropdown2");
-				
-		dao.connectionClose(); // CLOSE CONNECTION
-		
-		return satListValuesAux;
+				FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(":navbarDropdown2");
+
+				dao.connectionClose(); // CLOSE CONNECTION
+
+				return satListValuesAux;
 	
 	}
 
-	// ----------------------------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Método para inicializar equipamentos sem dados.
+	 * @author Wellington 26/05/2022
+	 * @version 1.0
+	 * @since 1.0
+	 * @param limit número de equipamentos disponíveis
+	 * @param equipIdList lista de ids dos equipamentos
+	 * @throws Exception
+	 * @return lista de objetos com informações dos equipamentos.
+	 * */
 
 	public List<SAT> intializeNullList(int limit, List<Integer> equipIdList) throws Exception {
 				
@@ -339,8 +364,17 @@ public class SATBuildMap implements Serializable {
 		return satListValuesAux;
 	}
 
-	// ----------------------------------------------------------------------------------------------------
-	
+	// ----------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Método auxiliar para completar informações de equipamentos sem dados.
+	 * @author Wellington 26/05/2022
+	 * @version 1.0
+	 * @since 1.0
+	 * @param equips lista de ids dos equipamentos
+	 * @throws Exception
+	 * @return lista de objetos com informações dos equipamentos.
+	 * */
 	public List<SAT> completeAllEquips(List<Integer> equips){
 		
 		List<SAT> list = new ArrayList<SAT>();
@@ -448,7 +482,7 @@ public class SATBuildMap implements Serializable {
 		
 		return list;		
 	}
-	
-	// ----------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------------------
 	
 }

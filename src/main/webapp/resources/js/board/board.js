@@ -22,13 +22,18 @@ setInterval(() => {
 
 // ===========================================================
 	
-const init = () => {	
-		
+const init = () => {
+
+    // if any popover is opened then it's closed on page load
+	 $('[data-toggle=popover-d]').popover('hide')
+
+		// PRELOADER LOADING
+
 		$('#preloader .inner').fadeOut();
 	  	$('#preloader').fadeOut('slow');
 	  	$('body').delay(350).css({'overflow' : 'visible'});
 		
-	// ---------------------------------------------------
+	    // ---------------------------------------------------
 			
 	 $('.equip-box').each(function () {
 			
@@ -40,10 +45,6 @@ const init = () => {
 	
 		setInfoEquip();
 		setEquipToolTip();	
-				
-	// if any popover is opened then it's closed on page load
-	 $('[data-toggle=popover-d]').popover('hide')
-
 }
 
 // *********************************************************** //

@@ -274,12 +274,12 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * M�todo para listar equipamentos por m�dulo
+	 * Método para listar equipamentos por módulo
 	 * 
 	 * @author Guilherme
 	 * @version 1.0
 	 * @since Release 1.0
-	 * @param mod - Módulo
+	 * @param permission - permissão
 	 * @return ArrayList - Lista de equipamentos
 	 */
 
@@ -363,7 +363,7 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * M�todo para listar equipamentos do tipo SAT
+	 * Método para listar equipamentos do tipo SAT
 	 * 
 	 * @author Wellington
 	 * @version 1.0
