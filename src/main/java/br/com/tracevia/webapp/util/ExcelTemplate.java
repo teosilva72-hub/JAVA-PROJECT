@@ -1918,7 +1918,6 @@ public class ExcelTemplate {
 		utilSheet.setCellsStyle(sheet, row, dateTimeStyle, 1, 1, dataStartRow, dataEndRow);		
 		utilSheet.setCellsStyle(sheet, row, bgColorBodyStyle1, 2, 4, dataStartRow, dataEndRow);
 		utilSheet.setCellsStyle(sheet, row, bgColorBodyStyle2, 5, 7, dataStartRow, dataEndRow);	
-		
 	}
 	
 	public void generateVehicleSpeedEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
@@ -1988,7 +1987,7 @@ public class ExcelTemplate {
 				IDs.add(l.getKey());
 				
 				sheet = workbook.createSheet(l.getKey() + equip.getKey());	
-				utilSheet.columnsWidth(sheet, 0, 0, 4300);
+				utilSheet.columnsWidth(sheet, 0, 5, 4300);
 				
 				String direction = equip.getKey();
 				excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, "sat", columns.size(), "Contagem de Veículo",  

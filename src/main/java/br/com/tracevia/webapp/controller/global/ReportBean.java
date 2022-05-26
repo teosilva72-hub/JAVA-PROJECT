@@ -1260,7 +1260,7 @@ public class ReportBean implements Serializable{
 						for (int n = 1; n <= count; n++) {
 							ByteArrayOutputStream output = new ByteArrayOutputStream();
 							options.setPageNumber(n);
-							options.setPagesCount(n);
+							options.setPagesCount(1);
 							converter.convert(output, options);
 							output.close();
 							sheets.add(output.toByteArray());
