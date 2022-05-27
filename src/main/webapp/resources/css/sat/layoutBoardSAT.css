@@ -27,11 +27,13 @@ body{
 
 .info-badge{
 	float: left;
-	margin-left: -12px;
+	margin-left: -15px;
 }
 
 .detail-badge{
-	margin-left: 118px;
+	margin-left: -15px;
+    margin-top: 20px;
+    background-color: #000000;
 }
 
 /* sat info div*/
