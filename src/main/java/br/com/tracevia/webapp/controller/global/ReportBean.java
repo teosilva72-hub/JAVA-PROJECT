@@ -1,11 +1,6 @@
 package br.com.tracevia.webapp.controller.global;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -1190,7 +1185,7 @@ public class ReportBean implements Serializable{
 						Path path = Paths.get(currentDir, "resources", "temp");
 						Path file = Files.createTempFile(path, fileName, null);
 						InputStream stream = model.ToInput();
-						Files.write(file, stream.readAllBytes());
+						Files.write(file, readAllBytes(stream));
 						SessionUtil.getExternalContext().getSessionMap().put(fileName+"PDF", file);
 						
 						model = new ExcelTemplate();
@@ -1226,6 +1221,17 @@ public class ReportBean implements Serializable{
 	        }
 
 	  // -------------------------------------------------------------------------------------------------------------------------------------------------
+
+		public byte[] readAllBytes(InputStream stream) throws IOException {
+			int b = stream.read();
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+			while (b != 1) {
+				out.write(b);
+			}
+
+			return out.toByteArray();
+		}
 
 	  	public void download() {
 
