@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -24,6 +25,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+
+import org.apache.commons.io.FileUtils;
 
 import com.google.gson.Gson;
 import com.groupdocs.conversion.Converter;
@@ -1185,7 +1188,7 @@ public class ReportBean implements Serializable{
 						Path path = Paths.get(currentDir, "resources", "temp");
 						Path file = Files.createTempFile(path, fileName, null);
 						InputStream stream = model.ToInput();
-						Files.write(file, readAllBytes(stream));
+						FileUtils.copyInputStreamToFile(stream, new File(file.toString()));
 						SessionUtil.getExternalContext().getSessionMap().put(fileName+"PDF", file);
 						
 						model = new ExcelTemplate();
@@ -1221,17 +1224,6 @@ public class ReportBean implements Serializable{
 	        }
 
 	  // -------------------------------------------------------------------------------------------------------------------------------------------------
-
-		public byte[] readAllBytes(InputStream stream) throws IOException {
-			int b = stream.read();
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-			while (b != 1) {
-				out.write(b);
-			}
-
-			return out.toByteArray();
-		}
 
 	  	public void download() {
 
