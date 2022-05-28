@@ -81,7 +81,7 @@ public class MaintenanceDAO {
 				
 			try {
 				
-				System.out.println(currentDate);
+				//System.out.println(currentDate);
 				
 				conn.start(1);
 				

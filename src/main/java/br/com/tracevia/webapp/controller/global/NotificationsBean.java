@@ -54,10 +54,7 @@ public class NotificationsBean implements Serializable {
 		DateTimeApplication dt = new DateTimeApplication();
 	
 		// SWITCH NOTIFICATION STATUS
-		
-		System.out.println("AV: "+available.size());
-		System.out.println("UN: "+unavailable.size());
-		
+				
 		if(!available.isEmpty()) {
 							
 			for(Equipments eq : values) {

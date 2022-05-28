@@ -153,14 +153,16 @@
 			  	<!---->
 			
 				<button type="button" id="btn-form-before-submit"
-					class="btn btn-dark form-modal-draw-button submit-btn ml-5" onclick="verif('#vbv-form', '[id$=btn-form-send]')">#{satLabels.sat_reports_form_btn_send}
+					class="btn btn-dark form-modal-draw-button submit-btn" onclick="verif('#vbv-form', '[id$=btn-form-send]')">#{satLabels.sat_reports_form_btn_send}
 				</button>
 				
 				<!---->
 	
 				<h:commandButton value="#{reportsLabels.reports_form_btn_send}"
-					id="btn-form-send" action="#{vbvReportBean.getTextFile}"
-					class="btn btn-dark form-modal-draw-button d-none" /> <!-- SEND -->
+					id="btn-form-send" class="btn btn-dark form-modal-draw-button d-none" > 
+					<f:ajax execute="@form" render="@form" listener="#{vbvReportBean.getTextFile}"
+							onevent="onEventFunction" />					
+					</h:commandButton><!-- SEND -->
 				
                 <!---->
                 

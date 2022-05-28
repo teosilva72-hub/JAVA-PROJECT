@@ -57,7 +57,7 @@ public class TranslationMethods {
 		case "Folio Secuencial" : converteOcc = localeOccTuxpan.getStringKey("folio"); break;
 		case "Reporte" : converteOcc = localeOccTuxpan.getStringKey("report"); break;
 		case "Data" : converteOcc = localeOccTuxpan.getStringKey("date"); break;
-		case "Dirección Y/O Trayectoria" : converteOcc = localeOccTuxpan.getStringKey("direction"); break;
+		case "DirecciÃ³n Y/O Trayectoria" : converteOcc = localeOccTuxpan.getStringKey("direction"); break;
 		case "KM de Registro" : converteOcc = localeOccTuxpan.getStringKey("km_reg"); break;
 		case "KM Inicial" : converteOcc = localeOccTuxpan.getStringKey("km_init"); break;
 		case "KM Final" : converteOcc = localeOccTuxpan.getStringKey("km_end"); break;
@@ -79,7 +79,7 @@ public class TranslationMethods {
 		
 		case "Motivo del Accidente" : converteOcc = localeOccTuxpan.getStringKey("reason_acc"); break;
 		case "Semoviente" : converteOcc = localeOccTuxpan.getStringKey("semoviente"); break;
-		case "Trabajos de Conservación" : converteOcc = localeOccTuxpan.getStringKey("worked"); break;
+		case "Trabajos de ConservaciÃ³n" : converteOcc = localeOccTuxpan.getStringKey("worked"); break;
 		case "Reporte Preliminar de Siniestro" : converteOcc = localeOccTuxpan.getStringKey("report_preliminary"); break;
 		case "Poliza Aplicada" : converteOcc = localeOccTuxpan.getStringKey("policy_app"); break;
 		case "Lluvia, Granizo" : converteOcc = localeOccTuxpan.getStringKey("rain_hail"); break;

@@ -37,9 +37,9 @@ public class SNMPManager {
 	public SNMPManager() {}
 
 	/**	
-    * Inicie a sessão Snmp. Se você esquecer o método listen (), não irá
-    * obtenha respostas porque a comunicação é assíncrona
-    * e o método listen () ouve as respostas.
+    * Inicie a sessÃ£o Snmp. Se vocÃª esquecer o mÃ©todo listen (), nÃ£o irÃ¡
+    * obtenha respostas porque a comunicaÃ§Ã£o Ã© assÃ­ncrona
+    * e o mÃ©todo listen () ouve as respostas.
 	* @throws IOException	
 	*/
 	
@@ -51,7 +51,7 @@ public class SNMPManager {
 	} 
 	
 	/**	
-	* Método que utiliza um único OID e retorna a resposta do agente como uma String.
+	* MÃ©todo que utiliza um Ã­nico OID e retorna a resposta do agente como uma String.
 	* @param oid	
 	* @return	
 	* @throws IOException	
@@ -63,7 +63,7 @@ public class SNMPManager {
 	}
 
 	/**	
-	* Esse método é capaz de lidar com vários OIDs	
+	* Esse mÃ©todo Ã© capaz de lidar com vÃ¡rios OIDs	
 	* @param oids
 	* @return	
 	* @throws IOException	
@@ -92,7 +92,7 @@ public class SNMPManager {
 	 
 
 	/**	
-	* Este método retorna um Target, que contém informações sobre
+	* Este mÃ©todo retorna um Target, que contÃ©m informÃ§Ã´es sobre
     * onde os dados devem ser buscados e como.
 	* @return	
 	*/
