@@ -11,7 +11,7 @@ setInterval(() => {
     let n = data.getSeconds();
     let minute = data.getMinutes();
 
-    if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
+    if ( minute == 50 ) {
         if (n > 0 && n < 4)
             init();
     }
@@ -21,8 +21,11 @@ setInterval(() => {
 // *********************************************************** //
 
 const init = () => {
+    // if any popover is opened then it's closed on page load
+    $('[data-toggle=popover-d]').popover('hide')
+    $('[role=tooltip]').tooltip('hide')
+    
     $('#equipAll').load('/map/mapEquip.xhtml', () => {
-        $('[role=tooltip]').tooltip('hide')
         resizeEquipScale($('[scroll-zoom]'))
         resizeEquip($('[scroll-zoom]'))
 
@@ -74,8 +77,6 @@ const init = () => {
         $('#preloader').addClass('d-none') // PRE LOADER CLASS
     })
 
-    // if any popover is opened then it's closed on page load
-    $('[data-toggle=popover-d]').popover('hide')
 
 }
 
