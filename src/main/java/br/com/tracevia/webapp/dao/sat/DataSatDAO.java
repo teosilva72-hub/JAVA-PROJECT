@@ -632,7 +632,8 @@ public class DataSatDAO {
  		
  				// -----------------------------------------------------
 				  		 		
-		 		select += "GROUP BY ESTACAO ";
+		 		select += "GROUP BY ESTACAO "
+		 				+ "ORDER BY d.DATA_HORA DESC ";
 			 	 	 					
  	 try {				
 			 			
