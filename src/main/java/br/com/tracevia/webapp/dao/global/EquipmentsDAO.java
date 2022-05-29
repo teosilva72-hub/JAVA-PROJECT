@@ -23,7 +23,7 @@ import br.com.tracevia.webapp.model.sos.SOS;
 
 public class EquipmentsDAO {
 
-	SQL_Tracevia conn = new SQL_Tracevia();
+	SQL_Tracevia conn;
 
 	// --------------------------------------------------------------------------------------------------------------
 
@@ -34,6 +34,8 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	public EquipmentsDAO() {
+		
+		conn = new SQL_Tracevia();
 
 		SystemLog.createLogFolder(errorFolder);
 
@@ -58,6 +60,7 @@ public class EquipmentsDAO {
 		String sql = "UPDATE " + modulo + "_equipment SET " + view + "_width = ? WHERE equip_id > 0;";
 
 		try {
+			
 			conn.start(1);
 
 			conn.prepare(sql);

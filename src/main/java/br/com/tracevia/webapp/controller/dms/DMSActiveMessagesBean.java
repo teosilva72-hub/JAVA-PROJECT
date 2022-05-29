@@ -60,9 +60,6 @@ public class DMSActiveMessagesBean implements Serializable {
 	@ManagedProperty(value = "#{language}")
 	private LanguageBean lang;
 
-	@ManagedProperty("#{msgs}")
-	private ResourceBundle msgs;
-
 	public int getAmountDMS() {
 		return amountDMS;
 	}
@@ -126,15 +123,7 @@ public class DMSActiveMessagesBean implements Serializable {
 	public void setLang(LanguageBean lang) {
 		this.lang = lang;
 	}
-
-	public ResourceBundle getMsgs() {
-		return msgs;
-	}
-
-	public void setMsgs(ResourceBundle msgs) {
-		this.msgs = msgs;
-	}
-
+	
 	public String getImagem() {
 		return imagem;
 	}
@@ -243,6 +232,7 @@ public class DMSActiveMessagesBean implements Serializable {
 	public void initialize() {
 
 		try {
+			
 			imagem = "000_6464.bmp";
 
 			checkbox = true;
@@ -254,6 +244,7 @@ public class DMSActiveMessagesBean implements Serializable {
 			DMSDAO dmsDAO = new DMSDAO();
 
 			dmsList = dmsDAO.idsDMS();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

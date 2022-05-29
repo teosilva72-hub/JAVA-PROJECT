@@ -22,8 +22,11 @@ setInterval(() => {
 
 const init = () => {
 
-        // if any popover is opened then it's closed on page load
-         $('[data-toggle=popover-d]').popover('hide')
+	     // if any popover is opened then it's closed on page load
+	     $('[data-toggle=popover-d]').popover('hide')
+	     
+	     // if any tooltip is opened then it's closed on page load
+	     $("[role='tooltip']").tooltip('hide');
 
 	$('#equipAll').load('/realtime/realtimeEquip.xhtml', () => {		
 		
@@ -143,6 +146,15 @@ const setInfoEquip = () => {
 			return $(content).children(".popover-body").html();
 		},		
 	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	  $('[data-toggle=popover-d]').each(function () {
+	    	$(this).tooltip({    
+	   		placement : 'top',  
+	    	title : $(this).attr("tooltip-title")         
+	  	})          
+ 	 })   
 	
 	// -------------------------------------------------------------------------------------------------------------------
 	
@@ -938,6 +950,14 @@ $(editModal => {
 		editBtnDisabled(false)
 	})
 })
+
+ // ------------------------------------------
+
+$('#editmodal').on("hide.bs.modal", function () {
+		editBtnDisabled(true)
+})
+	
+ // ------------------------------------------
 
 function editBtnDisabled(cheked){
 	$('#btn-form-confirm-edit').attr("disabled", cheked)
