@@ -22,8 +22,11 @@ setInterval(() => {
 
 const init = () => {
 
-        // if any popover is opened then it's closed on page load
-         $('[data-toggle=popover-d]').popover('hide')
+	     // if any popover is opened then it's closed on page load
+	     $('[data-toggle=popover-d]').popover('hide')
+	     
+	     // if any tooltip is opened then it's closed on page load
+	     $("[role='tooltip']").tooltip('hide');
 
 	$('#equipAll').load('/realtime/realtimeEquip.xhtml', () => {		
 		
@@ -143,6 +146,15 @@ const setInfoEquip = () => {
 			return $(content).children(".popover-body").html();
 		},		
 	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	  $('[data-toggle=popover-d]').each(function () {
+	    	$(this).tooltip({    
+	   		placement : 'top',  
+	    	title : $(this).attr("tooltip-title")         
+	  	})          
+ 	 })   
 	
 	// -------------------------------------------------------------------------------------------------------------------
 	
@@ -306,7 +318,7 @@ $(function () {
 				$('.ipAddress-edit').hide();
 				$('.directionToHidden-edit').hide();		
 			
-			}else if (selectVAL == 2 || selectVAL ==4) {
+			}else if (selectVAL == 2 || selectVAL ==4 || selectVAL == 5) {
 				
 				$('.directionToHidden-edit').show();
 			
@@ -939,6 +951,14 @@ $(editModal => {
 	})
 })
 
+ // ------------------------------------------
+
+$('#editmodal').on("hide.bs.modal", function () {
+		editBtnDisabled(true)
+})
+	
+ // ------------------------------------------
+
 function editBtnDisabled(cheked){
 	$('#btn-form-confirm-edit').attr("disabled", cheked)
 }
@@ -1104,7 +1124,7 @@ $(function () {
 				$('.ipAddress').hide();	
 				$('.directionToHidden').hide();	
 
-			}if (selectVAL == 2 || selectVAL ==4) {
+			}if (selectVAL == 2 || selectVAL ==4 || selectVAL == 5) {
 				
 				$('.directionToHidden').show();
 			

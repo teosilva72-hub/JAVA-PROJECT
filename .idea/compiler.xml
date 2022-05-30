@@ -9,5 +9,8 @@
         <module name="Tracevia" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Tracevia" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

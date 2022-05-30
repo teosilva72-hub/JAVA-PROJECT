@@ -34,7 +34,8 @@ public class DataSatDAO {
 	public void temporaryMaxDate() {
 		
 		 String query = "CREATE TEMPORARY TABLE IF NOT EXISTS maxDatetime SELECT * FROM "
-			 		+ "(SELECT siteID, MAX(data) maxDate FROM tb_vbv GROUP BY siteID ORDER BY data DESC) "
+			 		+ "(SELECT siteID, IFNULL(CASE WHEN DATEDIFF(NOW(), MAX(data)) > 0 THEN date_format(MAX(data), '%d/%m/%y %H:%i') ELSE date_format(MAX(data), '%H:%i') END, '00:00')  maxDate "
+			 		+ "FROM tb_vbv GROUP BY siteID ORDER BY data DESC) "
 			 		+ "filterMaxDate WHERE siteID NOT IN (222, 340);";		 					
 				
 			try {
@@ -309,10 +310,14 @@ public class DataSatDAO {
 					+ "VEL_MEDIA_MOTO_S2, "
 					+ "VEL_MEDIA_TOTAL_S2 "
 					+ "FROM (SELECT DISTINCT(d.NOME_ESTACAO) AS ESTACAO, nt.online_status AS ESTADO_ATUAL, "
-					+ "IFNULL(CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE CASE WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), "
-					+ "DATE_FORMAT(DATE_ADD(d.DATA_HORA ,INTERVAL 14 MINUTE), ' %H:%i')) ELSE CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 15 MINUTE), ' %H:%i')) END END, '07/01/2000 07:00') 'PACOTE_HORA', "
-					+ "IFNULL(CASE WHEN DATEDIFF(NOW(), md.maxDate) > 0 THEN date_format(md.maxDate, '%d/%m/%y %H:%i') ELSE date_format(md.maxDate, '%H:%i') END, '00:00') 'DADO_HORA', "
-
+					
+					/* DATES */
+					
+					+ "IFNULL(CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN DATE_FORMAT(d.DATA_HORA, '%d/%m/%y %H:%i') "
+					+ "WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), DATE_FORMAT(d.DATA_HORA, ' %H:59')) ELSE CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), "
+					+ "DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 15 MINUTE),' %H:%i')) END,'00:00') 'PACOTE_HORA', " 			  
+					+ "md.maxDate 'DADO_HORA', "
+										
 					/* COLUMN DATETIME HEADER */
 
 					+ "IFNULL(DATE_FORMAT(DATE_SUB(d.DATA_HORA, INTERVAL 7 DAY),  '%d/%m/%Y  %H:00'), '01/01/2000 07:00') 'LAST_7_DAYS_HEADER', "
@@ -587,16 +592,30 @@ public class DataSatDAO {
  				  "IFNULL(CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE " + 			
  				  "CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN date_format(d.DATA_HORA, '%d/%m/%y %H:%i') ELSE CASE WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), " + 
 				  "DATE_FORMAT(DATE_ADD(d.DATA_HORA ,INTERVAL 14 MINUTE), ' %H:%i')) ELSE CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 15 MINUTE), ' %H:%i')) END END END, '00:00') 'PACOTE_HORA',  " +
-				  "IFNULL(CASE WHEN DATEDIFF(NOW(), md.maxDate) > 0 THEN date_format(md.maxDate, '%d/%m/%y %H:%i') ELSE date_format(md.maxDate, '%H:%i') END, '00:00') 'DADO_HORA' " +
+				  "IFNULL(CASE WHEN DATEDIFF(NOW(), d.DATA_HORA) > 0 THEN DATE_FORMAT(d.DATA_HORA, '%d/%m/%y %H:%i') " +
+				  "WHEN MINUTE(d.DATA_HORA) = 45 THEN CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), DATE_FORMAT(d.DATA_HORA, ' %H:59')) ELSE CONCAT(DATE_FORMAT(d.DATA_HORA, '%H:%i -'), "+
+                  "DATE_FORMAT(DATE_ADD(d.DATA_HORA, INTERVAL 15 MINUTE),' %H:%i')) END,'00:00') 'PACOTE_HORA', " +				  
+				  "md.maxDatetime 'DADO_HORA' " +
 										
 			 	  "FROM "+RoadConcessionaire.tableDados15+" d " +
-			 	  "LEFT JOIN sat_equipment eq ON (d.NOME_ESTACAO = eq.equip_id) " +	
-			 	  "LEFT JOIN maxDatetime md ON md.siteID = eq.equip_id " +					
-			 	  "LEFT JOIN notifications_status nt ON (d.NOME_ESTACAO = nt.equip_id) AND 'SAT' = nt.equip_type ";
-			 						  
+			 	  
+				  "LEFT JOIN ( " +			 
+				  "SELECT siteID, " +
+				  "IFNULL(CASE WHEN DATEDIFF(NOW(), MAX(data)) > 0 THEN DATE_FORMAT(MAX(data), '%d/%m/%y %H:%i') ELSE DATE_FORMAT(MAX(data), '%H:%i') END, '00:00')  maxDatetime " +
+				  "FROM tb_vbv WHERE siteID NOT IN(222, 340) " +
+				  "GROUP BY siteID " +
+			 	  ") md ON md.siteID = d.NOME_ESTACAO " +
+			 		
+			 	  "LEFT JOIN ( " +
+			 	  "SELECT equip_id, online_status FROM notifications_status " + 
+			 	  "GROUP BY equip_id " +
+	 			  ") nt ON nt.equip_id = d.NOME_ESTACAO " +
+
+	 			  "WHERE d.DATA_HORA > DATE_SUB(NOW(), INTERVAL 1 MONTH) ";
+		 						  
 				  if(!isInitializeNull) {
 				  					    
-				   select += "WHERE d.NOME_ESTACAO NOT IN(";
+				   select += "AND d.NOME_ESTACAO NOT IN(";
 	 		
 			 		for(int i = 0; i < availabilityList.size(); i++) {
 			 			
@@ -607,17 +626,14 @@ public class DataSatDAO {
 			 					
 			 		}	
 			 		
-			 		  select += ") AND eq.visible = 1 ";
+			 		  select += ") ";
 			 		
-				  } else {
-					  
-					  select += "WHERE eq.visible = 1 ";
-				  }
+				  } 
  		
  				// -----------------------------------------------------
 				  		 		
-		 		select += "GROUP BY d.NOME_ESTACAO " +
-		 	              "ORDER BY d.DATA_HORA DESC ";
+		 		select += "GROUP BY ESTACAO "
+		 				+ "ORDER BY d.DATA_HORA DESC ";
 			 	 	 					
  	 try {				
 			 			

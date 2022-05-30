@@ -11,7 +11,7 @@ setInterval(() => {
     let n = data.getSeconds();
     let minute = data.getMinutes();
 
-    if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
+    if ( minute == 50 ) {
         if (n > 0 && n < 4)
             init();
     }
@@ -137,6 +137,15 @@ const setInfoEquip = () => {
             return $(content).children(".popover-body").html();
         },
     });
+    
+    // -------------------------------------------------------------------------------------------------------------------
+	
+	  $('[data-toggle=popover-d]').each(function () {
+	    	$(this).tooltip({    
+	   		placement : 'top',  
+	    	title : $(this).attr("tooltip-title")         
+	  	})          
+ 	 })   
 
     // -------------------------------------------------------------------------------------------------------------------
 
@@ -853,6 +862,14 @@ $(editModal => {
         editBtnDisabled(false)
     })
 })
+
+ // ------------------------------------------
+
+$('#editmodal').on("hide.bs.modal", function () {
+		editBtnDisabled(true)
+})
+	
+ // ------------------------------------------
 
 function editBtnDisabled(cheked) {
     $('#btn-form-confirm-edit').attr("disabled", cheked)
