@@ -13,4 +13,11 @@ $((res)=>{
 		$('#Fecha-start').change(()=>{
     	$('#Fecha-end').val($('#Fecha-start').val())
     })
+    $('[type=search]').addClass('d-none')
+    $('#btn-form-confirm').click(()=>{
+		setTimeout(()=>{
+			console.log('aqui')
+			$('[type=search]').addClass('d-none')
+		},1000)
+	})
 })
