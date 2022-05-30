@@ -19,13 +19,13 @@
 
                     <a role="button" class="sat-badge info-badge" data-toggle="popover" data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>
 
-                   <!--  <a role="button" class="sat-badge detail-badge" data-toggle="popover-d" data-popover-content="#pop-data#{item.table_id}#{item.equip_id}">C</a> -->
+                    <a role="button" class="sat-badge detail-badge" data-toggle="popover-d" data-popover-content="#pop-data#{item.table_id}#{item.equip_id}" tooltip-title="#{satLabels.$label_vehicle_comparison_title}">C</a>
 
                 </div>
 
                 <div class="row text-center card-body p-0 mx-0">
                     <div class="d-flex col-5 padding-sat border-right border-bottom border-dark on-mouse-hover" data-toggle="tooltip" data-placement="left" title="#{item.sentido1}">
-                        <span class="ml-1 mr-auto" title="#{item.sentido1}">#{item.sentido1Abbr}</span>
+                        <span class="ml-1 mr-auto" title="#{item.sentido1}">#{item.sentido1Abbr}</span> &nbsp;
                         <span class="mr-auto" id="qtd1">#{satMapsView.satListValues.get(loop.index).quantidadeS1}</span>
                     </div>
                     <div class="col-7 padding-sat border-bottom border-dark on-mouse-hover" data-toggle="tooltip" data-placement="right" title="#{item.sentido1}">
@@ -33,7 +33,7 @@
                         <span id="spd1">#{satMapsView.satListValues.get(loop.index).velocidadeS1}</span><span class="km"> km/h</span>
                     </div>
                     <div class="d-flex col-5 padding-sat border-right border-dark on-mouse-hover" data-toggle="tooltip" data-placement="left" title="#{item.sentido2}">
-                        <span class="ml-1 mr-auto" title="#{item.sentido2}">#{item.sentido2Abbr}</span>
+                        <span class="ml-1 mr-auto" title="#{item.sentido2}">#{item.sentido2Abbr}</span> &nbsp;
                         <span class="mr-auto" id="qtd2">#{satMapsView.satListValues.get(loop.index).quantidadeS2}</span>
                     </div>
                     <div class="col-7 padding-sat on-mouse-hover" data-toggle="tooltip" data-placement="right" title="#{item.sentido2}">
@@ -44,9 +44,9 @@
                     <div class="col-12 padding-sat border-top border-dark on-mouse-hover" data-toggle="tooltip" data-placement="bottom" title="#{mapLabels.$label_map_sat_last_package_title}">
                         <i class="fas fa-cube " style="margin-top: 2px;"></i> <span class="mb-0 d-inline-block" style="font-size: 10px;">#{satMapsView.satListValues.get(loop.index).lastPackage}</span>
                     </div>
-                   <!-- <div class="col-12 padding-sat border-top border-dark on-mouse-hover" data-toggle="tooltip" data-placement="bottom" title="#{mapLabels.$label_map_sat_last_register_title}">
+                    <div class="col-12 padding-sat border-top border-dark on-mouse-hover" data-toggle="tooltip" data-placement="bottom" title="#{mapLabels.$label_map_sat_last_register_title}">
                         <i class="fas fa-clock " style="margin-top: 2px;"></i> <span class="mb-0 d-inline-block" style="font-size: 10px;">#{satMapsView.satListValues.get(loop.index).lastRegister}</span>
-                    </div> -->
+                    </div>
 
                </div>
          </div>    

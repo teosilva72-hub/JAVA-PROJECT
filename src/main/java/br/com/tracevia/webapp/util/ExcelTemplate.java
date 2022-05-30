@@ -27,6 +27,7 @@ import com.groupdocs.conversion.Converter;
 import com.groupdocs.conversion.options.convert.PdfConvertOptions;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
+import br.com.tracevia.webapp.controller.globalPDF.GlobalPDF;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
@@ -94,7 +95,7 @@ public class ExcelTemplate {
 	// centerAlignStandardStyle - estilo padrÃ£o para centralizar	
 
 	CellStyle titleStyle, standardStyle, tableHeadStyle, leftAlignStandardStyle, rightAlignBoldStyle, dateTitleStyle,   
-	dateTimeStyle, centerBoldStyle, centerAlignStandardStyle, subHeaderClassStyle, centerStyle;   
+	dateTimeStyle, centerBoldStyle, leftBoldStyle, centerAlignStandardStyle, subHeaderClassStyle, centerStyle;   
 
 	// COUNT FLOW STYLES 
 
@@ -142,11 +143,13 @@ public class ExcelTemplate {
 	    // ESTILO PARA CABEÃ‡ALHO DAS TABELAS
 	    tableHeadStyle = utilSheet.createCellStyle(workbook, tableHeadFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.LIGHT_BLUE, FillPatternType.SOLID_FOREGROUND,ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 	    // ESTILO PARA CABEÃ‡ALHO ENTRE DATAS 
-	    dateTitleStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    dateTitleStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 	    // ESTILO PARA CAMPO DE DATAS EM NEGRITO
 	    dateTimeStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
         // ESTILO NEGRITO CENTRALIZADO (SEM BORDAS)  
 	    centerBoldStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
+	    // ESTILO NEGRITO (SEM BORDAS)  
+	    leftBoldStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.LEFT, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
 	    // ESTILO PADRÃƒO DE ALINHAMENTO CENTRAL	(SEM BORDAS)  
 	    centerAlignStandardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
 		// ESTILO PARA ALINHAMENTO A ESQUERDA FONTE PADRÃƒO (SEM BORDAS)
@@ -188,6 +191,11 @@ public class ExcelTemplate {
 	public void excelFileHeader(XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
 			String[] dates, String[] period, List<String> equipId, int dayIndex, boolean isMultiSheet, boolean isDirectionsOnSheet, int rowStart) {
 		excelFileHeader(sheet, row, pathLogo, module, columns, fileTitle, dates, period, equipId, dayIndex, isMultiSheet, isDirectionsOnSheet, 0, false, null, null);
+	}
+	
+	public void excelFileHeader(XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
+			String[] dates, String[] period, List<String> equipId, int dayIndex, boolean isMultiSheet, boolean isDirectionsOnSheet, int rowStart, String name, String direction) {
+		excelFileHeader(sheet, row, pathLogo, module, columns, fileTitle, dates, period, equipId, dayIndex, isMultiSheet, isDirectionsOnSheet, 0, false, name, direction);
 	}
 	
 	public void excelFileHeader(XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
@@ -239,8 +247,12 @@ public class ExcelTemplate {
 		   
 		     }
 		
-		if (direction != null)
+		if (direction != null) {
+			String s = tm.directions(satInfo.get(0).getSentidos());
+			String[] l = satInfo.get(0).getQtdeFaixas().split("\\+");
+			satInfo.get(0).setQtdeFaixas(l[s.startsWith(direction) ? 0 : 1]);
 			satInfo.get(0).setSentidos(direction);
+		}
 					
 		// ----------------------------------------------------------------------------------------------------------------
 				
@@ -298,7 +310,7 @@ public class ExcelTemplate {
 		// NOME DO EQUIPAMENTO
 		utilSheet.createCell(sheet, row, rowStart + 5, 2);		
 		utilSheet.setCellValue(sheet, row, rowStart + 5, 2, module.equals("sat") ? satInfo.get(0).getNome() : equipsInfo.get(0).getNome()); // null? 0 :
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 5, 2); 
+		utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 5, 2); 
  
 		// DATA DE CONSULTA LABEL
 		utilSheet.createCell(sheet, row, rowStart + 5, 5);
@@ -308,7 +320,7 @@ public class ExcelTemplate {
 		// DATA
 		utilSheet.createCell(sheet, row, rowStart + 5, 8);
 		utilSheet.setCellValue(sheet, row, rowStart + 5, 8, " " + dta.currentDateTime());	
-		utilSheet.setCellStyle(sheet, row, leftAlignStandardStyle, rowStart + 5, 8);
+		utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 5, 8);
 
 		// ----------------------------------------------------------------------------------------------------------------
 
@@ -323,7 +335,7 @@ public class ExcelTemplate {
 		// CIDADE
 		utilSheet.createCell(sheet, row, rowStart + 6, 2);
 		utilSheet.setCellValue(sheet, row, rowStart + 6, 2, module.equals("sat")? satInfo.get(0).getCidade() : equipsInfo.get(0).getCidade());
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 6, 2);
+		utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 6, 2);
 
 		// PARA REPORTS QUE NÃO USAM PERIODO
 		try {
@@ -338,7 +350,7 @@ public class ExcelTemplate {
 		// PERIODO
 		utilSheet.createCell(sheet, row, rowStart + 6, 8);
 		utilSheet.setCellValue(sheet, row, rowStart + 6, 8, period[2]);
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 6, 8);
+		utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 6, 8);
 		
 		}
 		
@@ -357,7 +369,7 @@ public class ExcelTemplate {
 		// NOME DA RODOVIA / ESTRADA
 		utilSheet.createCell(sheet, row, rowStart + 7, 2);
 		utilSheet.setCellValue(sheet, row, rowStart + 7, 2, module.equals("sat")? satInfo.get(0).getEstrada() : equipsInfo.get(0).getEstrada());
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 7, 2);
+		utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 7, 2);
 					    
 		// ----------------------------------------------------------------------------------------------------------------
 
@@ -372,7 +384,7 @@ public class ExcelTemplate {
 		// KM
 		utilSheet.createCell(sheet, row, rowStart + 8, 2);
 		utilSheet.setCellValue(sheet, row, rowStart + 8, 2, module.equals("sat")? satInfo.get(0).getKm() : equipsInfo.get(0).getKm());
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 8, 2);
+		utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 8, 2);
 
 		// ----------------------------------------------------------------------------------------------------------------
 
@@ -398,7 +410,7 @@ public class ExcelTemplate {
 			
 			else utilSheet.setCellValue(sheet, row, rowStart + 9, 2, satInfo.get(0).getQtdeFaixas()); 
 			
-			utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 9, 2);
+			utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 9, 2);
 			
 			// -------------------------------------------------------------------------------------------------------
 			
@@ -414,7 +426,7 @@ public class ExcelTemplate {
 			 
 			 utilSheet.setCellValue(sheet, row, rowStart + 10, columns - 1, tm.directions(satInfo.get(0).getSentidos()));
 						
-			 utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, rowStart + 10, columns - 1);
+			 utilSheet.setCellStyle(sheet, row, leftBoldStyle, rowStart + 10, columns - 1);
 								
 			}
 		}
@@ -781,23 +793,40 @@ public class ExcelTemplate {
 
 	}
 	
-	public ByteArrayOutputStream ToPDF() throws IOException {
+	public InputStream ToInput() throws IOException {
 		InputStream input = utilSheet.getOutput(workbook);
-		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		return input;
+	}
+	
+	public ByteArrayOutputStream ToPDF(String sheetName) throws IOException {
+		InputStream input = utilSheet.getOutput(workbook);
+		ByteArrayOutputStream output = null;
 		try {
+			int count = (Integer) SessionUtil.getExternalContext().getSessionMap().get(sheetName + "PDF_Count");
 			Converter converter = new Converter(input);
-			converter.convert(output, new PdfConvertOptions());
+			List<byte[]> sheets = new ArrayList<>();
+			PdfConvertOptions options = new PdfConvertOptions();
+			for (int n = 1; n <= count; n++) {
+				ByteArrayOutputStream output2 = new ByteArrayOutputStream();
+				options.setPageNumber(n);
+				options.setPagesCount(n);
+				converter.convert(output2, options);
+				output2.close();
+				sheets.add(output2.toByteArray());
+			}
+
+			GlobalPDF pdf = new GlobalPDF();
+			output = pdf.merge(sheets);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			output.close();
 			input.close();			
 		}
 		return output;
 	}
 	
-	public void downloadToPDF(String fileName) throws IOException {
-		ByteArrayOutputStream output = ToPDF();
+	public void downloadToPDF(String fileName, String sheetName) throws IOException {
+		ByteArrayOutputStream output = ToPDF(sheetName);
 		downloadToPDF(output, fileName);
 	}
 	
@@ -834,6 +863,7 @@ public class ExcelTemplate {
 		int startCol = 0;
 		int endCol = columns.size() - 1;
 		boolean singleDirectionFilter = false;
+		int count = 0;
 		
 		// --------------------------------------------------------------------------------------
 		
@@ -944,7 +974,8 @@ public class ExcelTemplate {
 			  // --------------------------------------------------------------------------------------------			  
 			  
 		    	// SheetName
-				sheet = workbook.createSheet(sheetNames[op]); // CREATE SHEET NAMES								
+				sheet = workbook.createSheet(sheetNames[op]); // CREATE SHEET 7
+				count++;
 			
 				if(isEquipNameSheet) 
 					excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
@@ -1376,7 +1407,7 @@ public class ExcelTemplate {
 					
 		// SHEETNAME BY DATE SELECTION										
 				
-	    for(int op = 0; op < selectOption; op++) {	    	
+	    for(int op = 0; op < selectOption; op++) {	
 	 					  
 				  if(isEquipNameSheet && division) {
 
@@ -1403,6 +1434,7 @@ public class ExcelTemplate {
 	    	
 	    	// SheetName
 			sheet = workbook.createSheet(sheetNames[op]); // CREATE SHEET NAMES
+			count++;
 		
 			if(isEquipNameSheet) 
 				excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
@@ -1787,8 +1819,10 @@ public class ExcelTemplate {
 		// TABLE COLUMNS AUTO SIZE 
 		utilSheet.columnsWidthAuto(sheet, columns.size());
 		
-		}		
+		}
+
 	}
+	SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count); 
 					
 						
 	}	
@@ -1884,7 +1918,116 @@ public class ExcelTemplate {
 		utilSheet.setCellsStyle(sheet, row, dateTimeStyle, 1, 1, dataStartRow, dataEndRow);		
 		utilSheet.setCellsStyle(sheet, row, bgColorBodyStyle1, 2, 4, dataStartRow, dataEndRow);
 		utilSheet.setCellsStyle(sheet, row, bgColorBodyStyle2, 5, 7, dataStartRow, dataEndRow);	
+	}
+	
+	public void generateVehicleSpeedEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
+
+		sheet = null;		
+		row = null;
 		
+		Map<String, List<String[]>> sep = new LinkedHashMap<>();
+		List<String> IDs = new ArrayList<>();
+		
+		boolean alt = false;
+		int dataStartRow = 0;
+		int dataEndRow = 0;
+		int startCol = 0;
+		int endCol = columns.size() - 4;
+		int start = 3;
+		int count = 0;
+		
+		lines.forEach(list -> {
+			if (sep.containsKey(list[2])) {
+				sep.get(list[2]).add(list);
+			} else if (!list[2].equals("0")) {
+				List<String[]> newLine = new ArrayList<>();
+				newLine.add(list);
+				sep.put(list[2], newLine);
+			}
+		});
+		
+		for (Entry<String, List<String[]>> l : sep.entrySet()) {
+			Map<String, List<String[]>> newLines = new LinkedHashMap<>();
+			for (String[] fullLine : l.getValue()) {
+				String[] line = Arrays.copyOfRange(fullLine, start, fullLine.length - 1);
+				line[0] = String.format("%s %s", fullLine[0], fullLine[1]);
+				if (newLines.containsKey("All")) {
+					if (newLines.containsKey(fullLine[3]))
+						newLines.get(fullLine[3]).add(line);
+					else {
+						List<String[]> newL = new ArrayList<>();
+						newL.add(line);
+						newLines.put(fullLine[3], newL);
+					}
+					List<String[]> all = newLines.get("All");
+					if (alt) {
+						String[] r = all.get(all.size() - 1);
+						for (int rIdx = 1; rIdx < r.length; rIdx++) {
+							r[rIdx] = String.valueOf(Integer.parseInt(r[rIdx]) + Integer.parseInt(line[rIdx]));
+						}
+						alt = !alt;
+					} else {
+						all.add(Arrays.copyOf(line, line.length));
+						alt = !alt;
+					}
+					
+				} else {
+					List<String[]> newL = new ArrayList<>();
+					List<String[]> newL2 = new ArrayList<>();
+					newL2.add(Arrays.copyOf(line, line.length));
+					newLines.put("All", newL2);
+					newL.add(line);
+					newLines.put(fullLine[3], newL);
+					alt = !alt;
+				}
+			}
+			
+			for (Entry<String, List<String[]>> equip : newLines.entrySet()) {
+				IDs.clear();
+				IDs.add(l.getKey());
+				
+				sheet = workbook.createSheet(l.getKey() + equip.getKey());	
+				utilSheet.columnsWidth(sheet, 0, 5, 4300);
+				
+				String direction = equip.getKey();
+				excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, "sat", columns.size(), "Contagem de Veículo",  
+						date, period, IDs, 0, false, false, dataStartRow, "name", direction.equals("All") ? null : direction);
+				
+				dataStartRow += 11;
+				// ------------------------------------------------------------------------------------------------------------
+				
+				// SECOND LEVEL COLUMNS 1
+				
+				utilSheet.createRow(sheet, row, dataStartRow);
+				utilSheet.createCells(sheet, row, 0, endCol, dataStartRow, dataStartRow);
+				utilSheet.setCellsStyle(sheet, row, tableHeadStyle, 0, endCol, dataStartRow, dataStartRow);
+				
+				for (int i = 3, idx = 0; idx < endCol; i++, idx++)
+					utilSheet.setCellValue(sheet, row, dataStartRow, idx, columns.get(i == 3 ? 0 : i));
+				
+				dataStartRow++;
+				dataEndRow = dataStartRow + equip.getValue().size();
+				
+				// ------------------------------------------------------------------------------------------------------------
+				
+				utilSheet.createRows(sheet, row, dataStartRow, dataEndRow); // CRIAR LINHAS 
+				
+				utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow); // CRIAR CÉLULAS
+				
+				utilSheet.fileBodySimple(sheet, row, equip.getValue(), startCol, endCol, dataStartRow); // PREENCHER DADOS
+				
+				utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol - 1, dataStartRow, dataEndRow - 1);
+
+				utilSheet.createRow(sheet, row, ++dataEndRow);
+				utilSheet.createCells(sheet, row, 0, endCol, dataEndRow, dataEndRow);
+				utilSheet.setCellValue(sheet, row, dataEndRow, 0, " ");
+				
+				dataStartRow = ++dataEndRow;
+				count++;
+			}
+			
+		}
+		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
 	}
 
 	public void generateVehicleCountEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
@@ -1901,7 +2044,7 @@ public class ExcelTemplate {
 		int startCol = 0;
 		int endCol = columns.size() - 8;
 		int start = 8;
-		boolean header = false;
+		int count = 0;
 		
 		lines.forEach(list -> {
 			if (sep.containsKey(list[1])) {
@@ -1912,10 +2055,6 @@ public class ExcelTemplate {
 				sep.put(list[1], newLine);
 			}
 		});
-		
-		sheet = workbook.createSheet(sheetName);	
-		
-		utilSheet.columnsWidth(sheet, 0, 0, 4300);
 		
 		for (Entry<String, List<String[]>> l : sep.entrySet()) {
 			Map<String, List<String[]>> newLines = new LinkedHashMap<>();
@@ -1956,9 +2095,13 @@ public class ExcelTemplate {
 			for (Entry<String, List<String[]>> equip : newLines.entrySet()) {
 				IDs.clear();
 				IDs.add(l.getKey());
+				
+				sheet = workbook.createSheet(l.getKey() + equip.getKey());	
+				utilSheet.columnsWidth(sheet, 0, 0, 4300);
+				
 				String direction = equip.getKey();
 				excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, "sat", columns.size(), "Contagem de Veículo",  
-						date, period, IDs, 0, false, false, dataStartRow, header, "name", direction.equals("All") ? null : direction);
+						date, period, IDs, 0, false, false, dataStartRow, "name", direction.equals("All") ? null : direction);
 				
 				dataStartRow += 11;
 				// ------------------------------------------------------------------------------------------------------------
@@ -1985,12 +2128,16 @@ public class ExcelTemplate {
 				
 				utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol - 1, dataStartRow, dataEndRow - 1);
 
+				utilSheet.createRow(sheet, row, ++dataEndRow);
+				utilSheet.createCells(sheet, row, 0, endCol, dataEndRow, dataEndRow);
+				utilSheet.setCellValue(sheet, row, dataEndRow, 0, " ");
+				
 				dataStartRow = ++dataEndRow;
-				header = true;
+				count++;
 			}
 			
 		}
-		
+		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
 	}
 	
 	public void generateVehicleCountCategoryEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
@@ -2031,6 +2178,7 @@ public class ExcelTemplate {
 		int startCol = 0;
 		int endCol = 2;
 		int len = lines.size() + 1;
+		int count = 1;
 		
 		sheet = workbook.createSheet(sheetName);	
 		
@@ -2092,6 +2240,7 @@ public class ExcelTemplate {
 		
 		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol - 1, dataStartRow, dataEndRow);
 		
+		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
 	}
 	
 	// ----------------------------------------------------------------------------------------------------------------

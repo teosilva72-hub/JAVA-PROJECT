@@ -8,27 +8,11 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class VIDEOWALLBuildMaps {
 	
-	
-	
 	@PostConstruct
 	public void initalize() {
 		
 		//BuildVIDEOWALL();
 		
 	}
-	
-	public void BuildVIDEOWALL() {
-						
-		try {	
-		
-		try {
-							
-				
-            }catch(IndexOutOfBoundsException ex) {}
-		
-		}catch(Exception ex) {}		
-						
-	}
-
 	
 }

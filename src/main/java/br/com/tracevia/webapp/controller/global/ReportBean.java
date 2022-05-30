@@ -1,8 +1,9 @@
 package br.com.tracevia.webapp.controller.global;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -22,10 +24,19 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+
+import org.apache.commons.io.FileUtils;
 
 import com.google.gson.Gson;
+import com.groupdocs.conversion.Converter;
+import com.groupdocs.conversion.options.convert.PdfConvertOptions;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
+import br.com.tracevia.webapp.controller.globalPDF.GlobalPDF;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.ReportDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
@@ -47,6 +58,7 @@ public class ReportBean implements Serializable{
 	 * SERIAL ID
 	 */
 	private static final long serialVersionUID = -2613194601431027633L;
+	private String currentDir = FacesContext.getCurrentInstance().getExternalContext().getRealPath("");
 	
 	public String table;
 	public String idTable;
@@ -100,6 +112,7 @@ public class ReportBean implements Serializable{
 	private ReportBuild build;
 	private SatTableHeader satTab;
 	private TranslationMethods tm;
+	String dta;
 		
 	private ReportDAO report;
 	public List<Builder> resultList;	
@@ -976,7 +989,9 @@ public class ReportBean implements Serializable{
 							if(search.left[0].equals("q.direction") || search.left[0].equals("direction"))	
 								directions.add(f);
 																			
-							if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO") || search.left[0].equals("site_name"))														
+							if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO") || search.left[0].equals("site_name")
+									|| search.left[0].equals("s.equip_id"))	
+								
 								equipIDs.add(f);
 							
 							if(search.left[0].equals("NOME_FAIXA"))
@@ -1005,7 +1020,8 @@ public class ReportBean implements Serializable{
 					if (search.left[0].equals(idTable))
 						 idSearch.add(f);
 										
-					if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO") || search.left[0].equals("site_name"))														
+					if(search.left[0].equals("siteID") || search.left[0].equals("NOME_ESTACAO") || search.left[0].equals("site_name")
+							|| search.left[0].equals("s.equip_id"))														
 						 equipIDs.add(f);
 					
 					if(search.left[0].equals("NOME_FAIXA") || search.left[0].equals("lane")) {
@@ -1169,7 +1185,12 @@ public class ReportBean implements Serializable{
 				
 				if (isSpecialPDF()) {
 						generateSpecialFile(specialPDF, new String[] { dateStart, dateEnd }, period);
-						SessionUtil.getExternalContext().getSessionMap().put(fileName + "PDF", model.ToPDF());
+						Path path = Paths.get(currentDir, "resources", "temp");
+						Path file = Files.createTempFile(path, fileName, null);
+						InputStream stream = model.ToInput();
+						FileUtils.copyInputStreamToFile(stream, new File(file.toString()));
+						SessionUtil.getExternalContext().getSessionMap().put(fileName+"PDF", file);
+						
 						model = new ExcelTemplate();
 					}
 				
@@ -1181,8 +1202,8 @@ public class ReportBean implements Serializable{
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		     
-		    SessionUtil.getExternalContext().getSessionMap().put(fileName, model);  
+		   
+			SessionUtil.getExternalContext().getSessionMap().put(fileName, model); 
 		    
 		    // ------------------------------------------------------------
 		    			
@@ -1218,18 +1239,40 @@ public class ReportBean implements Serializable{
 			
 		}	   
 	   
-		public void downloadPDF() {
+		public void downloadPDF() throws DocumentException {
 			ExcelTemplate model;
-			ByteArrayOutputStream out;
+			InputStream input;
 			DateTimeApplication dta = new DateTimeApplication();
 			String file = fileName+"_"+dta.currentDateToExcelFile();
 			model = (ExcelTemplate) SessionUtil.getExternalContext().getSessionMap().get(fileName);
 			try {
 				if (isSpecialPDF()) {
-					out = (ByteArrayOutputStream) SessionUtil.getExternalContext().getSessionMap().get(fileName + "PDF");
-					model.downloadToPDF(out, file);					
+					Path path = (Path) SessionUtil.getExternalContext().getSessionMap().get(fileName + "PDF");
+					int count = (Integer) SessionUtil.getExternalContext().getSessionMap().get(sheetName + "PDF_Count");
+					byte[] bytes = Files.readAllBytes(path);
+					input = new ByteArrayInputStream(bytes);
+					List<byte[]> sheets = new ArrayList<>();
+					try {
+						Converter converter = new Converter(input);
+						PdfConvertOptions options = new PdfConvertOptions();
+						for (int n = 1; n <= count; n++) {
+							ByteArrayOutputStream output = new ByteArrayOutputStream();
+							options.setPageNumber(n);
+							options.setPagesCount(1);
+							converter.convert(output, options);
+							output.close();
+							sheets.add(output.toByteArray());
+						}						
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						input.close();			
+					}
+					GlobalPDF pdf = new GlobalPDF();
+					ByteArrayOutputStream output = pdf.merge(sheets);
+					model.downloadToPDF(output, file);
 				} else
-					model.downloadToPDF(file);
+					model.downloadToPDF(file, sheetName);
 			} catch (IOException e) {	
 				e.printStackTrace();
 			}
@@ -1748,6 +1791,9 @@ public class ReportBean implements Serializable{
 				switch(name) {
 					case "counting-flow":
 						model.generateCountFlow(columnsInUse, report.lines, sheetName, satTab);
+						break;
+					case "vehicle-speed-eco101":
+						model.generateVehicleSpeedEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
 						break;
 					case "vehicle-count-eco101":
 						model.generateVehicleCountEco101(columnsInUse, report.lines, sheetName, satTab, date, period);

@@ -3,33 +3,41 @@ let heightMax = 1000
 let updated = '';
 let scale = 1;
 
+// RELOAD EQUIPMENTS INFORMATION
 
-setTimeout(() => {
-	setInterval(() => {
+setInterval(() => {
 
-		let data = new Date();
-		let n = data.getSeconds();
-		let minute = data.getMinutes();
+	let data = new Date();
+	let n = data.getSeconds();
+	let minute = data.getMinutes();		
 
-		if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
-			if (n < 4){
-				init();
-
-		  location.href = location.protocol + '//' + location.host + location.pathname
-		  window.location.reload();
-	
+	if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
+		if (n > 0 && n < 4)
+			init();		
 	}
+	
+ }, 3000)
 
-}
-			     
-	}, 3000)
-}, 4000)
-
-
-// *********************************************************** //
+// ===========================================================
 
 const init = () => {
-	$('#equipAll').load('/realtime/realtimeEquip.xhtml', () => {
+
+	     // if any popover is opened then it's closed on page load
+	     $('[data-toggle=popover-d]').popover('hide')
+	     
+	     // if any tooltip is opened then it's closed on page load
+	     $("[role='tooltip']").tooltip('hide');
+
+	$('#equipAll').load('/realtime/realtimeEquip.xhtml', () => {		
+		
+		// PRELOADER LOADING 
+		
+		$('#preloader .inner').fadeOut();
+  		$('#preloader').fadeOut('slow');
+  		$('body').delay(350).css({'overflow' : 'visible'});
+
+		// ---------------------------------------------------
+		
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))
 
@@ -55,7 +63,6 @@ const init = () => {
 		})
 
 		borderEquip(updated);
-
 		setInfoEquip();
 		setEquipToolTip();
 		showGenericName();
@@ -97,6 +104,7 @@ const onEventMapFunction = data => {
 	}
 }
 
+
 const setInfoEquip = () => {
 	
 	// Tooltips and Popovers use our built-in sanitizer to sanitize options which accept HTML.
@@ -126,14 +134,53 @@ const setInfoEquip = () => {
 			return $(title).children(".popover-header").html();
 		}
 	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
 	$('[data-toggle=popover-d]').popover({
 		html: true,
-		trigger: 'hover',		
-		template: '<div class="popover" role="tooltip"><div class="arrow"></div><div class="popover-body p-0"></div></div>',
+		trigger: 'click',		
+		template: '<div class="popover custom-detail"><div class="arrow"></div><div class="popover-body p-0"></div></div>',
 		content: function () {
-			return $('.popover-d').parent().html();
-		},
+			let content = $(this).attr("data-popover-content");
+			return $(content).children(".popover-body").html();
+		},		
 	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	  $('[data-toggle=popover-d]').each(function () {
+	    	$(this).tooltip({    
+	   		placement : 'top',  
+	    	title : $(this).attr("tooltip-title")         
+	  	})          
+ 	 })   
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	// hide opened popover when click outside popover content
+	$('html').on('click', function (e) {
+	    $('[data-toggle=popover-d]').each(function () {	       
+	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+	            $(this).popover('hide');
+	        }
+	    });
+	});	
+	
+	// -------------------------------------------------------------------------------------------------------------------
+	
+	// hide opened popover when esc key is pressed
+	$(document).keydown(function(e){
+	   if (e.keyCode === 27)
+	      $('[data-toggle=popover-d]').each(function () {	       
+	        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+	            $(this).popover('hide');
+	        }
+	    });
+	});
+	
+	// -------------------------------------------------------------------------------------------------------------------
+
 }
 
 const setEquipToolTip = () => {
@@ -171,7 +218,9 @@ $(function () {
 				$('.portInput-edit').hide();
 				$('.speedHidden-edit').hide();
 				$('.meteoHidden-edit').hide();
-				$('.sosInputs-edit').hide(); 				
+				$('.sosInputs-edit').hide();
+				$('.directionToHidden-edit').hide();	
+				 				
 				$("#lanes-edit").change(
 					function () {
 						var satLanes = document.getElementById("lanes-edit");
@@ -235,7 +284,8 @@ $(function () {
 				$('.dmsHidden-edit').hide(); 
 				$('.sosInputs-edit').hide(); 					
 				$('.satInputs-edit').hide();				
-				$('.speedHidden-edit').hide();			
+				$('.speedHidden-edit').hide();
+				$('.directionToHidden-edit').hide();				
 
 			}else if (selectVAL == 8) {
 
@@ -244,7 +294,8 @@ $(function () {
 				$('.portInput-edit').hide();
 				$('.sosInputs-edit').hide(); 	
 				$('.meteoHidden-edit').hide();
-				$('.speedHidden-edit').hide();			
+				$('.speedHidden-edit').hide();	
+				$('.directionToHidden-edit').hide();			
 
 			} else if (selectVAL == 10) {
 
@@ -253,7 +304,8 @@ $(function () {
 				$('.dmsHidden-edit').hide();				
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').hide();
-				$('.meteoHidden-edit').hide();			
+				$('.meteoHidden-edit').hide();
+				$('.directionToHidden-edit').hide();				
 
 			} else if (selectVAL == 11) {
 
@@ -263,7 +315,12 @@ $(function () {
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').css('display', 'flex'); 
 				$('.meteoHidden-edit').hide();
-				$('.ipAddress-edit').hide();	
+				$('.ipAddress-edit').hide();
+				$('.directionToHidden-edit').hide();		
+			
+			}else if (selectVAL == 2 || selectVAL ==4 || selectVAL == 5) {
+				
+				$('.directionToHidden-edit').show();
 			
 			} else {
 
@@ -272,10 +329,11 @@ $(function () {
 				$('.portInput-edit').hide();
 				$('.sosInputs-edit').hide();	
 				$('.speedHidden-edit').hide();
-				$('.meteoHidden-edit').hide();			
+				$('.meteoHidden-edit').hide();	
+				$('.directionToHidden-edit').hide();		
 			}
 
-		}, 300)
+		}, 400)
 	});
  
 	$(".overflow").css("height", $(this).height() - 125)
@@ -885,6 +943,26 @@ function sendType() {
 	document.getElementById('edit-equip-form:equipTable1').value = type;
 }
 
+$(editModal => {
+	
+	editBtnDisabled(true)
+	$('#edit-equip-form input, #edit-equip-form select').change(e=>{
+		editBtnDisabled(false)
+	})
+})
+
+ // ------------------------------------------
+
+$('#editmodal').on("hide.bs.modal", function () {
+		editBtnDisabled(true)
+})
+	
+ // ------------------------------------------
+
+function editBtnDisabled(cheked){
+	$('#btn-form-confirm-edit').attr("disabled", cheked)
+}
+
 function deleteParameters() {
 	document.getElementById('delete-equip-form:equipDel').value = id;
 	document.getElementById('delete-equip-form:tableDel').value = type;
@@ -944,8 +1022,11 @@ $(function () {
 				$('.sosInputs').hide(); 	
 				$('.portInput').hide();
 				$('.speedHidden').hide();
-				$('.meteoHidden').hide();			
+				$('.meteoHidden').hide();	
+				$('.directionToHidden').hide();	
+						
 				$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
+				
 				$("#lanes").change(
 					function () {
 						var satLanes = document.getElementById("lanes");
@@ -1009,7 +1090,8 @@ $(function () {
 				$('.dmsHidden').hide(); 				
 				$('.satInputs').hide();				
 				$('.speedHidden').hide();			
-				$('.sosInputs').hide(); 	
+				$('.sosInputs').hide(); 
+				$('.directionToHidden').hide();		
 
 			}else if (selectVAL == 8) {
 
@@ -1019,6 +1101,7 @@ $(function () {
 				$('.satInputs').hide();
 				$('.portInput').hide();
 				$('.speedHidden').hide();
+				$('.directionToHidden').hide();	
 			
 			} else if (selectVAL == 10) {
 
@@ -1028,6 +1111,7 @@ $(function () {
 				$('.satInputs').hide();
 				$('.mtoHidden').hide();
 				$('.speedHidden').hide();
+				$('.directionToHidden').hide();	
 		
 			} else if (selectVAL == 11) {
 
@@ -1038,7 +1122,12 @@ $(function () {
 				$('.dmsHidden').hide();
 				$('.satInputs').hide();		
 				$('.ipAddress').hide();	
+				$('.directionToHidden').hide();	
 
+			}if (selectVAL == 2 || selectVAL ==4 || selectVAL == 5) {
+				
+				$('.directionToHidden').show();
+			
 			} else {
 
 				$('.dmsHidden').hide();
@@ -1046,7 +1135,8 @@ $(function () {
 				$('.sosInputs').hide(); 		
 				$('.satInputs').hide();
 				$('.portInput').hide();
-				$('.speedHidden').hide();							
+				$('.speedHidden').hide();
+				$('.directionToHidden').hide();						
 			}
 
 		}, 100)

@@ -86,16 +86,12 @@
     <!---->
  
     <ui:define name="main-content">
-    
-     	<c:if test="#{ SAT }">
-	
-			<!-- ======================== PRE LOADER ======================== -->
-		
-			<ui:include src="/template/util/preloader/preloader.xhtml" />
-			
-			<!---->
-		
-		</c:if>
+
+        <!-- ======================== PRE LOADER ======================== -->
+
+        <ui:include src="/template/util/preloader/preloader.xhtml" />
+
+        <!---->
 
  		  <c:if test="#{ SuperAdmin || VideoWall }">
 
@@ -473,7 +469,7 @@
                 <button type="button" class="btn btn-dark dinamic-mouse-right" for="cftv" onclick="windowCftvRight()">#{mapLabels.$label_map_equipment_realtime_view}</button>
             </c:if>
             <button type="button" class="btn btn-dark dinamic-mouse-right" for="carGPS" onclick="openModalGPS()">#{mapLabels.$label_map_change_vehicle}</button>
-            <c:if test="#{ SuperAdmin }">
+            <c:if test="#{ SuperAdmin || VideoWall }">
                 <button type="button" class="btn btn-secondary dinamic-mouse-right" for="all" onclick="moreOption()">#{mapLabels.$label_map_equipment_options}</button>
             </c:if>
         </div>

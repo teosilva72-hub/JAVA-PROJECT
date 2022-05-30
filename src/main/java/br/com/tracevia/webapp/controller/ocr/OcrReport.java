@@ -258,7 +258,7 @@ public class OcrReport{
 			e1.printStackTrace();
 		}
 
-		//filtro c‚mera
+		//filtro c√£mera
 
 		for (Equipments e : listOcr) {
 			SelectItem s = new SelectItem();
@@ -299,7 +299,7 @@ public class OcrReport{
 		else if(all_img.equals("1") || all_img.equals("2")) all_search = "XXXXXXX";
 		//System.out.println(all_img);
  		if(cam != "") {
- 				System.out.println("condiÁ„o camera entramos");
+ 				System.out.println("condi√ß√£o camera entramos");
 			try {
 				
 				list = dao.searchTable(start, cam, all_search, all_img, end);
@@ -376,7 +376,7 @@ public class OcrReport{
 
 	public void pdf() throws Exception {
 
-		// criaÁ„o do  documento
+		// cria√ß√£o do  documento
 		Document document = new Document();
 		//TranslationMethods trad = new TranslationMethods();
 
@@ -429,7 +429,7 @@ public class OcrReport{
 			document.open();
 
 			document.setPageSize(PageSize.A4);
-			Paragraph pTitulo = new Paragraph(new Phrase(27F,localeOCR.getStringKey("ocr_report_title"), FontFactory.getFont(FontFactory.HELVETICA, 20F)));
+			Paragraph pTitulo = new Paragraph(new Phrase(27F,localeOCR.getStringKey("ocr_report_vehicles_report"), FontFactory.getFont(FontFactory.HELVETICA, 20F)));
 			ColumnText tl = new ColumnText(writer.getDirectContent());
 			Paragraph tx = new Paragraph();
 			

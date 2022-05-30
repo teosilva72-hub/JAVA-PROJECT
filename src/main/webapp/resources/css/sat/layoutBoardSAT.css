@@ -27,11 +27,13 @@ body{
 
 .info-badge{
 	float: left;
-	margin-left: -12px;
+	margin-left: -15px;
 }
 
 .detail-badge{
-	margin-left: 118px;
+	margin-left: -15px;
+    margin-top: 20px;
+    background-color: #000000;
 }
 
 /* sat info div*/
@@ -87,7 +89,7 @@ body{
   text-align: center;
   table-layout: auto !important;
   color: #212121;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
   -webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
@@ -98,7 +100,6 @@ body{
   padding: 0;
   width: 45px;
 }
-
 
 .padding-sat .km {
   font-size: 7px;
