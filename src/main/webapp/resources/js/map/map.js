@@ -21,13 +21,10 @@ setInterval(() => {
 // *********************************************************** //
 
 const init = () => {
-    
-	    // if any popover is opened then it's closed on page load
-	    $('[data-toggle=popover-d]').popover('hide')
-	    
-	    // if any tooltip is opened then it's closed on page load        
-	    $('[role=tooltip]').tooltip('hide')
-    
+    // if any popover is opened then it's closed on page load
+    $('[data-toggle=popover-d]').popover('hide')
+    $('[role=tooltip]').tooltip('hide')
+
     $('#equipAll').load('/map/mapEquip.xhtml', () => {
         resizeEquipScale($('[scroll-zoom]'))
         resizeEquip($('[scroll-zoom]'))
@@ -79,7 +76,6 @@ const init = () => {
 
         $('#preloader').addClass('d-none') // PRE LOADER CLASS
     })
-
 
 }
 

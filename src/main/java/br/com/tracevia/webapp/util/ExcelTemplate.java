@@ -1820,9 +1820,9 @@ public class ExcelTemplate {
 		utilSheet.columnsWidthAuto(sheet, columns.size());
 		
 		}
-		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count); 
 
 	}
+	SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count); 
 					
 						
 	}	
