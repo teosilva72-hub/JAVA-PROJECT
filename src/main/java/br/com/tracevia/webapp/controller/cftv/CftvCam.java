@@ -7,11 +7,13 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.context.RequestContext;
 
+import br.com.tracevia.webapp.controller.global.LoginAccountBean;
 import br.com.tracevia.webapp.dao.cftv.CFTVDAO;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.ModulesDAO;
@@ -20,7 +22,7 @@ import br.com.tracevia.webapp.util.ImageUtil;
 
 @ManagedBean(name="CftvCam")
 @ViewScoped
-public class CftvCam {
+public class CftvCam {	
 	
 	Equipments equip;	
 	private int id, idTotal, sumId;
@@ -33,6 +35,17 @@ public class CftvCam {
 	//getters and setters
 	
 	String cftvControlImage = "controller.png";
+	
+	@ManagedProperty("#{loginAccount}")
+	private LoginAccountBean login;
+
+	public LoginAccountBean getLogin() {
+		return login;
+	}
+
+	public void setLogin(LoginAccountBean login) {
+		this.login = login;
+	}
 	
 	public String getCam() {
 		return cam;
@@ -135,16 +148,18 @@ public class CftvCam {
 	@PostConstruct
 	public void initialize() {
 		
-		//CFTVDAO ptz = new CFTVDAO();
-		
-		totalId();
-		
-		try {
-			credentials();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(login.getLoad().isEn_cftv()) {
+				
+			totalId();
+			
+				try {
+					credentials();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}			
 		}
+		
 	}
 	
 	public String[] presetPatrol() {
