@@ -3,7 +3,10 @@ package br.com.tracevia.webapp.dao.global;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import com.groupdocs.conversion.internal.c.a.e.system.Array;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
 import br.com.tracevia.webapp.model.global.SQL_Tracevia;
@@ -299,6 +302,11 @@ public class ReportDAO {
 		return columnName;
 	}
 
+	public List<String[]> getLines(int max) {
+		int len = lines.size();
+		return lines.subList(0, max > len ? len : max);
+	}
+
 	public List<String[]> getLines() {
 		return lines;
 	}
@@ -342,4 +350,9 @@ public class ReportDAO {
 	  
 	  // ------------------------------------------------------------------------------------
 	
+	  public void startColumn(int start) {
+		  this.lines.stream().map((x) -> {
+			   return Arrays.copyOfRange(x, start, x.length);
+		   }).collect(Collectors.toList());
+	   }
 }

@@ -10,6 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -809,7 +811,7 @@ public class ExcelTemplate {
 			for (int n = 1; n <= count; n++) {
 				ByteArrayOutputStream output2 = new ByteArrayOutputStream();
 				options.setPageNumber(n);
-				options.setPagesCount(n);
+				options.setPagesCount(1);
 				converter.convert(output2, options);
 				output2.close();
 				sheets.add(output2.toByteArray());
@@ -1920,12 +1922,27 @@ public class ExcelTemplate {
 		utilSheet.setCellsStyle(sheet, row, bgColorBodyStyle2, 5, 7, dataStartRow, dataEndRow);	
 	}
 	
+	public Map<String, List<String[]>> separeBy(List<String[]> lines, int idx) {
+		Map<String, List<String[]>> sep = new LinkedHashMap<>();
+		
+		lines.forEach(list -> {
+			if (sep.containsKey(list[idx])) {
+				sep.get(list[idx]).add(list);
+			} else if (!list[idx].equals("0")) {
+				List<String[]> newLine = new ArrayList<>();
+				newLine.add(list);
+				sep.put(list[idx], newLine);
+			}
+		});
+		
+		return sep;
+	}
+	
 	public void generateVehicleSpeedEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
-
+		
 		sheet = null;		
 		row = null;
 		
-		Map<String, List<String[]>> sep = new LinkedHashMap<>();
 		List<String> IDs = new ArrayList<>();
 		
 		boolean alt = false;
@@ -1936,15 +1953,7 @@ public class ExcelTemplate {
 		int start = 3;
 		int count = 0;
 		
-		lines.forEach(list -> {
-			if (sep.containsKey(list[2])) {
-				sep.get(list[2]).add(list);
-			} else if (!list[2].equals("0")) {
-				List<String[]> newLine = new ArrayList<>();
-				newLine.add(list);
-				sep.put(list[2], newLine);
-			}
-		});
+		Map<String, List<String[]>> sep = separeBy(lines, 2);
 		
 		for (Entry<String, List<String[]>> l : sep.entrySet()) {
 			Map<String, List<String[]>> newLines = new LinkedHashMap<>();
@@ -2017,7 +2026,7 @@ public class ExcelTemplate {
 				utilSheet.fileBodySimple(sheet, row, equip.getValue(), startCol, endCol, dataStartRow); // PREENCHER DADOS
 				
 				utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol - 1, dataStartRow, dataEndRow - 1);
-
+				
 				utilSheet.createRow(sheet, row, ++dataEndRow);
 				utilSheet.createCells(sheet, row, 0, endCol, dataEndRow, dataEndRow);
 				utilSheet.setCellValue(sheet, row, dataEndRow, 0, " ");
@@ -2029,13 +2038,76 @@ public class ExcelTemplate {
 		}
 		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
 	}
+	
+	public void generateVehicleCountPeriodEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
+
+		sheet = null;		
+		row = null;
+		
+		List<String> IDs = new ArrayList<>();
+		
+		int dataStartRow = 0;
+		int dataEndRow = 0;
+		int startCol = 0;
+		int endCol = columns.size() - 1;
+		int count = 0;
+		
+		Map<String, List<String[]>> sep = separeBy(lines, 0);
+		
+		for (Entry<String, List<String[]>> equip : sep.entrySet()) {
+			IDs.clear();
+			IDs.add(equip.getKey());
+			dataStartRow = 12;
+			
+			sheet = workbook.createSheet(equip.getKey());	
+			utilSheet.columnsWidth(sheet, 0, 5, 4300);
+			
+			excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, "sat", columns.size(), "Contagem de Veículo",  
+					date, period, IDs, 0, false, false, dataStartRow, "name", null);
+
+			// ------------------------------------------------------------------------------------------------------------
+			
+			// SECOND LEVEL COLUMNS 1
+			
+			utilSheet.createRow(sheet, row, dataStartRow);
+			utilSheet.createCells(sheet, row, 0, endCol, dataStartRow, dataStartRow);
+			utilSheet.setCellsStyle(sheet, row, tableHeadStyle, 0, endCol - 1, dataStartRow, dataStartRow);
+			
+			for (int i = 1, idx = 0; idx < endCol; i++, idx++)
+				utilSheet.setCellValue(sheet, row, dataStartRow, idx, columns.get(i));
+			
+			dataStartRow++;
+			dataEndRow = dataStartRow + equip.getValue().size();
+			List<String[]> value = equip.getValue().stream().map((x) -> {
+				return Arrays.copyOfRange(x, 1, x.length);
+			}).collect(Collectors.toList());
+			
+			// ------------------------------------------------------------------------------------------------------------
+			
+			utilSheet.createRows(sheet, row, dataStartRow, dataEndRow); // CRIAR LINHAS 
+			
+			utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow); // CRIAR CÉLULAS
+			
+			utilSheet.fileBodySimple(sheet, row, value, startCol, endCol, dataStartRow); // PREENCHER DADOS
+			
+			utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol - 1, dataStartRow, dataEndRow - 1);
+
+			utilSheet.createRow(sheet, row, ++dataEndRow);
+			utilSheet.createCells(sheet, row, 0, endCol, dataEndRow, dataEndRow);
+			utilSheet.setCellValue(sheet, row, dataEndRow, 0, " ");
+			
+			dataStartRow = ++dataEndRow;
+			count++;
+		}
+		
+		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
+	}
 
 	public void generateVehicleCountEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
 		
 		sheet = null;		
 		row = null;
 		
-		Map<String, List<String[]>> sep = new LinkedHashMap<>();
 		List<String> IDs = new ArrayList<>();
 		
 		boolean alt = false;
@@ -2046,15 +2118,7 @@ public class ExcelTemplate {
 		int start = 8;
 		int count = 0;
 		
-		lines.forEach(list -> {
-			if (sep.containsKey(list[1])) {
-				sep.get(list[1]).add(list);
-			} else if (!list[1].equals("0")) {
-				List<String[]> newLine = new ArrayList<>();
-				newLine.add(list);
-				sep.put(list[1], newLine);
-			}
-		});
+		Map<String, List<String[]>> sep = separeBy(lines, 1);
 		
 		for (Entry<String, List<String[]>> l : sep.entrySet()) {
 			Map<String, List<String[]>> newLines = new LinkedHashMap<>();

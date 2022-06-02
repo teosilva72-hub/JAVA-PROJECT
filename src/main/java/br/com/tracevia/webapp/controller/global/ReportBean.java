@@ -72,6 +72,7 @@ public class ReportBean implements Serializable{
 	LocaleUtil locale;
 	
 	// ----------------------------------------------------------------------------------------------------------------
+	private int startColumn = 0;
 
 	public String 	fileName, fileTitle, usePeriod, sheetName = "Report";	
 	
@@ -133,6 +134,14 @@ public class ReportBean implements Serializable{
 
 	public void setLanguage(LanguageBean language) {
 		this.language = language;
+	}
+	
+	public int getStartColumn() {
+		return startColumn;
+	}
+	
+	public void setStartColumn(int start) {
+		this.startColumn = start;
 	}
 	
 	public ListEquipments getEquips() {
@@ -828,7 +837,7 @@ public class ReportBean implements Serializable{
 			orderColumns(map, mapArray);
 						
 		if(!dynamicColumns)
-			columns = mapArray.get("allColumns");		
+			columns = null;		
 		
 		List<String> columnsTemp = columns != null ? Arrays.asList(columns) : searchParameters;
 		String selectedPeriod = (String) map.get("date-period");
@@ -1184,15 +1193,15 @@ public class ReportBean implements Serializable{
 			try {
 				
 				if (isSpecialPDF()) {
-						generateSpecialFile(specialPDF, new String[] { dateStart, dateEnd }, period);
-						Path path = Paths.get(currentDir, "resources", "temp");
-						Path file = Files.createTempFile(path, fileName, null);
-						InputStream stream = model.ToInput();
-						FileUtils.copyInputStreamToFile(stream, new File(file.toString()));
-						SessionUtil.getExternalContext().getSessionMap().put(fileName+"PDF", file);
-						
-						model = new ExcelTemplate();
-					}
+					generateSpecialFile(specialPDF, new String[] { dateStart, dateEnd }, period);
+					Path path = Paths.get(currentDir, "resources", "temp");
+					Path file = Files.createTempFile(path, fileName, null);
+					InputStream stream = model.ToInput();
+					FileUtils.copyInputStreamToFile(stream, new File(file.toString()));
+					SessionUtil.getExternalContext().getSessionMap().put(fileName+"PDF", file);
+					
+					model = new ExcelTemplate();
+				}
 				
 				if(!special)										
 					model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, selectedLane, directions, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, hasDivision, classSubHeader);
@@ -1797,6 +1806,9 @@ public class ReportBean implements Serializable{
 						break;
 					case "vehicle-count-eco101":
 						model.generateVehicleCountEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
+						break;
+					case "vehicle-count-period-eco101":
+						model.generateVehicleCountPeriodEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
 						break;
 					case "vehicle-count-category-eco101":
 						model.generateVehicleCountCategoryEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
