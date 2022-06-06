@@ -191,19 +191,14 @@ public class CftvCam {
 		equip = new Equipments();
 		presetCall = "";
 		
-		try {
-			getCam(Integer.toString(id));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
 		
 		presetList();
 		
 		try {
 			equip = search.cftvCam(id);
 			setKm(equip.getKm());
-			
+			getCam(Integer.toString(id), equip.getNome());
 			String control = ImageUtil.getInternalImagePath("images", "cftv", cftvControlImage);
 			setImgControle(ImageUtil.encodeToBase64(control));
 			
@@ -222,11 +217,11 @@ public class CftvCam {
 		return credentials;
 	}
 	
-	public void getCam(String ptz) throws IOException {
+	public void getCam(String ptz, String name) throws IOException {
 		String ext ="";
 		if(id > 0 && id != 0) {
 			if(id < 10)ext="0";
-			camCftv = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/GetJPEGStream?Camera=PTZ%20"+ext+ptz+"&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser="+credentials[1];
+			camCftv = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/GetJPEGStream?Camera="+name+"&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser="+credentials[1];
 			URL url = new URL(camCftv);
 			HttpURLConnection http = (HttpURLConnection)url.openConnection();
 			http.disconnect();
