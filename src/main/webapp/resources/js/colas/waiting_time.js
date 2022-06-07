@@ -18,6 +18,7 @@ $((res)=>{
 		setTimeout(()=>{
 			console.log('aqui')
 			$('[type=search]').addClass('d-none')
-		},1000)
+			$('.dataTables_filter').addClass('d-none')
+		},9000)
 	})
 })
