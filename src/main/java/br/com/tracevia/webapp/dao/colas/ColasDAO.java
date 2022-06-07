@@ -82,16 +82,16 @@ public class ColasDAO {
 			if (result.hasNext()) {
 				for (RowResult rs : result) {
 
-					int device = rs.getInt("h.device");
-					int lane = rs.getInt("h.lane");
-					int local = rs.getInt("h.local");
-					String km = rs.getString("h.km");
+					int device = rs.getInt(1);
+					int lane = rs.getInt(3);
+					int local = rs.getInt(4);
+					String km = rs.getString(5);
 
 					ColasQueue colas = new ColasQueue(device, lane, local, km);
 
 					SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd hh:MM");
 
-					colas.setDate(format.parse(rs.getString("h.update_date")));
+					colas.setDate(format.parse(rs.getString(2)));
 
 					list.add(colas);
 				}				
