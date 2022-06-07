@@ -28,19 +28,20 @@ import br.com.tracevia.webapp.util.SessionUtil;
 @ManagedBean(name="CftvCam")
 @ViewScoped
 public class CftvCam {	
-	
+
 	Equipments equip;	
 	private int id, idTotal, sumId;
 	//GLOBAL VARIABLES
-	private String cam, MoveUp, MoveDown, MoveLeft, km, presetCall="", presetSet, presetDetails, MoveRight, /*command,*/ camCftv, imgControle;
+	private String cam, MoveUp, MoveDown, MoveLeft, km, presetCall="",
+			presetSet, presetDetails, MoveRight, camCftv, imgControle, width, heigth, quality, fps;
 	String callsArray[];
 	private List<SelectItem> presetList;
 	//private CFTVDAO cftv;
 	private String[] credentials, patrolPreset;
 	//getters and setters
-	
+
 	String cftvControlImage = "controller.png";
-	
+
 	@ManagedProperty("#{loginAccount}")
 	private LoginAccountBean login;
 
@@ -51,7 +52,7 @@ public class CftvCam {
 	public void setLogin(LoginAccountBean login) {
 		this.login = login;
 	}
-	
+
 	public String getCam() {
 		return cam;
 	}	
@@ -148,36 +149,39 @@ public class CftvCam {
 	public void setMoveRight(String moveRight) {
 		MoveRight = moveRight;
 	}
-	
-	
+
 	@PostConstruct
 	public void initialize() {
-		
+
 		if(login.getLoad().isEn_cftv()) {
-				
+
 			totalId();
-			
-				try {
-					credentials();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}			
+
+			try {
+				credentials();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+			width = "Width=480";
+			heigth = "Height=320";
+			quality = "Quality=20";
+			fps = "FPS=30";
 		}
 	}
-	
+
 	public String[] presetPatrol() {
 		//System.out.println("Estamos aqui");
 		RequestContext.getCurrentInstance().execute("btnPatrol()");
 		//System.out.println(patrolPreset.length);	
-		
+
 		return patrolPreset;
 	}
-	
+
 	public int totalId() {
-		
+
 		CFTVDAO ptz = new CFTVDAO();
-		
+
 		try {
 			equip = ptz.getTotalId();
 			idTotal = equip.getEquip_id();
@@ -185,12 +189,12 @@ public class CftvCam {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return idTotal;
 	}
-	
+
 	public int searchCftv() {
-		
+
 		EquipmentsDAO search = new EquipmentsDAO();
 		equip = new Equipments();
 		presetCall = "";
@@ -209,32 +213,32 @@ public class CftvCam {
 	}
 
 	public String[] credentials() throws Exception {
-		
+
 		ModulesDAO mod = new ModulesDAO();
 		credentials = mod.getCred("digifort");
-	
+
 		return credentials;
 	}
-	
+
 	public void getCam(String ptz, String name) throws IOException {
 		String ext ="";
 		name = name.replaceAll(" ","%20");
 		System.out.println(name);
-		
+
 		if(id > 0 && id != 0) {
 			if(id < 10)ext="0";
-			camCftv = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/GetJPEGStream?Camera="+name+"&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser="+credentials[1];
+			camCftv = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/GetJPEGStream?Camera="+name+"&"+width+"&"+heigth+"&"+quality+"&"+fps+"&ResponseFormat=Text&AuthUser="+credentials[1];
 			SessionUtil.executeScript(String.format("Command('%s')", camCftv));
 		}
 	}
-	
+
 	public void presetList() {
 		presetList = new  ArrayList<SelectItem>();
 		for(int m = 0; m <= 300; m++){				 
 			presetList.add(new SelectItem(String.valueOf(m), String.valueOf(m)));
 		}
 	}
-	
+
 	public int callPreset() {
 		try {
 			presetCall(Integer.toString(id), data(id).getNome());
@@ -244,7 +248,7 @@ public class CftvCam {
 		}
 		return id;
 	}
-	
+
 	public String presetCall(String id, String name) throws IOException {
 		name = name.replaceAll(" ", "%20");
 		if(presetCall == "") {
@@ -252,7 +256,7 @@ public class CftvCam {
 			RequestContext.getCurrentInstance().execute("presetCftv()");
 			//return presetCall = "teste";
 		}
-		
+
 		else {
 			int z = 0, o = 0, t = 0;
 			//String zr = "", on = "", tw= "";
@@ -281,7 +285,7 @@ public class CftvCam {
 			String ext ="";
 			if(Integer.parseInt(id) >= 0) {
 				if(Integer.parseInt(id) < 10)ext="0";
-				String call = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/CallPreset?Camera="+name+"&Value="+presetCall+"&ResponseFormat=XML&AuthUser=admin";
+				String call = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/CallPreset?Camera="+name+"&Value="+presetCall+"&ResponseFormat=XML&AuthUser="+credentials[1];
 				SessionUtil.executeScript(String.format("Command('%s')", call));
 			}
 		}
@@ -294,7 +298,7 @@ public class CftvCam {
 	}
 	public int setPreset() {
 		try {
-			
+
 			presetSet(Integer.toString(id),data(id).getNome());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -302,7 +306,7 @@ public class CftvCam {
 		}
 		return id;
 	}
-	
+
 	public void presetSet(String id, String name) throws IOException {
 		name = name.replaceAll(" ", "%20");
 		if(presetSet == "" || presetDetails == "")RequestContext.getCurrentInstance().execute("validatePresetSet()");
@@ -311,12 +315,12 @@ public class CftvCam {
 			String ext ="";
 			if(Integer.parseInt(id) > 0) {
 				if(Integer.parseInt(id) < 10)ext="0";
-				String call = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/SetPreset?Camera="+name+"&Value="+presetSet+"&Description="+presetDetails+"&ResponseFormat=XML&AuthUser=admin";
+				String call = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/SetPreset?Camera="+name+"&Value="+presetSet+"&Description="+presetDetails+"&ResponseFormat=XML&AuthUser="+credentials[1];
 				SessionUtil.executeScript(String.format("Command('%s')", call));
 			}
 		}
 	}
-	
+
 	public void UpMove() {
 		try {
 			Command(Integer.toString(id), data(id).getNome(), "MoveUp");
@@ -325,7 +329,7 @@ public class CftvCam {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void downMove() {
 		try {
 			Command(Integer.toString(id), data(id).getNome(), "MoveDown");
@@ -334,7 +338,7 @@ public class CftvCam {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void leftMove() {
 		try {
 			Command(Integer.toString(id), data(id).getNome(), "MoveLeft");
@@ -343,7 +347,7 @@ public class CftvCam {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void rightMove() {
 		try {
 			Command(Integer.toString(id), data(id).getNome(), "MoveRight");
@@ -352,7 +356,7 @@ public class CftvCam {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void zoomInMove() {
 		try {
 			Command(Integer.toString(id), data(id).getNome(), "ZoomTele");
@@ -361,7 +365,7 @@ public class CftvCam {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void zoomOutMove() {
 		try {
 			Command(Integer.toString(id), data(id).getNome(), "ZoomWide");
@@ -375,7 +379,7 @@ public class CftvCam {
 		//String zero = "";
 		name = name.replaceAll(" ", "%20");
 		//if(Integer.parseInt(cam) < 10)zero = "0";
-		String command = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation="+c+"&ResponseFormat=XML&AuthUser=admin";
+		String command = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation="+c+"&ResponseFormat=XML&AuthUser="+credentials[1];
 		SessionUtil.executeScript(String.format("Command('%s')", command));
 		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
