@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.controller.cftv;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class CftvCam {
 	Equipments equip;	
 	private int id, idTotal, sumId;
 	//GLOBAL VARIABLES
-	private String cam, MoveUp, MoveDown, MoveLeft, km, presetCall="", presetSet, presetDetails, MoveRight, /*command,*/ ZoomIn, ZoomOut, camCftv, imgControle;
+	private String cam, MoveUp, MoveDown, MoveLeft, km, presetCall="", presetSet, presetDetails, MoveRight, /*command,*/ camCftv, imgControle;
 	String callsArray[];
 	private List<SelectItem> presetList;
 	//private CFTVDAO cftv;
@@ -326,127 +327,75 @@ public class CftvCam {
 	
 	public void UpMove() {
 		try {
-			moveUp(Integer.toString(id), data(id).getNome());
+			Command(Integer.toString(id), data(id).getNome(), "MoveUp");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void moveUp(String cam, String name) throws IOException {
-		//String zero = "";
-		name = name.replaceAll(" ", "%20");
-		//if(Integer.parseInt(cam) < 10)zero = "0";
-		MoveUp = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation=MoveUp&ResponseFormat=XML&AuthUser=admin";
-		URL url = new URL(MoveUp);
-		HttpURLConnection http = (HttpURLConnection)url.openConnection();
-		http.disconnect();
-		System.out.println(MoveUp);
-		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 	
 	public void downMove() {
 		try {
-			moveDown(Integer.toString(id), data(id).getNome());
+			Command(Integer.toString(id), data(id).getNome(), "MoveDown");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void moveDown(String cam, String name) throws IOException {
-		name = name.replaceAll(" ", "%20");
-		//String zero = "";
-		//if(Integer.parseInt(cam) < 10)zero = "0";
-		MoveDown = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation=MoveDown&ResponseFormat=XML&AuthUser=admin";
-		URL url = new URL(MoveDown);
-		HttpURLConnection http = (HttpURLConnection)url.openConnection();
-		http.disconnect();
-		System.out.println(MoveDown);
-		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 	
 	public void leftMove() {
 		try {
-			moveLeft(Integer.toString(id), data(id).getNome());
+			Command(Integer.toString(id), data(id).getNome(), "MoveLeft");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void moveLeft(String cam, String name) throws IOException {
-		//String zero = "";
-		name = name.replaceAll(" ", "%20");
-		//if(Integer.parseInt(cam) < 10)zero = "0";
-		MoveLeft = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation=MoveLeft&ResponseFormat=XML&AuthUser=admin";
-		URL url = new URL(MoveLeft);
-		HttpURLConnection http = (HttpURLConnection)url.openConnection();
-		http.disconnect();
-		System.out.println(MoveLeft);
-		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 	
 	public void rightMove() {
 		try {
-			moveRight(Integer.toString(id), data(id).getNome());
+			Command(Integer.toString(id), data(id).getNome(), "MoveRight");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void moveRight(String cam, String name) throws IOException {
-		name = name.replaceAll(" ", "%20");
-		//String zero = "";
-		//if(Integer.parseInt(cam) < 10)zero = "0";
-		MoveRight = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation=MoveRight&ResponseFormat=XML&AuthUser=admin";
-		URL url = new URL(MoveRight);
-		HttpURLConnection http = (HttpURLConnection)url.openConnection();
-		http.disconnect();
-		System.out.println(MoveRight);
-		// System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 	
 	public void zoomInMove() {
 		try {
-			MoveZoomIn(Integer.toString(id), data(id).getNome());
+			Command(Integer.toString(id), data(id).getNome(), "ZoomTele");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void MoveZoomIn(String cam, String name) throws IOException {
-		//String zero = "";
-		name = name.replaceAll(" ", "%20");
-		//if(Integer.parseInt(cam) < 10)zero = "0";
-		ZoomIn = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation=ZoomTele&ResponseFormat=XML&AuthUser=admin";
-		URL url = new URL(ZoomIn);
-		HttpURLConnection http = (HttpURLConnection)url.openConnection();
-		http.disconnect();
-		System.out.println(ZoomIn);
-		// System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 	
 	public void zoomOutMove() {
 		try {
-			MoveZoomOut(Integer.toString(id), data(id).getNome());
+			Command(Integer.toString(id), data(id).getNome(), "ZoomWide");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	public void MoveZoomOut(String cam, String name) throws IOException {
+
+	public void Command(String cam, String name, String c) throws MalformedURLException {
 		//String zero = "";
 		name = name.replaceAll(" ", "%20");
 		//if(Integer.parseInt(cam) < 10)zero = "0";
-		ZoomOut = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation=ZoomWide&ResponseFormat=XML&AuthUser=admin";
-		URL url = new URL(ZoomOut);
-		HttpURLConnection http = (HttpURLConnection)url.openConnection();
-		http.disconnect();
-		System.out.println(ZoomOut);
+		String command = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation="+c+"&ResponseFormat=XML&AuthUser=admin";
+		URL url = new URL(command);
+		HttpURLConnection http = null;
+		try {
+			http = (HttpURLConnection)url.openConnection();
+			http.connect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (http != null)
+				http.disconnect();			
+		}
+		System.out.println(command);
 		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 }
