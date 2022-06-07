@@ -207,26 +207,19 @@ function settingCftv(){
 function updateTotalId(){
 	$('#btnCftvSumTotal').click()
 }
-//HIDDEN INPUT ID ADD EQUIPAMENT CFTV
-/*function cftvInput(){
-	var x = document.getElementById("equips")
-	var currentId = document.getElementById("equipId")
-		var icon = document.querySelector(".fa-ideal")
-		currentId.style.display = "block"
-		icon.style.display = "block"
-	x.addEventListener("change", function(){
-		if(x.value == "1"){
-			currentId.style.display = "none"
-			icon.style.display = "none"
-			$('#btnCftvSumTotal').click()
-			setTimeout(()=>{
-				var lastId = document.getElementById("totalIdCftv")
-				currentId.value = Number(lastId.value) + 1;
-			},300)
-		}else{
-			currentId.style.display = "block"
-			icon.style.display = "block"
-			$('#equipId').val('')
-		}
-	})
-}*/
+function Command(command){
+	var url = `${command}`;
+
+var xhr = new XMLHttpRequest();
+xhr.open("GET", url);
+
+xhr.setRequestHeader("Accept", "application/json");
+
+xhr.onreadystatechange = function () {
+   if (xhr.readyState === 4) {
+      console.log(xhr.status);
+      console.log(xhr.responseText);
+   }};
+
+xhr.send();	
+}
