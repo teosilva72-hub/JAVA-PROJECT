@@ -11,6 +11,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 
 import org.primefaces.context.RequestContext;
 
@@ -20,6 +23,7 @@ import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.ModulesDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.util.ImageUtil;
+import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="CftvCam")
 @ViewScoped
@@ -220,11 +224,7 @@ public class CftvCam {
 		if(id > 0 && id != 0) {
 			if(id < 10)ext="0";
 			camCftv = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/GetJPEGStream?Camera="+name+"&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser="+credentials[1];
-			URL url = new URL(camCftv);
-			HttpURLConnection http = (HttpURLConnection)url.openConnection();
-			http.disconnect();
-			//System.out.println(camCftv);
-			//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+			SessionUtil.executeScript(String.format("Command('%s')", camCftv));
 		}
 	}
 	
@@ -282,11 +282,7 @@ public class CftvCam {
 			if(Integer.parseInt(id) >= 0) {
 				if(Integer.parseInt(id) < 10)ext="0";
 				String call = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/CallPreset?Camera="+name+"&Value="+presetCall+"&ResponseFormat=XML&AuthUser=admin";
-				URL url = new URL(call);
-				HttpURLConnection http = (HttpURLConnection)url.openConnection();
-				http.disconnect();
-				System.out.println(call);
-				//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+				SessionUtil.executeScript(String.format("Command('%s')", call));
 			}
 		}
 		return presetCall;
@@ -316,11 +312,7 @@ public class CftvCam {
 			if(Integer.parseInt(id) > 0) {
 				if(Integer.parseInt(id) < 10)ext="0";
 				String call = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/SetPreset?Camera="+name+"&Value="+presetSet+"&Description="+presetDetails+"&ResponseFormat=XML&AuthUser=admin";
-				URL url = new URL(call);
-				HttpURLConnection http = (HttpURLConnection)url.openConnection();
-				http.disconnect();
-				System.out.println(call);
-				//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+				SessionUtil.executeScript(String.format("Command('%s')", call));
 			}
 		}
 	}
@@ -384,18 +376,7 @@ public class CftvCam {
 		name = name.replaceAll(" ", "%20");
 		//if(Integer.parseInt(cam) < 10)zero = "0";
 		String command = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation="+c+"&ResponseFormat=XML&AuthUser=admin";
-		URL url = new URL(command);
-		HttpURLConnection http = null;
-		try {
-			http = (HttpURLConnection)url.openConnection();
-			http.connect();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (http != null)
-				http.disconnect();			
-		}
-		System.out.println(command);
+		SessionUtil.executeScript(String.format("Command('%s')", command));
 		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 }
