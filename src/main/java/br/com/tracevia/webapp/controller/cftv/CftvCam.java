@@ -159,7 +159,6 @@ public class CftvCam {
 					e.printStackTrace();
 				}			
 		}
-		
 	}
 	
 	public String[] presetPatrol() {
@@ -190,18 +189,13 @@ public class CftvCam {
 		EquipmentsDAO search = new EquipmentsDAO();
 		equip = new Equipments();
 		presetCall = "";
-		
-		
-		
 		presetList();
-		
 		try {
 			equip = search.cftvCam(id);
 			setKm(equip.getKm());
 			getCam(Integer.toString(id), equip.getNome());
 			String control = ImageUtil.getInternalImagePath("images", "cftv", cftvControlImage);
-			setImgControle(ImageUtil.encodeToBase64(control));
-			
+			setImgControle(ImageUtil.encodeToBase64(control));		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -242,7 +236,7 @@ public class CftvCam {
 	
 	public int callPreset() {
 		try {
-			presetCall(Integer.toString(id));
+			presetCall(Integer.toString(id), data(id).getNome());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -250,8 +244,8 @@ public class CftvCam {
 		return id;
 	}
 	
-	public String presetCall(String id) throws IOException {
-		
+	public String presetCall(String id, String name) throws IOException {
+		name = name.replaceAll(" ", "%20");
 		if(presetCall == "") {
 			RequestContext.getCurrentInstance().execute("validatePresetCall()");
 			RequestContext.getCurrentInstance().execute("presetCftv()");
@@ -286,7 +280,7 @@ public class CftvCam {
 			String ext ="";
 			if(Integer.parseInt(id) >= 0) {
 				if(Integer.parseInt(id) < 10)ext="0";
-				String call = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/CallPreset?Camera=PTZ%20"+ext+id+"&Value="+presetCall+"&ResponseFormat=XML&AuthUser=admin";
+				String call = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/CallPreset?Camera="+name+"&Value="+presetCall+"&ResponseFormat=XML&AuthUser=admin";
 				URL url = new URL(call);
 				HttpURLConnection http = (HttpURLConnection)url.openConnection();
 				http.disconnect();
@@ -296,10 +290,15 @@ public class CftvCam {
 		}
 		return presetCall;
 	}
-	
+	public Equipments data(int id) {
+		EquipmentsDAO search = new EquipmentsDAO();
+		equip = search.cftvCam(id);
+		return equip;
+	}
 	public int setPreset() {
 		try {
-			presetSet(Integer.toString(id));
+			
+			presetSet(Integer.toString(id),data(id).getNome());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -307,14 +306,15 @@ public class CftvCam {
 		return id;
 	}
 	
-	public void presetSet(String id) throws IOException {
+	public void presetSet(String id, String name) throws IOException {
+		name = name.replaceAll(" ", "%20");
 		if(presetSet == "" || presetDetails == "")RequestContext.getCurrentInstance().execute("validatePresetSet()");
 		else{
 			RequestContext.getCurrentInstance().execute("validatePresetSet()");
 			String ext ="";
 			if(Integer.parseInt(id) > 0) {
 				if(Integer.parseInt(id) < 10)ext="0";
-				String call = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/SetPreset?Camera=PTZ%20"+ext+id+"&Value="+presetSet+"&Description="+presetDetails+"&ResponseFormat=XML&AuthUser=admin";
+				String call = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/SetPreset?Camera="+name+"&Value="+presetSet+"&Description="+presetDetails+"&ResponseFormat=XML&AuthUser=admin";
 				URL url = new URL(call);
 				HttpURLConnection http = (HttpURLConnection)url.openConnection();
 				http.disconnect();
@@ -326,17 +326,18 @@ public class CftvCam {
 	
 	public void UpMove() {
 		try {
-			moveUp(Integer.toString(id));
+			moveUp(Integer.toString(id), data(id).getNome());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void moveUp(String cam) throws IOException {
-		String zero = "";
-		if(Integer.parseInt(cam) < 10)zero = "0";
-		MoveUp = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveUp&ResponseFormat=XML&AuthUser=admin";
+	public void moveUp(String cam, String name) throws IOException {
+		//String zero = "";
+		name = name.replaceAll(" ", "%20");
+		//if(Integer.parseInt(cam) < 10)zero = "0";
+		MoveUp = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation=MoveUp&ResponseFormat=XML&AuthUser=admin";
 		URL url = new URL(MoveUp);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
@@ -346,17 +347,18 @@ public class CftvCam {
 	
 	public void downMove() {
 		try {
-			moveDown(Integer.toString(id));
+			moveDown(Integer.toString(id), data(id).getNome());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void moveDown(String cam) throws IOException {
-		String zero = "";
-		if(Integer.parseInt(cam) < 10)zero = "0";
-		MoveDown = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveDown&ResponseFormat=XML&AuthUser=admin";
+	public void moveDown(String cam, String name) throws IOException {
+		name = name.replaceAll(" ", "%20");
+		//String zero = "";
+		//if(Integer.parseInt(cam) < 10)zero = "0";
+		MoveDown = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation=MoveDown&ResponseFormat=XML&AuthUser=admin";
 		URL url = new URL(MoveDown);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
@@ -366,17 +368,18 @@ public class CftvCam {
 	
 	public void leftMove() {
 		try {
-			moveLeft(Integer.toString(id));
+			moveLeft(Integer.toString(id), data(id).getNome());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void moveLeft(String cam) throws IOException {
-		String zero = "";
-		if(Integer.parseInt(cam) < 10)zero = "0";
-		MoveLeft = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveLeft&ResponseFormat=XML&AuthUser=admin";
+	public void moveLeft(String cam, String name) throws IOException {
+		//String zero = "";
+		name = name.replaceAll(" ", "%20");
+		//if(Integer.parseInt(cam) < 10)zero = "0";
+		MoveLeft = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation=MoveLeft&ResponseFormat=XML&AuthUser=admin";
 		URL url = new URL(MoveLeft);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
@@ -386,17 +389,18 @@ public class CftvCam {
 	
 	public void rightMove() {
 		try {
-			moveRight(Integer.toString(id));
+			moveRight(Integer.toString(id), data(id).getNome());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void moveRight(String cam) throws IOException {
-		String zero = "";
-		if(Integer.parseInt(cam) < 10)zero = "0";
-		MoveRight = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveRight&ResponseFormat=XML&AuthUser=admin";
+	public void moveRight(String cam, String name) throws IOException {
+		name = name.replaceAll(" ", "%20");
+		//String zero = "";
+		//if(Integer.parseInt(cam) < 10)zero = "0";
+		MoveRight = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation=MoveRight&ResponseFormat=XML&AuthUser=admin";
 		URL url = new URL(MoveRight);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
@@ -406,17 +410,18 @@ public class CftvCam {
 	
 	public void zoomInMove() {
 		try {
-			MoveZoomIn(Integer.toString(id));
+			MoveZoomIn(Integer.toString(id), data(id).getNome());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void MoveZoomIn(String cam) throws IOException {
-		String zero = "";
-		if(Integer.parseInt(cam) < 10)zero = "0";
-		ZoomIn = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=ZoomTele&ResponseFormat=XML&AuthUser=admin";
+	public void MoveZoomIn(String cam, String name) throws IOException {
+		//String zero = "";
+		name = name.replaceAll(" ", "%20");
+		//if(Integer.parseInt(cam) < 10)zero = "0";
+		ZoomIn = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation=ZoomTele&ResponseFormat=XML&AuthUser=admin";
 		URL url = new URL(ZoomIn);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
@@ -426,17 +431,18 @@ public class CftvCam {
 	
 	public void zoomOutMove() {
 		try {
-			MoveZoomOut(Integer.toString(id));
+			MoveZoomOut(Integer.toString(id), data(id).getNome());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void MoveZoomOut(String cam) throws IOException {
-		String zero = "";
-		if(Integer.parseInt(cam) < 10)zero = "0";
-		ZoomOut = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=ZoomWide&ResponseFormat=XML&AuthUser=admin";
+	public void MoveZoomOut(String cam, String name) throws IOException {
+		//String zero = "";
+		name = name.replaceAll(" ", "%20");
+		//if(Integer.parseInt(cam) < 10)zero = "0";
+		ZoomOut = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera="+name+"&Operation=ZoomWide&ResponseFormat=XML&AuthUser=admin";
 		URL url = new URL(ZoomOut);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
