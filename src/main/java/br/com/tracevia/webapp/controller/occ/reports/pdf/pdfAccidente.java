@@ -301,7 +301,7 @@ public class pdfAccidente {
 
 	        // add current page count
 	        footer.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
-	        footer.addCell(new Phrase(String.format( "OTT-F-CC-01 Rev 01") , new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+	        footer.addCell(new Phrase(String.format( "OTT-F-CC-01 Rev 01") , new Font(Font.FontFamily.HELVETICA, 8, Font.BOLD)));
 
 	        // write page
 	        canvas.beginMarkedContentSequence(PdfName.ARTIFACT);

@@ -116,7 +116,7 @@ html, body {
 	text-align: center;
 	color: white;
 	height: 23px;
-	border: solid 1px;
+	border: solid 1px black;
 }
 
 .p1 {
@@ -131,8 +131,8 @@ span {
 }
 
 .img1 {
-	width: 100%;
-	margin-top: 2%;
+	width: 75% !important;
+	position: relative;
 	border: solid 2px black;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
@@ -141,8 +141,9 @@ span {
 
 .img2 {
 	border: solid 2px black;
-	width: 100%;
-	margin-top: 2%;
+	width: 75% !important;
+	position: relative !important;
+	margin-top: unset;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
@@ -161,7 +162,7 @@ span {
 .jumbotron {
 	margin-top: -50px;
 	height: 100vh;
-	background-color: white;
+	background-color: transparent;
 }
 
 .inputSearch {
