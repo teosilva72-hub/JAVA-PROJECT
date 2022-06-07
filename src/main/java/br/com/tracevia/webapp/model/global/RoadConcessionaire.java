@@ -434,7 +434,8 @@ public class RoadConcessionaire {
 			plaque = "";
 			linearMapUI = "/resources/images/linear-map/via-paulista/via_paulista.webp";
 			viaPaulista = true;
-			hasNotification = true;			
+			hasNotification = true;		
+			mapEnabled = false;	
 			
 		}
             
@@ -500,6 +501,7 @@ public class RoadConcessionaire {
 			reportsLLEnabled = true;
 			viaSul = true;
 			hasNotification = true;
+			mapEnabled = false;
 						
 		}
 
