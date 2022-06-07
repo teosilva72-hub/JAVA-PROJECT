@@ -219,6 +219,9 @@ public class CftvCam {
 	
 	public void getCam(String ptz, String name) throws IOException {
 		String ext ="";
+		name = name.replaceAll(" ","%20");
+		System.out.println(name);
+		
 		if(id > 0 && id != 0) {
 			if(id < 10)ext="0";
 			camCftv = credentials[5]+"://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/GetJPEGStream?Camera="+name+"&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser="+credentials[1];
@@ -287,7 +290,7 @@ public class CftvCam {
 				URL url = new URL(call);
 				HttpURLConnection http = (HttpURLConnection)url.openConnection();
 				http.disconnect();
-				//System.out.println(call);
+				System.out.println(call);
 				//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 			}
 		}
@@ -315,7 +318,7 @@ public class CftvCam {
 				URL url = new URL(call);
 				HttpURLConnection http = (HttpURLConnection)url.openConnection();
 				http.disconnect();
-				//System.out.println(call);
+				System.out.println(call);
 				//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 			}
 		}
@@ -337,7 +340,7 @@ public class CftvCam {
 		URL url = new URL(MoveUp);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
-		//System.out.println(MoveUp);
+		System.out.println(MoveUp);
 		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 	
@@ -357,7 +360,7 @@ public class CftvCam {
 		URL url = new URL(MoveDown);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
-		//System.out.println(MoveDown);
+		System.out.println(MoveDown);
 		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 	
@@ -377,7 +380,7 @@ public class CftvCam {
 		URL url = new URL(MoveLeft);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
-		//System.out.println(MoveLeft);
+		System.out.println(MoveLeft);
 		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 	
@@ -397,7 +400,7 @@ public class CftvCam {
 		URL url = new URL(MoveRight);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
-		// System.out.println(MoveRight);
+		System.out.println(MoveRight);
 		// System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 	
@@ -417,7 +420,7 @@ public class CftvCam {
 		URL url = new URL(ZoomIn);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
-		// System.out.println(ZoomIn);
+		System.out.println(ZoomIn);
 		// System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 	
@@ -437,7 +440,7 @@ public class CftvCam {
 		URL url = new URL(ZoomOut);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
-		//System.out.println(ZoomOut);
+		System.out.println(ZoomOut);
 		//System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 	}
 }
