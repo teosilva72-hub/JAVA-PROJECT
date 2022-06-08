@@ -1824,8 +1824,8 @@ public class ExcelTemplate {
 		}
 
 	}
-	SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count); 
-					
+	if(SessionUtil.getExternalContext().getSessionMap().get(sheetName + "PDF_Count") == null)
+		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);					
 						
 	}	
 	
@@ -2036,7 +2036,8 @@ public class ExcelTemplate {
 			}
 			
 		}
-		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
+		if(SessionUtil.getExternalContext().getSessionMap().get(sheetName + "PDF_Count") == null)
+			SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
 	}
 	
 	public void generateVehicleCountPeriodEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
@@ -2099,8 +2100,8 @@ public class ExcelTemplate {
 			dataStartRow = ++dataEndRow;
 			count++;
 		}
-		
-		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
+		if(SessionUtil.getExternalContext().getSessionMap().get(sheetName + "PDF_Count") == null)
+			SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);		
 	}
 
 	public void generateVehicleCountEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
@@ -2201,7 +2202,8 @@ public class ExcelTemplate {
 			}
 			
 		}
-		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
+		if(SessionUtil.getExternalContext().getSessionMap().get(sheetName + "PDF_Count") == null)
+			SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
 	}
 	
 	public void generateVehicleCountCategoryEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
@@ -2304,8 +2306,9 @@ public class ExcelTemplate {
 		
 		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol - 1, dataStartRow, dataEndRow);
 		
-		SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
-	}
+		if(SessionUtil.getExternalContext().getSessionMap().get(sheetName + "PDF_Count") == null)
+			SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
+		}
 	
 	// ----------------------------------------------------------------------------------------------------------------
 	

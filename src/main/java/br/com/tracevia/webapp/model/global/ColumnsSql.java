@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.sun.jna.Pointer;
@@ -35,7 +36,7 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
         private HashMap<String, Integer> map;
 
         RowResult(RowSql[] rows) {
-        	HashMap<String, Integer> map = new HashMap<String, Integer>();
+        	LinkedHashMap<String, Integer> map = new LinkedHashMap<String, Integer>();
         	
         	for (int i = 0; i < rows.length; i++) {
     			map.put(rows[i].getKey(), i);
