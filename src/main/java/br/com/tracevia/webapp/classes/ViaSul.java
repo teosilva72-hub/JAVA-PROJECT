@@ -1,6 +1,8 @@
 package br.com.tracevia.webapp.classes;
 
 public enum ViaSul {
+	
+	// TABLE VBV
 
 	LIGHT_VEHICLES("1"),         // Autos (Utilitários, Passeio)
 	MOTORCYCLES("9"),            // Motos
@@ -17,6 +19,8 @@ public enum ViaSul {
 	TRUCK_8AXLES("11"),          // Caminhão 8 Eixos
 	TRUCK_9AXLES("E9"),          // Caminhão 9 Eixos
 	TRUCK_10AXLES("10N"),        // Caminhão 10 Eixos
+	
+	// TABLE VBV CCR
 	
 	CCR_LIGHT_VEHICLES("1"),         // 2 Eixos Simples => Autos (Utilitários, Passeio)
 	CCR_MOTORCYCLES("10"),           // Motos
