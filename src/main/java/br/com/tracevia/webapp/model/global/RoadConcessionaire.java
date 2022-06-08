@@ -182,9 +182,7 @@ public class RoadConcessionaire {
 			darkMapUI = "";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
-			tableStatus = TraceviaTables.TraceviaStatus.getTable();
-			tableLL = TraceviaTables.TraceviaLL.getTable();
-			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();		
 			plaque = "";
 			mapEnabled = true;
 			mapDivided = true;			
@@ -224,9 +222,7 @@ public class RoadConcessionaire {
 			darkMapUI = "";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
-			tableStatus = TraceviaTables.TraceviaStatus.getTable();
-			tableLL = TraceviaTables.TraceviaLL.getTable();
-			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();		
 			plaque = "";	
 			ausn = true;
 		}
@@ -264,9 +260,7 @@ public class RoadConcessionaire {
 			darkMapUI = "/resources/images/map/tuxpan/tuxpan-dark.webp";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
-			tableStatus = TraceviaTables.TraceviaStatus.getTable();
-			tableLL = TraceviaTables.TraceviaLL.getTable();
-			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();			
 			plaque = "tuxpan";
 			mapEnabled = true;
 			mapDivided = true;	
@@ -308,9 +302,7 @@ public class RoadConcessionaire {
 			darkMapUI = "";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
-			tableStatus = TraceviaTables.TraceviaStatus.getTable();
-			tableLL = TraceviaTables.TraceviaLL.getTable();
-			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();			
 			plaque = "";
 			mapEnabled = true;
 			mapDivided = true;			
@@ -351,9 +343,7 @@ public class RoadConcessionaire {
 			darkMapUI = "";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
-			tableStatus = TraceviaTables.TraceviaStatus.getTable();
-			tableLL = TraceviaTables.TraceviaLL.getTable();
-			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();	
 			plaque = "";
 			mapEnabled = true;
 			mapDivided = true;		
@@ -392,9 +382,11 @@ public class RoadConcessionaire {
    			mapUI = "/resources/images/map/ecovias-araguaia/ecovias_araguaia.webp";
    			darkMapUI = "";
    			tableVBV = DefaultTable.tableVBV.getTable();
-   			tableDados15 = DefaultTable.tableDados15.getTable();   			
+   			tableDados15 = DefaultTable.tableDados15.getTable(); 
+   			tableStatus = TraceviaTables.TraceviaStatus.getTable();	
    			plaque = "";
    			mapEnabled = true;  
+   			darkMap = false;
    			hasNotification = true;    		
    			ecoviasAraguaia = true;   		
    		   													
