@@ -25,11 +25,11 @@
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.defineClassSublHeader('light-heavy')}" />
 	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv v')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('name')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTablePos(2)}" />
 		<f:viewAction onPostback="true" escape="false" action="#{reportBean.setColumnsName(''.format('%s, %s, Equipamento, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s',
 		satLabels.global_date_column, satLabels.global_interval_column, satLabels.class_motorcycles_column, satLabels.class_light_column, satLabels.class_semi_trailer_column, satLabels.class_trailer_column,
 		satLabels.number_of_axles_2_column, satLabels.number_of_axles_3_column, satLabels.number_of_axles_4_column, satLabels.number_of_axles_5_column, satLabels.number_of_axles_6_column, satLabels.number_of_axles_7_column,
@@ -72,7 +72,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', true, true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	
 
     </f:metadata>

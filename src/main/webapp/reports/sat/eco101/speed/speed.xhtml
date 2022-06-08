@@ -29,7 +29,9 @@
 	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv v')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('name')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTablePos(2)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFixValue('3')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, Equipamento, Sentido, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.speed_20_km, satLabels.speed_20_40_km, satLabels.speed_40_60_km, satLabels.speed_60_80_km, satLabels.speed_over_80_km, satLabels.global_total_vehicles_column))}" />
 	   
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; s.name; q.direction; SUM(speed &lt; 20); SUM(speed &gt;= 20 AND speed &lt; 40); SUM(speed &gt;= 40 AND speed &lt; 60); SUM(speed &gt;= 60 AND speed &lt; 80); SUM(speed &gt;= 80); SUM(1)')}" />
@@ -55,7 +57,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_vehicles, 'filter_vehicles.id_vehicle|name' , true, true)}" />
 			               
     </f:metadata>

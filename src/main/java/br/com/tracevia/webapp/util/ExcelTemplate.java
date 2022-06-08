@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -2206,7 +2207,7 @@ public class ExcelTemplate {
 			SessionUtil.getExternalContext().getSessionMap().put(sheetName + "PDF_Count", count);
 	}
 	
-	public void generateVehicleCountCategoryEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period) throws Exception {
+	public void generateVehicleCountCategoryEco101(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info, String[] date, String[] period, String idTable) throws Exception {
 		
 		sheet = null;		
 		row = null;
@@ -2249,7 +2250,7 @@ public class ExcelTemplate {
 		sheet = workbook.createSheet(sheetName);	
 		
 		excelFileHeader(sheet, row, RoadConcessionaire.externalImagePath, "sat", columns.size(), "Contagem de Veículo por Categoria",  
-				date, period, new ArrayList<>(), 0, false, true);
+				date, period, lines.stream().map((x) -> x[0]).distinct().collect(Collectors.toList()), 0, false, true, 0, idTable, null);
 		
 		// ------------------------------------------------------------------------------------------------------------
 		

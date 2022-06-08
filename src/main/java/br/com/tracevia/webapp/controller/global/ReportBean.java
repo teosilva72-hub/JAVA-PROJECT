@@ -65,7 +65,7 @@ public class ReportBean implements Serializable{
 	public String table;
 	public String idTable;
 	public int idTablePos;
-	public List<Integer> fixValue;
+	public List<Integer> fixValue = new ArrayList<>();
 	public List<String> columnsName = new ArrayList<>(); 
 	public List<String> searchParameters,
 						searchParametersMS = new ArrayList<>();
@@ -1869,7 +1869,7 @@ public class ReportBean implements Serializable{
 						model.generateVehicleCountPeriodEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
 						break;
 					case "vehicle-count-category-eco101":
-						model.generateVehicleCountCategoryEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
+						model.generateVehicleCountCategoryEco101(columnsInUse, report.lines, sheetName, satTab, date, period, idTable);
 						break;
 				}
 		}
