@@ -11,7 +11,7 @@ setInterval(() => {
     let n = data.getSeconds();
     let minute = data.getMinutes();
 
-    if ( minute == 50 ) {
+    if ( minute == 1 || minute == 16 || minute == 31 || minute == 46 ) {
         if (n > 0 && n < 4)
             init();
     }
