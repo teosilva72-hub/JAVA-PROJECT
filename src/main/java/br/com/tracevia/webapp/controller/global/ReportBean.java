@@ -108,7 +108,7 @@ public class ReportBean implements Serializable{
 	//private ByteArrayOutputStream exclusivePDF;
 	private List<String> columnsInUse = new ArrayList<>(); 
 	private List<String> columnsHeader = new ArrayList<>(); 
-	private HashMap<String, Integer> moreInterval = new HashMap<>();
+	private HashMap<String, List<String>> moreInterval = new HashMap<>();
 	private HashMap<String, List<String>> listArgs = new HashMap<>(); 
 	private List<String[]> dateSearch = new ArrayList<>();
 	private List<Pair<String[], List<String[]>>> filterSearch = new ArrayList<>();
@@ -334,25 +334,29 @@ public class ReportBean implements Serializable{
 
 	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, String where, boolean multiple, boolean mandatory, boolean setInterval) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sÃ³mente com os campos necessarios
 		String[] tableName = tableWithName.split("\\.");
+		List<String[]> element;
 			
 		String extra1 = multiple ? "multiple" : "";
 		String extra2 = mandatory ? "required" : "";
-		if (setInterval)
-			moreInterval.put(nameColumn, 0);
 		
 		if (report != null)
 			
 			try {
 				
-				if(tableName[1].contains("|"))
-					 this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, report.getOtherElementTable(tableName[0], tableName[1].split("\\|"), where)));
+				if(tableName[1].contains("|")) {
+					element = report.getOtherElementTable(tableName[0], tableName[1].split("\\|"), where);
+					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, element));					
+				} else {
+					element = report.getOtherElementTable(tableName[0], tableName[1], where);
+					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, element));
+				}
 				
-				else					
-					 this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, report.getOtherElementTable(tableName[0], tableName[1], where)));
+				if (setInterval)
+					moreInterval.put(nameColumn, element.stream().map((x) -> x[1]).collect(Collectors.toList()));
 											
 			} catch (Exception e) {
 				e.printStackTrace();
-			}		
+			}
 	}
 	
 	public void setTable(String table) {
@@ -1004,7 +1008,9 @@ public class ReportBean implements Serializable{
 					String newFilter = "";
 
 					if (moreInterval.containsKey(search.left[1]))
-							moreInterval.put(search.left[1], filterArray.length);
+							moreInterval.put(search.left[1], Arrays.asList(filterArray).stream()
+									.map((x) -> search.right.stream().filter((y) -> y[0].equals(x)).findFirst().get()[1])
+									.collect(Collectors.toList()));
 					
 					if (filterArray != null) {						
 						for (String f : filterArray) { // HERE		
@@ -1157,7 +1163,7 @@ public class ReportBean implements Serializable{
 		    boolean hasValue = true;
 		   		  		   
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
-				hasValue = this.setIntervalDate(dateProcess, columnDate, period, module, report.IDs);	    						
+				hasValue = this.setIntervalDate(dateProcess, columnDate, period, module);	    						
 				
 			// -------------------------------------------------------------------------------------
 					
@@ -1302,7 +1308,7 @@ public class ReportBean implements Serializable{
 
 		}
 
-	public boolean setIntervalDate(Date[] date, String column, String[] period, String modulo, List<String> equips) throws ParseException {
+	public boolean setIntervalDate(Date[] date, String column, String[] period, String modulo) throws ParseException {
 			
 		Calendar calendar = Calendar.getInstance();
 		List<Pair<String, List<String[]>>> secondaryLines = new ArrayList<>();
@@ -1311,11 +1317,14 @@ public class ReportBean implements Serializable{
 		String[] model = new String[report.columnName.size()];
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		HashMap<String, List<List<String>>> mapB = new HashMap<>();
+		List<String> equips = new ArrayList<>();
 		boolean sep = column.contains("@");
 		boolean hasLine = !report.lines.isEmpty();
 		int[] col = new int[2];	
 		Arrays.fill(model, "0");
-		int amnt = moreInterval.isEmpty() ? 0 : moreInterval.values().stream().reduce(1, (x, y) -> x * y);
+		int amnt = moreInterval.isEmpty() ? 0 : moreInterval.values().stream().map((x) -> x.size()).reduce(1, (x, y) -> x * y);
+		if (moreInterval.size() > 0)
+			equips = moreInterval.values().iterator().next();
 		int count = 0;
 		int fill = 0;
 		List<String[]> temp;
@@ -1395,7 +1404,7 @@ public class ReportBean implements Serializable{
 
 					setDateInterval(step, sep, model, col, formatter, interval);
 				
-					fillData(fill, amnt, model, newList, tempEquips, true);
+					fillData(fill, model, newList, tempEquips, true);
 					
 					calendar.add(interval, Integer.parseInt(period[0]));
 					tempEquips = new ArrayList<>(equips);
@@ -1412,7 +1421,7 @@ public class ReportBean implements Serializable{
 					if (amnt == 0)
 						newList.add(model.clone());
 		
-					fillData(fill, amnt, model, newList, tempEquips, false);
+					fillData(fill, model, newList, tempEquips, false);
 
 					calendar.add(interval, Integer.parseInt(period[0]));
 					step = calendar.getTime();
@@ -1434,7 +1443,7 @@ public class ReportBean implements Serializable{
 				}
 
 				if (temp.indexOf(lines) == temp.size() - 1 && fill != 0 && fill != amnt) {
-					fillData(fill, amnt, model, newList, tempEquips, true);
+					fillData(fill, model, newList, tempEquips, true);
 					fill = 0;
 					calendar.add(interval, Integer.parseInt(period[0]));					
 				}
@@ -1448,7 +1457,7 @@ public class ReportBean implements Serializable{
 				if (amnt == 0)
 					newList.add(model.clone());
 
-				fillData(fill, amnt, model, newList, equips, false);
+				fillData(fill, model, newList, equips, false);
 			
 				calendar.add(interval, Integer.parseInt(period[0]));
 				step = calendar.getTime();
@@ -1469,7 +1478,6 @@ public class ReportBean implements Serializable{
 						list.addAll(map.get(equips.get(i)));
 					
 						secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, list));
-				
 				} else
 						secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
 			
@@ -1504,8 +1512,8 @@ public class ReportBean implements Serializable{
 		
 	}
 	
-	private void fillData(int fill, int amnt, String[] model, List<String[]> list, List<String> equips, boolean remove) {
-		for (int i = remove ? fill : 0; i < amnt; i++) {
+	private void fillData(int fill, String[] model, List<String[]> list, List<String> equips, boolean remove) {
+		for (int i = remove ? fill : 0; i < equips.size(); i++) {
 			model[idTablePos] = remove ? equips.remove(0) : equips.get(i);						
 			list.add(model.clone());
 		}
