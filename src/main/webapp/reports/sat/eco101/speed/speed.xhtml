@@ -23,7 +23,8 @@
 		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.via_paulista_speed_title)}" />		
 		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiEquipTab(true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineSpecialPDF('vehicle-speed-eco101')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
@@ -51,7 +52,6 @@
 		<!-- <f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" /> -->
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions q, q.direction, direction')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('siteID, q.direction')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setOrderDate('s.name, q.direction')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />

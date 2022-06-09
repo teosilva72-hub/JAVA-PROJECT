@@ -23,7 +23,8 @@
 		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle('Relatório de Pesagem')}" />		
 		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiEquipTab(true)}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
@@ -39,8 +40,9 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setOrderDate('s.name, data')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 
-
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
+
+		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions q, q.direction, direction')}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
 		<!-- <f:viewAction onPostback="true" action="#{reportBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />

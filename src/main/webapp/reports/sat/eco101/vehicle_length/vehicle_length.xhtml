@@ -19,7 +19,8 @@
 		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECO 101')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiEquipTab(true)}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
 	
 		<!-- CALL REPORT TYPE -->
@@ -46,6 +47,8 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('e.name')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setOrderDate('e.name')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
+		
+		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions f, f.direction, direction')}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />

@@ -22,22 +22,24 @@
 	    <f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.setExtraPeriod(true)}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.additionalTitleName(true)}" />	
-		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiEquipTab(true)}" />
 	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv v')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('name')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTablePos('2')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFixValue('3')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, Equipamento, Sentido, Faixa, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.traffic_density))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, Equipamento, Faixa, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.traffic_density))}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; GROUP_CONCAT(distinct s.name) name; GROUP_CONCAT(distinct f.direction); GROUP_CONCAT(distinct f.lane); ROUND((SUM(1) / $extraPeriod) / AVG(speed), 2)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; GROUP_CONCAT(distinct s.name) name; GROUP_CONCAT(distinct f.lane); ROUND((SUM(1) / $extraPeriod) / AVG(speed), 2)')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(DateTime, `dd/MM/yyyy`); CAST($period as TIME); s.name; GROUP_CONCAT(distinct f.direction); GROUP_CONCAT(distinct f.lane); ROUND((SUM(1) / $extraPeriod) / AVG(speed), 2) as d')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions f ON f.equip_id = siteID AND f.lane = v.lane INNER JOIN sat_equipment s ON siteID = s.equip_id')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('s.name, f.lane')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('s.name')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
+		
+		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions f, f.direction, direction')}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />

@@ -1462,7 +1462,7 @@ public class ReportBean implements Serializable{
 						map.put(e, new ArrayList<>());
 
 					for (String[] n : newList)
-						map.get(n[idTablePos]).add(n);
+						icrData(n, map, mapB, sep);
 
 					List<String[]> list = new ArrayList<>();
 					for (int i = 0; i < map.size(); i++)
