@@ -65,7 +65,7 @@ public class ReportBean implements Serializable{
 	public String table;
 	public String idTable;
 	public int idTablePos;
-	public List<Integer> fixValue;
+	public List<Integer> fixValue = new ArrayList<>();
 	public List<String> columnsName = new ArrayList<>(); 
 	public List<String> searchParameters,
 						searchParametersMS = new ArrayList<>();
@@ -1462,7 +1462,7 @@ public class ReportBean implements Serializable{
 						map.put(e, new ArrayList<>());
 
 					for (String[] n : newList)
-						map.get(n[idTablePos]).add(n);
+						icrData(n, map, mapB, sep);
 
 					List<String[]> list = new ArrayList<>();
 					for (int i = 0; i < map.size(); i++)
@@ -1860,16 +1860,19 @@ public class ReportBean implements Serializable{
 						model.generateCountFlow(columnsInUse, report.lines, sheetName, satTab);
 						break;
 					case "vehicle-speed-eco101":
-						model.generateVehicleSpeedEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
+						model.generateVehicleSpeedEco101(columnsInUse, report, sheetName, satTab, date, period);
 						break;
 					case "vehicle-count-eco101":
-						model.generateVehicleCountEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
+						model.generateVehicleCountEco101(columnsInUse, report, sheetName, satTab, date, period);
+						break;
+					case "vehicle-count-full-eco101":
+						model.generateVehicleCountFullEco101(columnsInUse, report, sheetName, satTab, date, period);
 						break;
 					case "vehicle-count-period-eco101":
-						model.generateVehicleCountPeriodEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
+						model.generateVehicleCountPeriodEco101(columnsInUse, report, sheetName, satTab, date, period);
 						break;
 					case "vehicle-count-category-eco101":
-						model.generateVehicleCountCategoryEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
+						model.generateVehicleCountCategoryEco101(columnsInUse, report, sheetName, satTab, date, period, idTable);
 						break;
 				}
 		}

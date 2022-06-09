@@ -27,11 +27,11 @@
 	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv v')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('name')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName('Equipamento, Sentido, CAT1, CAT2, CAT2A, CAT3, CAT4, CAT4A, CAT5, CAT6, CAT6A, CAT7, CAT8, CAT9, CAT10, CAT11, CATE9, CATE10, CAT0, Total')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('
-			s.name;
+			s.name name;
 			f.direction;
 			SUM(IF(classe = `1`, 1, 0));
 			SUM(IF(classe = `2`, 1, 0));

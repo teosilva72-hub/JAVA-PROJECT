@@ -19,16 +19,18 @@
 		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECO 101')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiEquipTab(true)}" />
 	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv A')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('name')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTablePos('2')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, Equipamento, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, 1, 2))}" />
 		<f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
 			
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(A.data, `%d/%m/%Y`) as sd; TIME($period)@sd; IF(IFNULL(@name, @name := s.name) = IFNULL(@prev_name, @prev_name := s.name), @name := s.name, @prev_name := s.name); ROUND(AVG(IF(q.direction in (`N`, `L`), ABS(TIMESTAMPDIFF(SECOND, IFNULL(IF(@prev_name != @prev_name := @name, @data_b2 := NULL, @data_b1), data), @data_b1 := data)), NULL)), 2);  ROUND(AVG(IF(q.direction in (`S`, `O`), ABS(TIMESTAMPDIFF(SECOND, IFNULL(IF(@prev_name != @prev_name := @name, @data_b1 := NULL, @data_b2), data), @data_b2 := data)), NULL)), 2)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(A.data, `%d/%m/%Y`) as sd; TIME($period)@sd; IF(IFNULL(@name, @name := s.name) = IFNULL(@prev_name, @prev_name := s.name), @name := s.name, @prev_name := s.name) name; ROUND(AVG(IF(q.direction in (`N`, `L`), ABS(TIMESTAMPDIFF(SECOND, IFNULL(IF(@prev_name != @prev_name := @name, @data_b2 := NULL, @data_b1), data), @data_b1 := data)), NULL)), 2);  ROUND(AVG(IF(q.direction in (`S`, `O`), ABS(TIMESTAMPDIFF(SECOND, IFNULL(IF(@prev_name != @prev_name := @name, @data_b1 := NULL, @data_b2), data), @data_b2 := data)), NULL)), 2)')}" />
 		<!-- <f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('@data_b; FORMAT(data, `dd/MM/yyyy`); CAST($period as TIME); ABS(DATEDIFF(SECOND, @data_b, @data_b := @data_a))')}" /> -->
 
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON q.equip_id = siteID AND q.lane = A.lane INNER JOIN sat_equipment s ON s.equip_id = siteID')}" />
@@ -39,6 +41,8 @@
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
+		
+		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions q, q.direction, direction')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('A.data')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
@@ -51,7 +55,7 @@
 		<!-- <f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('TrafficClassID', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" /> -->	
 				
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('A.data', reportsLabels.reports_select_date, true, true)}" />
-	   	<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('A.siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', true, true)}" />
+	   	<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('A.siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', true, true, true)}" />
 				
     </f:metadata>
 	
