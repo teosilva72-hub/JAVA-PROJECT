@@ -1860,16 +1860,19 @@ public class ReportBean implements Serializable{
 						model.generateCountFlow(columnsInUse, report.lines, sheetName, satTab);
 						break;
 					case "vehicle-speed-eco101":
-						model.generateVehicleSpeedEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
+						model.generateVehicleSpeedEco101(columnsInUse, report, sheetName, satTab, date, period);
 						break;
 					case "vehicle-count-eco101":
-						model.generateVehicleCountEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
+						model.generateVehicleCountEco101(columnsInUse, report, sheetName, satTab, date, period);
+						break;
+					case "vehicle-count-full-eco101":
+						model.generateVehicleCountFullEco101(columnsInUse, report, sheetName, satTab, date, period);
 						break;
 					case "vehicle-count-period-eco101":
-						model.generateVehicleCountPeriodEco101(columnsInUse, report.lines, sheetName, satTab, date, period);
+						model.generateVehicleCountPeriodEco101(columnsInUse, report, sheetName, satTab, date, period);
 						break;
 					case "vehicle-count-category-eco101":
-						model.generateVehicleCountCategoryEco101(columnsInUse, report.lines, sheetName, satTab, date, period, idTable);
+						model.generateVehicleCountCategoryEco101(columnsInUse, report, sheetName, satTab, date, period, idTable);
 						break;
 				}
 		}
